@@ -1,13 +1,9 @@
 ## 个人作业
 
 
-## 提交
+### 任务说明
 
-- 提交链接：[点击提交作业](https://gitee.com/link?target=https%3A%2F%2Fworkspace.jianguoyun.com%2Finbox%2Fcollect%2F8b71e5254a0f4f36ac95b582ffd7f2db%2Fsubmit) &#x1F34E; 
-
-## 任务说明
-
-1. Python 环境配置。请参照讲义 [6  Python：安装和环境配置](https://book.lianxh.cn/ds/body/01_1_install-Python-Anocanda.html) 中的说明，安装必要软件和插件，配置好 Python 运行环境。
+1. Python 环境配置。请参照讲义「Python：安装和环境配置」中的说明，安装必要软件和插件，配置好 Python 运行环境。
 2. 新建一个 `ex01_姓名.ipynb` 文件。
 3. 添加一个 Markdown 单元格，写上你的姓名和学号，以及你对作业内容的简要介绍。
 4. 添加一个 Python 代码单元格，根据如下提示词生成 Python 代码，产生模拟数据 (你可以使用 Copilot 或 ChatGPT 等工具)：
@@ -37,4 +33,12 @@
    ```
    
 6. 提交：`ex01_姓名.ipynb` 文件。
+
+
+
+### 补充说明
+
+1. 报告提交和格式要求等，参见：[Homework / readme](https://github.com/lianxhcn/dsfin/blob/main/homework/readme.md)
+2. Python 环境配置。请参照讲义 [Python：安装和环境配置](https://lianxhcn.github.io/dsfin/Lecture/00-setup/01_01_install_anaconda.html) 中的说明，安装必要软件和插件，配置好 Python 运行环境。
+
 
