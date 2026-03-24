@@ -1,0 +1,617 @@
+---
+title: Mandatory Assignment 1
+author: GFS189, RTL959
+date: today
+date-format: MMMM DD, YYYY
+execute: 
+  echo: false
+  warning: false
+format: 
+  pdf: 
+    number-sections: true
+    colorlinks: true
+    geometry:
+      - top=20mm
+      - left=20mm
+      - bottom=20mm
+      - right=20mm
+    bibliography: references.bib
+    cite-method: natbib
+    biblio-style: apalike  
+    lang: en
+    fontsize: 12pt
+    highlight-style: github-light
+---
+
+>Source: <https://github.com/gfs189/Advanced-Empirical-Finance-Topics-and-Data-Science>
+
+.
+
+
+```{python}
+import pandas as pd
+import numpy as np
+import tidyfinance as tf
+from plotnine import * 
+import tidyfinance as tf
+from mizani.formatters import percent_format
+import io
+import re
+import zipfile
+from curl_cffi import requests
+import os 
+from joblib import Parallel, delayed, cpu_count
+from itertools import product
+from dateutil.relativedelta import relativedelta
+import statsmodels.formula.api as smf
+import pyarrow.dataset as ds
+import matplotlib.pyplot as plt
+import matplotlib.ticker as mticker
+from scipy.optimize import minimize
+from sklearn.covariance import LedoitWolf
+from scipy.optimize import minimize
+```
+
+In this assignment we are investigating how different portfolio weights can lead to statistical errors based on the paper of @987c7289-8939-3a32-96f2-3d9b692dffee and @BRANDT2010269. 
+The method to test this is to check how our portfolio weights deviate from the optimal in a single factor model market model which treats the calibrated parameters as the true values. we use this equation for portfolio weights:
+$$
+\hat{\omega}(\bar{\mu}) = \arg\min_{\omega} \, \omega' \hat{\Sigma} \omega 
+\quad \text{s.t.} \quad \omega'\iota = 1 
+\quad \text{and} \quad \omega'\hat{\mu} \geq \bar{\mu}
+$$
+
+
+##  
+Firstly we gather data from S&P 500 index and the 13-week Treasury Bill rate from Yahoofinance using the Tidyfinance package.
+We se timeseries below in the figure. These figures primarily serve as a sanity check for our data and helps get better idea of their trends over time. 
+
+
+```{python} 
+#| cache: true
+#| label: figures for period
+
+# Define the sample period for the entire analysis
+start_date = "2000-01-01"
+end_date = "2026-02-28"
+
+# Download monthly S&P 500 index prices from Yahoo Finance
+sp500 = tf.download_data(
+    domain="stock_prices",
+    symbols="^GSPC",
+    start_date=start_date,
+    end_date=end_date,
+)
+
+# Download 13-week Treasury Bill rate (risk-free rate proxy) from Yahoo Finance
+tbill = tf.download_data(
+    domain="stock_prices",
+    symbols="^IRX",
+    start_date=start_date,
+    end_date=end_date,
+)
+
+# Visualize S&P 500 price level over the sample period
+sp500_figure = (
+    ggplot(sp500, aes(y="adjusted_close", x="date"))
+    + geom_line()
+    + labs(x="", y="", title="S&P 500 stock prices (in USD) 2000-2026")
+)
+sp500_figure.show()
+
+# Visualize Treasury Bill rate over the sample period
+tbill_figure = (
+    ggplot(tbill, aes(y="adjusted_close", x="date"))
+    + geom_line()
+    + labs(x="", y="", title="13-week T-Bill (in USD) 2000-2026")
+)
+tbill_figure.show()
+```
+```{python}
+#| cache: true
+#| label: returns
+
+# Compute daily percentage returns for the S&P 500 by taking the 
+# first difference of log prices (pct_change), sorted by date
+returns_sp500 = (sp500
+    .sort_values("date")
+    .assign(ret=lambda x: x["adjusted_close"].pct_change())
+    .get(["symbol", "date", "ret"]))
+
+# Compute daily percentage changes in the T-Bill rate, sorted by date
+returns_tbill = (tbill
+    .sort_values("date")
+    .assign(ret=lambda x: x["adjusted_close"].pct_change())
+    .get(["symbol", "date", "ret"]))
+```
+
+
+
+```{python}
+#| cache: true
+#| label: monthly returns
+
+# Aggregate daily S&P 500 returns to monthly by compounding daily returns
+# within each month: (1+r1)(1+r2)...(1+rT) - 1
+returns_monthly_sp500 = (returns_sp500
+    .assign(date=returns_sp500["date"].dt.to_period("M").dt.to_timestamp())
+    .groupby(["symbol", "date"], as_index=False)
+    .agg(ret=("ret", lambda x: np.prod(1 + x) - 1))
+)
+
+# Aggregate T-Bill rate to monthly by taking the last observed rate of each month
+returns_monthly_tbill = (
+    returns_tbill
+    .assign(date=lambda x: x["date"].dt.to_period("M").dt.to_timestamp())
+    .groupby(["symbol", "date"], as_index=False)
+    .agg(ret=("ret", "last"))   
+)
+
+# Convert annualized T-Bill yield (in %) to a monthly rate
+# using the formula: rf = (1 + IRX/100)^(1/12) - 1
+returns_monthly_tbill["risk_free"] = (
+    (1 + returns_monthly_tbill["ret"] / 100) ** (1/12) - 1
+)
+
+# Drop the raw annualized rate column, keeping only the monthly risk-free rate
+returns_monthly_tbill = returns_monthly_tbill.drop(columns="ret")
+
+# Merge S&P 500 and T-Bill data on date and compute monthly excess returns
+monthly_ret = (returns_monthly_tbill
+    .merge(returns_monthly_sp500, how="inner", on="date")
+    .assign(ret_excess=lambda x: x["ret"] - x["risk_free"])
+)
+```
+
+We now use the data to calculate these:
+Let $r_{m,t}$ be the monthly return and $r_{f,t}$ the risk-free rate.
+
+**1. Monthly Excess Return**
+$$\tilde{r}_{m,t} = r_{m,t} - r_{f,t}$$
+
+**2. Monthly Mean Excess Return**
+$$\hat{\mu}_m = \frac{1}{T} \sum_{t=1}^{T} \tilde{r}_{m,t}$$
+
+**3. Monthly Variance**
+$$\hat{\sigma}_m^2 = \frac{1}{T-1} \sum_{t=1}^{T} \left(\tilde{r}_{m,t} - \hat{\mu}_m\right)^2$$
+
+**4. Annualized Mean Excess Return**
+$$\hat{\mu}_{m,\text{ann}} = 12 \times \hat{\mu}_m$$
+
+**5. Annualized Variance**
+$$\hat{\sigma}_{m,\text{ann}}^2 = 12 \times \hat{\sigma}_m^2$$
+
+```{python}
+# Estimate the monthly mean excess return and variance from the sample
+mu_m = monthly_ret["ret_excess"].mean()
+sigma2_m = monthly_ret["ret_excess"].var()
+
+# Annualize by multiplying means by 12 and variances by 12
+annual_mean = 12 * mu_m
+annual_variance = 12 * sigma2_m
+
+print(f"Monthly mean excess return:       {mu_m:.3f}")
+print(f"Monthly variance:                 {sigma2_m:.3f}")
+print(f"Annualized mean excess return:    {annual_mean:.3f}")
+print(f"Annualized variance:              {annual_variance:.3f}")
+```
+
+We see that the monthly mean excess return positive.
+
+##
+Now we construct a universe of N=50 synthetic assets which follow the single factor model:
+**Single Asset Return Process**
+$$\tilde{r}_{i,t} = \beta_i \tilde{r}_{m,t} + \varepsilon_{i,t}, \qquad \varepsilon_{i,t} \overset{iid}{\sim} \mathcal{N}(0, \sigma^2_{\varepsilon,i}), \quad i = 1, \dots, N$$
+
+where $\tilde{r}_{i,t}$ denotes the excess return on asset $i$.
+
+**Parameter Draws**
+$$\beta_i \overset{iid}{\sim} \text{Uniform}(0.5,\ 1.5), \qquad \sigma_{\varepsilon,i} \overset{iid}{\sim} \text{Uniform}\!\left(\frac{0.10}{\sqrt{12}},\ \frac{0.30}{\sqrt{12}}\right)$$
+
+**True Monthly Parameters**
+$$\mu_i = \beta_i \hat{\mu}_m, \qquad \Sigma = \sigma^2_m \beta\beta' + \text{diag}(\sigma^2_\varepsilon)$$
+
+where $\beta = (\beta_1, \dots, \beta_N)'$.
+
+```{python}
+# Set random seed for reproducibility
+np.random.seed(2026)
+
+# Number of synthetic assets
+N = 50
+
+# Draw factor loadings and idiosyncratic volatilities from uniform distributions
+# beta_i ~ Uniform(0.5, 1.5) controls each asset's exposure to the market factor
+# sigma_eps_i ~ Uniform(0.10/sqrt(12), 0.30/sqrt(12)) is the monthly idiosyncratic volatility
+beta = np.random.uniform(0.5, 1.5, N)
+sigma_eps = np.random.uniform(0.10 / np.sqrt(12), 0.30 / np.sqrt(12), N)
+
+# Compute true expected excess returns and covariance matrix from the single-factor model
+# mu_i = beta_i * mu_m
+# Sigma = sigma2_m * beta*beta' + diag(sigma_eps^2)
+mu = beta * mu_m
+Sigma = sigma2_m * np.outer(beta, beta) + np.diag(sigma_eps**2)
+```
+
+We see that the tangency portfolio has positive sharpe ratio and monthly return. 
+##
+Now we implement a function to compute the mean-variance efficient frontier and the tangency portfolio for a given covariance matrix and mean vector. 
+
+```{python}
+def compute_efficient_frontier(mu, Sigma, n_points=100):
+    """Compute the mean-variance efficient frontier and tangency portfolio.
+    
+    Parameters: mu (expected returns), Sigma (covariance matrix), n_points (frontier resolution)
+    Returns: frontier (DataFrame with mu_p, sigma_p, weights), tangency (dict with portfolio stats)
+    """
+    N = len(mu)
+    iota = np.ones(N)
+    Sigma_inv = np.linalg.inv(Sigma)
+
+    # Scalar constants from the analytical frontier solution
+    A = iota @ Sigma_inv @ mu
+    B = mu @ Sigma_inv @ mu
+    C = iota @ Sigma_inv @ iota
+    D = B * C - A ** 2  # Determinant-like term ensuring a unique frontier
+
+    def frontier_weights(mu_bar):
+        # Two-fund separation: any frontier portfolio is a combination of g and h
+        g = (B * (Sigma_inv @ iota) - A * (Sigma_inv @ mu)) / D
+        h = (C * (Sigma_inv @ mu) - A * (Sigma_inv @ iota)) / D
+        return g + h * mu_bar
+
+    # Evaluate frontier across a grid of target returns
+    mu_range = np.linspace(mu.min(), mu.max() * 1.5, n_points)
+
+    records = []
+    for mu_bar in mu_range:
+        w = frontier_weights(mu_bar)
+        mu_p = w @ mu
+        sigma_p = np.sqrt(w @ Sigma @ w)
+        records.append({"mu_p": mu_p, "sigma_p": sigma_p, "weights": w})
+
+    frontier = pd.DataFrame(records)
+
+    # Tangency portfolio: maximizes Sharpe ratio, computed analytically
+    w_tan = (Sigma_inv @ mu) / (iota @ Sigma_inv @ mu)
+    mu_tan = w_tan @ mu
+    sigma_tan = np.sqrt(w_tan @ Sigma @ w_tan)
+    sharpe_tan = mu_tan / sigma_tan
+
+    tangency = {
+        "weights": w_tan,
+        "mu_p": mu_tan,
+        "sigma_p": sigma_tan,
+        "sharpe": sharpe_tan
+    }
+
+    return frontier, tangency
+
+# Compute frontier and tangency portfolio using the true parameters
+frontier, tangency = compute_efficient_frontier(mu, Sigma)
+
+print(f"Tangency portfolio Sharpe: {tangency['sharpe']:.4f}")
+print(f"Tangency mu (monthly):     {tangency['mu_p']:.4f}")
+print(f"Tangency sigma (monthly):  {tangency['sigma_p']:.4f}")
+```
+
+The figure shows that, as we would expect, that holding individual stocks is dominated by a combination of different stocks. This can be seen by all the grey dots representing the stocks lies below the efficient frontier. 
+
+##
+Now we implement a function to compute the mean-variance efficient frontier and the tangency portfolio for a given covariance matrix and mean vector. 
+```{python}
+#| cache: true
+#| label: efficient frontier figure
+
+# Collect individual asset risk/return coordinates for the scatter plot
+assets = pd.DataFrame({
+    "mu_p": mu,
+    "sigma_p": np.sqrt(np.diag(Sigma))
+})
+
+# Identify the minimum variance portfolio as the frontier point with lowest volatility
+mvp_idx = frontier["sigma_p"].idxmin()
+mvp = pd.DataFrame({
+    "mu_p": [frontier.loc[mvp_idx, "mu_p"]],
+    "sigma_p": [frontier.loc[mvp_idx, "sigma_p"]]
+})
+
+# Extract tangency portfolio coordinates (weights excluded to avoid DataFrame issues)
+tangency_point = pd.DataFrame({
+    "mu_p": [tangency["mu_p"]],
+    "sigma_p": [tangency["sigma_p"]]
+})
+
+# Plot the efficient frontier, individual assets, tangency, and minimum variance portfolio
+plot_4 = (
+    ggplot()
+    + geom_line(
+        data=frontier,
+        mapping=aes(x="sigma_p", y="mu_p"),
+        color="blue", size=1
+    )
+    + geom_point(
+        data=assets,
+        mapping=aes(x="sigma_p", y="mu_p"),
+        color="grey", alpha=0.6, size=2
+    )
+    + geom_point(
+        data=tangency_point,
+        mapping=aes(x="sigma_p", y="mu_p"),
+        color="red", size=4, shape="*"
+    )
+    + geom_point(
+        data=mvp,
+        mapping=aes(x="sigma_p", y="mu_p"),
+        color="darkgreen", size=3, shape="D"
+    )
+    + scale_x_continuous(labels=percent_format())
+    + scale_y_continuous(labels=percent_format())
+    + labs(
+        x="Monthly volatility (σ)",
+        y="Monthly excess return (μ)",
+        title="Mean-variance efficient frontier (true parameters)",
+        caption="Red star: tangency portfolio. Green diamond: minimum variance portfolio. Grey dots: individual assets."
+    )
+    + theme_bw()
+)
+
+plot_4
+```
+
+##
+Now we show how estimation erros can affect the shape of the efficient frontier and what determines the severity of this.
+```{python}
+#| cache: true
+#| label: estimated frontier figure vs true frontier
+
+# Simulate T observations from the true multivariate normal distribution
+def simulate_returns(periods, expected_returns, covariance_matrix):
+    return np.random.multivariate_normal(expected_returns, covariance_matrix, size=periods)
+
+def compute_plug_in_frontier(T, mu, Sigma, n_points=100):
+    # Draw a synthetic sample of length T from the true DGP
+    sim = simulate_returns(T, mu, Sigma)
+    
+    # Estimate mean vector and covariance matrix from the sample
+    mu_hat = sim.mean(axis=0)
+    Sigma_hat = np.cov(sim, rowvar=False)
+    
+    # Compute the plug-in frontier using estimated parameters
+    frontier_hat, _ = compute_efficient_frontier(mu_hat, Sigma_hat, n_points)
+
+    # Re-evaluate plug-in weights using TRUE parameters to measure out-of-sample performance
+    records = []
+    for w in frontier_hat["weights"]:
+        mu_p_true = w @ mu
+        sigma_p_true = np.sqrt(w @ Sigma @ w)
+        records.append({"mu_p": mu_p_true, "sigma_p": sigma_p_true})
+
+    return pd.DataFrame(records)
+
+# Sample sizes to study: 5, 10, 20, and 100 years of monthly data
+T_values = [60, 120, 240, 1200]
+n_simulations = 25  # Number of frontier draws per T for visualization
+
+records = []
+for T in T_values:
+    for _ in range(n_simulations):
+        frontier_hat = compute_plug_in_frontier(T, mu, Sigma)
+        frontier_hat["T"] = f"T = {T}"
+        records.append(frontier_hat)
+
+simulated_frontiers = pd.concat(records, ignore_index=True)
+
+# Plot plug-in frontiers (evaluated at true parameters) against the true frontier
+# Dispersion across light blue lines reflects estimation error for each T
+plot_5 = (
+    ggplot()
+    + geom_line(
+        data=simulated_frontiers,
+        mapping=aes(x="sigma_p", y="mu_p", group="T"),
+        color="lightblue", alpha=0.4, size=0.5
+    )
+    + geom_line(
+        data=frontier,
+        mapping=aes(x="sigma_p", y="mu_p"),
+        color="blue", size=1
+    )
+    + scale_x_continuous(labels=percent_format())
+    + scale_y_continuous(labels=percent_format())
+    + facet_wrap("T")
+    + labs(
+        x="Monthly volatility (σ)",
+        y="Monthly excess return (μ)",
+        title="Estimated vs true efficient frontier",
+        caption="Light blue: plug-in frontiers. Dark blue: true frontier."
+    )
+    + theme_bw()
+)
+
+plot_5
+```
+
+We see that as T increases(sample size) then the plug-in estimated frontiers goes towards the efficient frontier. The meaningful take away being that even with a big sample size of (T=1200) 100 years the plug in estimations suffers greatly from estimation error. 
+The key drivers of estimation error are:
+1.	Sample size: greater sample size leads to converges to the efficient frontier
+2.	Number of assets: when N is relatively big to T leads to poor estimation
+3.	Asset correlation: More correlation leads to poor estimation since the series becomes unstable
+Motivating the use of shrinkage estimators or factor models.
+
+## 
+We now use simulations to see evaluate the out-of-sample performance of the plug-in tangency portfolio relative to the optimum. We use the sharpe ratio as the evaluations criteria since this is widely used and supported in the literature. 
+```{python}
+#| cache: true
+#| label: out of sample sharpe ratio of plug in
+
+def evaluate_tangency(T, mu, Sigma):
+    # Draw a synthetic sample of length T from the true DGP
+    sim = simulate_returns(T, mu, Sigma)
+    
+    # Estimate mean vector and covariance matrix from the sample
+    mu_hat = sim.mean(axis=0)
+    Sigma_hat = np.cov(sim, rowvar=False)
+    
+    # Compute plug-in tangency portfolio using estimated parameters
+    _, tangency_hat = compute_efficient_frontier(mu_hat, Sigma_hat)
+    w_hat = tangency_hat["weights"]
+    
+    # Evaluate plug-in tangency weights using TRUE parameters (out-of-sample performance)
+    mu_oos = w_hat @ mu
+    sigma_oos = np.sqrt(w_hat @ Sigma @ w_hat)
+    sharpe_oos = mu_oos / sigma_oos
+    
+    return {"mu_oos": mu_oos, "sigma_oos": sigma_oos, "sharpe_oos": sharpe_oos}
+
+# Sample sizes to study: 5, 10, 20, and 100 years of monthly data
+T_values = [60, 120, 240, 1200]
+n_simulations = 500  # Large number of simulations for a smooth Sharpe distribution
+
+records = []
+for T in T_values:
+    for _ in range(n_simulations):
+        result = evaluate_tangency(T, mu, Sigma)
+        result["T"] = f"T = {T}"
+        records.append(result)
+
+oos_results = pd.DataFrame(records)
+
+# True tangency Sharpe ratio serves as the performance benchmark
+true_sharpe = tangency["sharpe"]
+
+# Plot distribution of out-of-sample Sharpe ratios across sample sizes
+# Wider distributions and more mass below zero indicate more severe estimation error
+plot_6 = (
+    ggplot(oos_results, aes(x="sharpe_oos"))
+    + geom_histogram(bins=50, fill="lightblue", color="white")
+    + geom_vline(xintercept=true_sharpe, color="blue", size=1, linetype="dashed")
+    + geom_vline(xintercept=0, color="red", size=0.8, linetype="dashed")
+    + facet_wrap("T", scales="free_y")
+    + labs(
+        x="Out-of-sample Sharpe ratio",
+        y="Count",
+        title="Out-of-sample Sharpe ratio of plug-in tangency portfolio",
+        caption="Dashed blue: true tangency Sharpe. Dashed red: zero."
+    )
+    + theme_bw()
+)
+
+plot_6
+```
+
+We see that for all simulations that the plug in tangency portfolio performs worse that the optimum (denoted by the dashed blue line). There is a trend for when T grows the Sharpe ratio tends towards optimum as we saw in the previous exercise as well. 
+
+##
+We evaluate three alternative portfolio strategies and compare them against the equal-weight 
+benchmark ($\omega_{ew} = \frac{1}{N}\iota$) to assess their ability to mitigate estimation 
+error. All strategies are evaluated using the true parameters $\mu$ and $\Sigma$ across 500 
+simulations for $T \in {60, 120, 240, 1200}$. The three alternative strategies are: (i) the 
+minimum variance portfolio, which only requires $\hat{\Sigma}$ and avoids estimating 
+expected returns entirely; (ii) the short-sell constrained tangency portfolio, which limits 
+extreme positions arising from estimation error by restricting all weights to be non-negative; 
+and (iii) the unconstrained plug-in tangency portfolio as a baseline.
+```{python}
+#| cache: true
+#| label: out of sample sharpe ratios across strategies
+
+def compute_portfolio_weights(mu_hat, Sigma_hat, sim, N):
+    iota = np.ones(N)
+    Sigma_hat_inv = np.linalg.inv(Sigma_hat)
+
+    # Plug-in tangency: maximizes Sharpe using sample estimates (unconstrained)
+    w_tan = Sigma_hat_inv @ mu_hat / (iota @ Sigma_hat_inv @ mu_hat)
+
+    # Naive diversification: equal weight across all N assets
+    w_ew = iota / N
+
+    # Minimum variance: minimizes portfolio variance, avoids estimating expected returns
+    w_mv = Sigma_hat_inv @ iota / (iota @ Sigma_hat_inv @ iota)
+
+    # Short-sell constrained tangency: maximizes Sharpe with non-negativity constraints
+    # Reduces extreme positions driven by estimation error via quadratic programming
+    def neg_sharpe(w):
+        mu_p = w @ mu_hat
+        sigma_p = np.sqrt(w @ Sigma_hat @ w)
+        return -mu_p / sigma_p
+
+    constraints = {"type": "eq", "fun": lambda w: np.sum(w) - 1}
+    bounds = [(0, None)] * N  # No short-selling: all weights >= 0
+    result = minimize(neg_sharpe, iota / N, method="SLSQP", bounds=bounds, constraints=constraints)
+    w_constrained = result.x
+
+    return {
+        "Plug-in tangency": w_tan,
+        "Equal weight": w_ew,
+        "Minimum variance": w_mv,
+        "Constrained tangency": w_constrained,
+    }
+
+def evaluate_strategies(T, mu, Sigma, N):
+    # Draw a synthetic sample of length T from the true DGP
+    sim = simulate_returns(T, mu, Sigma)
+    
+    # Estimate mean vector and covariance matrix from the sample
+    mu_hat = sim.mean(axis=0)
+    Sigma_hat = np.cov(sim, rowvar=False)
+
+    # Compute weights for all strategies using estimated parameters
+    weights = compute_portfolio_weights(mu_hat, Sigma_hat, sim, N)
+
+    # Evaluate each strategy using TRUE parameters (out-of-sample performance)
+    records = []
+    for name, w in weights.items():
+        mu_p = w @ mu
+        sigma_p = np.sqrt(w @ Sigma @ w)
+        sharpe = mu_p / sigma_p
+        records.append({"strategy": name, "mu_p": mu_p, "sigma_p": sigma_p, "sharpe": sharpe})
+
+    return records
+
+# Sample sizes to study: 5, 10, 20, and 100 years of monthly data
+T_values = [60, 120, 240, 1200]
+n_simulations = 500
+
+records = []
+for T in T_values:
+    for _ in range(n_simulations):
+        results = evaluate_strategies(T, mu, Sigma, N)
+        for r in results:
+            r["T"] = f"T = {T}"
+            records.append(r)
+
+strategy_results = pd.DataFrame(records)
+
+# Compare out-of-sample Sharpe distributions across strategies and sample sizes
+# Dashed blue line shows the true tangency Sharpe as the theoretical benchmark
+plot_7 = (
+    ggplot(strategy_results, aes(x="strategy", y="sharpe", fill="strategy"))
+    + geom_boxplot(alpha=0.7)
+    + geom_hline(yintercept=tangency["sharpe"], color="blue", linetype="dashed", size=0.8)
+    + facet_wrap("T")
+    + labs(
+        x="Strategy",
+        y="Out-of-sample Sharpe ratio",
+        title="Out-of-sample Sharpe ratios across strategies",
+        caption="Dashed blue: true tangency Sharpe."
+    )
+    + theme_bw()
+    + theme(axis_text_x=element_text(angle=45, ha="right"), legend_position="none")
+)
+
+plot_7
+```
+
+The figure shows that the equal-weight portfolio achieves the highest and most stable Sharpe 
+ratio across all sample sizes, confirming that naive diversification is difficult to beat 
+out-of-sample. The constrained tangency portfolio performs well at low $T$, as the 
+no-short-selling constraint dampens the most extreme estimation-error-driven positions. The 
+minimum variance and plug-in tangency portfolios perform similarly, with both being sensitive 
+to sample size. Notably, none of the strategies reach the true tangency Sharpe ratio (dashed 
+blue line), highlighting the persistent cost of estimation uncertainty.
+
+## Conclusion
+
+We conlude that estimation error can have a significant impact on the performance of mean-variance optimal portfolios, especially when the sample size is small relative to the number of assets. The plug-in tangency portfolio, which relies heavily on estimated parameters, can perform poorly out-of-sample due to estimation error. Alternative strategies such as equal-weighting and constrained optimization can help mitigate this issue, but they also come with trade-offs. Overall, our analysis underscores the importance of considering estimation risk in portfolio construction and the potential benefits of simpler or more robust strategies in practice.
+
+## References
+::::{#refs}
+::::

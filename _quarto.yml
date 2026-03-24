@@ -1,0 +1,113 @@
+project:
+  type: book
+  output-dir: docs
+
+book:
+  title: "金融数据分析与建模"
+  author: "连玉君"
+  date: today
+  date-format: iso
+  repo-actions: [edit, issue]
+
+  sidebar:
+    title: "DS Finance"
+    logo: images/book-logo.png
+    logo-href: https://lianxhcn.github.io/dsfin/
+    style: floating
+    search: true
+    background: light
+    tools:
+      - icon: github
+        href: https://github.com/lianxhcn/dsfin
+      - icon: home
+        href: https://www.lianxh.cn
+
+  favicon: images/book-logo.png
+  site-url: https://lianxhcn.github.io/dsfin/
+  editor: source
+#  downloads: [pdf]
+#  output-file: "dsfin"
+
+#----------------------- Chapters ---------------
+  chapters:
+    - index.qmd
+    - Lecture/00_intro.ipynb
+
+    - part: "**环境配置**"
+      chapters:
+        - Lecture/00-setup/01_00_coding_with_AI.ipynb
+        - Lecture/00-setup/01_01_install_anaconda.ipynb
+        - Lecture/00-setup/01_02_jupyter_notebook.ipynb
+        - Lecture/00-setup/01_03_install_FAQs.ipynb
+        - Lecture/00-setup/01_04_markdown.md
+
+    - part: "**数据分析**"
+      chapters:
+        - Lecture/data_get_data/lec_get_data.ipynb 
+
+format:
+  html:
+    theme:
+      light: cosmo
+      dark: darkly
+    toc: true
+    toc-depth: 3
+    linestretch: 1.6
+    fontsize: 11.5pt
+    number-sections: true
+    link-external-newwindow: true
+    highlight: true
+    highlight-style: atom-one
+    code-fold: false
+    code-line-numbers: false
+    code-overflow: wrap
+    css: styles.css
+    callout-appearance: default
+    md-extensions:
+      - callout
+  # pdf:
+  #   output-file: "dsfin"
+  #   documentclass: book
+  #   classoption: oneside
+  #   papersize: a4
+  #   fontsize: 10.5pt
+  #   linestretch: 1.1
+  #   code-overflow: wrap
+  #   code-line-numbers: false
+  #   colorlinks: true
+  #   linkcolor: blue
+  #   urlcolor: blue
+  #   citecolor: blue
+  #   include-in-header:
+  #     text: |
+  #       \PassOptionsToPackage{colorlinks=true,linkcolor=blue,urlcolor=blue,citecolor=blue}{hyperref}
+  #       \usepackage{ctex}
+  #       \usepackage[normalem]{ulem}
+  #       \usepackage{fvextra}
+  #       \DefineVerbatimEnvironment{Highlighting}{Verbatim}{
+  #         breaksymbolleft={},
+  #         breaksymbolright={},
+  #         breaklines=true,
+  #         breakanywhere=true,
+  #         fontsize=\small,
+  #         commandchars=\\\{\}
+  #       }
+  #       \usepackage{geometry}
+  #       \geometry{
+  #         a4paper,
+  #         left=2.5cm,
+  #         right=2.5cm,
+  #         top=2.8cm,
+  #         bottom=2.2cm
+  #       }
+  #       \renewcommand{\cleardoublepage}{\clearpage}
+  #       \usepackage{fancyhdr}
+  #       \pagestyle{fancy}
+  #       \fancyfoot[C]{\small 在线版：\url{https://lianxhcn.github.io/dsfin/}}
+  #       \fancyfoot[R]{\thepage}
+  #       \renewcommand{\footrulewidth}{0.4pt}
+  #   toc: true
+  #   number-sections: true
+
+#language:
+#  chapter-title: "第"

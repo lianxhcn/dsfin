@@ -1,5 +1,12 @@
 ### AL ###
 #Template for AL projects for Dynamics 365 Business Central
+
+#temp-files
+.temp/
+tobeUse/
+
+
+
 #launch.json folder
 .vscode/
 #Cache folder
@@ -20,3 +27,4 @@ rad.json
 *.flf
 #Test results file
 TestResults.xml
+/.quarto/
