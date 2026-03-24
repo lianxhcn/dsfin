@@ -31,7 +31,8 @@ book:
 #----------------------- Chapters ---------------
   chapters:
     - index.qmd
-    - Lecture/00_intro.ipynb
+    - Lecture/00_intro.md
+    - Lecture/01_homework.md
 
     - part: "**环境配置**"
       chapters:
@@ -43,7 +44,15 @@ book:
 
     - part: "**数据分析**"
       chapters:
-        - Lecture/data_get_data/lec_get_data.ipynb 
+        - Lecture/data_get_data/Lec_get_data.ipynb 
+        - Lecture/data_clean/Lec_data_clean.ipynb 
+    
+    - part: "**数据爬取**"
+      chapters:
+        - Lecture/crawing/craw_01_introduction.md
+        - Lecture/crawing/craw_02_sec01_lingnan_prompt.md
+        - Lecture/crawing/craw_02_sec02_lingnan_dialog.ipynb
+
 
 format:
   html:

@@ -1,0 +1,1727 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.6.39">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>10&nbsp; 实例-对话模式：爬取岭南学院教师名录 – 金融数据分析与建模</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../Lecture/crawing/craw_02_sec01_lingnan_prompt.html" rel="prev">
+<link href="../../images/book-logo.png" rel="icon" type="image/png">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-e8fb9d25728d58bfeac61b497e4a6629.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark-57a92833092fd6dc0d7710b6bdfff9c5.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-7ef202e96c563d31d9e5226e4d6cabf9.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark-490ba4e843cb1303a232ed0c676384f2.min.css" rel="prefetch" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../Lecture/crawing/craw_01_introduction.html"><strong>数据爬取</strong></a></li><li class="breadcrumb-item"><a href="../../Lecture/crawing/craw_02_sec02_lingnan_dialog.html"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">实例-对话模式：爬取岭南学院教师名录</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header sidebar-header-stacked">
+      <a href="https://lianxhcn.github.io/dsfin/" class="sidebar-logo-link">
+      <img src="../../images/book-logo.png" alt="" class="sidebar-logo py-0 d-lg-inline d-none">
+      </a>
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../../">DS Finance</a> 
+        <div class="sidebar-tools-main tools-wide">
+    <a href="https://github.com/lianxhcn/dsfin" title="" class="quarto-navigation-tool px-1" aria-label=""><i class="bi bi-github"></i></a>
+    <a href="https://www.lianxh.cn" title="" class="quarto-navigation-tool px-1" aria-label=""><i class="bi bi-home"></i></a>
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">封面</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/00_intro.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">📚课程资料</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/01_homework.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">🚀作业</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text"><strong>环境配置</strong></span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/00-setup/01_00_coding_with_AI.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">借助 AI 写代码</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/00-setup/01_01_install_anaconda.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Python：安装和环境配置</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/00-setup/01_02_jupyter_notebook.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Jupyter Notebook 的使用</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/00-setup/01_03_install_FAQs.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Python 安装常见问题</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/00-setup/01_04_markdown.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Markdown</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
+ <span class="menu-text"><strong>数据分析</strong></span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/data_get_data/Lec_get_data.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">金融数据获取</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/data_clean/Lec_data_clean.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">数据清洗</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true">
+ <span class="menu-text"><strong>数据爬取</strong></span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/crawing/craw_01_introduction.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">网络爬虫简介</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/crawing/craw_02_sec01_lingnan_prompt.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">实例-提示词模式：爬取岭南学院教师名录</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/crawing/craw_02_sec02_lingnan_dialog.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">实例-对话模式：爬取岭南学院教师名录</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#开始之前" id="toc-开始之前" class="nav-link active" data-scroll-target="#开始之前">0. 开始之前</a>
+  <ul class="collapse">
+  <li><a href="#安装依赖" id="toc-安装依赖" class="nav-link" data-scroll-target="#安装依赖">安装依赖</a></li>
+  <li><a href="#设定-ai-工作模式" id="toc-设定-ai-工作模式" class="nav-link" data-scroll-target="#设定-ai-工作模式">设定 AI 工作模式</a></li>
+  </ul></li>
+  <li><a href="#与-ai-的对话过程" id="toc-与-ai-的对话过程" class="nav-link" data-scroll-target="#与-ai-的对话过程">1. 与 AI 的对话过程</a>
+  <ul class="collapse">
+  <li><a href="#devtools-操作指引" id="toc-devtools-操作指引" class="nav-link" data-scroll-target="#devtools-操作指引">2. DevTools 操作指引</a></li>
+  </ul></li>
+  <li><a href="#代码" id="toc-代码" class="nav-link" data-scroll-target="#代码">3. 代码</a></li>
+  <li><a href="#验证看到什么才算正确" id="toc-验证看到什么才算正确" class="nav-link" data-scroll-target="#验证看到什么才算正确">4. 验证：看到什么才算正确</a></li>
+  <li><a href="#如果结果不对发起调试对话" id="toc-如果结果不对发起调试对话" class="nav-link" data-scroll-target="#如果结果不对发起调试对话">5. 如果结果不对：发起调试对话</a></li>
+  <li><a href="#复盘" id="toc-复盘" class="nav-link" data-scroll-target="#复盘">6. 复盘</a></li>
+  <li><a href="#课堂讨论" id="toc-课堂讨论" class="nav-link" data-scroll-target="#课堂讨论">课堂讨论</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../Lecture/crawing/craw_01_introduction.html"><strong>数据爬取</strong></a></li><li class="breadcrumb-item"><a href="../../Lecture/crawing/craw_02_sec02_lingnan_dialog.html"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">实例-对话模式：爬取岭南学院教师名录</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">实例-对话模式：爬取岭南学院教师名录</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<blockquote class="blockquote">
+<p><em>从一个网址出发，通过与 AI 的多轮对话，逐步形成规范提示词，最终生成可运行代码。</em></p>
+</blockquote>
+<section id="开始之前" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="开始之前">0. 开始之前</h2>
+<section id="安装依赖" class="level3 unnumbered">
+<h3 class="unnumbered anchored" data-anchor-id="安装依赖">安装依赖</h3>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+📦 环境准备
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">pip</span> install requests beautifulsoup4 pandas openpyxl</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li><code>requests</code>：发送 HTTP 请求，获取网页内容</li>
+<li><code>beautifulsoup4</code>：解析 HTML，提取目标字段</li>
+<li><code>pandas</code>：整理数据，输出 Excel</li>
+<li><code>openpyxl</code>：<code>pandas</code> 输出 <code>.xlsx</code> 格式的底层依赖</li>
+</ul>
+</div>
+</div>
+</section>
+<section id="设定-ai-工作模式" class="level3 unnumbered">
+<h3 class="unnumbered anchored" data-anchor-id="设定-ai-工作模式">设定 AI 工作模式</h3>
+<p>大多数 AI 的默认行为是「收到任务 → 立即给出完整答案」。对于爬虫任务，这意味着：你说「帮我写爬虫」，它会直接生成一段可能完全不符合需求的代码，而不是先问清楚你要什么。</p>
+<p><strong>在发出第一条消息之前</strong>，先把以下角色设定提示词完整复制，单独发给 AI（ChatGPT / DeepSeek / 豆包均适用），收到「明白」后再开始对话：</p>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+📋 角色设定提示词
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<blockquote class="blockquote">
+<p>接下来我们要合作完成一个网页爬虫任务。请你扮演一位<strong>爬虫开发引导者</strong>，遵守以下规则：</p>
+<ol type="1">
+<li><strong>不要直接生成代码</strong>，除非我明确说「请生成代码」</li>
+<li>每次回复只问我<strong>一到两个</strong>最关键的问题，等我回答后再继续</li>
+<li>引导我依次提供：目标网址、需要的字段、数据用途、HTML 结构（需我去 DevTools 查）、是否有翻页、输出格式——但不要一次全问</li>
+<li>信息足够后，先把收集到的内容<strong>整理成结构化提示词</strong>给我确认，我确认后再生成代码</li>
+<li>如果我的信息有歧义或可能导致代码出错，请追问，不要自行假设</li>
+</ol>
+<p>收到后请回复「明白，请告诉我你的爬虫任务」。</p>
+</blockquote>
+</div>
+</div>
+</section>
+</section>
+<section id="与-ai-的对话过程" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="与-ai-的对话过程">1. 与 AI 的对话过程</h2>
+<p>下面是一个零基础学生发送角色设定后，与 AI 完成这项任务的完整对话记录。</p>
+<p><strong>阅读方式</strong>：通读全部六轮对话，理解每轮在解决什么问题。操作步骤（如何使用 DevTools）集中在第 2 节，读完对话再去操作。</p>
+<div class="callout callout-style-default callout-note no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+🧑 学生·第 1 轮
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>我想爬取这个网页的信息：<code>https://lingnan.sysu.edu.cn/Faculty</code>，帮我写一个 Python 爬虫。（附上截图）</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://fig-lianxh.oss-cn-shenzhen.aliyuncs.com/20260313095439.png" class="img-fluid figure-img"></p>
+<figcaption>岭南学院教师名录页面截图</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+🤖 AI·第 1 轮
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>好的，我看到这是中山大学岭南学院的教师名录页面。在写代码之前，我需要先了解几件事。</p>
+<p><strong>第一个问题：你想提取哪些信息，打算用这份数据做什么？</strong></p>
+<p>从截图来看，每位教师的卡片里包含姓名、职称、邮箱、研究方向，部分教师还有职务信息（如「院长助理」）。你需要全部提取，还是只要其中几个字段？了解用途有助于我决定输出格式。</p>
+</div>
+</div>
+<blockquote class="blockquote">
+<p>💡 <strong>本轮要点</strong>：AI 没有直接写代码，而是先问「要什么」和「做什么用」——对应第一章提示词八要素中的要素②（数据字段）和要素⑤（输出要求）。</p>
+</blockquote>
+<div class="callout callout-style-default callout-note no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+🧑 学生·第 2 轮
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li>我需要的字段：姓名、职称、教研室、职务、邮箱、研究方向，还有个人主页链接。</li>
+<li>输出：整理一份名录存档，方便查阅；输出成一份 Excel + 一个 Markdown 文档。</li>
+</ul>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+🤖 AI·第 2 轮
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>明白了。现在我需要了解<strong>网页的 HTML 结构</strong>，才能告诉代码去哪里找数据。</p>
+<p><strong>请做一件事</strong>：在 Chrome 中打开这个页面，对着任意一位教师的姓名右键 → 选「检查」，开发者工具会弹出并高亮对应的 HTML。找到包含该教师完整信息的外层 <code>&lt;div&gt;</code>，右键 → Copy → Copy outerHTML，把复制的内容发给我。</p>
+<p>具体操作方法见本节末尾的「DevTools 操作指引」。</p>
+</div>
+</div>
+<blockquote class="blockquote">
+<p>💡 <strong>本轮要点</strong>：AI 需要 HTML 结构才能写出正确的选择器，但它看不到网页——必须让你去 DevTools 里取。这正是第一章 1.4 节介绍 DevTools 的实战应用。</p>
+</blockquote>
+<div class="callout callout-style-default callout-note no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+🧑 学生·第 3 轮
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>我找到了，是这样的：</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode html code-with-copy"><code class="sourceCode html"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">div</span><span class="ot"> class</span><span class="op">=</span><span class="st">"infors"</span><span class="dt">&gt;</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&lt;</span><span class="kw">h3</span><span class="dt">&gt;</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;</span><span class="kw">a</span><span class="ot"> href</span><span class="op">=</span><span class="st">"/faculty/LuDi"</span><span class="ot"> target</span><span class="op">=</span><span class="st">"_blank"</span><span class="ot"> hreflang</span><span class="op">=</span><span class="st">"zh-hans"</span><span class="dt">&gt;</span>卢荻<span class="dt">&lt;/</span><span class="kw">a</span><span class="dt">&gt;</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;</span><span class="kw">span</span><span class="dt">&gt;</span>教授<span class="dt">&lt;/</span><span class="kw">span</span><span class="dt">&gt;</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&lt;/</span><span class="kw">h3</span><span class="dt">&gt;</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&lt;</span><span class="kw">p</span><span class="ot"> class</span><span class="op">=</span><span class="st">"one-line"</span><span class="dt">&gt;</span>政治经济学教研室<span class="dt">&lt;/</span><span class="kw">p</span><span class="dt">&gt;</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&lt;</span><span class="kw">p</span><span class="ot"> class</span><span class="op">=</span><span class="st">"one-line"</span><span class="dt">&gt;</span>ludi26@mail.sysu.edu.cn<span class="dt">&lt;/</span><span class="kw">p</span><span class="dt">&gt;</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&lt;</span><span class="kw">p</span><span class="ot"> class</span><span class="op">=</span><span class="st">"text-light two-line"</span><span class="dt">&gt;</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;</span><span class="kw">b</span><span class="dt">&gt;</span>研究方向:<span class="dt">&lt;/</span><span class="kw">b</span><span class="dt">&gt;</span>中国经济发展</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&lt;/</span><span class="kw">p</span><span class="dt">&gt;</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;/</span><span class="kw">div</span><span class="dt">&gt;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+🤖 AI·第 3 轮
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>结构很清晰。我能看出：姓名在 <code>h3 &gt; a</code>，职称在 <code>h3 &gt; span</code>，主页链接是 <code>href</code> 属性（需拼接域名），研究方向在 <code>p.two-line</code>（去掉「研究方向:」前缀）。</p>
+<p><strong>但有一个问题</strong>：<code>class="one-line"</code> 的 <code>&lt;p&gt;</code> 标签出现了两次——第一个是「政治经济学教研室」，第二个是邮箱。同一个 class 对应不同内容，代码无法靠 class 名直接区分（这是第一章误区⑥提到的情况）。</p>
+<p>另外，截图里「许准」教授有「院长助理」这个职务字段。<strong>请再复制一下许准的 HTML</strong>，我需要对比两人的结构，确认职务字段是否影响其他字段的位置。</p>
+</div>
+</div>
+<blockquote class="blockquote">
+<p>💡 <strong>本轮要点</strong>：AI 从截图中发现「院长助理」，主动要求第二个样例——因为只有一个样例时，无法发现字段可能缺失的情况（对应第一章误区⑥）。</p>
+</blockquote>
+<div class="callout callout-style-default callout-note no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+🧑 学生·第 4 轮
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>好的，许准的是这样：</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode html code-with-copy"><code class="sourceCode html"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">div</span><span class="ot"> class</span><span class="op">=</span><span class="st">"infors"</span><span class="dt">&gt;</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&lt;</span><span class="kw">h3</span><span class="dt">&gt;</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;</span><span class="kw">a</span><span class="ot"> href</span><span class="op">=</span><span class="st">"/faculty/XuZhun"</span><span class="ot"> target</span><span class="op">=</span><span class="st">"_blank"</span><span class="ot"> hreflang</span><span class="op">=</span><span class="st">"zh-hans"</span><span class="dt">&gt;</span>许准<span class="dt">&lt;/</span><span class="kw">a</span><span class="dt">&gt;</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;</span><span class="kw">span</span><span class="dt">&gt;</span>教授<span class="dt">&lt;/</span><span class="kw">span</span><span class="dt">&gt;</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&lt;/</span><span class="kw">h3</span><span class="dt">&gt;</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&lt;</span><span class="kw">p</span><span class="ot"> class</span><span class="op">=</span><span class="st">"one-line"</span><span class="dt">&gt;</span>政治经济学教研室<span class="dt">&lt;/</span><span class="kw">p</span><span class="dt">&gt;</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&lt;</span><span class="kw">p</span><span class="ot"> class</span><span class="op">=</span><span class="st">"one-line"</span><span class="dt">&gt;</span>院长助理<span class="dt">&lt;/</span><span class="kw">p</span><span class="dt">&gt;</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&lt;</span><span class="kw">p</span><span class="ot"> class</span><span class="op">=</span><span class="st">"one-line"</span><span class="dt">&gt;</span>xuzh237@mail.sysu.edu.cn<span class="dt">&lt;/</span><span class="kw">p</span><span class="dt">&gt;</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&lt;</span><span class="kw">p</span><span class="ot"> class</span><span class="op">=</span><span class="st">"text-light two-line"</span><span class="dt">&gt;</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;</span><span class="kw">b</span><span class="dt">&gt;</span>研究方向:<span class="dt">&lt;/</span><span class="kw">b</span><span class="dt">&gt;</span>政治经济学、发展经济学、思想史</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&lt;/</span><span class="kw">p</span><span class="dt">&gt;</span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;/</span><span class="kw">div</span><span class="dt">&gt;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+🤖 AI·第 4 轮
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>两段 HTML 对比，结构差异很清楚了：</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>字段</th>
+<th>卢荻（无职务）</th>
+<th>许准（有职务）</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>教研室</td>
+<td>第 1 个 <code>p.one-line</code></td>
+<td>第 1 个 <code>p.one-line</code></td>
+</tr>
+<tr class="even">
+<td>职务</td>
+<td>❌ 不存在</td>
+<td>第 2 个 <code>p.one-line</code></td>
+</tr>
+<tr class="odd">
+<td>邮箱</td>
+<td>第 2 个 <code>p.one-line</code></td>
+<td>第 3 个 <code>p.one-line</code></td>
+</tr>
+</tbody>
+</table>
+<p>不能靠位置区分，要靠<strong>内容特征</strong>：含 <code>@</code> 的是邮箱，其余的是职务。</p>
+<p>还有<strong>两个问题</strong>：</p>
+<ol type="1">
+<li>除了 Excel，是否考虑同时输出一份 Markdown 文件？名录类文档用 Markdown 格式更便于共享和查阅（飞书、Notion、GitHub 均可直接渲染）。</li>
+<li>页面顶部有「政治经济学教研室」等分类标签——切换标签时 URL 有没有变化？请试一下，确认是否需要翻页。</li>
+</ol>
+</div>
+</div>
+<blockquote class="blockquote">
+<p>💡 <strong>本轮要点</strong>：AI 主动建议增加 Markdown 输出（要素⑤），并追问翻页问题（要素①）——不确认翻页逻辑，代码可能只抓到当前筛选下的教师，而非全部名录。</p>
+</blockquote>
+<div class="callout callout-style-default callout-note no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+🧑 学生·第 5 轮
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Markdown 也要，好主意。</p>
+<p>翻页：我切换了几个教研室标签，URL 没有变化，一直是 <code>lingnan.sysu.edu.cn/Faculty</code>。滑到底部也没有「下一页」按钮。</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+🤖 AI·第 5 轮
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>URL 不变、无翻页按钮，说明所有教师数据在同一个 HTML 页面里，教研室切换只是前端 JavaScript 的显示/隐藏，不影响爬取——只需请求一次页面。</p>
+<p>现在信息已经足够，先把对话内容整理成提示词，你确认后我再生成代码：</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-important no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+📋 整理后的完整提示词
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<blockquote class="blockquote">
+<p>请帮我用 Python 写一个爬虫，完成以下任务。本代码仅用于课堂教学演示。</p>
+<p><strong>目标网站</strong>：<code>https://lingnan.sysu.edu.cn/Faculty</code>，所有教师在同一页面，无需翻页，一次请求即可获取全部数据。</p>
+<p><strong>采集对象</strong>：每一位教师的基本信息，每条记录对应一位教师。</p>
+<p><strong>数据格式</strong>：数据直接写在 HTML 中（模式 A）。以下是两条真实 HTML 样例，注意结构不同——卢荻无职务字段，许准有：</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode html code-with-copy"><code class="sourceCode html"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co">&lt;!-- 样例 A：无职务 --&gt;</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">div</span><span class="ot"> class</span><span class="op">=</span><span class="st">"infors"</span><span class="dt">&gt;</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&lt;</span><span class="kw">h3</span><span class="dt">&gt;</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;</span><span class="kw">a</span><span class="ot"> href</span><span class="op">=</span><span class="st">"/faculty/LuDi"</span><span class="ot"> target</span><span class="op">=</span><span class="st">"_blank"</span><span class="dt">&gt;</span>卢荻<span class="dt">&lt;/</span><span class="kw">a</span><span class="dt">&gt;</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;</span><span class="kw">span</span><span class="dt">&gt;</span>教授<span class="dt">&lt;/</span><span class="kw">span</span><span class="dt">&gt;</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&lt;/</span><span class="kw">h3</span><span class="dt">&gt;</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&lt;</span><span class="kw">p</span><span class="ot"> class</span><span class="op">=</span><span class="st">"one-line"</span><span class="dt">&gt;</span>政治经济学教研室<span class="dt">&lt;/</span><span class="kw">p</span><span class="dt">&gt;</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&lt;</span><span class="kw">p</span><span class="ot"> class</span><span class="op">=</span><span class="st">"one-line"</span><span class="dt">&gt;</span>ludi26@mail.sysu.edu.cn<span class="dt">&lt;/</span><span class="kw">p</span><span class="dt">&gt;</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&lt;</span><span class="kw">p</span><span class="ot"> class</span><span class="op">=</span><span class="st">"text-light two-line"</span><span class="dt">&gt;&lt;</span><span class="kw">b</span><span class="dt">&gt;</span>研究方向:<span class="dt">&lt;/</span><span class="kw">b</span><span class="dt">&gt;</span>中国经济发展<span class="dt">&lt;/</span><span class="kw">p</span><span class="dt">&gt;</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;/</span><span class="kw">div</span><span class="dt">&gt;</span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a><span class="co">&lt;!-- 样例 B：有职务 --&gt;</span></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">div</span><span class="ot"> class</span><span class="op">=</span><span class="st">"infors"</span><span class="dt">&gt;</span></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&lt;</span><span class="kw">h3</span><span class="dt">&gt;</span></span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;</span><span class="kw">a</span><span class="ot"> href</span><span class="op">=</span><span class="st">"/faculty/XuZhun"</span><span class="ot"> target</span><span class="op">=</span><span class="st">"_blank"</span><span class="dt">&gt;</span>许准<span class="dt">&lt;/</span><span class="kw">a</span><span class="dt">&gt;</span></span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;</span><span class="kw">span</span><span class="dt">&gt;</span>教授<span class="dt">&lt;/</span><span class="kw">span</span><span class="dt">&gt;</span></span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&lt;/</span><span class="kw">h3</span><span class="dt">&gt;</span></span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&lt;</span><span class="kw">p</span><span class="ot"> class</span><span class="op">=</span><span class="st">"one-line"</span><span class="dt">&gt;</span>政治经济学教研室<span class="dt">&lt;/</span><span class="kw">p</span><span class="dt">&gt;</span></span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&lt;</span><span class="kw">p</span><span class="ot"> class</span><span class="op">=</span><span class="st">"one-line"</span><span class="dt">&gt;</span>院长助理<span class="dt">&lt;/</span><span class="kw">p</span><span class="dt">&gt;</span></span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&lt;</span><span class="kw">p</span><span class="ot"> class</span><span class="op">=</span><span class="st">"one-line"</span><span class="dt">&gt;</span>xuzh237@mail.sysu.edu.cn<span class="dt">&lt;/</span><span class="kw">p</span><span class="dt">&gt;</span></span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&lt;</span><span class="kw">p</span><span class="ot"> class</span><span class="op">=</span><span class="st">"text-light two-line"</span><span class="dt">&gt;&lt;</span><span class="kw">b</span><span class="dt">&gt;</span>研究方向:<span class="dt">&lt;/</span><span class="kw">b</span><span class="dt">&gt;</span>政治经济学、发展经济学、思想史<span class="dt">&lt;/</span><span class="kw">p</span><span class="dt">&gt;</span></span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;/</span><span class="kw">div</span><span class="dt">&gt;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><strong>字段识别规则</strong>（请严格按此逻辑解析）： - <code>h3 &gt; a</code> 文本为<strong>姓名</strong>；<code>href</code> 拼接 <code>https://lingnan.sysu.edu.cn</code> 后为<strong>个人主页链接</strong> - <code>h3 &gt; span</code> 文本为<strong>职称</strong> - <code>class="one-line"</code> 的 <code>&lt;p&gt;</code> 标签按顺序处理：第一个为<strong>教研室</strong>；之后含 <code>@</code> 的为<strong>电子邮箱</strong>；不含 <code>@</code> 的为<strong>职务</strong> - <code>class</code> 含 <code>two-line</code> 的 <code>&lt;p&gt;</code> 内容去掉「研究方向:」前缀后为<strong>研究方向</strong> - 字段不存在时填入空字符串，不跳过整条记录</p>
+<p><strong>需要提取的字段</strong>（共 7 个）： <code>姓名</code>、<code>职称</code>、<code>教研室</code>、<code>职务</code>、<code>研究方向</code>、<code>电子邮箱</code>、<code>个人主页链接</code></p>
+<p><strong>技术要求</strong>：使用 <code>requests</code> + <code>BeautifulSoup</code>；<code>User-Agent</code> 设为真实 Chrome 值；请求失败时打印错误并终止；解析单条逻辑封装为函数 <code>parse_faculty(card)</code>。</p>
+<p><strong>输出</strong>： - Excel 文件：<code>lingnan_faculty.xlsx</code>，中文字段名 - Markdown 文件：<code>lingnan_faculty.md</code>，列表格式，邮箱和链接用尖括号包裹（可点击），样式如下：</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**许准**｜教授</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>教研室：政治经济学教研室</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>职务：院长助理</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>研究方向：政治经济学、发展经济学、思想史</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>邮箱：<span class="ot">&lt;xuzh237@mail.sysu.edu.cn&gt;</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>主页：<span class="ot">&lt;https://lingnan.sysu.edu.cn/faculty/XuZhun&gt;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><strong>代码要求</strong>：加中文注释；先只打印前 3 条，确认字段正确后再保存完整文件。</p>
+</blockquote>
+</div>
+</div>
+<blockquote class="blockquote">
+<p>💡 <strong>本轮要点</strong>：AI 在生成代码前先整理提示词、等待确认——这是本章最重要的工作习惯。对话中散落的信息在这一步汇聚成标准格式，也让你看清「提示词是怎么从对话里生长出来的」。</p>
+</blockquote>
+<hr>
+<div class="callout callout-style-default callout-note no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+🧑 学生·第 6 轮
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>好的，请生成代码。</p>
+</div>
+</div>
+<section id="devtools-操作指引" class="level3 unnumbered">
+<h3 class="unnumbered anchored" data-anchor-id="devtools-操作指引">2. DevTools 操作指引</h3>
+<blockquote class="blockquote">
+<p>本节对应第 3 轮对话中 AI 要求「复制 HTML」的操作步骤。如果你已经熟悉 DevTools，可以跳过。</p>
+</blockquote>
+<p>DevTools 的基本用法见第一章 1.4 节。这里只补充一个新动作：<strong>如何复制单个元素的完整 HTML</strong>。</p>
+<p><strong>第一步：打开 DevTools，定位目标元素</strong></p>
+<ul>
+<li>Windows：<code>F12</code> 或 <code>Ctrl+Shift+C</code>（直接进入元素选择模式）</li>
+<li>Mac：<code>Command+Option+I</code> 或 <code>Command+Shift+C</code></li>
+</ul>
+<p>用箭头选择器点击页面上任意一位教师的姓名，Elements 面板会自动高亮对应的 <code>&lt;a&gt;</code> 标签。</p>
+<blockquote class="blockquote">
+<p>📷 <strong>截图插入点 A</strong>：在 <code>lingnan.sysu.edu.cn/Faculty</code> 页面，用箭头选择器点击「卢荻」后，Elements 面板高亮 <code>&lt;a&gt;</code> 标签、周围可见 <code>&lt;div class="infors"&gt;</code> 完整结构的截图。</p>
+</blockquote>
+<p><strong>第二步：向上选取外层 <code>&lt;div&gt;</code></strong></p>
+<p>Elements 面板高亮的是最内层的 <code>&lt;a&gt;</code> 标签。在面板里<strong>点击上方的 <code>&lt;div class="infors"&gt;</code></strong>，选中包含该教师全部信息的外层块。</p>
+<blockquote class="blockquote">
+<p>📷 <strong>截图插入点 B</strong>：在 Elements 面板中，点击 <code>&lt;a&gt;</code> 标签上方的 <code>&lt;div class="infors"&gt;</code>，整个教师信息块被蓝色高亮的截图。</p>
+</blockquote>
+<p><strong>第三步：复制 outerHTML</strong></p>
+<p>在 <code>&lt;div class="infors"&gt;</code> 上<strong>右键 → Copy → Copy outerHTML</strong>，即可复制该教师的完整 HTML 代码，直接粘贴给 AI。</p>
+<blockquote class="blockquote">
+<p>📷 <strong>截图插入点 C</strong>：右键菜单展开「Copy」子菜单，「Copy outerHTML」选项高亮的截图。</p>
+</blockquote>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+💡 为什么要复制外层 <code>&lt;div&gt;</code>，而不是直接复制 <code>&lt;a&gt;</code> 标签？
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><code>&lt;a&gt;</code> 标签只包含姓名和链接，AI 看不到邮箱、研究方向等其他字段。复制包含完整信息的外层块，AI 才能分析字段之间的结构关系，写出正确的解析逻辑。</p>
+</div>
+</div>
+</section>
+</section>
+<section id="代码" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="代码">3. 代码</h2>
+<div id="067509a4" class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 安装依赖包</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>pip install openpyxl</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="94c9201c" class="cell" data-execution_count="3">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> requests</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> bs4 <span class="im">import</span> BeautifulSoup</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="co"># ── 请求头：模拟真实浏览器，避免被服务器拒绝 ──</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>HEADERS <span class="op">=</span> {</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">'User-Agent'</span>: (</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>        <span class="st">'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) '</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>        <span class="st">'AppleWebKit/537.36 (KHTML, like Gecko) '</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>        <span class="st">'Chrome/120.0.0.0 Safari/537.36'</span></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>BASE_URL <span class="op">=</span> <span class="st">'https://lingnan.sysu.edu.cn'</span></span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>LIST_URL <span class="op">=</span> <span class="ss">f'</span><span class="sc">{</span>BASE_URL<span class="sc">}</span><span class="ss">/Faculty'</span></span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> make_abs_url(href: <span class="bu">str</span>) <span class="op">-&gt;</span> <span class="bu">str</span>:</span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a><span class="co">    将相对链接转为绝对链接。</span></span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="kw">not</span> href:</span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="st">''</span></span>
+<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a>    href <span class="op">=</span> href.strip()</span>
+<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> href.startswith(<span class="st">'http://'</span>) <span class="kw">or</span> href.startswith(<span class="st">'https://'</span>):</span>
+<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> href</span>
+<span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> href.startswith(<span class="st">'/'</span>):</span>
+<span id="cb7-30"><a href="#cb7-30" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> BASE_URL <span class="op">+</span> href</span>
+<span id="cb7-31"><a href="#cb7-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-32"><a href="#cb7-32" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> BASE_URL <span class="op">+</span> <span class="st">'/'</span> <span class="op">+</span> href</span>
+<span id="cb7-33"><a href="#cb7-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-34"><a href="#cb7-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-35"><a href="#cb7-35" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> parse_faculty(card) <span class="op">-&gt;</span> <span class="bu">dict</span>:</span>
+<span id="cb7-36"><a href="#cb7-36" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
+<span id="cb7-37"><a href="#cb7-37" aria-hidden="true" tabindex="-1"></a><span class="co">    解析单个教师信息块，返回标准字段字典。</span></span>
+<span id="cb7-38"><a href="#cb7-38" aria-hidden="true" tabindex="-1"></a><span class="co">    字段缺失时填空字符串。</span></span>
+<span id="cb7-39"><a href="#cb7-39" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb7-40"><a href="#cb7-40" aria-hidden="true" tabindex="-1"></a>    result <span class="op">=</span> {</span>
+<span id="cb7-41"><a href="#cb7-41" aria-hidden="true" tabindex="-1"></a>        <span class="st">'姓名'</span>: <span class="st">''</span>,</span>
+<span id="cb7-42"><a href="#cb7-42" aria-hidden="true" tabindex="-1"></a>        <span class="st">'职称'</span>: <span class="st">''</span>,</span>
+<span id="cb7-43"><a href="#cb7-43" aria-hidden="true" tabindex="-1"></a>        <span class="st">'教研室'</span>: <span class="st">''</span>,</span>
+<span id="cb7-44"><a href="#cb7-44" aria-hidden="true" tabindex="-1"></a>        <span class="st">'职务'</span>: <span class="st">''</span>,</span>
+<span id="cb7-45"><a href="#cb7-45" aria-hidden="true" tabindex="-1"></a>        <span class="st">'研究方向'</span>: <span class="st">''</span>,</span>
+<span id="cb7-46"><a href="#cb7-46" aria-hidden="true" tabindex="-1"></a>        <span class="st">'电子邮箱'</span>: <span class="st">''</span>,</span>
+<span id="cb7-47"><a href="#cb7-47" aria-hidden="true" tabindex="-1"></a>        <span class="st">'个人主页链接'</span>: <span class="st">''</span></span>
+<span id="cb7-48"><a href="#cb7-48" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb7-49"><a href="#cb7-49" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-50"><a href="#cb7-50" aria-hidden="true" tabindex="-1"></a>    <span class="co"># ── 1. 姓名 + 个人主页链接 + 职称 ──</span></span>
+<span id="cb7-51"><a href="#cb7-51" aria-hidden="true" tabindex="-1"></a>    h3 <span class="op">=</span> card.find(<span class="st">'h3'</span>)</span>
+<span id="cb7-52"><a href="#cb7-52" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> h3:</span>
+<span id="cb7-53"><a href="#cb7-53" aria-hidden="true" tabindex="-1"></a>        a_tag <span class="op">=</span> h3.find(<span class="st">'a'</span>)</span>
+<span id="cb7-54"><a href="#cb7-54" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> a_tag:</span>
+<span id="cb7-55"><a href="#cb7-55" aria-hidden="true" tabindex="-1"></a>            result[<span class="st">'姓名'</span>] <span class="op">=</span> a_tag.get_text(strip<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb7-56"><a href="#cb7-56" aria-hidden="true" tabindex="-1"></a>            href <span class="op">=</span> a_tag.get(<span class="st">'href'</span>, <span class="st">''</span>)</span>
+<span id="cb7-57"><a href="#cb7-57" aria-hidden="true" tabindex="-1"></a>            result[<span class="st">'个人主页链接'</span>] <span class="op">=</span> make_abs_url(href)</span>
+<span id="cb7-58"><a href="#cb7-58" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-59"><a href="#cb7-59" aria-hidden="true" tabindex="-1"></a>        <span class="co"># 有些页面把职称放在 h3 内的 span 里</span></span>
+<span id="cb7-60"><a href="#cb7-60" aria-hidden="true" tabindex="-1"></a>        span <span class="op">=</span> h3.find(<span class="st">'span'</span>)</span>
+<span id="cb7-61"><a href="#cb7-61" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> span:</span>
+<span id="cb7-62"><a href="#cb7-62" aria-hidden="true" tabindex="-1"></a>            result[<span class="st">'职称'</span>] <span class="op">=</span> span.get_text(strip<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb7-63"><a href="#cb7-63" aria-hidden="true" tabindex="-1"></a>        <span class="cf">else</span>:</span>
+<span id="cb7-64"><a href="#cb7-64" aria-hidden="true" tabindex="-1"></a>            <span class="co"># 如果没有 span，则尝试从 h3 的纯文本中剥离姓名，提取剩余部分作为职称</span></span>
+<span id="cb7-65"><a href="#cb7-65" aria-hidden="true" tabindex="-1"></a>            h3_text <span class="op">=</span> h3.get_text(<span class="st">' '</span>, strip<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb7-66"><a href="#cb7-66" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> result[<span class="st">'姓名'</span>] <span class="kw">and</span> h3_text.startswith(result[<span class="st">'姓名'</span>]):</span>
+<span id="cb7-67"><a href="#cb7-67" aria-hidden="true" tabindex="-1"></a>                title <span class="op">=</span> h3_text.replace(result[<span class="st">'姓名'</span>], <span class="st">''</span>, <span class="dv">1</span>).strip()</span>
+<span id="cb7-68"><a href="#cb7-68" aria-hidden="true" tabindex="-1"></a>                result[<span class="st">'职称'</span>] <span class="op">=</span> title</span>
+<span id="cb7-69"><a href="#cb7-69" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-70"><a href="#cb7-70" aria-hidden="true" tabindex="-1"></a>    <span class="co"># ── 2. 处理 p 标签：教研室 / 职务 / 邮箱 ──</span></span>
+<span id="cb7-71"><a href="#cb7-71" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 原网页中通常：</span></span>
+<span id="cb7-72"><a href="#cb7-72" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 第一个 one-line 是教研室</span></span>
+<span id="cb7-73"><a href="#cb7-73" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 含 @ 的是邮箱</span></span>
+<span id="cb7-74"><a href="#cb7-74" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 其他 one-line 往往是职务</span></span>
+<span id="cb7-75"><a href="#cb7-75" aria-hidden="true" tabindex="-1"></a>    one_lines <span class="op">=</span> card.find_all(<span class="st">'p'</span>, class_<span class="op">=</span><span class="st">'one-line'</span>)</span>
+<span id="cb7-76"><a href="#cb7-76" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-77"><a href="#cb7-77" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i, p <span class="kw">in</span> <span class="bu">enumerate</span>(one_lines):</span>
+<span id="cb7-78"><a href="#cb7-78" aria-hidden="true" tabindex="-1"></a>        text <span class="op">=</span> p.get_text(<span class="st">' '</span>, strip<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb7-79"><a href="#cb7-79" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="kw">not</span> text:</span>
+<span id="cb7-80"><a href="#cb7-80" aria-hidden="true" tabindex="-1"></a>            <span class="cf">continue</span></span>
+<span id="cb7-81"><a href="#cb7-81" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-82"><a href="#cb7-82" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> i <span class="op">==</span> <span class="dv">0</span> <span class="kw">and</span> <span class="kw">not</span> result[<span class="st">'教研室'</span>]:</span>
+<span id="cb7-83"><a href="#cb7-83" aria-hidden="true" tabindex="-1"></a>            result[<span class="st">'教研室'</span>] <span class="op">=</span> text</span>
+<span id="cb7-84"><a href="#cb7-84" aria-hidden="true" tabindex="-1"></a>        <span class="cf">elif</span> <span class="st">'@'</span> <span class="kw">in</span> text:</span>
+<span id="cb7-85"><a href="#cb7-85" aria-hidden="true" tabindex="-1"></a>            result[<span class="st">'电子邮箱'</span>] <span class="op">=</span> text</span>
+<span id="cb7-86"><a href="#cb7-86" aria-hidden="true" tabindex="-1"></a>        <span class="cf">else</span>:</span>
+<span id="cb7-87"><a href="#cb7-87" aria-hidden="true" tabindex="-1"></a>            <span class="co"># 可能存在多个非邮箱 one-line，合并为“职务”</span></span>
+<span id="cb7-88"><a href="#cb7-88" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> result[<span class="st">'职务'</span>]:</span>
+<span id="cb7-89"><a href="#cb7-89" aria-hidden="true" tabindex="-1"></a>                result[<span class="st">'职务'</span>] <span class="op">+=</span> <span class="st">'；'</span> <span class="op">+</span> text</span>
+<span id="cb7-90"><a href="#cb7-90" aria-hidden="true" tabindex="-1"></a>            <span class="cf">else</span>:</span>
+<span id="cb7-91"><a href="#cb7-91" aria-hidden="true" tabindex="-1"></a>                result[<span class="st">'职务'</span>] <span class="op">=</span> text</span>
+<span id="cb7-92"><a href="#cb7-92" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-93"><a href="#cb7-93" aria-hidden="true" tabindex="-1"></a>    <span class="co"># ── 3. 研究方向 ──</span></span>
+<span id="cb7-94"><a href="#cb7-94" aria-hidden="true" tabindex="-1"></a>    two_line <span class="op">=</span> card.find(<span class="st">'p'</span>, class_<span class="op">=</span><span class="st">'two-line'</span>)</span>
+<span id="cb7-95"><a href="#cb7-95" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> two_line:</span>
+<span id="cb7-96"><a href="#cb7-96" aria-hidden="true" tabindex="-1"></a>        raw <span class="op">=</span> two_line.get_text(<span class="st">' '</span>, strip<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb7-97"><a href="#cb7-97" aria-hidden="true" tabindex="-1"></a>        raw <span class="op">=</span> raw.replace(<span class="st">'研究方向:'</span>, <span class="st">''</span>).replace(<span class="st">'研究方向：'</span>, <span class="st">''</span>).strip()</span>
+<span id="cb7-98"><a href="#cb7-98" aria-hidden="true" tabindex="-1"></a>        result[<span class="st">'研究方向'</span>] <span class="op">=</span> raw</span>
+<span id="cb7-99"><a href="#cb7-99" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-100"><a href="#cb7-100" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> result</span>
+<span id="cb7-101"><a href="#cb7-101" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-102"><a href="#cb7-102" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-103"><a href="#cb7-103" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> deduplicate_faculty(records: <span class="bu">list</span>) <span class="op">-&gt;</span> <span class="bu">list</span>:</span>
+<span id="cb7-104"><a href="#cb7-104" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
+<span id="cb7-105"><a href="#cb7-105" aria-hidden="true" tabindex="-1"></a><span class="co">    对教师记录去重。</span></span>
+<span id="cb7-106"><a href="#cb7-106" aria-hidden="true" tabindex="-1"></a><span class="co">    优先使用“个人主页链接”作为唯一标识；</span></span>
+<span id="cb7-107"><a href="#cb7-107" aria-hidden="true" tabindex="-1"></a><span class="co">    若主页链接为空，则退化为“姓名 + 邮箱”。</span></span>
+<span id="cb7-108"><a href="#cb7-108" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb7-109"><a href="#cb7-109" aria-hidden="true" tabindex="-1"></a>    seen <span class="op">=</span> <span class="bu">set</span>()</span>
+<span id="cb7-110"><a href="#cb7-110" aria-hidden="true" tabindex="-1"></a>    clean_records <span class="op">=</span> []</span>
+<span id="cb7-111"><a href="#cb7-111" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-112"><a href="#cb7-112" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> row <span class="kw">in</span> records:</span>
+<span id="cb7-113"><a href="#cb7-113" aria-hidden="true" tabindex="-1"></a>        <span class="co"># 优先使用主页链接去重</span></span>
+<span id="cb7-114"><a href="#cb7-114" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> row[<span class="st">'个人主页链接'</span>]:</span>
+<span id="cb7-115"><a href="#cb7-115" aria-hidden="true" tabindex="-1"></a>            key <span class="op">=</span> (<span class="st">'url'</span>, row[<span class="st">'个人主页链接'</span>])</span>
+<span id="cb7-116"><a href="#cb7-116" aria-hidden="true" tabindex="-1"></a>        <span class="cf">else</span>:</span>
+<span id="cb7-117"><a href="#cb7-117" aria-hidden="true" tabindex="-1"></a>            key <span class="op">=</span> (<span class="st">'fallback'</span>, row[<span class="st">'姓名'</span>], row[<span class="st">'电子邮箱'</span>])</span>
+<span id="cb7-118"><a href="#cb7-118" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-119"><a href="#cb7-119" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> key <span class="kw">not</span> <span class="kw">in</span> seen:</span>
+<span id="cb7-120"><a href="#cb7-120" aria-hidden="true" tabindex="-1"></a>            seen.add(key)</span>
+<span id="cb7-121"><a href="#cb7-121" aria-hidden="true" tabindex="-1"></a>            clean_records.append(row)</span>
+<span id="cb7-122"><a href="#cb7-122" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-123"><a href="#cb7-123" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> clean_records</span>
+<span id="cb7-124"><a href="#cb7-124" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-125"><a href="#cb7-125" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-126"><a href="#cb7-126" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> main():</span>
+<span id="cb7-127"><a href="#cb7-127" aria-hidden="true" tabindex="-1"></a>    <span class="co"># ── Step 1：请求页面 ──</span></span>
+<span id="cb7-128"><a href="#cb7-128" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f'正在请求：</span><span class="sc">{</span>LIST_URL<span class="sc">}</span><span class="ss">'</span>)</span>
+<span id="cb7-129"><a href="#cb7-129" aria-hidden="true" tabindex="-1"></a>    resp <span class="op">=</span> requests.get(LIST_URL, headers<span class="op">=</span>HEADERS, timeout<span class="op">=</span><span class="dv">20</span>)</span>
+<span id="cb7-130"><a href="#cb7-130" aria-hidden="true" tabindex="-1"></a>    resp.raise_for_status()</span>
+<span id="cb7-131"><a href="#cb7-131" aria-hidden="true" tabindex="-1"></a>    resp.encoding <span class="op">=</span> <span class="st">'utf-8'</span></span>
+<span id="cb7-132"><a href="#cb7-132" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-133"><a href="#cb7-133" aria-hidden="true" tabindex="-1"></a>    <span class="co"># ── Step 2：解析 HTML ──</span></span>
+<span id="cb7-134"><a href="#cb7-134" aria-hidden="true" tabindex="-1"></a>    soup <span class="op">=</span> BeautifulSoup(resp.text, <span class="st">'html.parser'</span>)</span>
+<span id="cb7-135"><a href="#cb7-135" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-136"><a href="#cb7-136" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 仍然先按原有 class 抓取，但随后必须去重</span></span>
+<span id="cb7-137"><a href="#cb7-137" aria-hidden="true" tabindex="-1"></a>    cards <span class="op">=</span> soup.find_all(<span class="st">'div'</span>, class_<span class="op">=</span><span class="st">'infors'</span>)</span>
+<span id="cb7-138"><a href="#cb7-138" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f'原始抓取到 </span><span class="sc">{</span><span class="bu">len</span>(cards)<span class="sc">}</span><span class="ss"> 个信息块'</span>)</span>
+<span id="cb7-139"><a href="#cb7-139" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-140"><a href="#cb7-140" aria-hidden="true" tabindex="-1"></a>    <span class="co"># ── Step 3：解析全部记录 ──</span></span>
+<span id="cb7-141"><a href="#cb7-141" aria-hidden="true" tabindex="-1"></a>    all_faculty_raw <span class="op">=</span> []</span>
+<span id="cb7-142"><a href="#cb7-142" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-143"><a href="#cb7-143" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> card <span class="kw">in</span> cards:</span>
+<span id="cb7-144"><a href="#cb7-144" aria-hidden="true" tabindex="-1"></a>        info <span class="op">=</span> parse_faculty(card)</span>
+<span id="cb7-145"><a href="#cb7-145" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-146"><a href="#cb7-146" aria-hidden="true" tabindex="-1"></a>        <span class="co"># 过滤明显无效记录：</span></span>
+<span id="cb7-147"><a href="#cb7-147" aria-hidden="true" tabindex="-1"></a>        <span class="co"># 至少要有姓名；同时主页链接中不应是列表页本身</span></span>
+<span id="cb7-148"><a href="#cb7-148" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="kw">not</span> info[<span class="st">'姓名'</span>]:</span>
+<span id="cb7-149"><a href="#cb7-149" aria-hidden="true" tabindex="-1"></a>            <span class="cf">continue</span></span>
+<span id="cb7-150"><a href="#cb7-150" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-151"><a href="#cb7-151" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> info[<span class="st">'个人主页链接'</span>].rstrip(<span class="st">'/'</span>) <span class="op">==</span> LIST_URL.rstrip(<span class="st">'/'</span>):</span>
+<span id="cb7-152"><a href="#cb7-152" aria-hidden="true" tabindex="-1"></a>            <span class="cf">continue</span></span>
+<span id="cb7-153"><a href="#cb7-153" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-154"><a href="#cb7-154" aria-hidden="true" tabindex="-1"></a>        all_faculty_raw.append(info)</span>
+<span id="cb7-155"><a href="#cb7-155" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-156"><a href="#cb7-156" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f'解析后得到 </span><span class="sc">{</span><span class="bu">len</span>(all_faculty_raw)<span class="sc">}</span><span class="ss"> 条原始教师记录'</span>)</span>
+<span id="cb7-157"><a href="#cb7-157" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-158"><a href="#cb7-158" aria-hidden="true" tabindex="-1"></a>    <span class="co"># ── Step 4：去重 ──</span></span>
+<span id="cb7-159"><a href="#cb7-159" aria-hidden="true" tabindex="-1"></a>    all_faculty <span class="op">=</span> deduplicate_faculty(all_faculty_raw)</span>
+<span id="cb7-160"><a href="#cb7-160" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f'去重后保留 </span><span class="sc">{</span><span class="bu">len</span>(all_faculty)<span class="sc">}</span><span class="ss"> 位教师'</span>)</span>
+<span id="cb7-161"><a href="#cb7-161" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-162"><a href="#cb7-162" aria-hidden="true" tabindex="-1"></a>    <span class="co"># ── Step 5：预览前 5 条 ──</span></span>
+<span id="cb7-163"><a href="#cb7-163" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">'</span><span class="ch">\n</span><span class="st">【前 5 条预览】'</span>)</span>
+<span id="cb7-164"><a href="#cb7-164" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> row <span class="kw">in</span> all_faculty[:<span class="dv">5</span>]:</span>
+<span id="cb7-165"><a href="#cb7-165" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> k, v <span class="kw">in</span> row.items():</span>
+<span id="cb7-166"><a href="#cb7-166" aria-hidden="true" tabindex="-1"></a>            <span class="bu">print</span>(<span class="ss">f'  </span><span class="sc">{</span>k<span class="sc">}</span><span class="ss">：</span><span class="sc">{</span>v<span class="sc">}</span><span class="ss">'</span>)</span>
+<span id="cb7-167"><a href="#cb7-167" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>()</span>
+<span id="cb7-168"><a href="#cb7-168" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-169"><a href="#cb7-169" aria-hidden="true" tabindex="-1"></a>    <span class="co"># ── Step 6：转为 DataFrame ──</span></span>
+<span id="cb7-170"><a href="#cb7-170" aria-hidden="true" tabindex="-1"></a>    df <span class="op">=</span> pd.DataFrame(all_faculty)</span>
+<span id="cb7-171"><a href="#cb7-171" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-172"><a href="#cb7-172" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 可选：按姓名排序，便于查阅</span></span>
+<span id="cb7-173"><a href="#cb7-173" aria-hidden="true" tabindex="-1"></a>    df <span class="op">=</span> df.sort_values(by<span class="op">=</span><span class="st">'姓名'</span>, kind<span class="op">=</span><span class="st">'stable'</span>).reset_index(drop<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb7-174"><a href="#cb7-174" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-175"><a href="#cb7-175" aria-hidden="true" tabindex="-1"></a>    <span class="co"># ── Step 7：输出 Excel；若环境缺 openpyxl，则退回 CSV ──</span></span>
+<span id="cb7-176"><a href="#cb7-176" aria-hidden="true" tabindex="-1"></a>    <span class="cf">try</span>:</span>
+<span id="cb7-177"><a href="#cb7-177" aria-hidden="true" tabindex="-1"></a>        df.to_excel(<span class="st">'lingnan_faculty.xlsx'</span>, index<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb7-178"><a href="#cb7-178" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f'✅ Excel 已保存：lingnan_faculty.xlsx（共 </span><span class="sc">{</span><span class="bu">len</span>(df)<span class="sc">}</span><span class="ss"> 条）'</span>)</span>
+<span id="cb7-179"><a href="#cb7-179" aria-hidden="true" tabindex="-1"></a>    <span class="cf">except</span> <span class="pp">ModuleNotFoundError</span>:</span>
+<span id="cb7-180"><a href="#cb7-180" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="st">'⚠️ 未安装 openpyxl，无法写入 xlsx，改为输出 CSV'</span>)</span>
+<span id="cb7-181"><a href="#cb7-181" aria-hidden="true" tabindex="-1"></a>        df.to_csv(<span class="st">'lingnan_faculty.csv'</span>, index<span class="op">=</span><span class="va">False</span>, encoding<span class="op">=</span><span class="st">'utf-8-sig'</span>)</span>
+<span id="cb7-182"><a href="#cb7-182" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f'✅ CSV 已保存：lingnan_faculty.csv（共 </span><span class="sc">{</span><span class="bu">len</span>(df)<span class="sc">}</span><span class="ss"> 条）'</span>)</span>
+<span id="cb7-183"><a href="#cb7-183" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-184"><a href="#cb7-184" aria-hidden="true" tabindex="-1"></a>    <span class="co"># ── Step 8：输出 Markdown ──</span></span>
+<span id="cb7-185"><a href="#cb7-185" aria-hidden="true" tabindex="-1"></a>    md_lines <span class="op">=</span> [<span class="st">'# 中山大学岭南学院教师名录'</span>, <span class="st">''</span>]</span>
+<span id="cb7-186"><a href="#cb7-186" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-187"><a href="#cb7-187" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> row <span class="kw">in</span> all_faculty:</span>
+<span id="cb7-188"><a href="#cb7-188" aria-hidden="true" tabindex="-1"></a>        title_line <span class="op">=</span> <span class="ss">f"- **</span><span class="sc">{</span>row[<span class="st">'姓名'</span>]<span class="sc">}</span><span class="ss">**"</span></span>
+<span id="cb7-189"><a href="#cb7-189" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> row[<span class="st">'职称'</span>]:</span>
+<span id="cb7-190"><a href="#cb7-190" aria-hidden="true" tabindex="-1"></a>            title_line <span class="op">+=</span> <span class="ss">f"｜</span><span class="sc">{</span>row[<span class="st">'职称'</span>]<span class="sc">}</span><span class="ss">"</span></span>
+<span id="cb7-191"><a href="#cb7-191" aria-hidden="true" tabindex="-1"></a>        md_lines.append(title_line)</span>
+<span id="cb7-192"><a href="#cb7-192" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-193"><a href="#cb7-193" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> row[<span class="st">'教研室'</span>]:</span>
+<span id="cb7-194"><a href="#cb7-194" aria-hidden="true" tabindex="-1"></a>            md_lines.append(<span class="ss">f"  - 教研室：</span><span class="sc">{</span>row[<span class="st">'教研室'</span>]<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb7-195"><a href="#cb7-195" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> row[<span class="st">'职务'</span>]:</span>
+<span id="cb7-196"><a href="#cb7-196" aria-hidden="true" tabindex="-1"></a>            md_lines.append(<span class="ss">f"  - 职务：</span><span class="sc">{</span>row[<span class="st">'职务'</span>]<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb7-197"><a href="#cb7-197" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> row[<span class="st">'研究方向'</span>]:</span>
+<span id="cb7-198"><a href="#cb7-198" aria-hidden="true" tabindex="-1"></a>            md_lines.append(<span class="ss">f"  - 研究方向：</span><span class="sc">{</span>row[<span class="st">'研究方向'</span>]<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb7-199"><a href="#cb7-199" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> row[<span class="st">'电子邮箱'</span>]:</span>
+<span id="cb7-200"><a href="#cb7-200" aria-hidden="true" tabindex="-1"></a>            md_lines.append(<span class="ss">f"  - 邮箱：&lt;</span><span class="sc">{</span>row[<span class="st">'电子邮箱'</span>]<span class="sc">}</span><span class="ss">&gt;"</span>)</span>
+<span id="cb7-201"><a href="#cb7-201" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> row[<span class="st">'个人主页链接'</span>]:</span>
+<span id="cb7-202"><a href="#cb7-202" aria-hidden="true" tabindex="-1"></a>            md_lines.append(<span class="ss">f"  - 主页：&lt;</span><span class="sc">{</span>row[<span class="st">'个人主页链接'</span>]<span class="sc">}</span><span class="ss">&gt;"</span>)</span>
+<span id="cb7-203"><a href="#cb7-203" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-204"><a href="#cb7-204" aria-hidden="true" tabindex="-1"></a>        md_lines.append(<span class="st">''</span>)</span>
+<span id="cb7-205"><a href="#cb7-205" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-206"><a href="#cb7-206" aria-hidden="true" tabindex="-1"></a>    <span class="cf">with</span> <span class="bu">open</span>(<span class="st">'lingnan_faculty.md'</span>, <span class="st">'w'</span>, encoding<span class="op">=</span><span class="st">'utf-8'</span>) <span class="im">as</span> f:</span>
+<span id="cb7-207"><a href="#cb7-207" aria-hidden="true" tabindex="-1"></a>        f.write(<span class="st">'</span><span class="ch">\n</span><span class="st">'</span>.join(md_lines))</span>
+<span id="cb7-208"><a href="#cb7-208" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-209"><a href="#cb7-209" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">'✅ Markdown 已保存：lingnan_faculty.md'</span>)</span>
+<span id="cb7-210"><a href="#cb7-210" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-211"><a href="#cb7-211" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-212"><a href="#cb7-212" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="va">__name__</span> <span class="op">==</span> <span class="st">'__main__'</span>:</span>
+<span id="cb7-213"><a href="#cb7-213" aria-hidden="true" tabindex="-1"></a>    main()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>正在请求：https://lingnan.sysu.edu.cn/Faculty
+原始抓取到 249 个信息块
+解析后得到 249 条原始教师记录
+去重后保留 83 位教师
+
+【前 5 条预览】
+  姓名：毕青苗
+  职称：副教授
+  教研室：政治经济学教研室
+  职务：
+  研究方向：中国经济增长，营商环境建设
+  电子邮箱：biqm@mail.sysu.edu.cn
+  个人主页链接：https://lingnan.sysu.edu.cn/faculty/BiQingmiao
+
+  姓名：才国伟
+  职称：教授
+  教研室：国际经济与区域经济教研室
+  职务：
+  研究方向：经济增长与发展、国际经济与政策、 数字经济与政策等
+  电子邮箱：caiguow@mail.sysu.edu.cn
+  个人主页链接：https://lingnan.sysu.edu.cn/faculty/CaiGuowei
+
+  姓名：蔡荣鑫
+  职称：副教授
+  教研室：公司金融教研室
+  职务：
+  研究方向：企业并购、私募股权与风险投资、经济增长与贫困问题
+  电子邮箱：cairx@mail.sysu.edu.cn
+  个人主页链接：https://lingnan.sysu.edu.cn/faculty/CaiRongxin
+
+  姓名：陈川
+  职称：副教授
+  教研室：计量经济与数据科学教研室
+  职务：
+  研究方向：联邦学习、机器学习鲁棒性、LLM可靠性、图机器学习、社交网络分析
+  电子邮箱：chenchuan@mail.sysu.edu.cn
+  个人主页链接：https://lingnan.sysu.edu.cn/faculty/ChenChuan
+
+  姓名：陈刚
+  职称：教授
+  教研室：国际经济与区域经济教研室
+  职务：
+  研究方向：物流工程、运营管理、数字经济
+  电子邮箱：lnscheng@mail.sysu.edu.cn
+  个人主页链接：https://lingnan.sysu.edu.cn/faculty/ChenGang
+
+✅ Excel 已保存：lingnan_faculty.xlsx（共 83 条）
+✅ Markdown 已保存：lingnan_faculty.md</code></pre>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+提示词
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>AI 生成的原始代码一共输出了 249 条教师记录，我反馈了这个信息后，AI 修正了代码，得到了正确的结果。</p>
+</div>
+</div>
+</section>
+<section id="验证看到什么才算正确" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="验证看到什么才算正确">4. 验证：看到什么才算正确</h2>
+<p>代码运行后，Step 3 会打印前 3 条预览。对照以下标准判断是否继续：</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 30%">
+<col style="width: 34%">
+<col style="width: 34%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>检查项</th>
+<th>期望结果</th>
+<th>若不符合</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>姓名列</td>
+<td>全为中文姓名</td>
+<td>若出现邮箱或职称，字段严重错位，检查 <code>parse_faculty</code> 逻辑</td>
+</tr>
+<tr class="even">
+<td>邮箱列</td>
+<td>含 <code>@</code>，格式如 <code>xxx@mail.sysu.edu.cn</code></td>
+<td>若为空或出现姓名，<code>@</code> 识别逻辑有误</td>
+</tr>
+<tr class="odd">
+<td>教师总数</td>
+<td>几十至一百多条</td>
+<td>若只有个位数，<code>find_all('div', class_='infors')</code> 的 class 名可能写错</td>
+</tr>
+<tr class="even">
+<td>职务列</td>
+<td>少数教师有值，多数为空</td>
+<td>若全部为空，检查职务识别逻辑；全部有值则可能把教研室误判为职务</td>
+</tr>
+</tbody>
+</table>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+💡 「职务为空」是正常现象
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>大多数教师没有行政职务，<code>职务</code> 列为空不是错误。检查的目的是区分「正常缺失」（无职务）和「解析错位」（职务被错误地识别为邮箱，或邮箱被丢失）。</p>
+</div>
+</div>
+</section>
+<section id="如果结果不对发起调试对话" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="如果结果不对发起调试对话">5. 如果结果不对：发起调试对话</h2>
+<p>字段出错时，不要从头重写提示词，而是把具体错误现象告诉 AI。有效的调试消息包含三件事：</p>
+<pre><code>① 错误现象（哪列出了什么问题）
+② 已做的验证（你确认了什么）
+③ 中间结果（打印出的原始数据或 HTML）</code></pre>
+<p><strong>示例</strong>：</p>
+<blockquote class="blockquote">
+<p>代码跑通了，但「职务」列全部为空。我去页面确认过，许准的卡片里确实有「院长助理」。</p>
+<p>我打印了许准对应的 <code>one_lines</code> 内容：</p>
+<pre><code>政治经济学教研室
+院长助理
+xuzh237@mail.sysu.edu.cn</code></pre>
+<p>三行都在，但职务列还是空的。</p>
+</blockquote>
+<p>这三件事让 AI 能精准定位问题，而不是重写整段代码。信息越具体，修复越快。</p>
+</section>
+<section id="复盘" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="复盘">6. 复盘</h2>
+<p>六轮对话，每轮解决了什么：</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>轮次</th>
+<th>学生提供了什么</th>
+<th>AI 追问了什么</th>
+<th>对应要素</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>第 1 轮</td>
+<td>网址 + 截图</td>
+<td>要哪些字段？做什么用？</td>
+<td>②⑤</td>
+</tr>
+<tr class="even">
+<td>第 2 轮</td>
+<td>字段清单 + 用途</td>
+<td>去 DevTools 取 HTML</td>
+<td>④</td>
+</tr>
+<tr class="odd">
+<td>第 3 轮</td>
+<td>一段 HTML</td>
+<td>发现结构不一致，要第二段</td>
+<td>②</td>
+</tr>
+<tr class="even">
+<td>第 4 轮</td>
+<td>第二段 HTML</td>
+<td>建议加 Markdown；追问翻页</td>
+<td>①⑤</td>
+</tr>
+<tr class="odd">
+<td>第 5 轮</td>
+<td>确认无翻页</td>
+<td>整理提示词，等待确认</td>
+<td>—</td>
+</tr>
+<tr class="even">
+<td>第 6 轮</td>
+<td>确认提示词</td>
+<td>生成代码</td>
+<td>—</td>
+</tr>
+</tbody>
+</table>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+💡 规律：AI 追问 = 填写提示词模板的空格
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>对比这次对话和第一章 1.7 节的提示词通用模板，你会发现：<strong>AI 每次追问，恰好对应模板里缺失的一个要素</strong>。</p>
+<p>理解这个规律后，下次可以反过来操作：<strong>先自己对照模板把空格填好，再发给 AI</strong>，减少来回追问的轮数，第一次就拿到更可用的代码。</p>
+</div>
+</div>
+</section>
+<section id="课堂讨论" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="课堂讨论">课堂讨论</h2>
+<ol type="1">
+<li><p>第 3 轮中，如果学生只贴了卢荻的 HTML（没有许准的），AI 生成的代码会在哪里出错？出错的现象是什么？</p></li>
+<li><p>调试消息的三要素（错误现象、已做验证、中间结果）中，哪一项最容易被忽略？忽略它会带来什么后果？</p></li>
+<li><p>本例的页面只需请求一次，不需要设置请求间隔。如果改为爬取每位教师的<strong>详情页</strong>，提示词里需要新增哪些内容？</p></li>
+<li><p>浏览输出结果 <code>lingnan_faculty.md</code> 时，发现 <code>曾燕</code> 老师的信息显示格式有误。请分析原因，并撰写提示词，让 AI 优化代码。</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode md code-with-copy"><code class="sourceCode markdown"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="ss"> - </span>**曾燕**｜教授</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="ss">   - </span>教研室：保险与金融工程教研室</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="ss">   - </span>研究方向：数字（普惠）金融：创新、风险与监管</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a> 数字经济（发展趋势、社会效应、风险与安全）</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a> 数字保险：创新、风险与监管</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a> 平台经济：定价、风险管理、监管</span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a> 金融工程：定价、资产配置</span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a> 风险管理：风险测度、风险传染、风险管理策略</span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a> 保险精算：保险公司投资、分红与再保险策略等</span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a><span class="ss">   - </span>邮箱：<span class="ot">&lt;zengy36@mail.sysu.edu.cn&gt;</span></span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a><span class="ss">   - </span>主页：<span class="ot">&lt;https://lingnan.sysu.edu.cn/faculty/ZengYan&gt;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+</ol>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const disableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'prefetch';
+    }
+  }
+  const enableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'stylesheet';
+    }
+  }
+  const manageTransitions = (selector, allowTransitions) => {
+    const els = window.document.querySelectorAll(selector);
+    for (let i=0; i < els.length; i++) {
+      const el = els[i];
+      if (allowTransitions) {
+        el.classList.remove('notransition');
+      } else {
+        el.classList.add('notransition');
+      }
+    }
+  }
+  const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+    const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+    const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+    let newTheme = '';
+    if(darkModeDefault) {
+      newTheme = isAlternate ? baseTheme : alternateTheme;
+    } else {
+      newTheme = isAlternate ? alternateTheme : baseTheme;
+    }
+    const changeGiscusTheme = () => {
+      // From: https://github.com/giscus/giscus/issues/336
+      const sendMessage = (message) => {
+        const iframe = document.querySelector('iframe.giscus-frame');
+        if (!iframe) return;
+        iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+      }
+      sendMessage({
+        setConfig: {
+          theme: newTheme
+        }
+      });
+    }
+    const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+    if (isGiscussLoaded) {
+      changeGiscusTheme();
+    }
+  }
+  const toggleColorMode = (alternate) => {
+    // Switch the stylesheets
+    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+    manageTransitions('#quarto-margin-sidebar .nav-link', false);
+    if (alternate) {
+      enableStylesheet(alternateStylesheets);
+      for (const sheetNode of alternateStylesheets) {
+        if (sheetNode.id === "quarto-bootstrap") {
+          toggleBodyColorMode(sheetNode);
+        }
+      }
+    } else {
+      disableStylesheet(alternateStylesheets);
+      toggleBodyColorPrimary();
+    }
+    manageTransitions('#quarto-margin-sidebar .nav-link', true);
+    // Switch the toggles
+    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+    for (let i=0; i < toggles.length; i++) {
+      const toggle = toggles[i];
+      if (toggle) {
+        if (alternate) {
+          toggle.classList.add("alternate");     
+        } else {
+          toggle.classList.remove("alternate");
+        }
+      }
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455)
+    if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+      manageTransitions("body", false);
+      window.scrollTo(0, 1);
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        manageTransitions("body", true);
+      }, 40);  
+    }
+  }
+  const isFileUrl = () => { 
+    return window.location.protocol === 'file:';
+  }
+  const hasAlternateSentinel = () => {  
+    let styleSentinel = getColorSchemeSentinel();
+    if (styleSentinel !== null) {
+      return styleSentinel === "alternate";
+    } else {
+      return false;
+    }
+  }
+  const setStyleSentinel = (alternate) => {
+    const value = alternate ? "alternate" : "default";
+    if (!isFileUrl()) {
+      window.localStorage.setItem("quarto-color-scheme", value);
+    } else {
+      localAlternateSentinel = value;
+    }
+  }
+  const getColorSchemeSentinel = () => {
+    if (!isFileUrl()) {
+      const storageValue = window.localStorage.getItem("quarto-color-scheme");
+      return storageValue != null ? storageValue : localAlternateSentinel;
+    } else {
+      return localAlternateSentinel;
+    }
+  }
+  const darkModeDefault = false;
+  let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+  // Dark / light mode switch
+  window.quartoToggleColorScheme = () => {
+    // Read the current dark / light value 
+    let toAlternate = !hasAlternateSentinel();
+    toggleColorMode(toAlternate);
+    setStyleSentinel(toAlternate);
+    toggleGiscusIfUsed(toAlternate, darkModeDefault);
+  };
+  // Ensure there is a toggle, if there isn't float one in the top right
+  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+    const a = window.document.createElement('a');
+    a.classList.add('top-right');
+    a.classList.add('quarto-color-scheme-toggle');
+    a.href = "";
+    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+    const i = window.document.createElement("i");
+    i.classList.add('bi');
+    a.appendChild(i);
+    window.document.body.appendChild(a);
+  }
+  // Switch to dark mode if need be
+  if (hasAlternateSentinel()) {
+    toggleColorMode(true);
+  } else {
+    toggleColorMode(false);
+  }
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp("https:\/\/lianxhcn\.github\.io\/dsfin\/");
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+          // target, if specified
+          link.setAttribute("target", "_blank");
+          if (link.getAttribute("rel") === null) {
+            link.setAttribute("rel", "noopener");
+          }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../../Lecture/crawing/craw_02_sec01_lingnan_prompt.html" class="pagination-link" aria-label="实例-提示词模式：爬取岭南学院教师名录">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">实例-提示词模式：爬取岭南学院教师名录</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

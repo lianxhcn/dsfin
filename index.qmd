@@ -1,6 +1,6 @@
 # 封面 {.unnumbered}
 
-[在线版](https://lianxhcn.github.io/marp-book/) ｜ [PDF](https://lianxhcn.github.io/marp-book/Marp-book.pdf) ｜ [GitHub](https://github.com/lianxhcn/marp-book)
+[GitHub](https://github.com/lianxhcn/disfin) | [主页](https://www.lianxh.cn)
 
 <!-- ![](images/book-front.png){width="350px"} -->
 

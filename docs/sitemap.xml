@@ -2,11 +2,15 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://lianxhcn.github.io/dsfin/index.html</loc>
-    <lastmod>2026-03-24T01:53:41.431Z</lastmod>
+    <lastmod>2026-03-24T14:27:16.664Z</lastmod>
   </url>
   <url>
     <loc>https://lianxhcn.github.io/dsfin/Lecture/00_intro.html</loc>
-    <lastmod>2026-03-24T10:34:18.602Z</lastmod>
+    <lastmod>2026-03-24T18:03:30.986Z</lastmod>
+  </url>
+  <url>
+    <loc>https://lianxhcn.github.io/dsfin/Lecture/01_homework.html</loc>
+    <lastmod>2026-03-24T17:53:48.303Z</lastmod>
   </url>
   <url>
     <loc>https://lianxhcn.github.io/dsfin/Lecture/00-setup/01_00_coding_with_AI.html</loc>
@@ -29,7 +33,23 @@
     <lastmod>2026-03-24T09:04:17.253Z</lastmod>
   </url>
   <url>
-    <loc>https://lianxhcn.github.io/dsfin/Lecture/data_get_data/lec_get_data.html</loc>
+    <loc>https://lianxhcn.github.io/dsfin/Lecture/data_get_data/Lec_get_data.html</loc>
     <lastmod>2026-03-24T13:40:13.674Z</lastmod>
+  </url>
+  <url>
+    <loc>https://lianxhcn.github.io/dsfin/Lecture/data_clean/Lec_data_clean.html</loc>
+    <lastmod>2026-03-24T17:41:26.366Z</lastmod>
+  </url>
+  <url>
+    <loc>https://lianxhcn.github.io/dsfin/Lecture/crawing/craw_01_introduction.html</loc>
+    <lastmod>2026-03-22T11:55:07.801Z</lastmod>
+  </url>
+  <url>
+    <loc>https://lianxhcn.github.io/dsfin/Lecture/crawing/craw_02_sec01_lingnan_prompt.html</loc>
+    <lastmod>2026-03-24T16:41:21.310Z</lastmod>
+  </url>
+  <url>
+    <loc>https://lianxhcn.github.io/dsfin/Lecture/crawing/craw_02_sec02_lingnan_dialog.html</loc>
+    <lastmod>2026-03-24T16:41:10.781Z</lastmod>
   </url>
 </urlset>

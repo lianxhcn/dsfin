@@ -1,0 +1,2052 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.6.39">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>7&nbsp; 数据清洗 – 金融数据分析与建模</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../Lecture/crawing/craw_01_introduction.html" rel="next">
+<link href="../../Lecture/data_get_data/Lec_get_data.html" rel="prev">
+<link href="../../images/book-logo.png" rel="icon" type="image/png">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-e8fb9d25728d58bfeac61b497e4a6629.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark-57a92833092fd6dc0d7710b6bdfff9c5.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-7ef202e96c563d31d9e5226e4d6cabf9.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark-490ba4e843cb1303a232ed0c676384f2.min.css" rel="prefetch" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../Lecture/data_get_data/Lec_get_data.html"><strong>数据分析</strong></a></li><li class="breadcrumb-item"><a href="../../Lecture/data_clean/Lec_data_clean.html"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">数据清洗</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header sidebar-header-stacked">
+      <a href="https://lianxhcn.github.io/dsfin/" class="sidebar-logo-link">
+      <img src="../../images/book-logo.png" alt="" class="sidebar-logo py-0 d-lg-inline d-none">
+      </a>
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../../">DS Finance</a> 
+        <div class="sidebar-tools-main tools-wide">
+    <a href="https://github.com/lianxhcn/dsfin" title="" class="quarto-navigation-tool px-1" aria-label=""><i class="bi bi-github"></i></a>
+    <a href="https://www.lianxh.cn" title="" class="quarto-navigation-tool px-1" aria-label=""><i class="bi bi-home"></i></a>
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">封面</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/00_intro.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">📚课程资料</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/01_homework.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">🚀作业</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text"><strong>环境配置</strong></span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/00-setup/01_00_coding_with_AI.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">借助 AI 写代码</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/00-setup/01_01_install_anaconda.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Python：安装和环境配置</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/00-setup/01_02_jupyter_notebook.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Jupyter Notebook 的使用</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/00-setup/01_03_install_FAQs.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Python 安装常见问题</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/00-setup/01_04_markdown.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Markdown</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
+ <span class="menu-text"><strong>数据分析</strong></span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/data_get_data/Lec_get_data.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">金融数据获取</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/data_clean/Lec_data_clean.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">数据清洗</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true">
+ <span class="menu-text"><strong>数据爬取</strong></span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/crawing/craw_01_introduction.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">网络爬虫简介</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/crawing/craw_02_sec01_lingnan_prompt.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">实例-提示词模式：爬取岭南学院教师名录</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/crawing/craw_02_sec02_lingnan_dialog.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">实例-对话模式：爬取岭南学院教师名录</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#为什么数据清洗至关重要" id="toc-为什么数据清洗至关重要" class="nav-link active" data-scroll-target="#为什么数据清洗至关重要"><span class="header-section-number">7.1</span> 为什么数据清洗至关重要？</a>
+  <ul class="collapse">
+  <li><a href="#案例一reinhart-rogoff-的-excel-错误2010" id="toc-案例一reinhart-rogoff-的-excel-错误2010" class="nav-link" data-scroll-target="#案例一reinhart-rogoff-的-excel-错误2010"><span class="header-section-number">7.1.1</span> 案例一：Reinhart &amp; Rogoff 的 Excel 错误（2010）</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../Lecture/data_get_data/Lec_get_data.html"><strong>数据分析</strong></a></li><li class="breadcrumb-item"><a href="../../Lecture/data_clean/Lec_data_clean.html"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">数据清洗</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">数据清洗</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+干净数据的三个标准
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ol type="1">
+<li><strong>结构正确</strong>：每行是一个观测单位，每列是一个变量，每个单元格只含一个值（tidy data 原则）</li>
+<li><strong>内容可信</strong>：变量的取值在合理范围内，格式统一，无录入错误</li>
+<li><strong>样本明确</strong>：清楚地知道数据覆盖哪些个体、哪些时期，以及遗漏了什么</li>
+</ol>
+<p>本章的所有操作都是为了达到这三个标准。</p>
+</div>
+</div>
+<hr>
+<section id="为什么数据清洗至关重要" class="level2" data-number="7.1">
+<h2 data-number="7.1" class="anchored" data-anchor-id="为什么数据清洗至关重要"><span class="header-section-number">7.1</span> 为什么数据清洗至关重要？</h2>
+<p>在金融数据分析与建模的实践中，分析师往往将大部分精力投入到模型设计与参数估计上，却容易低估数据质量对最终结论的决定性影响。事实上，无论模型多么精巧，若输入数据存在错误、缺失或单位不一致，所有后续分析都将建立在不稳固的基础之上。</p>
+<p>本节通过两个真实的历史案例，说明数据清洗疏失所带来的严重后果——从影响国家政策走向的学术研究，到耗资数亿美元的太空任务失败，错误的根源都是在数据处理阶段可以避免的疏漏。</p>
+<section id="案例一reinhart-rogoff-的-excel-错误2010" class="level3 callout-example" data-number="7.1.1">
+<h3 data-number="7.1.1" class="anchored" data-anchor-id="案例一reinhart-rogoff-的-excel-错误2010"><span class="header-section-number">7.1.1</span> 案例一：Reinhart &amp; Rogoff 的 Excel 错误（2010）</h3>
+<section id="背景" class="level4 unnumbered">
+<h4 class="unnumbered anchored" data-anchor-id="背景">背景</h4>
+<p><a href="https://doi.org/10.1257/aer.100.2.573">Reinhart</a> and Rogoff (<a href="http://sci-hub.ren/10.1257/aer.100.2.573">2010</a>)</p>
+<p>2010 年，哈佛大学经济学家 <a href="https://doi.org/10.1257/aer.100.2.573">Reinhart</a> and Rogoff (<a href="http://sci-hub.ren/10.1257/aer.100.2.573">2010</a>) 发表论文《债务时代的增长》（<em>Growth in a Time of Debt</em>），提出一个影响深远的结论：当一国公共债务与 GDP 之比超过 90% 时，经济增长率将急剧下滑，平均仅为 <strong>−0.1%</strong>。这一结论迅速被欧美多国政府引用，成为推行财政紧缩政策的重要学术依据。</p>
+</section>
+<section id="数据错误的发现" class="level4 unnumbered">
+<h4 class="unnumbered anchored" data-anchor-id="数据错误的发现">数据错误的发现</h4>
+<p>2013 年，麻省大学经济系研究生 Thomas Herndon 在课堂作业中尝试复现该研究，意外发现原始 Excel 工作表中存在三类错误：</p>
+<ul>
+<li><strong>公式范围遗漏：</strong> 计算平均增长率的公式未涵盖全部国家的数据行，澳大利亚、奥地利、比利时、加拿大和丹麦的数据被排除在外；</li>
+<li><strong>数据选择性排除：</strong> 早期若干年份（如新西兰 1946–1949 年）的数据未被纳入分析；</li>
+<li><strong>加权方式有误：</strong> 对各国数据采用了不合理的等权重处理，未按年份数量加权。</li>
+</ul>
+<p><a href="https://doi.org/10.1093/cje/bet075">Herndon</a> et al.&nbsp;(<a href="http://sci-hub.ren/10.1093/cje/bet075">2014</a>) 发表论文 (该文在 Google 学术的引用率超过 2000 次) 指出上述错误后，Reinhart 和 Rogoff 承认了这些错误，并修正了数据处理方式。</p>
+</section>
+<section id="后果" class="level4 unnumbered">
+<h4 class="unnumbered anchored" data-anchor-id="后果">后果</h4>
+<p>修正上述错误后，高债务国家的平均增长率从 <strong>−0.1%</strong> 大幅修正为 <strong>+2.2%</strong>，结论完全逆转。然而此时，多国已基于原始错误结论实施了数年的紧缩政策，对经济社会造成了难以估量的影响。</p>
+</section>
+</section>
+<hr>
+<div class="callout-example">
+<section id="案例二nasa-火星气候轨道飞行器坠毁1999" class="level3" data-number="7.1.2">
+<h3 data-number="7.1.2" class="anchored" data-anchor-id="案例二nasa-火星气候轨道飞行器坠毁1999"><span class="header-section-number">7.1.2</span> 案例二：NASA 火星气候轨道飞行器坠毁（1999）</h3>
+<section id="背景-1" class="level4 unnumbered">
+<h4 class="unnumbered anchored" data-anchor-id="背景-1">背景</h4>
+<p>1999 年 9 月，美国国家航空暨太空总署（NASA）耗资 <strong>3.27 亿美元</strong>研发的火星气候轨道飞行器（Mars Climate Orbiter）在抵达火星后，因轨道偏差过大进入大气层解体，任务彻底失败。这是 NASA 历史上因数据错误导致的最著名的任务失败之一。</p>
+</section>
+<section id="数据错误的发现-1" class="level4 unnumbered">
+<h4 class="unnumbered anchored" data-anchor-id="数据错误的发现-1">数据错误的发现</h4>
+<p>事故调查委员会查明，根本原因是两个工程团队之间的计量单位不一致：</p>
+<ul>
+<li><strong>洛克希德·马丁公司</strong>的导航软件输出推力数据，单位为英制的磅力·秒（lbf·s）；</li>
+<li><strong>NASA 喷气推进实验室（JPL）</strong>的接收系统则假设数据单位为公制的牛顿·秒（N·s）。</li>
+</ul>
+<p>由于 1 lbf·s ≈ 4.45 N·s，两者相差约 <strong>4.45 倍</strong>，导致飞行轨迹在长达数月的飞行中持续偏移，最终无法修正，任务失败。</p>
+</section>
+<section id="后果-1" class="level4 unnumbered">
+<h4 class="unnumbered anchored" data-anchor-id="后果-1">后果</h4>
+<p>飞行器在抵达火星轨道时因高度严重偏低，进入大气层后解体。整个任务历时 9 个月、耗资逾 3 亿美元，最终付诸东流。事后 NASA 正式将此次失败归咎于「未能采用统一的公制单位」这一流程疏漏。</p>
+<blockquote class="blockquote">
+<p><strong>启示：</strong> 在数据处理中，量纲与单位的一致性检查是数据清洗的基本步骤。常见的隐患包括：收益率未统一为日频或年化、货币单位在不同来源间混用（如元与万元）、价格数据未区分前复权与后复权等。这些问题看似细微，累积效应却足以导致模型输出严重失真。</p>
+</blockquote>
+</section>
+</section>
+<section id="小结" class="level3" data-number="7.1.3">
+<h3 data-number="7.1.3" class="anchored" data-anchor-id="小结"><span class="header-section-number">7.1.3</span> 小结</h3>
+<p>上述两个案例横跨经济学与航天工程两个截然不同的领域，却共同揭示了同一个规律：<strong>数据质量问题的危害，与领域无关，后果普遍。</strong> 无论是学术研究还是工程实践，一旦在数据处理阶段引入错误，后续所有分析都将在错误的基础上叠加。</p>
+<p>在金融数据分析中，数据清洗的目标正是在模型建立之前，系统性地识别并处理以下问题：</p>
+<ul>
+<li><strong>缺失值与异常值</strong>（Missing Values &amp; Outliers）</li>
+<li><strong>数据类型与格式不一致</strong>（Type &amp; Format Inconsistency）</li>
+<li><strong>量纲与单位差异</strong>（Unit Mismatch）</li>
+<li><strong>样本偏差与数据对齐问题</strong>（Sample Bias &amp; Alignment）</li>
+<li><strong>重复记录</strong>（Duplicates）</li>
+</ul>
+<p>本章以下各节将逐一介绍上述问题的识别方法与处理策略，并结合 Python 代码示例加以说明。</p>
+</section>
+<section id="本章导读" class="level2" data-number="7.2">
+<h2 data-number="7.2" class="anchored" data-anchor-id="本章导读"><span class="header-section-number">7.2</span> 本章导读</h2>
+<p>本章的目标不是教你记住所有清洗函数的语法，而是帮你建立两种能力：第一，看到数据时能快速识别潜在问题；第二，能用准确的语言把问题描述清楚，让 AI 辅助你生成可靠的处理代码。</p>
+<p>贯穿本章的例子来自一个真实的研究场景：<strong>上市公司借款利率的影响因素分析</strong>。我们有三张来源不同的表，需要把它们合并成一份可以直接用于回归分析的干净数据。三张表的基本情况如下 (生成如下模拟数据的代码：<a href="create_sample_data.ipynb">create_sample_data</a>)：</p>
+<p><strong>BasicInf</strong>——上市公司基本信息，来源：CSMAR 上市公司基本信息库 - 观测维度：公司（截面） - 主键：<code>stkcd</code>（公司ID） - 字段：<code>stkcd</code>（公司ID）、<code>comp_name</code>（公司简称）、<code>industry</code>（行业归属）、<code>soe</code>（是否为国企，1=是，0=否）</p>
+<p><strong>FinRatio</strong>——上市公司财务比率，来源：CSMAR 财务比率数据库 - 观测维度：公司 × 年度（面板） - 主键：<code>(stkcd, year)</code> - 字段：<code>stkcd</code>、<code>year</code>、<code>Leverage</code>（总负债/总资产）、<code>Size</code>（ln 总资产）、<code>ROA</code>（资产回报率）、<code>CFlow</code>（经营现金流/总资产）、<code>Cash_holding</code>（现金/总资产）、<code>RD</code>（研发支出/总资产）、<code>report_type</code>（报表类型：A=合并报表，B=母公司报表）</p>
+<p><strong>Announcement</strong>——上市公司借贷公告，来源：网络爬虫 - 观测维度：公司 × 年度 × 贷款笔数（非结构化文本） - 字段：<code>stkcd</code>、<code>year</code>、<code>text</code>（公告原文） - 示例：「本公司于2023年6月1日，与建行深圳分行签署贷款协议，贷款金额为2亿元，期限3年，利率为年化4.2%。」</p>
+<p><img src="Fig/Data_clean_Snip_Basic_inf.png" class="img-fluid" style="width:50.0%"></p>
+<p><img src="Fig/Data_clean_Snip_FinRatio.png" class="img-fluid" style="width:70.0%"></p>
+<p><img src="Fig/Data_clean_Snip_Announcement.png" class="img-fluid" style="width:90.0%"></p>
+</section>
+<section id="数据的分类" class="level2" data-number="7.3">
+<h2 data-number="7.3" class="anchored" data-anchor-id="数据的分类"><span class="header-section-number">7.3</span> 数据的分类</h2>
+<p>在动手清洗之前，先要知道你面对的是什么类型的数据。不同类型的数据，问题的表现形式不同，处理方式也不同。</p>
+<section id="结构化-vs-非结构化" class="level3" data-number="7.3.1">
+<h3 data-number="7.3.1" class="anchored" data-anchor-id="结构化-vs-非结构化"><span class="header-section-number">7.3.1</span> 结构化 vs 非结构化</h3>
+<p><strong>结构化数据</strong>是指能够自然地用行列表格表示的数据。每一行是一个观测单位，每一列是一个变量，单元格里是对应的值。我们的 BasicInf 和 FinRatio 就是典型的结构化数据。</p>
+<p><strong>非结构化数据</strong>没有预定义的格式。文本、图片、音频、视频都属于这一类。我们的 Announcement 公告文本就是非结构化数据——它是一段自然语言，不能直接作为变量放进回归方程。</p>
+<p>实际研究中，大量有价值的信息藏在非结构化数据里：上市公司公告、新闻报道、社交媒体、卫星图像……处理它们的第一步，通常是把非结构化数据转换为结构化数据，我们在第2节专门讨论这个问题。</p>
+</section>
+<section id="数值型-vs-字符型" class="level3" data-number="7.3.2">
+<h3 data-number="7.3.2" class="anchored" data-anchor-id="数值型-vs-字符型"><span class="header-section-number">7.3.2</span> 数值型 vs 字符型</h3>
+<p>结构化数据中，最基本的区分是数值型和字符型。</p>
+<p><strong>数值型变量</strong>可以直接参与数学运算。FinRatio 中的 Leverage、ROA、Size 都是数值型——你可以对它们求均值、做回归、画散点图。数值型变量又可以进一步分为：</p>
+<ul>
+<li><strong>连续变量</strong>：理论上可以取任意值，比如 ROA = 0.0437，Size = 22.6。</li>
+<li><strong>离散变量</strong>：只取整数或有限个值，比如贷款期限（1年、3年、5年）。</li>
+</ul>
+<p><strong>字符型变量</strong>存储的是文本。BasicInf 中的 <code>comp_name</code>、<code>industry</code> 都是字符型。字符型变量不能直接做运算，但在数据分析中有两种常见用途：用于合并（作为连接键）或转换为可以建模的形式。</p>
+</section>
+<section id="类别变量-vs-有序类别变量" class="level3" data-number="7.3.3">
+<h3 data-number="7.3.3" class="anchored" data-anchor-id="类别变量-vs-有序类别变量"><span class="header-section-number">7.3.3</span> 类别变量 vs 有序类别变量</h3>
+<p>字符型变量中，有一类在经济研究中极为常见，需要特别说明。</p>
+<p><strong>类别变量（nominal）</strong>：变量的取值是若干个没有大小关系的类别。BasicInf 中的 <code>industry</code> 就是——制造业和金融业之间，没有「哪个更大」的关系。处理方式通常是创建虚拟变量（dummy variables）。</p>
+<p><strong>有序类别变量（ordinal）</strong>：取值之间有明确的顺序关系，但间距不一定相等。比如信用评级（AAA &gt; AA &gt; A）、企业规模分类（大型/中型/小型）。处理时需要比类别变量更谨慎——不能简单地用 1/2/3 编码，因为这暗示了等距假设。</p>
+<p><strong>特例：二值变量（binary）</strong>：只取 0/1 的变量，是类别变量的最简单情形。BasicInf 中的 <code>soe</code>（是否为国企）就是二值变量。</p>
+</section>
+<section id="多模态数据" class="level3" data-number="7.3.4">
+<h3 data-number="7.3.4" class="anchored" data-anchor-id="多模态数据"><span class="header-section-number">7.3.4</span> 多模态数据</h3>
+<p>当一个数据集同时包含文本、图像、数值等多种类型时，称为多模态数据。在经济研究中，这个概念正在变得越来越重要——比如用卫星夜间灯光图像来衡量经济活动，同时结合文本新闻和数值统计。目前处理多模态数据的主要工具是大型语言模型和多模态模型，这超出了本章的范围，但值得知道这个方向的存在。</p>
+</section>
+<section id="结构化数据与整洁数据" class="level3" data-number="7.3.5">
+<h3 data-number="7.3.5" class="anchored" data-anchor-id="结构化数据与整洁数据"><span class="header-section-number">7.3.5</span> 结构化数据与整洁数据</h3>
+<p><strong>结构化数据</strong>是指能够用行列表格表示的数据——每一行是一个观测单位，每一列是一个变量，每个单元格只含一个值。下面两张表是本章贯穿始终的示例数据的子集。</p>
+<p><strong>表 3-1　BasicInf（上市公司基本信息，节选）</strong></p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>stkcd</th>
+<th>comp_name</th>
+<th>industry</th>
+<th>soe</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>000001</td>
+<td>平安银行</td>
+<td>银行业</td>
+<td>0</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td>万科A</td>
+<td>房地产业</td>
+<td>0</td>
+</tr>
+<tr class="odd">
+<td>000063</td>
+<td>中兴通讯</td>
+<td>通信设备</td>
+<td>0</td>
+</tr>
+<tr class="even">
+<td>600028</td>
+<td>中国石化</td>
+<td>石油化工</td>
+<td>1</td>
+</tr>
+<tr class="odd">
+<td>600036</td>
+<td>招商银行</td>
+<td>银行业</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+<p>每行代表<strong>一家公司</strong>，<code>stkcd</code> 是唯一标识每家公司的主键。</p>
+<p><strong>表 3-2　FinRatio（上市公司财务比率，节选）</strong></p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>stkcd</th>
+<th>year</th>
+<th>report_type</th>
+<th>Leverage</th>
+<th>Size</th>
+<th>ROA</th>
+<th>RD</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>000001</td>
+<td>2022</td>
+<td>A</td>
+<td>0.89</td>
+<td>25.3</td>
+<td>0.012</td>
+<td>NaN</td>
+</tr>
+<tr class="even">
+<td>000001</td>
+<td>2023</td>
+<td>A</td>
+<td>0.88</td>
+<td>25.4</td>
+<td>0.013</td>
+<td>NaN</td>
+</tr>
+<tr class="odd">
+<td>2</td>
+<td>2022</td>
+<td>A</td>
+<td>0.65</td>
+<td>24.1</td>
+<td>0.045</td>
+<td>0.008</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td>2023</td>
+<td>A</td>
+<td>0.68</td>
+<td>24.2</td>
+<td>0.041</td>
+<td>0.009</td>
+</tr>
+<tr class="odd">
+<td>000063</td>
+<td>2022</td>
+<td>A</td>
+<td>0.52</td>
+<td>23.8</td>
+<td>0.038</td>
+<td>0.052</td>
+</tr>
+<tr class="even">
+<td>000063</td>
+<td>2023</td>
+<td>A</td>
+<td>3.21</td>
+<td>“23.9”</td>
+<td>−0.18</td>
+<td>0.048</td>
+</tr>
+</tbody>
+</table>
+<p>每行代表<strong>一家公司在某一年度</strong>的财务状况，主键是 <code>(stkcd, year)</code> 的组合。</p>
+<p>然而，细心的读者可能已经发现，这两张表虽然是结构化的，但并不完全符合「整洁数据」的标准。</p>
+<p>仔细观察这两张表，即便是这份只有几行的小数据，也已经能发现若干问题：</p>
+<ul>
+<li><code>stkcd</code> 列中 <code>2</code> 与其他行的 6 位编码格式不一致；</li>
+<li><code>Size</code> 列中出现了带引号的 <code>"23.9"</code>，说明该值被存储为文本而非数值；</li>
+<li><code>Leverage=3.21</code> 和 <code>ROA=−0.18</code> 明显偏离正常范围；</li>
+<li><code>RD</code> 列存在缺失值。</li>
+</ul>
+<p>这些问题在真实数据集中普遍存在，且往往比这里展示的更隐蔽。对照本章开头提出的三个标准来看：</p>
+<ul>
+<li><strong>结构正确</strong>：<code>stkcd</code> 格式不统一，<code>Size</code> 类型错误，违反了这一标准</li>
+<li><strong>内容可信</strong>：<code>Leverage=3.21</code>、<code>ROA=−0.18</code> 超出合理范围，需要核查</li>
+<li><strong>样本明确</strong>：<code>RD</code> 的缺失是随机的还是有规律的？需要搞清楚才能决定如何处理</li>
+</ul>
+<p>本章接下来的所有操作，都是为了让这份数据最终满足这三个标准。</p>
+</section>
+</section>
+<section id="非结构化数据的结构化转换" class="level2" data-number="7.4">
+<h2 data-number="7.4" class="anchored" data-anchor-id="非结构化数据的结构化转换"><span class="header-section-number">7.4</span> 非结构化数据的结构化转换</h2>
+<p>我们的 Announcement 数据是这样的原始文本：</p>
+<blockquote class="blockquote">
+<p>本公司于 2023 年 6 月 1 日，与建行深圳分行签署贷款协议，贷款金额为 2 亿元，期限 3 年，利率为年化 4.2%。</p>
+</blockquote>
+<p>要把这条信息纳入定量分析，我们需要从中提取以下字段：</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 24%">
+<col style="width: 55%">
+<col style="width: 20%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>字段名</th>
+<th>说明</th>
+<th>示例值</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>stkcd</code></td>
+<td>公司 ID（从公告来源获取，非提取）</td>
+<td><code>"000001"</code></td>
+</tr>
+<tr class="even">
+<td><code>loan_date</code></td>
+<td>贷款签署日期</td>
+<td><code>"2023-06-01"</code></td>
+</tr>
+<tr class="odd">
+<td><code>bank_name</code></td>
+<td>银行名称（标准化至法人机构）</td>
+<td><code>"建设银行"</code></td>
+</tr>
+<tr class="even">
+<td><code>bank_level</code></td>
+<td>银行层级</td>
+<td><code>"地级分行"</code></td>
+</tr>
+<tr class="odd">
+<td><code>loan_amount</code></td>
+<td>贷款金额（原始数值）</td>
+<td><code>2.0</code></td>
+</tr>
+<tr class="even">
+<td><code>loan_unit</code></td>
+<td>金额计量单位</td>
+<td><code>"亿元"</code></td>
+</tr>
+<tr class="odd">
+<td><code>loan_rate</code></td>
+<td>年化利率（%）</td>
+<td><code>4.2</code></td>
+</tr>
+<tr class="even">
+<td><code>loan_term_year</code></td>
+<td>贷款期限（年）</td>
+<td><code>3</code></td>
+</tr>
+</tbody>
+</table>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+为什么把金额和单位分开存储？
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>公告中的金额表达方式多样：「2 亿元」、「20000 万元」、「0.2 十亿元」指的是同一个数。如果在提取阶段就统一换算，一旦换算逻辑有误，原始信息就永久丢失了。更稳健的做法是先提取原始值和单位，在后续的清洗步骤中再统一换算，并保留换算过程可供核查。</p>
+</div>
+</div>
+<p>银行层级（总行/省级分行/地级分行）对贷款利率有实质性影响——地级分行通常有更大的利率浮动空间，而总行贷款往往意味着更优惠的条件。因此将「建行深圳分行」拆分为银行名称和银行层级两个字段，而非简单保留全称。</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+提示词：非结构化文本信息提取
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<div class="sourceCode" id="cb1"><pre class="sourceCode md code-with-copy"><code class="sourceCode markdown"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>我有一批中国上市公司的借贷公告文本，每条文本描述一笔贷款事件。</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>请帮我从以下文本中提取结构化信息，输出为 Python 字典格式，包含以下字段：</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>loan_date: 贷款签署日期，格式为 YYYY-MM-DD</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>bank_name: 贷款银行法人机构名称（标准化，如「建设银行」而非「建行深圳分行」）</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>bank_level: 银行层级，取值为「总行」、「省级分行」、「地级分行」之一</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>loan_amount: 贷款金额原始数值（浮点数，不做单位换算）</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>loan_unit: 金额计量单位，取值为「元」、「万元」、「亿元」之一</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>loan_rate: 年化利率，单位为 %（浮点数）</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>loan_term_year: 贷款期限，单位为年（整数）</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>规则：</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>如果某个字段无法从文本中提取，返回 None 并在 warnings 字段中注明原因</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>若文本存在歧义或信息不完整，在 warnings 字段中给出提示</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>输出格式为包含上述字段以及一个 warnings（列表）字段的字典。</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>文本：「本公司于2023年6月1日，与建行深圳分行签署贷款协议，</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>贷款金额为2亿元，期限3年，利率为年化4.2%。」</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>提取完成后，统一换算金额的步骤：</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>unit_map <span class="op">=</span> {<span class="st">'元'</span>: <span class="dv">1</span>, <span class="st">'万元'</span>: <span class="dv">10000</span>, <span class="st">'亿元'</span>: <span class="dv">100000000</span>}</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>df[<span class="st">'loan_amount_yuan'</span>] <span class="op">=</span> df[<span class="st">'loan_amount'</span>] <span class="op">*</span> df[<span class="st">'loan_unit'</span>].<span class="bu">map</span>(unit_map)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</section>
+<section id="数据清洗的整体流程" class="level2" data-number="7.5">
+<h2 data-number="7.5" class="anchored" data-anchor-id="数据清洗的整体流程"><span class="header-section-number">7.5</span> 数据清洗的整体流程</h2>
+<section id="项目文件夹结构" class="level3" data-number="7.5.1">
+<h3 data-number="7.5.1" class="anchored" data-anchor-id="项目文件夹结构"><span class="header-section-number">7.5.1</span> 项目文件夹结构</h3>
+<p>在开始任何数据操作之前，先建立清晰的项目结构。这不是可选项，而是可复现研究的基本要求。</p>
+<pre class="dos"><code>project/
+├── data_raw/          # 原始数据，只读，永远不修改
+│   ├── BasicInf.csv
+│   ├── FinRatio.csv
+│   └── Announcement/
+│       └── raw_html/  # 爬取的原始 HTML 文件
+├── data_temp/         # 中间过程文件，可随时重新生成
+│   ├── announcement_extracted.csv
+│   └── finratio_checked.csv
+├── data_clean/        # 最终可用于分析的数据
+│   └── merged_clean.csv
+├── code/              # 清洗和分析代码
+│   ├── 01_extract_announcement.py
+│   ├── 02_clean_each_table.py
+│   └── 03_merge.py
+├── output/            # 图表和结果
+└── README.md          # 记录数据来源、处理逻辑、变量定义</code></pre>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+原始数据只读原则
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li><code>data_raw/</code> 文件夹中的文件在任何情况下都不应被覆盖或修改。</li>
+<li>所有处理结果保存到 <code>data_temp/</code> 或 <code>data_clean/</code>。</li>
+<li>真正需要修改和实时保存的是代码文件和 README 文档，而非原始数据。</li>
+</ul>
+<p>这样即使处理逻辑出错，原始数据始终可以回溯。</p>
+</div>
+</div>
+</section>
+<section id="清洗的五个步骤" class="level3" data-number="7.5.2">
+<h3 data-number="7.5.2" class="anchored" data-anchor-id="清洗的五个步骤"><span class="header-section-number">7.5.2</span> 清洗的五个步骤</h3>
+<p><strong>第一步：导入与初步查看</strong></p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_csv(<span class="st">'data_raw/FinRatio.csv'</span>)</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>df.shape</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>df.head()</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>df.dtypes</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>df.info()</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>df.describe()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+提示词：数据导入与初步检查
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>我刚导入了一个名为 FinRatio 的 DataFrame，包含上市公司财务比率数据。 请帮我生成一段 Python 代码，输出以下信息：</p>
+<ol type="1">
+<li>数据的行列数</li>
+<li>每列的数据类型、缺失值数量和缺失比例</li>
+<li>数值型列的描述性统计 (均值、中位数、标准差、min、25%、75%、max)，小数点后保留 2-3 位</li>
+<li>检查是否存在完全重复的行</li>
+<li>输出前 5 行数据，确保格式正确</li>
+</ol>
+</div>
+</div>
+<p><strong>第二步：识别问题</strong></p>
+<p>通过第一步的输出，系统性地检查每一列，记录发现的问题：</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 17%">
+<col style="width: 33%">
+<col style="width: 17%">
+<col style="width: 31%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>问题类型</th>
+<th>涉及列</th>
+<th>严重程度</th>
+<th>处理方向</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>缺失值</td>
+<td>RD</td>
+<td>高（约 25%）</td>
+<td>填 0 + 缺失指示变量</td>
+</tr>
+<tr class="even">
+<td>离群值</td>
+<td>Leverage, ROA, CFlow</td>
+<td>中</td>
+<td>缩尾（Winsorize）</td>
+</tr>
+<tr class="odd">
+<td>格式不一致</td>
+<td>stkcd</td>
+<td>高</td>
+<td>统一为 6 位字符串</td>
+</tr>
+<tr class="even">
+<td>报表类型混入</td>
+<td>report_type</td>
+<td>高</td>
+<td>仅保留合并报表（A）</td>
+</tr>
+<tr class="odd">
+<td>类型错误</td>
+<td>Size</td>
+<td>中</td>
+<td>转换为数值型</td>
+</tr>
+</tbody>
+</table>
+<p><strong>第三步：处理</strong></p>
+<p>按照识别出的问题逐一处理。顺序很重要：<strong>先处理格式和类型问题，再处理报表类型筛选，然后处理缺失值，最后处理离群值</strong>。格式错误会影响缺失值的识别，报表混入会影响统计量的计算。</p>
+<p><strong>第四步：验证</strong></p>
+<p>每一步处理完之后，验证结果是否符合预期。具体的验证方法在各小节中介绍。</p>
+<p><strong>第五步：输出</strong></p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>df_clean.to_csv(<span class="st">'data_clean/merged_clean.csv'</span>, index<span class="op">=</span><span class="va">False</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+</section>
+<section id="第一层单表内部问题" class="level2" data-number="7.6">
+<h2 data-number="7.6" class="anchored" data-anchor-id="第一层单表内部问题"><span class="header-section-number">7.6</span> 第一层：单表内部问题</h2>
+<p>下面用虚构的小型数据集演示各类问题。数据规模刻意压缩（5–10 行），以便清晰展示问题的本质。</p>
+<section id="虚构数据" class="level3" data-number="7.6.1">
+<h3 data-number="7.6.1" class="anchored" data-anchor-id="虚构数据"><span class="header-section-number">7.6.1</span> 虚构数据</h3>
+<p><strong>BasicInf</strong>（5 家公司）：</p>
+<div class="line-block">stkcd | comp_name | industry | soe |</div>
+<p>|— |—— |—– | | | 000001 | 平安银行 | 银行业 | 0 | | 2 | 万科 A | 房地产业 | 0 | | 000063 | 中兴通讯 | 通信设备 | 0 | | 600028 | 中国石化 | 石油化工 | 1 | | 600036 | 招商银行 | 银行业 | 0 |</p>
+<p>注意：<code>stkcd</code> 第二行是整数 <code>2</code>，其余为 6 位字符串——这是格式不一致问题。</p>
+<p><strong>FinRatio</strong>（10 行，2 家公司 × 2 年 × 2 种报表类型）：</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 8%">
+<col style="width: 2%">
+<col style="width: 22%">
+<col style="width: 14%">
+<col style="width: 8%">
+<col style="width: 5%">
+<col style="width: 5%">
+<col style="width: 25%">
+<col style="width: 5%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>stkcd</th>
+<th>year</th>
+<th>report_type</th>
+<th>Leverage</th>
+<th>Size</th>
+<th>ROA</th>
+<th>CFlow</th>
+<th>Cash_holding</th>
+<th>RD</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>000001</td>
+<td>2022</td>
+<td>A</td>
+<td>0.89</td>
+<td>25.3</td>
+<td>0.012</td>
+<td>0.015</td>
+<td>0.08</td>
+<td>NaN</td>
+</tr>
+<tr class="even">
+<td>000001</td>
+<td>2022</td>
+<td>B</td>
+<td>0.91</td>
+<td>25.1</td>
+<td>0.010</td>
+<td>0.013</td>
+<td>0.07</td>
+<td>NaN</td>
+</tr>
+<tr class="odd">
+<td>000001</td>
+<td>2023</td>
+<td>A</td>
+<td>0.88</td>
+<td>25.4</td>
+<td>0.013</td>
+<td>0.016</td>
+<td>0.09</td>
+<td>NaN</td>
+</tr>
+<tr class="even">
+<td>000001</td>
+<td>2023</td>
+<td>B</td>
+<td>0.90</td>
+<td>25.2</td>
+<td>0.011</td>
+<td>0.014</td>
+<td>0.08</td>
+<td>NaN</td>
+</tr>
+<tr class="odd">
+<td>2</td>
+<td>2022</td>
+<td>A</td>
+<td>0.65</td>
+<td>24.1</td>
+<td>0.045</td>
+<td>0.032</td>
+<td>0.12</td>
+<td>0.008</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td>2022</td>
+<td>B</td>
+<td>0.67</td>
+<td>24.0</td>
+<td>0.043</td>
+<td>0.030</td>
+<td>0.11</td>
+<td>0.008</td>
+</tr>
+<tr class="odd">
+<td>2</td>
+<td>2023</td>
+<td>A</td>
+<td>0.68</td>
+<td>24.2</td>
+<td>0.041</td>
+<td>-0.05</td>
+<td>0.10</td>
+<td>0.009</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td>2023</td>
+<td>B</td>
+<td>0.69</td>
+<td>24.1</td>
+<td>0.040</td>
+<td>-0.04</td>
+<td>0.10</td>
+<td>0.009</td>
+</tr>
+<tr class="odd">
+<td>000063</td>
+<td>2022</td>
+<td>A</td>
+<td>0.52</td>
+<td>23.8</td>
+<td>0.038</td>
+<td>0.028</td>
+<td>0.15</td>
+<td>0.052</td>
+</tr>
+<tr class="even">
+<td>000063</td>
+<td>2023</td>
+<td>A</td>
+<td>3.21</td>
+<td>“23.9”</td>
+<td>-0.18</td>
+<td>0.021</td>
+<td>0.13</td>
+<td>0.048</td>
+</tr>
+</tbody>
+</table>
+<p>注意植入的问题：<code>stkcd=2</code> 格式不一致；<code>000001</code> 同时有 A/B 两种报表；<code>Leverage=3.21</code> 是离群值；<code>ROA=-0.18</code> 是极端值；<code>Size="23.9"</code> 被存为字符串；<code>RD</code> 有缺失值。</p>
+<p><strong>Announcement（提取后，加总前）</strong>（5 行）：</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 5%">
+<col style="width: 1%">
+<col style="width: 12%">
+<col style="width: 10%">
+<col style="width: 12%">
+<col style="width: 14%">
+<col style="width: 10%">
+<col style="width: 10%">
+<col style="width: 20%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>stkcd</th>
+<th>year</th>
+<th>loan_date</th>
+<th>bank_name</th>
+<th>bank_level</th>
+<th>loan_amount</th>
+<th>loan_unit</th>
+<th>loan_rate</th>
+<th>loan_term_year</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>000001</td>
+<td>2023</td>
+<td>2023-06-01</td>
+<td>建设银行</td>
+<td>地级分行</td>
+<td>2.0</td>
+<td>亿元</td>
+<td>4.2</td>
+<td>3</td>
+</tr>
+<tr class="even">
+<td>000001</td>
+<td>2023</td>
+<td>2023-06-01</td>
+<td>建设银行</td>
+<td>地级分行</td>
+<td>2.0</td>
+<td>亿元</td>
+<td>4.2</td>
+<td>3</td>
+</tr>
+<tr class="odd">
+<td>000001</td>
+<td>2023</td>
+<td>2023-08-15</td>
+<td>工商银行</td>
+<td>省级分行</td>
+<td>15000.0</td>
+<td>万元</td>
+<td>4.5</td>
+<td>5</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td>2022</td>
+<td>2022-03-10</td>
+<td>中国银行</td>
+<td>总行</td>
+<td>5.0</td>
+<td>亿元</td>
+<td>3.8</td>
+<td>3</td>
+</tr>
+<tr class="odd">
+<td>000063</td>
+<td>2023</td>
+<td>2023-11-20</td>
+<td>农业银行</td>
+<td>地级分行</td>
+<td>8000.0</td>
+<td>万元</td>
+<td>4.6</td>
+<td>2</td>
+</tr>
+</tbody>
+</table>
+<p>这份数据存在如下问题：</p>
+<ul>
+<li>前两行完全重复（同一笔贷款被爬取了两次）；</li>
+<li><code>stkcd=2</code> 格式不一致；</li>
+<li>金额单位混用（亿元/万元）。</li>
+</ul>
+</section>
+<section id="缺失值" class="level3" data-number="7.6.2">
+<h3 data-number="7.6.2" class="anchored" data-anchor-id="缺失值"><span class="header-section-number">7.6.2</span> 缺失值</h3>
+<p>在处理缺失值之前，先要搞清楚缺失的原因和机制。缺失值的处理方式，取决于它是随机缺失（Missing Completely at Random, MCAR）、条件缺失（Missing at Random, MAR）还是非随机缺失（Missing Not at Random, MNAR）。</p>
+<p>在我们的例子中，由于早期年份披露规则不完善，<code>RD</code> 的缺失很可能是 MNAR。例如，研发投入少 (设置为零) 的公司更倾向于不披露；也有可能恰恰相反，研发投入多的公司由于担心泄露商业秘密而不披露。这意味着缺失不是随机分布的，不能简单删除。文献中常用 Little’s MCAR test 来检验缺失机制，但在实际操作中，结合业务理解和数据探索更为重要。实证分析中，这种非随机缺失往往是导致内生性问题的根源之一，通常会采用 Heckman 两步法或 IV 方法来纠正。</p>
+<p><strong>三种处理思路：</strong></p>
+<ul>
+<li><p><strong>删除</strong>：缺失比例很低（通常 &lt;5%）且缺失是随机的，可以删除含缺失值的行。对于 RD 这样 25% 缺失且非随机的情况，删除会导致样本严重偏向「有研发投入」的公司。</p></li>
+<li><p><strong>替换为 0</strong>：在有些情况下，若有足够的理由说明缺失数据的实际值为 0 (比如一些小型企业确实没有研发支出)，可以将缺失值填充为 0。更稳健的做法创建指示变量 <code>RD_missing</code>（1=原本缺失），在回归中同时纳入两个变量：<code>RD_filled</code>（填充后的值）和 <code>RD_missing</code>（缺失指示）。这样既保留了样本量，又能捕捉缺失背后的信息。参见 <a href="https://www.lianxh.cn/details/663.html">缺失值能否用零代替？</a>。</p></li>
+<li><p><strong>插补</strong>：用其他变量预测缺失值（多重插补）。适用于缺失比例较高且后续分析对该变量要求严格的情况。常用方法包括基于回归的插补、KNN 插补、随机森林插补等。需要注意的是，插补后的数据不应直接用于分析，而是需要进行多重插补的 Rubin 规则来合并结果。</p></li>
+</ul>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+提示词：缺失值分析
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>我有一个 DataFrame df，其中 RD 列有约 25% 的缺失值。 背景：RD 表示研发支出占总资产的比例，缺失原因可能是企业未进行研发投入或未披露。 请帮我：</p>
+<ol type="1">
+<li>统计 RD 的缺失数量和比例</li>
+<li>检验缺失是否与公司规模 (Size 列)、行业 (industry 列) 和年份 (year 列) 相关 (用缺失指示变量对这两个变量做交叉统计，如 t-test 或样本分布对比)</li>
+<li>生成两个新列：
+<ul>
+<li>RD_filled：将缺失值填充为 0</li>
+<li>RD_missing：1 表示原本缺失，0 表示有值</li>
+</ul></li>
+<li>输出处理前后 RD 列的描述性统计对比（包含均值、中位数、标准差）</li>
+</ol>
+</div>
+</div>
+</section>
+<section id="离群值与缩尾winsorize处理" class="level3" data-number="7.6.3">
+<h3 data-number="7.6.3" class="anchored" data-anchor-id="离群值与缩尾winsorize处理"><span class="header-section-number">7.6.3</span> 离群值与缩尾（Winsorize）处理</h3>
+<p><strong>问题的本质：</strong> 离群值是指在统计上远离其他观测值的数据点。在我们的虚构数据中，<code>Leverage=3.21</code>（即负债是资产的 3.21 倍）和 <code>ROA=-0.18</code> 都是极端值。这类数值在回归中会对估计结果产生不成比例的影响。</p>
+<p><strong>识别方法：</strong></p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> col <span class="kw">in</span> [<span class="st">'Leverage'</span>, <span class="st">'ROA'</span>, <span class="st">'CFlow'</span>]:</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="sc">{</span>col<span class="sc">}</span><span class="ss">:"</span>)</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(df[col].describe(percentiles<span class="op">=</span>[<span class="fl">.01</span>, <span class="fl">.05</span>, <span class="fl">.95</span>, <span class="fl">.99</span>]))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>如果 max 远大于第 99 百分位数，或 min 远小于第 1 百分位数，说明存在极端值。也可以用箱型图进行直观判断：</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>df[[<span class="st">'Leverage'</span>, <span class="st">'ROA'</span>, <span class="st">'CFlow'</span>]].boxplot()</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'处理前的变量分布'</span>)</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><strong>缩尾（Winsorize）处理：</strong></p>
+<p>缩尾不删除极端值，而是将超出阈值的值替换为阈值本身——通常是上下各 1%分位数。注意区分两个概念：</p>
+<ul>
+<li><strong>截尾（trimming）</strong>：直接删除超出阈值的观测行，样本量减少</li>
+<li><strong>缩尾（winsorizing）</strong>：将超出阈值的值替换为阈值，样本量不变</li>
+</ul>
+<p>实证论文中绝大多数情况使用缩尾，因为它保留了样本量，不改变数据的分布形状。</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+提示词：缩尾处理
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>我有一个 DataFrame df，需要对以下列进行缩尾（Winsorize）处理： [‘Leverage’, ‘ROA’, ‘CFlow’, ‘Cash_holding’]</p>
+<p>要求： 1. 按上下各 1% 分位数进行缩尾（即将低于 1% 分位数的值替换为该分位数值， 高于 99% 分位数的值替换为该分位数值） 2. 处理在每一列内独立进行 3. 生成新列，命名规则为原列名加 _w 后缀（如 Leverage_w），保留原列不变 4. 输出处理前后各列的 min、均值、中位数、标准差、max 对比表格 5. 分别绘制处理前后各变量的箱型图，并排显示</p>
+</div>
+</div>
+<p><strong>验证处理结果：</strong></p>
+<p>缩尾之后需要从以下几个角度确认结果合理：</p>
+<p>第一，查看基本统计量，处理后的均值和标准差应与文献中同类研究的报告值大体一致。比如，中国上市公司的平均资产负债率通常在 0.4–0.6 之间，若处理后均值大幅偏离，说明阈值设定或数据本身有问题。</p>
+<p>第二，比较处理前后的均值和标准差，两者应无系统性差异——缩尾只影响分布的尾部，不应大幅改变均值。</p>
+<p>第三，绘制处理前后的箱型图或密度图，直观确认极端值已被压缩至合理范围。</p>
+</section>
+<section id="格式不一致" class="level3" data-number="7.6.4">
+<h3 data-number="7.6.4" class="anchored" data-anchor-id="格式不一致"><span class="header-section-number">7.6.4</span> 格式不一致</h3>
+<p><strong>问题的本质：</strong> 同一个变量，在不同数据来源或不同导出方式下，可能用不同格式记录。格式不一致不会让代码报错，但会让合并失败或产生错误结果。</p>
+<p>在我们的虚构数据中，<code>stkcd</code> 在 BasicInf 和 FinRatio 里大多是 6 位字符串（<code>"000001"</code>），但万科 A 的代码被存为整数 <code>2</code>。合并时 <code>"000002" != 2</code>，结果是这家公司找不到匹配，产生大量 NaN——Python 不会报错，只是静默失败。</p>
+<p>其他常见格式问题还有：日期格式混用（<code>"2023-06-01"</code> vs <code>"20230601"</code>）、行业编码含多余空格（<code>" 银行业"</code> vs <code>"银行业"</code>）、金额单位混用。</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+提示词：格式不一致处理
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>我有两个 DataFrame BasicInf 和 FinRatio，都有 stkcd 列作为公司ID。 请帮我：</p>
+<ol type="1">
+<li>检查两张表中 stkcd 列的数据类型和前 10 个唯一值样本</li>
+<li>将两张表的 stkcd 统一转换为 6 位字符串格式（不足 6 位的补前导零）</li>
+<li>验证转换后的重叠情况：
+<ul>
+<li>两表共同 stkcd 数量</li>
+<li>BasicInf 独有的 stkcd 数量</li>
+<li>FinRatio 独有的 stkcd 数量</li>
+</ul></li>
+<li>对 industry 列检查是否含有多余空格，如有则去除</li>
+<li>输出处理后的 stkcd 列的前 10 个唯一值样本，确认格式正确</li>
+</ol>
+</div>
+</div>
+</section>
+<section id="重复观测" class="level3" data-number="7.6.5">
+<h3 data-number="7.6.5" class="anchored" data-anchor-id="重复观测"><span class="header-section-number">7.6.5</span> 重复观测</h3>
+<p><strong>问题的本质：</strong> 同一个观测单位出现了不止一次。重复分三种情形，性质和处理方式各不相同。</p>
+<p><strong>情形一：精确重复</strong></p>
+<p>每一列的值完全相同。在我们的 Announcement 提取数据中，同一条公告被爬取了两次，产生完全相同的两行。处理最简单：</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>df.drop_duplicates(inplace<span class="op">=</span><span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><strong>情形二：模糊重复</strong></p>
+<p>关键字段相同，但部分字段略有差异。比如同一笔贷款的原始公告和补充公告，金额和利率相同但日期不同。需要根据业务逻辑定义「什么算同一笔贷款」，然后按规则保留其中一条。</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+提示词：重复观测处理 (精确重复 + 模糊重复)
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>我有一个 DataFrame <code>df_loans</code>，包含从上市公司公告中提取的贷款信息。</p>
+<ul>
+<li>列名：stkcd, year, loan_date, bank_name, loan_amount, loan_unit, loan_rate, loan_term_year</li>
+</ul>
+<p>请帮我：</p>
+<ol type="1">
+<li>检查并删除完全重复的行，输出删除前后的行数</li>
+<li>检查「业务意义上的重复」：同一公司（stkcd）、同年（year）、 相同金额（loan_amount）、相同利率（loan_rate）的记录是否有多条</li>
+<li>对于步骤2中的重复，保留 loan_date 最早的一条，删除其余</li>
+<li>输出最终行数及每步操作删除的行数</li>
+</ol>
+</div>
+</div>
+<p><strong>情形三：报表类型混入导致的「伪重复」</strong></p>
+<p>这是一种更隐蔽的情形。在我们的 FinRatio 数据中，<code>(stkcd="000001", year=2022)</code> 出现了两次，但 Leverage 等变量的值并不相同——分别是合并报表（<code>report_type="A"</code>）和母公司报表（<code>report_type="B"</code>）的数据。</p>
+<p>这种情况如果不处理，会导致面板数据的主键不唯一，无法进行固定效应估计、一阶差分等运算，且报错信息往往不直观，很难定位原因。</p>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+这本质上不是重复值问题
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>这种「伪重复」的根本原因是<strong>样本混淆</strong>：两种口径的数据被装进了同一张表。正确的处理方式不是随机保留其中一行，而是明确研究需要哪种口径（通常选合并报表），然后按 <code>report_type</code> 筛选。</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+提示词：检查主键唯一性和报表类型混入
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>我有一个 DataFrame <code>df</code>，包含上市公司财务数据。 请帮我：</p>
+<ol type="1">
+<li>检查主键 <code>(stkcd, year)</code> 是否唯一</li>
+<li>查看重复的报表类型分布</li>
+<li>仅保留合并报表（<code>report_type="A"</code>）{可以替换为其他内容}</li>
+<li>验证处理后主键唯一性</li>
+</ol>
+</div>
+</div>
+<p>典型代码如下：</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 检查主键唯一性</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df.duplicated(subset<span class="op">=</span>[<span class="st">'stkcd'</span>, <span class="st">'year'</span>]).<span class="bu">sum</span>(), <span class="st">"组 (stkcd, year) 存在重复"</span>)</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="co"># 查看重复的报表类型分布</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df[<span class="st">'report_type'</span>].value_counts())</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="co"># 仅保留合并报表</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> df[df[<span class="st">'report_type'</span>] <span class="op">==</span> <span class="st">'A'</span>].copy()</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a><span class="co"># 验证处理后主键唯一</span></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> df.duplicated(subset<span class="op">=</span>[<span class="st">'stkcd'</span>, <span class="st">'year'</span>]).<span class="bu">sum</span>() <span class="op">==</span> <span class="dv">0</span>, <span class="st">"仍有重复，请检查"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="数据类型错误" class="level3" data-number="7.6.6">
+<h3 data-number="7.6.6" class="anchored" data-anchor-id="数据类型错误"><span class="header-section-number">7.6.6</span> 数据类型错误</h3>
+<p><strong>问题的本质：</strong> 变量的存储类型与其语义类型不符。最常见的情形是数值型变量被存储为字符串。</p>
+<p>在我们的虚构数据中，<code>Size</code> 列的 2023 年值被存为字符串 <code>"23.9"</code>——可能是该单元格含有注释符号或空格，导致 pandas 将整列识别为 <code>object</code> 类型。对这列求均值会直接报错。</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+提示词：数据类型错误检查与处理
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>我有一个 DataFrame <code>df</code>，怀疑部分应为数值型的列被读取为字符串类型。 请帮我：</p>
+<ol type="1">
+<li>列出所有 dtype 为 object 的列</li>
+<li>对这些列，尝试用 pd.to_numeric(errors=‘coerce’) 转换， 统计转换过程中产生了多少个 NaN（即原本含非数值字符的单元格数量）</li>
+<li>对于产生 NaN 数量 &gt; 0 的列，输出那些无法转换的原始值（value_counts 前10个）</li>
+<li>在我确认后，再生成最终的类型转换代码</li>
+</ol>
+</div>
+</div>
+<p>注意第 4 步：先展示问题，确认后再处理，避免 AI 猜对了问题但处理方式不符合实际需求。</p>
+</section>
+<section id="宽表与长表的转换" class="level3" data-number="7.6.7">
+<h3 data-number="7.6.7" class="anchored" data-anchor-id="宽表与长表的转换"><span class="header-section-number">7.6.7</span> 宽表与长表的转换</h3>
+<p>数据分析中经常需要在两种表格形式之间转换：</p>
+<ul>
+<li><strong>长表（long format）</strong>：每行是一个观测单位在某个时间点的一条记录。适合面板数据分析。</li>
+<li><strong>宽表（wide format）</strong>：每行是一个个体，不同时间点的数据分布在不同列。适合某些可视化场景或来自网页的原始数据。</li>
+</ul>
+<p><strong>场景一：多笔贷款聚合（长表内部聚合）</strong></p>
+<p>一家公司在同一年可能有多笔贷款，Announcement 提取结果是每笔贷款一行，而 FinRatio 是每个公司-年一行。合并前需要先聚合 (对同年度的多笔贷款进行加总)：</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+提示词：长表聚合
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>我有一个长表 <code>df_loans</code>，包含公司-年-贷款层面的数据： stkcd, year, loan_amount（已统一为万元）, loan_rate, loan_term_year, bank_name, bank_level</p>
+<p>请将其聚合为公司-年层面，生成以下指标：</p>
+<ul>
+<li>loan_count: 贷款笔数</li>
+<li>avg_loan_rate: 以 loan_amount 为权重的加权平均利率</li>
+<li>total_loan_wan: 贷款总金额（万元）</li>
+<li>avg_loan_term: 简单平均贷款期限（年）</li>
+<li>bank_count: 涉及不同银行数量</li>
+<li>top_bank: 贷款金额最大的银行名称</li>
+</ul>
+<p>请使用 groupby + agg 实现，输出聚合前后的行数对比。</p>
+</div>
+</div>
+<p><strong>场景二：宽表转长表（reshape）</strong></p>
+<p>来自网页或部分数据库的原始数据常常是宽表格式。以收入和失业率数据为例，原始宽表可能长这样：</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode md code-with-copy"><code class="sourceCode markdown"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>| id  | sex | inc_1980 | inc_1981 | inc_1982 | ue_1980 | ue_1981 | ue_1982 |</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>| | |----- |----- |----- |---- |---- |---- |</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>| 1   | 0   | 5000     | 5500     | 6000     | 0       | 1       | 0       |</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>| 2   | 1   | 2000     | 2200     | 3300     | 1       | 0       | 0       |</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>| 3   | 0   | 3000     | 2000     | 1000     | 0       | 0       | 1       |</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>面板回归需要的长表格式是：</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>| id  | year | sex | inc  | ue  |</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>| |- | |- | |</span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>| 1   | 1980 | 0   | 5000 | 0   |</span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>| 1   | 1981 | 0   | 5500 | 1   |</span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>| 1   | 1982 | 0   | 6000 | 0   |</span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>| 2   | 1980 | 1   | 2000 | 1   |</span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>| ... | ...  | ... | ...  | ... |</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>注意这里有两组时变变量（<code>inc</code> 和 <code>ue</code>），每组各三列，这比单组变量的 reshape 复杂，是实际工作中最常见的「卡壳点」。</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+提示词：宽表转长表
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>我有一个宽表 <code>df_wide</code>，结构如下：</p>
+<ul>
+<li>固定列（不随时间变化）：id, sex</li>
+<li>时变列（格式为「变量名_年份」）：inc_1980, inc_1981, inc_1982,<br>
+ue_1980, ue_1981, ue_1982</li>
+</ul>
+<p>请帮我将其转换为长表，目标格式为：<br>
+id, year, sex, inc, ue</p>
+<p>其中 year 列应为整数（1980, 1981, 1982）， 请使用 pd.wide_to_long() 或 pd.melt() 实现， 并输出转换前后的行列数对比和前 9 行结果。</p>
+</div>
+</div>
+</section>
+</section>
+<section id="第二层多表操作问题" class="level2" data-number="7.7">
+<h2 data-number="7.7" class="anchored" data-anchor-id="第二层多表操作问题"><span class="header-section-number">7.7</span> 第二层：多表操作问题</h2>
+<section id="合并前的准备" class="level3" data-number="7.7.1">
+<h3 data-number="7.7.1" class="anchored" data-anchor-id="合并前的准备"><span class="header-section-number">7.7.1</span> 合并前的准备</h3>
+<p>在做任何合并之前，需要明确三张表各自的主键：</p>
+<ul>
+<li>BasicInf：主键为 <code>stkcd</code>（每家公司一行）</li>
+<li>FinRatio（筛选合并报表后）：主键为 <code>(stkcd, year)</code></li>
+<li>Announcement（聚合后）：主键为 <code>(stkcd, year)</code></li>
+</ul>
+<p>合并策略：先将 BasicInf 与 FinRatio 以 <code>stkcd</code> 为键进行左连接（以 FinRatio 为主表），再将结果与聚合后的 Announcement 以 <code>(stkcd, year)</code> 为键进行左连接。</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+提示词：合并前检查
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>在合并 BasicInf 和 FinRatio 之前，请帮我做以下检查： 1. 验证 BasicInf 中 stkcd 是否唯一 2. 验证 FinRatio 中 (stkcd, year) 组合是否唯一 3. 统计两张表 stkcd 的重叠情况： 共同 stkcd 数量、BasicInf 独有数量、FinRatio 独有数量 4. 根据检查结果，建议合并类型并说明理由</p>
+</div>
+</div>
+</section>
+<section id="连接类型选错导致样本丢失" class="level3" data-number="7.7.2">
+<h3 data-number="7.7.2" class="anchored" data-anchor-id="连接类型选错导致样本丢失"><span class="header-section-number">7.7.2</span> 连接类型选错导致样本丢失</h3>
+<p>四种连接类型的核心区别在于<strong>如何处理找不到匹配的行</strong>：</p>
+<ul>
+<li><code>inner</code>：只保留两表都有的记录，会静默丢弃单边记录</li>
+<li><code>left</code>：保留左表所有记录，右表无匹配的填 NaN</li>
+<li><code>right</code>：保留右表所有记录</li>
+<li><code>outer</code>：保留两表全部记录</li>
+</ul>
+<p>一个典型的错误场景：用 <code>inner join</code> 合并 FinRatio 和 Announcement，会丢弃所有「有财务数据但当年无贷款公告」的公司-年观测——这意味着样本隐含了「有借款行为」的条件，结论无法推广到所有公司。</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+提示词：合并后验证
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>我刚完成了一次 merge 操作，结果存储在 df_merged 中。 请帮我验证合并是否符合预期： 1. 输出左表行数、右表行数、合并后行数 2. 统计合并后来自右表的列的缺失值数量 3. 若合并后行数 &gt; 左表行数，警告可能发生了一对多导致的行数膨胀 4. 若合并后行数 &lt; 左表行数 × 0.9，警告可能有大量记录未匹配</p>
+</div>
+</div>
+</section>
+<section id="键不唯一导致行数膨胀" class="level3" data-number="7.7.3">
+<h3 data-number="7.7.3" class="anchored" data-anchor-id="键不唯一导致行数膨胀"><span class="header-section-number">7.7.3</span> 键不唯一导致行数膨胀</h3>
+<p>如果 BasicInf 中某家公司的 <code>stkcd</code> 出现了两次（录入错误），合并时该公司的每条财务记录都会被复制，行数静默增加，且不报错。</p>
+<p>预警信号就是合并后行数超过预期，因此上面的合并后验证步骤至关重要。</p>
+</section>
+<section id="第三层系统性数据质量问题" class="level3" data-number="7.7.4">
+<h3 data-number="7.7.4" class="anchored" data-anchor-id="第三层系统性数据质量问题"><span class="header-section-number">7.7.4</span> 第三层：系统性数据质量问题</h3>
+<p>完成了前两层的清洗，数据在技术上已经「干净」了。但这里有一个重要的区分：</p>
+<blockquote class="blockquote">
+<p><strong>数据干净</strong> ≠ <strong>数据准确</strong> ≠ <strong>数据适合回答你的研究问题</strong></p>
+</blockquote>
+</section>
+<section id="样本选择偏差" class="level3" data-number="7.7.5">
+<h3 data-number="7.7.5" class="anchored" data-anchor-id="样本选择偏差"><span class="header-section-number">7.7.5</span> 样本选择偏差</h3>
+<p>我们的数据来自 CSMAR，只包含上市公司。这意味着样本中不包含非上市企业，而上市公司本身是「通过了市场筛选」的企业，在规模、信息披露质量和融资能力上与普通企业有系统性差异。用这份数据估计出的系数，严格来说只适用于上市公司群体，这是在解读结论时需要明确说明的限制。</p>
+</section>
+</section>
+<section id="自选择偏误预告" class="level2" data-number="7.8">
+<h2 data-number="7.8" class="anchored" data-anchor-id="自选择偏误预告"><span class="header-section-number">7.8</span> 自选择偏误（预告）</h2>
+<p>观察到「国有企业的平均借款利率低于民营企业」，这能说明「国企身份导致了更低的融资成本」吗？不一定。国企可能同时在财务质量上优于同类民企，银行给出更低利率是因为风险评估，而非国企身份本身。这就是<strong>自选择偏误</strong>——某种特征（国企身份）的获得不是随机的，而是与其他影响结果的变量同时相关。</p>
+<p>类似的问题在经济研究中无处不在：</p>
+<ul>
+<li>「名校毕业生的教育回报率更高吗？」——还是因为能进名校的人本来就能力更强？(Card, 1995)</li>
+<li>「政府对高新技术企业的税收优惠是否促进了创新投入？」——还是因为本来就有创新意愿的企业更容易获得认定资格？</li>
+</ul>
+<p>这类问题不能通过数据清洗解决，需要专门的因果推断方法（工具变量、双重差分、断点回归等）。我们将在第六章详细讨论。</p>
+</section>
+<section id="提示词模式从问题描述到可运行代码" class="level2" data-number="7.9">
+<h2 data-number="7.9" class="anchored" data-anchor-id="提示词模式从问题描述到可运行代码"><span class="header-section-number">7.9</span> 提示词模式：从问题描述到可运行代码</h2>
+<p>一个好的数据处理提示词通常包含四个要素：</p>
+<p><strong>① 数据背景</strong>：这是什么数据，来自哪里，分析单位是什么。</p>
+<blockquote class="blockquote">
+<p>「我有一个上市公司面板数据，来自 CSMAR，每行代表一个公司-年观测。」</p>
+</blockquote>
+<p><strong>② 问题描述</strong>：你观察到了什么现象，或者你担心存在什么问题。</p>
+<blockquote class="blockquote">
+<p>「RD 列有约 25%的缺失值，怀疑缺失与行业和年份有关。」</p>
+</blockquote>
+<p><strong>③ 处理要求</strong>：你希望如何处理，包括具体的参数、字段名和格式要求。</p>
+<blockquote class="blockquote">
+<p>「将缺失值填充为 0，同时创建指示变量 RD_missing，新列保留原列名加后缀。」</p>
+</blockquote>
+<p><strong>④ 验证要求</strong>：处理完之后需要验证什么。</p>
+<blockquote class="blockquote">
+<p>「输出处理前后的缺失值数量对比，以及新列的 value_counts。」</p>
+</blockquote>
+<p>当你能够完整写出这四个要素，生成的代码通常可以直接运行。相反，「帮我处理缺失值」这样的提示词生成的代码在技术上可能正确，但完全不符合实际需求。</p>
+<section id="综合案例与章末练习" class="level3" data-number="7.9.1">
+<h3 data-number="7.9.1" class="anchored" data-anchor-id="综合案例与章末练习"><span class="header-section-number">7.9.1</span> 综合案例与章末练习</h3>
+</section>
+<section id="完整处理流程" class="level3" data-number="7.9.2">
+<h3 data-number="7.9.2" class="anchored" data-anchor-id="完整处理流程"><span class="header-section-number">7.9.2</span> 完整处理流程</h3>
+<ol type="1">
+<li>分别导入 BasicInf、FinRatio、Announcement 原始数据至 <code>data_raw/</code></li>
+<li>对 Announcement 文本做非结构化提取，保存至 <code>data_temp/</code></li>
+<li>对 Announcement 提取结果做去重（精确重复 + 模糊重复）</li>
+<li>统一三张表的 <code>stkcd</code> 格式（6位字符串）</li>
+<li>筛选 FinRatio 仅保留合并报表（<code>report_type="A"</code>）</li>
+<li>对 FinRatio 做类型检查（修复 <code>Size</code> 列）</li>
+<li>将 Announcement 提取结果金额统一换算为万元</li>
+<li>按 <code>(stkcd, year)</code> 聚合 Announcement（长表→宽表）</li>
+<li>验证三张表的主键唯一性</li>
+<li>分两步合并三张表，每步合并后验证行数</li>
+<li>对 Leverage、ROA、CFlow、Cash_holding 做缩尾处理（上下各1%）</li>
+<li>对 RD 创建填充列和缺失指示变量</li>
+<li>输出最终数据集至 <code>data_clean/merged_clean.csv</code></li>
+</ol>
+</section>
+<section id="章末练习" class="level3" data-number="7.9.3">
+<h3 data-number="7.9.3" class="anchored" data-anchor-id="章末练习"><span class="header-section-number">7.9.3</span> 章末练习</h3>
+<p>请使用本章提供的虚构数据集完成以下任务：</p>
+<ol type="1">
+<li>用提示词生成代码，输出一份完整的数据质量报告</li>
+<li>逐步执行第7节的完整处理流程，记录每步处理前后的行数和关键统计量变化</li>
+<li>尝试对 FinRatio 不筛选报表类型直接合并，观察结果有何异常</li>
+<li>思考题：若要将本研究的结论推广至所有中国企业，需要补充哪些论证？CSMAR 数据的样本特征对哪类研究问题影响最大？</li>
+</ol>
+</section>
+</section>
+<section id="参考文献" class="level2" data-number="7.10">
+<h2 data-number="7.10" class="anchored" data-anchor-id="参考文献"><span class="header-section-number">7.10</span> 参考文献</h2>
+<ul>
+<li><p>Card, D. (1995). Using geographic variation in college proximity to estimate the return to schooling. In L. N. Christofides, E. K. Grant, &amp; R. Swidinsky (Eds.), <em>Aspects of labour market behaviour: Essays in honour of John Vanderkamp</em> （pp.&nbsp;201–222）. University of Toronto Press. <a href="https://scholar.google.com/scholar?q=Using%20geographic%20variation%20in%20college%20proximity%20to%20estimate%20the%20return%20to%20schooling%20Card%201995">Google</a>.</p></li>
+<li><p>Herndon, T., Ash, M., &amp; Pollin, R. (2014). Does high public debt consistently stifle economic growth? A critique of Reinhart and Rogoff. <em>Cambridge Journal of Economics</em>, 38（2）, 257–279. <a href="https://doi.org/10.1093/cje/bet075">Link</a>, <a href="http://sci-hub.ren/10.1093/cje/bet075">PDF</a>, <a href="https://scholar.google.com/scholar?q=Does%20high%20public%20debt%20consistently%20stifle%20economic%20growth?%20A%20critique%20of%20Reinhart%20and%20Rogoff">Google</a>.</p></li>
+<li><p>Reinhart, C. M., &amp; Rogoff, K. S. (2010). Growth in a time of debt. <em>American Economic Review: Papers &amp; Proceedings</em>, 100（2）, 573–578. <a href="https://doi.org/10.1257/aer.100.2.573">Link</a>, <a href="http://sci-hub.ren/10.1257/aer.100.2.573">PDF</a>, <a href="https://scholar.google.com/scholar?q=Growth%20in%20a%20time%20of%20debt%20Reinhart%20Rogoff%202010">Google</a>.</p></li>
+</ul>
+
+
+</section>
+</div>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const disableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'prefetch';
+    }
+  }
+  const enableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'stylesheet';
+    }
+  }
+  const manageTransitions = (selector, allowTransitions) => {
+    const els = window.document.querySelectorAll(selector);
+    for (let i=0; i < els.length; i++) {
+      const el = els[i];
+      if (allowTransitions) {
+        el.classList.remove('notransition');
+      } else {
+        el.classList.add('notransition');
+      }
+    }
+  }
+  const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+    const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+    const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+    let newTheme = '';
+    if(darkModeDefault) {
+      newTheme = isAlternate ? baseTheme : alternateTheme;
+    } else {
+      newTheme = isAlternate ? alternateTheme : baseTheme;
+    }
+    const changeGiscusTheme = () => {
+      // From: https://github.com/giscus/giscus/issues/336
+      const sendMessage = (message) => {
+        const iframe = document.querySelector('iframe.giscus-frame');
+        if (!iframe) return;
+        iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+      }
+      sendMessage({
+        setConfig: {
+          theme: newTheme
+        }
+      });
+    }
+    const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+    if (isGiscussLoaded) {
+      changeGiscusTheme();
+    }
+  }
+  const toggleColorMode = (alternate) => {
+    // Switch the stylesheets
+    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+    manageTransitions('#quarto-margin-sidebar .nav-link', false);
+    if (alternate) {
+      enableStylesheet(alternateStylesheets);
+      for (const sheetNode of alternateStylesheets) {
+        if (sheetNode.id === "quarto-bootstrap") {
+          toggleBodyColorMode(sheetNode);
+        }
+      }
+    } else {
+      disableStylesheet(alternateStylesheets);
+      toggleBodyColorPrimary();
+    }
+    manageTransitions('#quarto-margin-sidebar .nav-link', true);
+    // Switch the toggles
+    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+    for (let i=0; i < toggles.length; i++) {
+      const toggle = toggles[i];
+      if (toggle) {
+        if (alternate) {
+          toggle.classList.add("alternate");     
+        } else {
+          toggle.classList.remove("alternate");
+        }
+      }
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455)
+    if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+      manageTransitions("body", false);
+      window.scrollTo(0, 1);
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        manageTransitions("body", true);
+      }, 40);  
+    }
+  }
+  const isFileUrl = () => { 
+    return window.location.protocol === 'file:';
+  }
+  const hasAlternateSentinel = () => {  
+    let styleSentinel = getColorSchemeSentinel();
+    if (styleSentinel !== null) {
+      return styleSentinel === "alternate";
+    } else {
+      return false;
+    }
+  }
+  const setStyleSentinel = (alternate) => {
+    const value = alternate ? "alternate" : "default";
+    if (!isFileUrl()) {
+      window.localStorage.setItem("quarto-color-scheme", value);
+    } else {
+      localAlternateSentinel = value;
+    }
+  }
+  const getColorSchemeSentinel = () => {
+    if (!isFileUrl()) {
+      const storageValue = window.localStorage.getItem("quarto-color-scheme");
+      return storageValue != null ? storageValue : localAlternateSentinel;
+    } else {
+      return localAlternateSentinel;
+    }
+  }
+  const darkModeDefault = false;
+  let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+  // Dark / light mode switch
+  window.quartoToggleColorScheme = () => {
+    // Read the current dark / light value 
+    let toAlternate = !hasAlternateSentinel();
+    toggleColorMode(toAlternate);
+    setStyleSentinel(toAlternate);
+    toggleGiscusIfUsed(toAlternate, darkModeDefault);
+  };
+  // Ensure there is a toggle, if there isn't float one in the top right
+  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+    const a = window.document.createElement('a');
+    a.classList.add('top-right');
+    a.classList.add('quarto-color-scheme-toggle');
+    a.href = "";
+    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+    const i = window.document.createElement("i");
+    i.classList.add('bi');
+    a.appendChild(i);
+    window.document.body.appendChild(a);
+  }
+  // Switch to dark mode if need be
+  if (hasAlternateSentinel()) {
+    toggleColorMode(true);
+  } else {
+    toggleColorMode(false);
+  }
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp("https:\/\/lianxhcn\.github\.io\/dsfin\/");
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+          // target, if specified
+          link.setAttribute("target", "_blank");
+          if (link.getAttribute("rel") === null) {
+            link.setAttribute("rel", "noopener");
+          }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../../Lecture/data_get_data/Lec_get_data.html" class="pagination-link" aria-label="金融数据获取">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">金融数据获取</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../../Lecture/crawing/craw_01_introduction.html" class="pagination-link" aria-label="网络爬虫简介">
+        <span class="nav-page-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">网络爬虫简介</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
