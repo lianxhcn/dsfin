@@ -50,8 +50,8 @@ book:
 
     - part: "**数据分析**"
       chapters:
-        - Lecture/data_get_data/Lec_get_data.ipynb 
-        - Lecture/data_clean/Lec_data_clean.ipynb 
+        - Lecture/data_get_data/lec_get_data.ipynb 
+        - Lecture/data_clean/lec_data_clean.ipynb 
     
     - part: "**数据爬取**"
       chapters:
