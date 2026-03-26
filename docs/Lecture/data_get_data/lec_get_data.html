@@ -462,7 +462,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tr>
 </tbody>
 </table>
-<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
@@ -472,7 +472,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>本章所有代码均基于 <strong>Anaconda</strong> 环境，涉及的数据接口全部<strong>免费开放</strong>，无需付费订阅。如果你还没有配置好 Anaconda，请先参考第一章的环境配置说明。</p>
+<p>本章所有代码均基于 <strong>Anaconda</strong> 环境，涉及的数据接口全部<strong>免费开放</strong>，无需付费订阅。 如果你还没有配置好 Anaconda，请先参考第一章的环境配置说明。</p>
 </div>
 </div>
 <section id="数据在哪里" class="level2" data-number="6.1">
@@ -600,7 +600,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tr>
 </tbody>
 </table>
-<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
@@ -1240,10 +1240,8 @@ AI 提示词：GMD 数据分析模板
 </div>
 <div class="callout-body-container callout-body">
 <p>以下提示词可以帮你快速生成针对任意国家和变量的分析代码：</p>
-<blockquote class="blockquote">
 <p>你是 Python 数据分析助手。我已有一个名为 <code>data</code> 的 DataFrame，是 GMD 全球宏观数据库，包含 <code>ISO3</code>（国家代码）、<code>year</code>（年份）和若干宏观变量列。</p>
 <p>请帮我完成：从 <code>data</code> 中筛选国家 <code>[ISO3代码，如 USA]</code>，截取 <code>[起始年份]</code> 至 <code>[结束年份]</code> 的数据，绘制变量 <code>[变量名，如 gdppc]</code> 的时序折线图，图中包含标题、坐标轴标签、网格，x 轴每 5 年一个刻度。代码简洁，加中文注释。</p>
-</blockquote>
 </div>
 </div>
 <hr>
@@ -1402,9 +1400,8 @@ AI 提示词：世界银行数据获取
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<blockquote class="blockquote">
-<p>请帮我用 Python 的 <code>world_bank_data</code> 库，获取 <code>[国家列表，如：中国、印度、巴西]</code> 在 <code>[年份范围，如：2000-2023]</code> 年间的 <code>[指标描述，如：人均 GDP 和 CPI 通胀率]</code> 数据，整理为宽格式 DataFrame，并绘制各国的对比折线图。请帮我查找正确的世界银行指标代码，加上简洁的中文注释。</p>
-</blockquote>
+<p>请帮我用 Python 的 <code>world_bank_data</code> 库， 获取 <code>[国家列表，如：中国、印度、巴西]</code> 在 <code>[年份范围，如：2000-2023]</code> 年间的 <code>[指标描述，如：人均 GDP 和 CPI 通胀率]</code> 数据， 整理为宽格式 DataFrame，并绘制各国的对比折线图。</p>
+<p>请帮我查找正确的世界银行指标代码，加上简洁的中文注释。</p>
 </div>
 </div>
 <hr>
