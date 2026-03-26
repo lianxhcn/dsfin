@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>🚀作业 – 金融数据分析与建模</title>
+<title>A3. 提示词核心词汇 – 金融数据分析与建模</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -20,6 +20,40 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -30,8 +64,8 @@ ul.task-list li input[type="checkbox"] {
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
-<link href="../Lecture/00-setup/01_00_coding_with_AI.html" rel="next">
-<link href="../Lecture/00_intro.html" rel="prev">
+<link href="../appendix_python/a4_data.html" rel="next">
+<link href="../appendix_python/a2_project.html" rel="prev">
 <link href="../images/book-logo.png" rel="icon" type="image/png">
 <script src="../site_libs/quarto-html/quarto.js"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
@@ -85,7 +119,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../Lecture/01_homework.html">🚀作业</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../appendix_python/index.html">附录</a></li><li class="breadcrumb-item"><a href="../appendix_python/a3_concepts.html">A3. 提示词核心词汇</a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -132,7 +166,7 @@ ul.task-list li input[type="checkbox"] {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../Lecture/01_homework.html" class="sidebar-item-text sidebar-link active">
+  <a href="../Lecture/01_homework.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">🚀作业</span></a>
   </div>
 </li>
@@ -258,7 +292,7 @@ ul.task-list li input[type="checkbox"] {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../appendix_python/a3_concepts.html" class="sidebar-item-text sidebar-link">
+  <a href="../appendix_python/a3_concepts.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text">A3. 提示词核心词汇</span></a>
   </div>
 </li>
@@ -299,15 +333,27 @@ ul.task-list li input[type="checkbox"] {
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#a3.1-数据类型" id="toc-a3.1-数据类型" class="nav-link active" data-scroll-target="#a3.1-数据类型">A3.1 数据类型</a>
+  <ul class="collapse">
+  <li><a href="#a3.1.1-为什么数据类型在提示词中最重要" id="toc-a3.1.1-为什么数据类型在提示词中最重要" class="nav-link" data-scroll-target="#a3.1.1-为什么数据类型在提示词中最重要">A3.1.1 为什么数据类型在提示词中最重要</a></li>
+  </ul></li>
+  <li><a href="#a3.2-数据结构" id="toc-a3.2-数据结构" class="nav-link" data-scroll-target="#a3.2-数据结构">A3.2 数据结构</a></li>
+  <li><a href="#a3.2.1-最常用的数据结构数据框" id="toc-a3.2.1-最常用的数据结构数据框" class="nav-link" data-scroll-target="#a3.2.1-最常用的数据结构数据框">A3.2.1 最常用的数据结构：数据框</a></li>
+  <li><a href="#a3.3-常用库速查" id="toc-a3.3-常用库速查" class="nav-link" data-scroll-target="#a3.3-常用库速查">A3.3 常用库速查</a></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default">
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../appendix_python/index.html">附录</a></li><li class="breadcrumb-item"><a href="../appendix_python/a3_concepts.html">A3. 提示词核心词汇</a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title">🚀作业</h1>
+<h1 class="title">A3. 提示词核心词汇</h1>
 </div>
 
 
@@ -324,16 +370,344 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<hr>
-<blockquote class="blockquote">
-<p>🍓 <strong><a href="https://send2me.cn/FCAjV_t7/So-WPbzxrA1YiQ">点此提交作业</a></strong></p>
-</blockquote>
-<blockquote class="blockquote">
-<p>🍏 <a href="https://github.com/lianxhcn/dsfin/blob/main/homework/readme.md">查看作业通知</a></p>
-</blockquote>
-<hr>
+<p>本章不是词汇表，而是帮你建立「<strong>用专业词汇描述任务</strong>」的习惯。每个术语都直接嵌入在对应的提示词框中，你在使用提示词的过程中自然习得。</p>
+<section id="a3.1-数据类型" class="level2">
+<h2 class="anchored" data-anchor-id="a3.1-数据类型">A3.1 数据类型</h2>
+<section id="a3.1.1-为什么数据类型在提示词中最重要" class="level3">
+<h3 class="anchored" data-anchor-id="a3.1.1-为什么数据类型在提示词中最重要">A3.1.1 为什么数据类型在提示词中最重要</h3>
+<p>同样是一列数字，<code>"20240101"</code> 可能是字符串，也可能是整数。「把日期列转换成可以计算的格式」让 AI 一头雾水，而「把 <code>date</code> 列从<strong>字符串类型（str）</strong>转换为 <strong>datetime 类型</strong>」则让 AI 立刻写出正确代码。</p>
+<p><strong>A. 金融数据中的常见类型与陷阱</strong></p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 19%">
+<col style="width: 29%">
+<col style="width: 29%">
+<col style="width: 21%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>类型名</th>
+<th>Python 写法</th>
+<th>金融场景示例</th>
+<th>常见陷阱</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>整数</td>
+<td><code>int</code></td>
+<td>成交量 <code>1200000</code></td>
+<td>大数字无精度问题</td>
+</tr>
+<tr class="even">
+<td>浮点数</td>
+<td><code>float</code></td>
+<td>收盘价 <code>10.52</code>、收益率 <code>0.0132</code></td>
+<td>浮点精度误差</td>
+</tr>
+<tr class="odd">
+<td>字符串</td>
+<td><code>str</code></td>
+<td>股票代码 <code>"000001"</code>、日期 <code>"2024-01-01"</code></td>
+<td><strong>股票代码必须用字符串，否则前导零丢失</strong></td>
+</tr>
+<tr class="even">
+<td>日期时间</td>
+<td><code>datetime</code></td>
+<td><code>2024-01-15 09:30:00</code></td>
+<td><strong>从 CSV 读入后默认是字符串，必须手动转换</strong></td>
+</tr>
+<tr class="odd">
+<td>布尔值</td>
+<td><code>bool</code></td>
+<td>是否违约 <code>True</code>、是否处理组 <code>False</code></td>
+<td>有时被存为 0/1 整数</td>
+</tr>
+<tr class="even">
+<td>缺失值</td>
+<td><code>NaN</code></td>
+<td>停牌日无成交量</td>
+<td>计算时会传染，导致整列结果为 NaN</td>
+</tr>
+</tbody>
+</table>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+提示词：读入数据后的第一步——查询并修正数据类型
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>这是每次读入新数据后必做的操作。养成习惯后，后续绝大多数类型相关的报错都能提前避免。</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode md code-with-copy"><code class="sourceCode markdown"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>我用 pandas 读入了一个 CSV 文件，存储在数据框 <span class="in">`df`</span> 中。</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>列名为：date、stock_code、open、high、low、close、volume、return。</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>请帮我写代码完成以下任务：</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>打印数据框的基本信息：行数、列数、每列的数据类型、缺失值数量</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>将 <span class="in">`date`</span> 列从字符串类型转换为 datetime 类型，</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>   日期格式为 YYYY-MM-DD</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>将 <span class="in">`stock_code`</span> 列强制转换为字符串类型（避免前导零丢失）</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span>将 <span class="in">`open`</span>、<span class="in">`high`</span>、<span class="in">`low`</span>、<span class="in">`close`</span>、<span class="in">`return`</span> 列转换为 float 类型</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="ss">5. </span>将 <span class="in">`volume`</span> 列转换为 int 类型</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="ss">6. </span>转换后再次打印每列的数据类型，确认转换成功</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>如果某列转换失败（如含有非数字的字符串），请用 <span class="in">`errors='coerce'`</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>将无法转换的值设为 NaN，并打印出有多少行受到影响。</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+追问模板
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-2" class="callout-2-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div class="sourceCode" id="cb2"><pre class="sourceCode md code-with-copy"><code class="sourceCode markdown"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>上面的类型转换代码运行后，<span class="in">`close`</span> 列转换为 float 时出现了问题，</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>有 <span class="co">[</span><span class="ot">X</span><span class="co">]</span> 行被设为了 NaN。</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>请帮我查找原因：</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>打印出 <span class="in">`close`</span> 列中所有无法转换为 float 的原始值</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>分析这些值的规律（如包含逗号、百分号、空格等）</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>在转换前先做字符串清洗，去除这些异常字符，再重新转换</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="a3.2-数据结构" class="level2">
+<h2 class="anchored" data-anchor-id="a3.2-数据结构">A3.2 数据结构</h2>
+</section>
+<section id="a3.2.1-最常用的数据结构数据框" class="level2">
+<h2 class="anchored" data-anchor-id="a3.2.1-最常用的数据结构数据框">A3.2.1 最常用的数据结构：数据框</h2>
+<p>pandas 数据框（DataFrame）是金融数据分析中几乎一切操作的基础。下面是你在提示词中必须用到的术语。</p>
+<p><strong>A. 数据框的结构与术语</strong></p>
+<pre><code>         date  stock_code   close   volume   return
+0  2024-01-02      600000   10.50  1200000   0.012   ← 行（row）/ 观测
+1  2024-01-03      600000   10.80  1500000   0.029
+2  2024-01-02      601318   85.20   800000  -0.005
+
+↑ 索引（index）         ↑ 列名（column name）</code></pre>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>术语</th>
+<th>英文</th>
+<th>提示词中怎么说</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>行 / 观测</td>
+<td>row</td>
+<td>「每行是一只股票某天的数据」</td>
+</tr>
+<tr class="even">
+<td>列 / 变量</td>
+<td>column</td>
+<td>「<code>close</code> 列」、「收盘价列」</td>
+</tr>
+<tr class="odd">
+<td>索引</td>
+<td>index</td>
+<td>「重置索引」、「以 date 为索引」</td>
+</tr>
+<tr class="even">
+<td>子集</td>
+<td>subset / slice</td>
+<td>「筛选出 industry 为银行的行」</td>
+</tr>
+<tr class="odd">
+<td>分组</td>
+<td>groupby</td>
+<td>「按 stock_code 分组」</td>
+</tr>
+<tr class="even">
+<td>聚合</td>
+<td>aggregate</td>
+<td>「对每组计算均值」</td>
+</tr>
+<tr class="odd">
+<td>合并</td>
+<td>merge / join</td>
+<td>「按 stock_code 和 date 左连接两个数据框」</td>
+</tr>
+<tr class="even">
+<td>拼接</td>
+<td>concat</td>
+<td>「将多个数据框纵向拼接」</td>
+</tr>
+<tr class="odd">
+<td>长格式</td>
+<td>long format</td>
+<td>「每行是一个股票在某天的数据」</td>
+</tr>
+<tr class="even">
+<td>宽格式</td>
+<td>wide format</td>
+<td>「行为日期，列为股票代码，值为收盘价」</td>
+</tr>
+<tr class="odd">
+<td>透视</td>
+<td>pivot / melt</td>
+<td>「长格式转宽格式」、「宽格式转长格式」</td>
+</tr>
+<tr class="even">
+<td>缺失值</td>
+<td>NaN / missing</td>
+<td>「close 列有缺失值」</td>
+</tr>
+<tr class="odd">
+<td>重复行</td>
+<td>duplicate</td>
+<td>「删除重复的股票-日期组合」</td>
+</tr>
+<tr class="even">
+<td>异常值</td>
+<td>outlier</td>
+<td>「return 列有极端异常值」</td>
+</tr>
+</tbody>
+</table>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+提示词：数据框的核心操作速查
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>这组提示词将最常用的 6 类数据框操作集中在一起，可按需拆分单独使用。</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode md code-with-copy"><code class="sourceCode markdown"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>我有一个 pandas 数据框 <span class="in">`df`</span>，面板数据格式（每行是一只股票某天的数据），</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>包含以下列：</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>date：datetime 类型的日期</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>stock_code：字符串类型的股票代码</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>close：浮点数类型的收盘价</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>volume：整数类型的成交量</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>industry：字符串类型的行业分类</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>请分别写代码实现以下操作，每个操作独立一段代码，附中文注释：</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>【筛选行】保留 industry 为「银行」且 close 大于 10 的行</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>【选取列】只保留 date、stock_code、close 三列，存为新数据框 <span class="in">`df_sub`</span></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>【排序】按 date 升序、close 降序排列</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span>【分组聚合】按 industry 分组，计算每个行业的平均收盘价和总成交量</span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a><span class="ss">5. </span>【新增列】新增列 <span class="in">`log_return`</span>，值为 close 列的日对数收益率</span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>   （公式：ln(close_t / close_{t-1})，需要按 stock_code 分组后计算）</span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a><span class="ss">6. </span>【格式转换】将长格式转换为宽格式：</span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>   行为 date，列为 stock_code，值为 close</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+追问模板
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-4" class="callout-4-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div class="sourceCode" id="cb5"><pre class="sourceCode md code-with-copy"><code class="sourceCode markdown"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>第 5 步计算 log_return 的代码有问题：</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>每只股票的第一个交易日的 log_return 应该是 NaN（因为没有前一天的数据），</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>但现在显示的是 <span class="co">[</span><span class="ot">描述实际结果</span><span class="co">]</span>。</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>请检查代码，确保：</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>对数收益率是在每只股票内部按时间顺序计算的（不跨股票）</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>每只股票的第一行 log_return 为 NaN</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>打印前 5 行验证结果</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="a3.3-常用库速查" class="level2">
+<h2 class="anchored" data-anchor-id="a3.3-常用库速查">A3.3 常用库速查</h2>
+<p>写提示词时明确指定使用哪个库，AI 生成的代码风格会更一致，不同来源的代码之间也更容易混用。</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 23%">
+<col style="width: 30%">
+<col style="width: 46%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>任务</th>
+<th>推荐库</th>
+<th>提示词关键词</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>数据处理</td>
+<td><code>pandas</code></td>
+<td>「使用 pandas」</td>
+</tr>
+<tr class="even">
+<td>数值计算</td>
+<td><code>numpy</code></td>
+<td>「使用 numpy」</td>
+</tr>
+<tr class="odd">
+<td>统计绘图</td>
+<td><code>matplotlib</code> + <code>seaborn</code></td>
+<td>「用 seaborn 基于 matplotlib 绘图」</td>
+</tr>
+<tr class="even">
+<td>交互式图形</td>
+<td><code>plotly</code></td>
+<td>「使用 plotly 生成交互式图表」</td>
+</tr>
+<tr class="odd">
+<td>统计建模</td>
+<td><code>statsmodels</code></td>
+<td>「使用 statsmodels 的 OLS 模块」</td>
+</tr>
+<tr class="even">
+<td>机器学习</td>
+<td><code>scikit-learn</code></td>
+<td>「使用 scikit-learn」</td>
+</tr>
+<tr class="odd">
+<td>美股数据</td>
+<td><code>yfinance</code></td>
+<td>「用 yfinance 下载 Yahoo Finance 数据」</td>
+</tr>
+<tr class="even">
+<td>Wind 数据</td>
+<td><code>WindPy</code></td>
+<td>「通过 WindPy 的 w.wsd 函数获取数据」</td>
+</tr>
+<tr class="odd">
+<td>进度条</td>
+<td><code>tqdm</code></td>
+<td>「用 tqdm 显示循环进度条」</td>
+</tr>
+<tr class="even">
+<td>表格美化</td>
+<td><code>tabulate</code></td>
+<td>「用 tabulate 格式化输出表格」</td>
+</tr>
+<tr class="odd">
+<td>报告导出</td>
+<td><code>openpyxl</code></td>
+<td>「用 openpyxl 写入 Excel 文件」</td>
+</tr>
+</tbody>
+</table>
 
 
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
@@ -904,13 +1278,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="../Lecture/00_intro.html" class="pagination-link" aria-label="📚课程资料">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">📚课程资料</span>
+      <a href="../appendix_python/a2_project.html" class="pagination-link" aria-label="A2. 项目规划与版本控制">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">A2. 项目规划与版本控制</span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../Lecture/00-setup/01_00_coding_with_AI.html" class="pagination-link" aria-label="借助 AI 写代码">
-        <span class="nav-page-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">借助 AI 写代码</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="../appendix_python/a4_data.html" class="pagination-link" aria-label="A4. 数据获取与清洗">
+        <span class="nav-page-text">A4. 数据获取与清洗</span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

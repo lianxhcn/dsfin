@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>🚀作业 – 金融数据分析与建模</title>
+<title>附录：提示词导向的 Python 数据分析 – 金融数据分析与建模</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -30,8 +30,8 @@ ul.task-list li input[type="checkbox"] {
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
-<link href="../Lecture/00-setup/01_00_coding_with_AI.html" rel="next">
-<link href="../Lecture/00_intro.html" rel="prev">
+<link href="../appendix_python/a1_setup.html" rel="next">
+<link href="../Lecture/crawing/craw_02_sec02_lingnan_dialog.html" rel="prev">
 <link href="../images/book-logo.png" rel="icon" type="image/png">
 <script src="../site_libs/quarto-html/quarto.js"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
@@ -85,7 +85,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../Lecture/01_homework.html">🚀作业</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../appendix_python/index.html">附录</a></li><li class="breadcrumb-item"><a href="../appendix_python/index.html">附录：提示词导向的 Python 数据分析</a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -132,7 +132,7 @@ ul.task-list li input[type="checkbox"] {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../Lecture/01_homework.html" class="sidebar-item-text sidebar-link active">
+  <a href="../Lecture/01_homework.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">🚀作业</span></a>
   </div>
 </li>
@@ -240,7 +240,7 @@ ul.task-list li input[type="checkbox"] {
       <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../appendix_python/index.html" class="sidebar-item-text sidebar-link">
+  <a href="../appendix_python/index.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text">附录：提示词导向的 Python 数据分析</span></a>
   </div>
 </li>
@@ -299,15 +299,29 @@ ul.task-list li input[type="checkbox"] {
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#定位与使用方法" id="toc-定位与使用方法" class="nav-link active" data-scroll-target="#定位与使用方法">定位与使用方法</a></li>
+  <li><a href="#最重要的心智模型与-ai-的对话是迭代过程" id="toc-最重要的心智模型与-ai-的对话是迭代过程" class="nav-link" data-scroll-target="#最重要的心智模型与-ai-的对话是迭代过程">最重要的心智模型：与 AI 的对话是迭代过程</a></li>
+  <li><a href="#章节安排" id="toc-章节安排" class="nav-link" data-scroll-target="#章节安排">章节安排</a></li>
+  <li><a href="#推荐参考资料" id="toc-推荐参考资料" class="nav-link" data-scroll-target="#推荐参考资料">推荐参考资料</a>
+  <ul class="collapse">
+  <li><a href="#python-语言基础" id="toc-python-语言基础" class="nav-link" data-scroll-target="#python-语言基础">Python 语言基础</a></li>
+  <li><a href="#python-数据分析" id="toc-python-数据分析" class="nav-link" data-scroll-target="#python-数据分析">Python 数据分析</a></li>
+  <li><a href="#金融数据分析" id="toc-金融数据分析" class="nav-link" data-scroll-target="#金融数据分析">金融数据分析</a></li>
+  </ul></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default">
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../appendix_python/index.html">附录</a></li><li class="breadcrumb-item"><a href="../appendix_python/index.html">附录：提示词导向的 Python 数据分析</a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title">🚀作业</h1>
+<h1 class="title">附录：提示词导向的 Python 数据分析</h1>
 </div>
 
 
@@ -324,16 +338,154 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<hr>
+<section id="定位与使用方法" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="定位与使用方法">定位与使用方法</h2>
+<p>本附录<strong>不是</strong>一份系统的 Python 语法教程。你不需要背语法，不需要记函数名。</p>
+<p>本附录只做一件事：<strong>帮你用准确的专业语言，指挥 AI 工具生成可运行的 Python 代码。</strong></p>
+<p>同样是让 AI 清洗数据，下面两种提示词的效果差距巨大：</p>
 <blockquote class="blockquote">
-<p>🍓 <strong><a href="https://send2me.cn/FCAjV_t7/So-WPbzxrA1YiQ">点此提交作业</a></strong></p>
+<p>❌ 「帮我清洗一下数据」</p>
 </blockquote>
 <blockquote class="blockquote">
-<p>🍏 <a href="https://github.com/lianxhcn/dsfin/blob/main/homework/readme.md">查看作业通知</a></p>
+<p>✅ 「我有一个 pandas 数据框 <code>df</code>，包含 <code>date</code>、<code>stock_code</code>、<code>return</code> 三列，其中 <code>return</code> 列有缺失值。请用<strong>前向填充法</strong>处理缺失值，将 <code>date</code> 列转换为 <strong>datetime 类型</strong>，最后按 <code>stock_code</code> 和 <code>date</code> 升序排列。」</p>
 </blockquote>
-<hr>
+<p>差别只有一个：第二种用了 <strong>Python 专业术语</strong>。有了这些词，AI 才知道你的数据结构、处理目标和技术偏好。<strong>本附录的核心任务，就是帮你积累这套词汇，并给出可以直接套用的提示词框。</strong></p>
+</section>
+<section id="最重要的心智模型与-ai-的对话是迭代过程" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="最重要的心智模型与-ai-的对话是迭代过程">最重要的心智模型：与 AI 的对话是迭代过程</h2>
+<p>初学者最常见的误区是：<strong>期待一次提示词生成完美代码</strong>。这几乎不可能发生。</p>
+<p>真实的工作流是这样的：</p>
+<pre><code>第 1 轮  描述任务背景 + 数据结构
+         → AI 生成基础代码，能跑通
+            ↓
+第 2 轮  「代码报错」或「结果不对」
+         → 贴上错误信息或具体问题，继续追问
+            ↓
+第 3 轮  「结果对了，但图不好看」或「表格太乱」
+         → 用微调提示词修细节
+            ↓
+第 4 轮  「这段代码太慢」或「想理解这行代码」
+         → 优化 / 解释提示词</code></pre>
+<p>因此，本附录中的每一个提示词框，都设计为<strong>两层结构</strong>：</p>
+<ul>
+<li><strong>第一层（主提示词）</strong>：生成基础代码</li>
+<li><strong>第二层（追问模板）</strong>：根据第一轮的结果，选择合适的追问方式继续迭代</li>
+</ul>
+<p><strong>管理 AI 的上下文记忆也很重要。</strong> 当对话变长，或你开启了新的对话窗口，AI 会「忘记」你之前说过的数据结构和变量名，导致生成的代码和前文对不上。解决方法见 <a href="../appendix_python/a8_workflow.html">A8. 上下文管理与调试</a>。</p>
+</section>
+<section id="章节安排" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="章节安排">章节安排</h2>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>章节</th>
+<th>主题</th>
+<th>核心收获</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><a href="../appendix_python/a1_setup.html">A1. 环境配置</a></td>
+<td>包安装、路径、常见报错</td>
+<td>能向 AI 描述你的运行环境</td>
+</tr>
+<tr class="even">
+<td><a href="../appendix_python/a2_project.html">A2. 项目规划与 Git</a></td>
+<td>项目结构、GitHub 同步</td>
+<td>建立可复现的分析项目</td>
+</tr>
+<tr class="odd">
+<td><a href="../appendix_python/a3_concepts.html">A3. 提示词核心词汇</a></td>
+<td>数据类型、数据结构术语</td>
+<td>写出 AI 能理解的提示词</td>
+</tr>
+<tr class="even">
+<td><a href="../appendix_python/a4_data.html">A4. 数据获取与清洗</a></td>
+<td>读取、清洗、合并、变换</td>
+<td>数据处理类提示词模板</td>
+</tr>
+<tr class="odd">
+<td><a href="../appendix_python/a5_visualization.html">A5. 数据可视化</a></td>
+<td>图形要素、风格、金融专题图</td>
+<td>可视化类提示词模板</td>
+</tr>
+<tr class="even">
+<td><a href="../appendix_python/a6_modeling.html">A6. 统计建模</a></td>
+<td>回归、机器学习、模型评估</td>
+<td>建模类提示词模板</td>
+</tr>
+<tr class="odd">
+<td><a href="../appendix_python/a7_results.html">A7. 结果呈现与表格</a></td>
+<td>Notebook 输出、表格美化、导出</td>
+<td>让结果好看、可汇报</td>
+</tr>
+<tr class="even">
+<td><a href="../appendix_python/a8_workflow.html">A8. 上下文管理与调试</a></td>
+<td>验证结果、报错处理、代码加速</td>
+<td>遇到问题时怎么问 AI</td>
+</tr>
+</tbody>
+</table>
+<p><strong>建议使用方式：</strong></p>
+<ol type="1">
+<li>先读完本页，建立迭代工作流的心智模型</li>
+<li>通读 A3，掌握核心专业词汇</li>
+<li>按需查阅 A4–A7 中的提示词框，稍作修改即可使用</li>
+<li>遇到报错或结果不对，直接跳到 A8</li>
+</ol>
+</section>
+<section id="推荐参考资料" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="推荐参考资料">推荐参考资料</h2>
+<section id="python-语言基础" class="level3">
+<h3 class="anchored" data-anchor-id="python-语言基础">Python 语言基础</h3>
+<ul>
+<li>Downey, A. (<strong>2024</strong>). <em>Think Python: How to Think Like a Computer Scientist</em> (3rd ed.). O’Reilly. <a href="https://greenteapress.com/wp/think-python-3rd-edition/">在线阅读</a> | <a href="https://greenteapress.com/thinkpython/thinkpython.pdf">PDF</a>
+<ul>
+<li>Python 入门首选，通俗易懂，适合零基础读者</li>
+</ul></li>
+<li>Johansson, R. (<strong>2024</strong>). <em>Numerical Python: Scientific Computing and Data Science Applications with NumPy, SciPy and Matplotlib</em> (3rd ed.). Apress. <a href="https://link.springer.com/book/10.1007/979-8-8688-0413-7">链接</a> | <a href="https://github.com/Apress/Numerical-Python-3rd-ed">github</a>
+<ul>
+<li>覆盖科学计算、绘图、统计与机器学习初步；第 4 章系统介绍 matplotlib 绘图元素</li>
+</ul></li>
+</ul>
+</section>
+<section id="python-数据分析" class="level3">
+<h3 class="anchored" data-anchor-id="python-数据分析">Python 数据分析</h3>
+<ul>
+<li>McKinney, W. (<strong>2022</strong>). <em>Python for Data Analysis: Data Wrangling with pandas, NumPy, and Jupyter</em> (3rd ed.). O’Reilly. <a href="https://wesmckinney.com/book/">在线阅读</a> | <a href="https://github.com/wesm/pydata-book">github</a>
+<ul>
+<li>pandas 作者亲写，数据处理最权威的参考书</li>
+</ul></li>
+<li>VanderPlas, J. (<strong>2023</strong>). <em>Python Data Science Handbook</em> (2nd ed.). O’Reilly. <a href="https://jakevdp.github.io/PythonDataScienceHandbook/">在线阅读</a> | <a href="https://github.com/jakevdp/PythonDataScienceHandbook">github</a>
+<ul>
+<li>数据分析 + 可视化 + 机器学习，提供 Colab 版本，可直接在线运行</li>
+</ul></li>
+<li>QuantEcon. <a href="https://quantecon.org/lectures/">网站</a> | <a href="https://github.com/QuantEcon">github</a>
+<ul>
+<li>面向经济与金融的开源计算教程，内容持续更新</li>
+</ul></li>
+</ul>
+</section>
+<section id="金融数据分析" class="level3">
+<h3 class="anchored" data-anchor-id="金融数据分析">金融数据分析</h3>
+<ul>
+<li>Scheuch, C., Voigt, S., Weiss, P., &amp; Frey, C. (<strong>2024</strong>). <em>Tidy Finance with Python</em> (1st ed.). Chapman and Hall/CRC. <a href="https://www.tidy-finance.org/python/index.html">在线阅读</a> | <a href="https://github.com/tidy-finance/website/tree/main/python">github</a>
+<ul>
+<li>涵盖股票回报、CAPM、投资组合、Fama-French 因子模型等金融核心主题</li>
+</ul></li>
+<li>Hilpisch, Y. (<strong>2019</strong>). <em>Python for Finance: Mastering Data-Driven Finance</em> (2nd ed.). O’Reilly. <a href="https://www.sea-stat.com/wp-content/uploads/2021/05/Yves-Hilpisch-Python-for-Finance_-Mastering-Data-Driven-Finance-Book-OReilly-2018.pdf">PDF</a> | <a href="https://github.com/yhilpisch/py4fi2nd">github</a>
+<ul>
+<li>量化金融方向，覆盖期权定价、风险管理、算法交易</li>
+</ul></li>
+<li>Jansen, S. (<strong>2020</strong>). <em>Machine Learning for Algorithmic Trading</em> (2nd ed.). <a href="https://ml4trading.io/">网站</a> | <a href="https://github.com/stefan-jansen/machine-learning-for-trading">github</a>
+<ul>
+<li>机器学习在算法交易中的应用，案例丰富</li>
+</ul></li>
+</ul>
 
 
+</section>
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
@@ -904,13 +1056,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="../Lecture/00_intro.html" class="pagination-link" aria-label="📚课程资料">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">📚课程资料</span>
+      <a href="../Lecture/crawing/craw_02_sec02_lingnan_dialog.html" class="pagination-link" aria-label="实例-对话模式：爬取岭南学院教师名录">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">实例-对话模式：爬取岭南学院教师名录</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../Lecture/00-setup/01_00_coding_with_AI.html" class="pagination-link" aria-label="借助 AI 写代码">
-        <span class="nav-page-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">借助 AI 写代码</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="../appendix_python/a1_setup.html" class="pagination-link" aria-label="A1. 环境配置">
+        <span class="nav-page-text">A1. 环境配置</span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

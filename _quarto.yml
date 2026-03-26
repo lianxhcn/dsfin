@@ -19,9 +19,15 @@ book:
     tools:
       - icon: github
         href: https://github.com/lianxhcn/dsfin
-      - icon: home
+      - icon: house-fill
         href: https://www.lianxh.cn
-
+  
+  page-footer:
+    center: |
+      [lianxh.cn](https://www.lianxh.cn)
+    right: |
+      Support: <a href="https://lianxhcn.github.io/quarto_book/">Quarto</a>
+  
   favicon: images/book-logo.png
   site-url: https://lianxhcn.github.io/dsfin/
   editor: source
@@ -53,6 +59,17 @@ book:
         - Lecture/crawing/craw_02_sec01_lingnan_prompt.md
         - Lecture/crawing/craw_02_sec02_lingnan_dialog.ipynb
 
+    - part: "附录"
+      chapters:
+        - appendix_python/index.qmd
+        - appendix_python/a1_setup.qmd
+        - appendix_python/a2_project.qmd
+        - appendix_python/a3_concepts.qmd
+        - appendix_python/a4_data.qmd
+        - appendix_python/a5_visualization.qmd
+        - appendix_python/a6_modeling.qmd
+        - appendix_python/a7_results.qmd
+        - appendix_python/a8_workflow.qmd
 
 format:
   html:

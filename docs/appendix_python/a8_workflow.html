@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>🚀作业 – 金融数据分析与建模</title>
+<title>A8. 上下文管理与调试 – 金融数据分析与建模</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -20,6 +20,40 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -30,8 +64,7 @@ ul.task-list li input[type="checkbox"] {
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
-<link href="../Lecture/00-setup/01_00_coding_with_AI.html" rel="next">
-<link href="../Lecture/00_intro.html" rel="prev">
+<link href="../appendix_python/a7_results.html" rel="prev">
 <link href="../images/book-logo.png" rel="icon" type="image/png">
 <script src="../site_libs/quarto-html/quarto.js"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
@@ -85,7 +118,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../Lecture/01_homework.html">🚀作业</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../appendix_python/index.html">附录</a></li><li class="breadcrumb-item"><a href="../appendix_python/a8_workflow.html">A8. 上下文管理与调试</a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -132,7 +165,7 @@ ul.task-list li input[type="checkbox"] {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../Lecture/01_homework.html" class="sidebar-item-text sidebar-link active">
+  <a href="../Lecture/01_homework.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">🚀作业</span></a>
   </div>
 </li>
@@ -288,7 +321,7 @@ ul.task-list li input[type="checkbox"] {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../appendix_python/a8_workflow.html" class="sidebar-item-text sidebar-link">
+  <a href="../appendix_python/a8_workflow.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text">A8. 上下文管理与调试</span></a>
   </div>
 </li>
@@ -299,15 +332,29 @@ ul.task-list li input[type="checkbox"] {
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#a8.1-管理-ai-的上下文记忆" id="toc-a8.1-管理-ai-的上下文记忆" class="nav-link active" data-scroll-target="#a8.1-管理-ai-的上下文记忆">A8.1 管理 AI 的上下文记忆</a>
+  <ul class="collapse">
+  <li><a href="#a8.1.1-为什么上下文管理很重要" id="toc-a8.1.1-为什么上下文管理很重要" class="nav-link" data-scroll-target="#a8.1.1-为什么上下文管理很重要">A8.1.1 为什么上下文管理很重要？</a></li>
+  </ul></li>
+  <li><a href="#a8.2-读懂报错让-ai-帮你调试" id="toc-a8.2-读懂报错让-ai-帮你调试" class="nav-link" data-scroll-target="#a8.2-读懂报错让-ai-帮你调试">A8.2 读懂报错：让 AI 帮你调试</a>
+  <ul class="collapse">
+  <li><a href="#a8.2.1-报错信息的结构" id="toc-a8.2.1-报错信息的结构" class="nav-link" data-scroll-target="#a8.2.1-报错信息的结构">A8.2.1 报错信息的结构</a></li>
+  </ul></li>
+  <li><a href="#a8.4-与-ai-高效对话的实用技巧" id="toc-a8.4-与-ai-高效对话的实用技巧" class="nav-link" data-scroll-target="#a8.4-与-ai-高效对话的实用技巧">A8.4 与 AI 高效对话的实用技巧</a></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default">
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../appendix_python/index.html">附录</a></li><li class="breadcrumb-item"><a href="../appendix_python/a8_workflow.html">A8. 上下文管理与调试</a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title">🚀作业</h1>
+<h1 class="title">A8. 上下文管理与调试</h1>
 </div>
 
 
@@ -324,16 +371,345 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<hr>
-<blockquote class="blockquote">
-<p>🍓 <strong><a href="https://send2me.cn/FCAjV_t7/So-WPbzxrA1YiQ">点此提交作业</a></strong></p>
-</blockquote>
-<blockquote class="blockquote">
-<p>🍏 <a href="https://github.com/lianxhcn/dsfin/blob/main/homework/readme.md">查看作业通知</a></p>
-</blockquote>
-<hr>
+<p>本章解决「代码跑通了但结果不对」「AI 忘记了之前说过什么」「循环跑了一晚上还没完」这三类最让人崩溃的问题。</p>
+<section id="a8.1-管理-ai-的上下文记忆" class="level2">
+<h2 class="anchored" data-anchor-id="a8.1-管理-ai-的上下文记忆">A8.1 管理 AI 的上下文记忆</h2>
+<section id="a8.1.1-为什么上下文管理很重要" class="level3">
+<h3 class="anchored" data-anchor-id="a8.1.1-为什么上下文管理很重要">A8.1.1 为什么上下文管理很重要？</h3>
+<p>当你的对话变长，或者开启了新的对话窗口，AI 会「忘记」你的数据结构，重新生成的代码可能和之前的变量名对不上——这是提示词用户最常遇到、也最容易忽视的问题。</p>
+<p><strong>A. 三种常见的上下文断裂场景</strong></p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>场景</th>
+<th>现象</th>
+<th>解决方法</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>新开对话窗口</td>
+<td>AI 不认识 <code>df</code> 是什么</td>
+<td>用「项目背景卡片」重新交代</td>
+</tr>
+<tr class="even">
+<td>对话太长</td>
+<td>AI 忘记了 10 轮前的数据结构</td>
+<td>在关键节点重新粘贴数据信息</td>
+</tr>
+<tr class="odd">
+<td>换了 AI 工具</td>
+<td>从 ChatGPT 切换到 Claude</td>
+<td>重新提供完整背景</td>
+</tr>
+</tbody>
+</table>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+提示词：项目背景卡片（每次新对话时使用）
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>把这个卡片保存在 Notebook 的第一个 Markdown 单元格，每次开启新对话时粘贴给 AI。</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode md code-with-copy"><code class="sourceCode markdown"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>【项目背景】请记住以下信息，本次对话中所有代码都基于这个背景。</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>项目：A 股上市公司并购事件研究</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>运行环境：Python 3.11，Anaconda，Jupyter Notebook，Windows 11</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>主要库：pandas 2.x，numpy，matplotlib，statsmodels，seaborn</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>核心数据框：</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="in">`df`</span>：股票日度面板数据，列为 date（datetime）、stock_code（str）、</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>  close（float）、volume（int）、return（float）、industry（str）</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>  行数约 500,000，时间范围 2018–2023，股票数量约 500 只</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="in">`df_events`</span>：并购事件列表，列为 acquirer_code（str）、</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>  event_date（datetime）、target_name（str）</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>  行数约 300</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>当前进度：已完成数据清洗，正在做事件研究的超额收益计算。</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>变量命名规范：使用下划线分隔，如 df_clean、car_mean、result_ols。</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>接下来请帮我：<span class="co">[</span><span class="ot">在这里写本次的具体任务</span><span class="co">]</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+提示词：在长对话中途重置上下文
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>当对话已经很长，发现 AI 开始「犯迷糊」（用错变量名、忘记数据结构）时使用。</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode md code-with-copy"><code class="sourceCode markdown"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>我们的对话已经很长了，请忽略对话中的所有历史信息，</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>重新从以下背景开始：</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>当前状态：</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>数据框 <span class="in">`df_clean`</span> 已清洗完毕：<span class="co">[</span><span class="ot">X</span><span class="co">]</span> 只股票，<span class="co">[</span><span class="ot">Y</span><span class="co">]</span> 个交易日</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>  列：date、stock_code、close、return、industry</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>已完成：数据清洗、缺失值处理、Winsorize 异常值处理</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>下一步目标：计算每只股票的年化收益率和夏普比率</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>请基于以上状态，帮我完成「下一步目标」中的任务。</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</section>
+</section>
+<section id="a8.2-读懂报错让-ai-帮你调试" class="level2">
+<h2 class="anchored" data-anchor-id="a8.2-读懂报错让-ai-帮你调试">A8.2 读懂报错：让 AI 帮你调试</h2>
+<section id="a8.2.1-报错信息的结构" class="level3">
+<h3 class="anchored" data-anchor-id="a8.2.1-报错信息的结构">A8.2.1 报错信息的结构</h3>
+<p>Python 报错信息看起来复杂，但结构很简单：</p>
+<pre><code>Traceback (most recent call last):          ← 出错的调用链
+  File "analysis.py", line 35, in &lt;module&gt;
+    df_merged = pd.merge(df_price, df_fund, on=['stock_code', 'year'])
+KeyError: 'year'                            ← 最重要：错误类型 + 错误原因</code></pre>
+<p><strong>最重要的永远是最后一行</strong>：错误类型（<code>KeyError</code>）和错误信息（<code>'year'</code>）。</p>
+<p><strong>A. 金融数据分析中最常见的报错类型</strong></p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 29%">
+<col style="width: 32%">
+<col style="width: 38%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>报错类型</th>
+<th>最常见原因</th>
+<th>提示词关键词</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>KeyError</code></td>
+<td>列名不存在或拼写错误</td>
+<td>「找不到列名」</td>
+</tr>
+<tr class="even">
+<td><code>TypeError</code></td>
+<td>对字符串列做了数学运算</td>
+<td>「类型不匹配」</td>
+</tr>
+<tr class="odd">
+<td><code>ValueError</code></td>
+<td>日期格式错误、merge 键类型不一致</td>
+<td>「值格式不合法」</td>
+</tr>
+<tr class="even">
+<td><code>MemoryError</code></td>
+<td>数据量太大，内存不足</td>
+<td>「内存溢出」</td>
+</tr>
+<tr class="odd">
+<td><code>FileNotFoundError</code></td>
+<td>文件路径错误</td>
+<td>「找不到文件」</td>
+</tr>
+<tr class="even">
+<td><code>AttributeError</code></td>
+<td>方法名拼写错误或对象类型不对</td>
+<td>「对象没有这个方法」</td>
+</tr>
+</tbody>
+</table>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+提示词：让 AI 分析报错原因（万能调试模板）
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>这是最常用的调试提示词。<strong>关键原则：把完整的报错信息和出错的代码都粘贴给 AI，不要只描述「出错了」。</strong></p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode md code-with-copy"><code class="sourceCode markdown"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>我的 Python 代码出现了报错，请帮我分析原因并给出修复方案。</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>【完整报错信息】（直接复制终端输出）：</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Traceback (most recent call last): File “analysis.py”, line 35, in <module> df_merged = pd.merge(df_price, df_fund, on=[‘stock_code’, ‘year’]) KeyError: ‘year’</module></p>
+<pre><code>
+【出错的代码片段】：
+```python
+df_price = pd.read_csv('../data/raw/stock_price.csv')
+df_fund = pd.read_csv('../data/raw/fundamental.csv')
+df_merged = pd.merge(df_price, df_fund, on=['stock_code', 'year'])</code></pre>
+<p>【两个数据框的列名】： - df_price 的列名：date, stock_code, close, return - df_fund 的列名：fiscal_year, stock_code, roe, leverage</p>
+<p>【我想实现的目标】： 将股票日度价格数据和年度财务数据，按股票代码和年份对齐合并。</p>
+<p>请： 1. 解释报错的原因 2. 给出修复后的完整代码 3. 如果有多种修复方案，说明各自的适用场景</p>
+<pre><code>:::
+
+::: {.callout-tip}
+### 提示词：诊断「结果跑通了但数值不对」
+
+这比代码报错更难排查，需要系统地检查中间步骤。
+
+```md
+我的代码运行没有报错，但最终结果数值异常，请帮我排查原因。
+
+【异常现象】：
+计算了 500 只股票在 2018–2023 年间的年化收益率，
+发现有 30 只股票的年化收益率超过了 500%，
+还有 15 只股票是负无穷大（-inf）。
+
+【相关代码】：
+```python
+df['log_return'] = np.log(df['close'] / df['close'].shift(1))
+df_annual = df.groupby(['stock_code', df['date'].dt.year])['log_return'].sum()
+df_annual = df_annual * 252  # 年化</code></pre>
+<p>【数据说明】： - df 是面板数据，约 50 万行 - close 列已经过 Winsorize 处理 - date 列是 datetime 类型</p>
+<p>请帮我： 1. 指出最可能导致极端值的原因 （提示：shift(1) 在面板数据中跨股票计算的问题？close 列是否有 0 或负值？） 2. 打印出那 30 只极端收益率股票的代码和异常值，帮助定位 3. 修复代码，确保对数收益率只在每只股票内部按时间顺序计算 4. 增加一个验证步骤：检查修复后是否还有极端值</p>
+<pre><code>:::
 
 
+## A8.3 代码效率优化
+
+### A8.3.1 什么时候需要优化？
+
+数据量小（10 万行以内）时，代码慢一些通常不是问题。但金融数据往往有几百万行（全市场日度数据），以下这些写法会让你等到天黑：
+
+| 低效写法 | 原因 | 向 AI 描述时说 |
+|---------|------|-------------|
+| `for i, row in df.iterrows()` | 逐行循环，不利用向量化 | 「把 iterrows 改为向量化操作」 |
+| 每次循环都读取一次文件 | 重复 I/O | 「把文件读取移到循环外面」 |
+| 对整个数据框做多次 groupby | 重复分组 | 「合并多个 groupby 操作」 |
+| 存储大量中间数据框 | 内存浪费 | 「减少中间变量，用链式操作」 |
+
+::: {.callout-tip}
+### 提示词：将低效循环改为向量化操作
+
+这是最常见的效率问题，影响最大，改造收益最高。
+
+```md
+我有以下 Python 代码，在数据框 `df`（约 300 万行）上运行非常慢，
+已经跑了超过 10 分钟还没结束：
+
+【当前代码（慢）】：
+```python
+results = []
+for i, row in df.iterrows():
+    if row['industry'] == '银行':
+        log_ret = np.log(row['close'] / row['prev_close'])
+        results.append({
+            'stock_code': row['stock_code'],
+            'date': row['date'],
+            'log_return': log_ret
+        })
+df_result = pd.DataFrame(results)</code></pre>
+<p>【数据框结构】： - 列：date, stock_code, close, prev_close, industry - 行数：约 300 万行</p>
+<p>请帮我： 1. 解释为什么 iterrows() 在大数据框上这么慢 2. 用 pandas 的向量化操作重写这段代码， 要求功能完全相同，但速度提升 100 倍以上 3. 在优化后的代码末尾加上运行时间测量（用 time 模块）， 让我能直接对比优化前后的速度</p>
+<pre><code>:::
+
+::: {.callout-tip}
+### 提示词：处理内存不足问题（大数据集）
+
+当数据量很大（如全市场 5 年日度数据），一次性读入可能导致内存溢出。
+
+```md
+我需要处理一个很大的 CSV 文件（约 2GB，包含 A 股全市场 5 年日度数据），
+用 pandas 一次性读入时出现 MemoryError。
+
+我的电脑内存为 16GB，操作系统为 Windows 11。
+
+请帮我：
+1. 用 pandas 的 chunksize 参数分块读取：
+   每次读取 100,000 行，对每块数据只保留「银行」行业的股票，
+   最后将所有块合并为一个数据框
+2. 在读取时只加载需要的列：date、stock_code、close、return、industry，
+   跳过其他列（减少内存占用）
+3. 将 date 列存为 datetime 类型，stock_code 存为 category 类型
+   （category 类型在有大量重复值时比 str 节省约 70% 内存）
+4. 读取完成后，打印最终数据框的内存占用，
+   对比直接读取全部列时的内存占用差异
+
+用 tqdm 显示分块读取的进度。</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="a8.4-与-ai-高效对话的实用技巧" class="level2">
+<h2 class="anchored" data-anchor-id="a8.4-与-ai-高效对话的实用技巧">A8.4 与 AI 高效对话的实用技巧</h2>
+<p><strong>A. 让每一轮追问都有效的三个原则</strong></p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>原则</th>
+<th>错误示范</th>
+<th>正确示范</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>贴具体信息，不要描述</td>
+<td>「代码有问题」</td>
+<td>直接粘贴报错信息和代码</td>
+</tr>
+<tr class="even">
+<td>说明期望结果</td>
+<td>「结果不对」</td>
+<td>「应该输出 X，但实际输出了 Y」</td>
+</tr>
+<tr class="odd">
+<td>指定修改范围</td>
+<td>「帮我改一下」</td>
+<td>「只修改第 3 步，其余不变」</td>
+</tr>
+</tbody>
+</table>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+提示词：让 AI 解释你不理解的代码
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>AI 生成的代码不一定第一次就能完全看懂。理解代码是比「能用」更重要的能力。</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode md code-with-copy"><code class="sourceCode markdown"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>请逐行解释以下 Python 代码，用我能理解的语言（我是金融专业背景，</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>Python 基础较弱）。对每一行说明：</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>① 这行代码做了什么操作；</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>② 为什么要这样写，而不是用更直观的方法；</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>③ 如果去掉这行，会有什么影响。</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>【需要解释的代码】：</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="in">```python</span></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>df[<span class="st">'log_return'</span>] <span class="op">=</span> df.groupby(<span class="st">'stock_code'</span>)[<span class="st">'close'</span>].transform(</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>    <span class="kw">lambda</span> x: np.log(x <span class="op">/</span> x.shift(<span class="dv">1</span>))</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>df_annual <span class="op">=</span> df.groupby([<span class="st">'stock_code'</span>, df[<span class="st">'date'</span>].dt.year]).agg(</span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>    annual_return<span class="op">=</span>(<span class="st">'log_return'</span>, <span class="kw">lambda</span> x: np.expm1(x.<span class="bu">sum</span>())),</span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>    volatility<span class="op">=</span>(<span class="st">'log_return'</span>, <span class="kw">lambda</span> x: x.std() <span class="op">*</span> np.sqrt(<span class="dv">252</span>)),</span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>    sharpe<span class="op">=</span>(<span class="st">'log_return'</span>, <span class="kw">lambda</span> x: x.mean() <span class="op">/</span> x.std() <span class="op">*</span> np.sqrt(<span class="dv">252</span>))</span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a>).reset_index()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>特别解释： - <code>transform</code> 和 <code>apply</code> 有什么区别？ - <code>np.expm1(x.sum())</code> 为什么用 expm1 而不是 exp？ - <code>reset_index()</code> 的作用是什么？</p>
+<pre><code>:::
+
+::: {.callout-tip}
+### 提示词：让 AI 审查你自己写的代码
+
+当你已经能自己写一些代码时，让 AI 扮演「代码审查员」，找出潜在问题。
+
+```md
+请帮我审查以下 Python 代码，找出潜在的错误、低效写法和可能产生错误结果的地方。
+我是 Python 初学者，请用清晰的语言说明每个问题和改进方法。
+
+【需要审查的代码】：
+```python
+[将你写的代码粘贴在这里]</code></pre>
+<p>重点检查： 1. 是否存在会产生错误结果但不报错的逻辑问题 （如跨股票计算收益率、merge 后行数异常） 2. 是否有内存或效率问题（如在大循环中用 iterrows） 3. 是否有潜在的除以零、log(负数) 等数值错误 4. 变量命名是否清晰，代码是否需要添加注释</p>
+<p>请用以下格式输出： - 问题 [序号]：[问题描述] - 影响：[会导致什么后果] - 修改建议：[具体如何改] ```</p>
+</div>
+</div>
+
+
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
@@ -904,14 +1280,11 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="../Lecture/00_intro.html" class="pagination-link" aria-label="📚课程资料">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">📚课程资料</span>
+      <a href="../appendix_python/a7_results.html" class="pagination-link" aria-label="A7. 结果呈现与表格美化">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">A7. 结果呈现与表格美化</span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../Lecture/00-setup/01_00_coding_with_AI.html" class="pagination-link" aria-label="借助 AI 写代码">
-        <span class="nav-page-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">借助 AI 写代码</span></span> <i class="bi bi-arrow-right-short"></i>
-      </a>
   </div>
 </nav>
 </div> <!-- /content -->

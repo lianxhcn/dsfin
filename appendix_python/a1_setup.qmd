@@ -1,0 +1,133 @@
+# A1. 环境配置 {.unnumbered}
+
+虚拟环境的概念已在正文中介绍。本章只提供常用的提示词框，帮助你快速完成环境配置、包安装和路径处理，遇到问题时直接向 AI 求助。
+
+## A1.1 包的安装
+
+::: {.callout-tip}
+### 提示词：安装缺失的包
+
+当运行代码出现 `ModuleNotFoundError` 时使用。
+
+```md
+我在运行 Python 代码时出现了以下报错：
+
+ModuleNotFoundError: No module named 'statsmodels'
+
+我使用 Anaconda，当前激活的虚拟环境名为 `fin_analysis`，
+操作系统为 Windows 11。
+
+请告诉我：
+1. 用 conda 命令安装这个包（优先 conda，其次 pip）
+2. 如果 conda 找不到，如何通过添加 conda-forge 频道安装
+3. 安装后如何验证版本号，确认安装成功
+```
+:::
+
+::: {.callout-tip}
+### 提示词：屏蔽 warnings 警告信息
+
+pandas、statsmodels 等库运行时常输出大量警告，影响结果可读性。这组提示词适合放在每个 Notebook 的第一个代码单元格。
+
+```md
+我的 Python 代码运行时输出很多 warning 警告信息，
+影响输出结果的可读性。
+
+请帮我在代码开头添加几行代码，屏蔽以下类型的警告：
+1. 所有 UserWarning
+2. 所有 FutureWarning（pandas 版本升级导致的）
+3. 所有 DeprecationWarning
+
+要求：只屏蔽警告输出，不影响真正的报错（Exception）信息。
+代码要有注释，说明每行的作用。
+```
+:::
+
+::: {.callout-note collapse="true"}
+### 追问模板
+
+```md
+上面屏蔽 warnings 的代码加上去之后，仍然有一类警告没有被屏蔽，
+具体报错信息如下：
+
+[将仍然出现的警告信息粘贴在这里]
+
+请帮我在现有代码基础上，增加屏蔽这类警告的语句。
+```
+:::
+
+
+## A1.2 文件路径
+
+文件路径是初学者最常犯错的地方。写提示词时，**一定要告诉 AI 你的项目文件夹结构**，否则 AI 生成的路径大概率是错的。
+
+::: {.callout-warning}
+不要在代码中写绝对路径（如 `C:/Users/zhangsan/data/stock.csv`）。一旦换了电脑，路径立刻失效。应始终使用**相对路径**，或用 `pathlib` 动态构建路径。
+:::
+
+**A. 路径相关的核心术语**
+
+| 术语 | 含义 | 提示词中如何说 |
+|------|------|--------------|
+| 绝对路径 | 从根目录出发的完整路径 | 「C:/Users/... 这样的绝对路径」 |
+| 相对路径 | 相对于当前脚本所在目录 | 「用相对路径」 |
+| 工作目录（cwd） | Python 当前所处的目录 | 「当前工作目录」 |
+| `pathlib` | Python 内置的路径处理模块 | 「用 pathlib 模块处理路径」 |
+
+::: {.callout-tip}
+### 提示词：用相对路径读取数据文件
+
+```md
+我在 Python 中读取数据文件时遇到了路径问题。
+我的项目结构如下：
+
+fin_project/
+├── data/
+│   └── raw/
+│       └── stock_price.csv
+└── notebooks/
+    └── analysis.ipynb   ← 当前运行的文件在这里
+
+请帮我：
+1. 用 Python 的 `pathlib` 模块，写出从 `analysis.ipynb`
+   读取 `stock_price.csv` 的相对路径代码
+2. 用 pandas 读取该文件，文件编码为 GBK（中文 Windows 常见格式）
+3. 写出自动获取项目根目录（fin_project/）的代码，
+   使路径在不同电脑上都能正确运行
+
+要求：使用 `pathlib.Path`，兼容 Windows 和 macOS。
+```
+:::
+
+::: {.callout-tip}
+### 提示词：解决中文路径与中文文件名问题
+
+当文件路径或文件名包含中文字符时，可能出现编码错误。
+
+```md
+我的数据文件路径包含中文（如 `C:/用户/数据/股票数据.csv`），
+Python 读取时出现 FileNotFoundError 或 UnicodeDecodeError。
+
+我使用的是 Windows 11，Python 3.11，pandas 2.x。
+
+请帮我：
+1. 解释为什么中文路径在 Windows 上容易出错
+2. 提供用 pandas 正确读取含中文路径 CSV 文件的代码，
+   分别尝试 UTF-8 和 GBK 两种编码
+3. 给出根本性的建议：如何重命名路径以彻底避免此类问题
+```
+:::
+
+::: {.callout-note collapse="true"}
+### 追问模板
+
+```md
+上面的代码运行后，仍然出现以下报错：
+
+[将报错信息完整粘贴在这里]
+
+我的项目当前工作目录是：[用 import os; print(os.getcwd()) 查到的路径]
+
+请根据这个实际路径，修改上面的代码，使其能正确读取文件。
+```
+:::

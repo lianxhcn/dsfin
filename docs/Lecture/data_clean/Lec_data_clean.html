@@ -140,7 +140,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <a href="../../">DS Finance</a> 
         <div class="sidebar-tools-main tools-wide">
     <a href="https://github.com/lianxhcn/dsfin" title="" class="quarto-navigation-tool px-1" aria-label=""><i class="bi bi-github"></i></a>
-    <a href="https://www.lianxh.cn" title="" class="quarto-navigation-tool px-1" aria-label=""><i class="bi bi-home"></i></a>
+    <a href="https://www.lianxh.cn" title="" class="quarto-navigation-tool px-1" aria-label=""><i class="bi bi-house-fill"></i></a>
   <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
 </div>
     </div>
@@ -263,6 +263,71 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
       </ul>
   </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true">
+ <span class="menu-text">附录</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../appendix_python/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">附录：提示词导向的 Python 数据分析</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../appendix_python/a1_setup.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">A1. 环境配置</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../appendix_python/a2_project.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">A2. 项目规划与版本控制</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../appendix_python/a3_concepts.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">A3. 提示词核心词汇</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../appendix_python/a4_data.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">A4. 数据获取与清洗</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../appendix_python/a5_visualization.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">A5. 数据可视化</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../appendix_python/a6_modeling.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">A6. 统计建模</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../appendix_python/a7_results.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">A7. 结果呈现与表格美化</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../appendix_python/a8_workflow.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">A8. 上下文管理与调试</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
     </ul>
     </div>
 </nav>
@@ -276,7 +341,47 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#为什么数据清洗至关重要" id="toc-为什么数据清洗至关重要" class="nav-link active" data-scroll-target="#为什么数据清洗至关重要"><span class="header-section-number">7.1</span> 为什么数据清洗至关重要？</a>
   <ul class="collapse">
   <li><a href="#案例一reinhart-rogoff-的-excel-错误2010" id="toc-案例一reinhart-rogoff-的-excel-错误2010" class="nav-link" data-scroll-target="#案例一reinhart-rogoff-的-excel-错误2010"><span class="header-section-number">7.1.1</span> 案例一：Reinhart &amp; Rogoff 的 Excel 错误（2010）</a></li>
+  <li><a href="#案例二nasa-火星气候轨道飞行器坠毁1999" id="toc-案例二nasa-火星气候轨道飞行器坠毁1999" class="nav-link" data-scroll-target="#案例二nasa-火星气候轨道飞行器坠毁1999"><span class="header-section-number">7.1.2</span> 案例二：NASA 火星气候轨道飞行器坠毁（1999）</a></li>
+  <li><a href="#小结" id="toc-小结" class="nav-link" data-scroll-target="#小结"><span class="header-section-number">7.1.3</span> 小结</a></li>
   </ul></li>
+  <li><a href="#本章导读" id="toc-本章导读" class="nav-link" data-scroll-target="#本章导读"><span class="header-section-number">7.2</span> 本章导读</a></li>
+  <li><a href="#数据的分类" id="toc-数据的分类" class="nav-link" data-scroll-target="#数据的分类"><span class="header-section-number">7.3</span> 数据的分类</a>
+  <ul class="collapse">
+  <li><a href="#结构化-vs-非结构化" id="toc-结构化-vs-非结构化" class="nav-link" data-scroll-target="#结构化-vs-非结构化"><span class="header-section-number">7.3.1</span> 结构化 vs 非结构化</a></li>
+  <li><a href="#数值型-vs-字符型" id="toc-数值型-vs-字符型" class="nav-link" data-scroll-target="#数值型-vs-字符型"><span class="header-section-number">7.3.2</span> 数值型 vs 字符型</a></li>
+  <li><a href="#类别变量-vs-有序类别变量" id="toc-类别变量-vs-有序类别变量" class="nav-link" data-scroll-target="#类别变量-vs-有序类别变量"><span class="header-section-number">7.3.3</span> 类别变量 vs 有序类别变量</a></li>
+  <li><a href="#多模态数据" id="toc-多模态数据" class="nav-link" data-scroll-target="#多模态数据"><span class="header-section-number">7.3.4</span> 多模态数据</a></li>
+  <li><a href="#结构化数据与整洁数据" id="toc-结构化数据与整洁数据" class="nav-link" data-scroll-target="#结构化数据与整洁数据"><span class="header-section-number">7.3.5</span> 结构化数据与整洁数据</a></li>
+  </ul></li>
+  <li><a href="#非结构化数据的结构化转换" id="toc-非结构化数据的结构化转换" class="nav-link" data-scroll-target="#非结构化数据的结构化转换"><span class="header-section-number">7.4</span> 非结构化数据的结构化转换</a></li>
+  <li><a href="#项目文件夹结构" id="toc-项目文件夹结构" class="nav-link" data-scroll-target="#项目文件夹结构"><span class="header-section-number">7.5</span> 项目文件夹结构</a></li>
+  <li><a href="#数据清洗的整体流程" id="toc-数据清洗的整体流程" class="nav-link" data-scroll-target="#数据清洗的整体流程"><span class="header-section-number">7.6</span> 数据清洗的整体流程</a></li>
+  <li><a href="#第一层单表内部问题" id="toc-第一层单表内部问题" class="nav-link" data-scroll-target="#第一层单表内部问题"><span class="header-section-number">7.7</span> 第一层：单表内部问题</a>
+  <ul class="collapse">
+  <li><a href="#虚构数据" id="toc-虚构数据" class="nav-link" data-scroll-target="#虚构数据"><span class="header-section-number">7.7.1</span> 虚构数据</a></li>
+  <li><a href="#缺失值" id="toc-缺失值" class="nav-link" data-scroll-target="#缺失值"><span class="header-section-number">7.7.2</span> 缺失值</a></li>
+  <li><a href="#离群值与缩尾winsorize处理" id="toc-离群值与缩尾winsorize处理" class="nav-link" data-scroll-target="#离群值与缩尾winsorize处理"><span class="header-section-number">7.7.3</span> 离群值与缩尾（Winsorize）处理</a></li>
+  <li><a href="#格式不一致" id="toc-格式不一致" class="nav-link" data-scroll-target="#格式不一致"><span class="header-section-number">7.7.4</span> 格式不一致</a></li>
+  <li><a href="#重复观测" id="toc-重复观测" class="nav-link" data-scroll-target="#重复观测"><span class="header-section-number">7.7.5</span> 重复观测</a></li>
+  <li><a href="#数据类型错误" id="toc-数据类型错误" class="nav-link" data-scroll-target="#数据类型错误"><span class="header-section-number">7.7.6</span> 数据类型错误</a></li>
+  <li><a href="#宽表与长表的转换" id="toc-宽表与长表的转换" class="nav-link" data-scroll-target="#宽表与长表的转换"><span class="header-section-number">7.7.7</span> 宽表与长表的转换</a></li>
+  </ul></li>
+  <li><a href="#第二层多表操作问题" id="toc-第二层多表操作问题" class="nav-link" data-scroll-target="#第二层多表操作问题"><span class="header-section-number">7.8</span> 第二层：多表操作问题</a>
+  <ul class="collapse">
+  <li><a href="#合并前的准备" id="toc-合并前的准备" class="nav-link" data-scroll-target="#合并前的准备"><span class="header-section-number">7.8.1</span> 合并前的准备</a></li>
+  <li><a href="#连接类型选错导致样本丢失" id="toc-连接类型选错导致样本丢失" class="nav-link" data-scroll-target="#连接类型选错导致样本丢失"><span class="header-section-number">7.8.2</span> 连接类型选错导致样本丢失</a></li>
+  <li><a href="#键不唯一导致行数膨胀" id="toc-键不唯一导致行数膨胀" class="nav-link" data-scroll-target="#键不唯一导致行数膨胀"><span class="header-section-number">7.8.3</span> 键不唯一导致行数膨胀</a></li>
+  <li><a href="#第三层系统性数据质量问题" id="toc-第三层系统性数据质量问题" class="nav-link" data-scroll-target="#第三层系统性数据质量问题"><span class="header-section-number">7.8.4</span> 第三层：系统性数据质量问题</a></li>
+  <li><a href="#样本选择偏差" id="toc-样本选择偏差" class="nav-link" data-scroll-target="#样本选择偏差"><span class="header-section-number">7.8.5</span> 样本选择偏差</a></li>
+  </ul></li>
+  <li><a href="#自选择偏误预告" id="toc-自选择偏误预告" class="nav-link" data-scroll-target="#自选择偏误预告"><span class="header-section-number">7.9</span> 自选择偏误（预告）</a></li>
+  <li><a href="#提示词模式从问题描述到可运行代码" id="toc-提示词模式从问题描述到可运行代码" class="nav-link" data-scroll-target="#提示词模式从问题描述到可运行代码"><span class="header-section-number">7.10</span> 提示词模式：从问题描述到可运行代码</a>
+  <ul class="collapse">
+  <li><a href="#综合案例与章末练习" id="toc-综合案例与章末练习" class="nav-link" data-scroll-target="#综合案例与章末练习"><span class="header-section-number">7.10.1</span> 综合案例与章末练习</a></li>
+  <li><a href="#完整处理流程" id="toc-完整处理流程" class="nav-link" data-scroll-target="#完整处理流程"><span class="header-section-number">7.10.2</span> 完整处理流程</a></li>
+  <li><a href="#章末练习" id="toc-章末练习" class="nav-link" data-scroll-target="#章末练习"><span class="header-section-number">7.10.3</span> 章末练习</a></li>
+  </ul></li>
+  <li><a href="#参考文献" id="toc-参考文献" class="nav-link" data-scroll-target="#参考文献"><span class="header-section-number">7.11</span> 参考文献</a></li>
   </ul>
 </nav>
     </div>
@@ -327,13 +432,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>本节通过两个真实的历史案例，说明数据清洗疏失所带来的严重后果——从影响国家政策走向的学术研究，到耗资数亿美元的太空任务失败，错误的根源都是在数据处理阶段可以避免的疏漏。</p>
 <section id="案例一reinhart-rogoff-的-excel-错误2010" class="level3 callout-example" data-number="7.1.1">
 <h3 data-number="7.1.1" class="anchored" data-anchor-id="案例一reinhart-rogoff-的-excel-错误2010"><span class="header-section-number">7.1.1</span> 案例一：Reinhart &amp; Rogoff 的 Excel 错误（2010）</h3>
-<section id="背景" class="level4 unnumbered">
-<h4 class="unnumbered anchored" data-anchor-id="背景">背景</h4>
-<p><a href="https://doi.org/10.1257/aer.100.2.573">Reinhart</a> and Rogoff (<a href="http://sci-hub.ren/10.1257/aer.100.2.573">2010</a>)</p>
+<p><strong>A. 背景</strong></p>
 <p>2010 年，哈佛大学经济学家 <a href="https://doi.org/10.1257/aer.100.2.573">Reinhart</a> and Rogoff (<a href="http://sci-hub.ren/10.1257/aer.100.2.573">2010</a>) 发表论文《债务时代的增长》（<em>Growth in a Time of Debt</em>），提出一个影响深远的结论：当一国公共债务与 GDP 之比超过 90% 时，经济增长率将急剧下滑，平均仅为 <strong>−0.1%</strong>。这一结论迅速被欧美多国政府引用，成为推行财政紧缩政策的重要学术依据。</p>
-</section>
-<section id="数据错误的发现" class="level4 unnumbered">
-<h4 class="unnumbered anchored" data-anchor-id="数据错误的发现">数据错误的发现</h4>
+<p><strong>B. 数据出错了</strong></p>
 <p>2013 年，麻省大学经济系研究生 Thomas Herndon 在课堂作业中尝试复现该研究，意外发现原始 Excel 工作表中存在三类错误：</p>
 <ul>
 <li><strong>公式范围遗漏：</strong> 计算平均增长率的公式未涵盖全部国家的数据行，澳大利亚、奥地利、比利时、加拿大和丹麦的数据被排除在外；</li>
@@ -341,36 +442,26 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><strong>加权方式有误：</strong> 对各国数据采用了不合理的等权重处理，未按年份数量加权。</li>
 </ul>
 <p><a href="https://doi.org/10.1093/cje/bet075">Herndon</a> et al.&nbsp;(<a href="http://sci-hub.ren/10.1093/cje/bet075">2014</a>) 发表论文 (该文在 Google 学术的引用率超过 2000 次) 指出上述错误后，Reinhart 和 Rogoff 承认了这些错误，并修正了数据处理方式。</p>
-</section>
-<section id="后果" class="level4 unnumbered">
-<h4 class="unnumbered anchored" data-anchor-id="后果">后果</h4>
+<p><strong>C. 后果</strong></p>
 <p>修正上述错误后，高债务国家的平均增长率从 <strong>−0.1%</strong> 大幅修正为 <strong>+2.2%</strong>，结论完全逆转。然而此时，多国已基于原始错误结论实施了数年的紧缩政策，对经济社会造成了难以估量的影响。</p>
 </section>
-</section>
 <hr>
-<div class="callout-example">
-<section id="案例二nasa-火星气候轨道飞行器坠毁1999" class="level3" data-number="7.1.2">
+<section id="案例二nasa-火星气候轨道飞行器坠毁1999" class="level3 callout-example" data-number="7.1.2">
 <h3 data-number="7.1.2" class="anchored" data-anchor-id="案例二nasa-火星气候轨道飞行器坠毁1999"><span class="header-section-number">7.1.2</span> 案例二：NASA 火星气候轨道飞行器坠毁（1999）</h3>
-<section id="背景-1" class="level4 unnumbered">
-<h4 class="unnumbered anchored" data-anchor-id="背景-1">背景</h4>
+<p><strong>A. 背景</strong></p>
 <p>1999 年 9 月，美国国家航空暨太空总署（NASA）耗资 <strong>3.27 亿美元</strong>研发的火星气候轨道飞行器（Mars Climate Orbiter）在抵达火星后，因轨道偏差过大进入大气层解体，任务彻底失败。这是 NASA 历史上因数据错误导致的最著名的任务失败之一。</p>
-</section>
-<section id="数据错误的发现-1" class="level4 unnumbered">
-<h4 class="unnumbered anchored" data-anchor-id="数据错误的发现-1">数据错误的发现</h4>
+<p><strong>B. 数据错的有点离谱</strong></p>
 <p>事故调查委员会查明，根本原因是两个工程团队之间的计量单位不一致：</p>
 <ul>
-<li><strong>洛克希德·马丁公司</strong>的导航软件输出推力数据，单位为英制的磅力·秒（lbf·s）；</li>
-<li><strong>NASA 喷气推进实验室（JPL）</strong>的接收系统则假设数据单位为公制的牛顿·秒（N·s）。</li>
+<li><strong>洛克希德·马丁公司</strong> 的导航软件输出推力数据，单位为英制的磅力·秒（lbf·s）；</li>
+<li><strong>NASA 喷气推进实验室（JPL）</strong> 的接收系统则假设数据单位为公制的牛顿·秒（N·s）。</li>
 </ul>
 <p>由于 1 lbf·s ≈ 4.45 N·s，两者相差约 <strong>4.45 倍</strong>，导致飞行轨迹在长达数月的飞行中持续偏移，最终无法修正，任务失败。</p>
-</section>
-<section id="后果-1" class="level4 unnumbered">
-<h4 class="unnumbered anchored" data-anchor-id="后果-1">后果</h4>
+<p><strong>C. 损失有点大</strong></p>
 <p>飞行器在抵达火星轨道时因高度严重偏低，进入大气层后解体。整个任务历时 9 个月、耗资逾 3 亿美元，最终付诸东流。事后 NASA 正式将此次失败归咎于「未能采用统一的公制单位」这一流程疏漏。</p>
 <blockquote class="blockquote">
 <p><strong>启示：</strong> 在数据处理中，量纲与单位的一致性检查是数据清洗的基本步骤。常见的隐患包括：收益率未统一为日频或年化、货币单位在不同来源间混用（如元与万元）、价格数据未区分前复权与后复权等。这些问题看似细微，累积效应却足以导致模型输出严重失真。</p>
 </blockquote>
-</section>
 </section>
 <section id="小结" class="level3" data-number="7.1.3">
 <h3 data-number="7.1.3" class="anchored" data-anchor-id="小结"><span class="header-section-number">7.1.3</span> 小结</h3>
@@ -384,6 +475,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><strong>重复记录</strong>（Duplicates）</li>
 </ul>
 <p>本章以下各节将逐一介绍上述问题的识别方法与处理策略，并结合 Python 代码示例加以说明。</p>
+</section>
 </section>
 <section id="本章导读" class="level2" data-number="7.2">
 <h2 data-number="7.2" class="anchored" data-anchor-id="本章导读"><span class="header-section-number">7.2</span> 本章导读</h2>
@@ -401,26 +493,32 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>在动手清洗之前，先要知道你面对的是什么类型的数据。不同类型的数据，问题的表现形式不同，处理方式也不同。</p>
 <section id="结构化-vs-非结构化" class="level3" data-number="7.3.1">
 <h3 data-number="7.3.1" class="anchored" data-anchor-id="结构化-vs-非结构化"><span class="header-section-number">7.3.1</span> 结构化 vs 非结构化</h3>
-<p><strong>结构化数据</strong>是指能够自然地用行列表格表示的数据。每一行是一个观测单位，每一列是一个变量，单元格里是对应的值。我们的 BasicInf 和 FinRatio 就是典型的结构化数据。</p>
-<p><strong>非结构化数据</strong>没有预定义的格式。文本、图片、音频、视频都属于这一类。我们的 Announcement 公告文本就是非结构化数据——它是一段自然语言，不能直接作为变量放进回归方程。</p>
-<p>实际研究中，大量有价值的信息藏在非结构化数据里：上市公司公告、新闻报道、社交媒体、卫星图像……处理它们的第一步，通常是把非结构化数据转换为结构化数据，我们在第2节专门讨论这个问题。</p>
+<ul>
+<li><p><strong>结构化数据</strong> 是指能够自然地用行列表格表示的数据。每一行是一个观测单位，每一列是一个变量，单元格里是对应的值。我们的 BasicInf 和 FinRatio 就是典型的结构化数据。</p></li>
+<li><p><strong>非结构化数据</strong> 没有预定义的格式。文本、图片、音频、视频都属于这一类。我们的 Announcement 公告文本就是非结构化数据——它是一段自然语言，不能直接作为变量放进回归方程。</p></li>
+</ul>
+<p>实际研究中，大量有价值的信息藏在非结构化数据里：上市公司公告、新闻报道、社交媒体、卫星图像…… 处理它们的第一步，通常是把非结构化数据转换为结构化数据，我们在第 2 节专门讨论这个问题。</p>
 </section>
 <section id="数值型-vs-字符型" class="level3" data-number="7.3.2">
 <h3 data-number="7.3.2" class="anchored" data-anchor-id="数值型-vs-字符型"><span class="header-section-number">7.3.2</span> 数值型 vs 字符型</h3>
 <p>结构化数据中，最基本的区分是数值型和字符型。</p>
-<p><strong>数值型变量</strong>可以直接参与数学运算。FinRatio 中的 Leverage、ROA、Size 都是数值型——你可以对它们求均值、做回归、画散点图。数值型变量又可以进一步分为：</p>
+<ul>
+<li><p><strong>数值型变量</strong>可以直接参与数学运算。FinRatio 中的 Leverage、ROA、Size 都是数值型——你可以对它们求均值、做回归、画散点图。数值型变量又可以进一步分为：</p>
 <ul>
 <li><strong>连续变量</strong>：理论上可以取任意值，比如 ROA = 0.0437，Size = 22.6。</li>
 <li><strong>离散变量</strong>：只取整数或有限个值，比如贷款期限（1年、3年、5年）。</li>
+</ul></li>
+<li><p><strong>字符型变量</strong>存储的是文本。BasicInf 中的 <code>comp_name</code>、<code>industry</code> 都是字符型。字符型变量不能直接做运算，但在数据分析中有两种常见用途：用于合并（作为连接键）或转换为可以建模的形式。</p></li>
 </ul>
-<p><strong>字符型变量</strong>存储的是文本。BasicInf 中的 <code>comp_name</code>、<code>industry</code> 都是字符型。字符型变量不能直接做运算，但在数据分析中有两种常见用途：用于合并（作为连接键）或转换为可以建模的形式。</p>
 </section>
 <section id="类别变量-vs-有序类别变量" class="level3" data-number="7.3.3">
 <h3 data-number="7.3.3" class="anchored" data-anchor-id="类别变量-vs-有序类别变量"><span class="header-section-number">7.3.3</span> 类别变量 vs 有序类别变量</h3>
 <p>字符型变量中，有一类在经济研究中极为常见，需要特别说明。</p>
-<p><strong>类别变量（nominal）</strong>：变量的取值是若干个没有大小关系的类别。BasicInf 中的 <code>industry</code> 就是——制造业和金融业之间，没有「哪个更大」的关系。处理方式通常是创建虚拟变量（dummy variables）。</p>
-<p><strong>有序类别变量（ordinal）</strong>：取值之间有明确的顺序关系，但间距不一定相等。比如信用评级（AAA &gt; AA &gt; A）、企业规模分类（大型/中型/小型）。处理时需要比类别变量更谨慎——不能简单地用 1/2/3 编码，因为这暗示了等距假设。</p>
-<p><strong>特例：二值变量（binary）</strong>：只取 0/1 的变量，是类别变量的最简单情形。BasicInf 中的 <code>soe</code>（是否为国企）就是二值变量。</p>
+<ul>
+<li><p><strong>类别变量（nominal）</strong>：变量的取值是若干个没有大小关系的类别。BasicInf 中的 <code>industry</code> 就是——制造业和金融业之间，没有「哪个更大」的关系。处理方式通常是创建虚拟变量（dummy variables）。</p></li>
+<li><p><strong>有序类别变量（ordinal）</strong>：取值之间有明确的顺序关系，但间距不一定相等。比如信用评级（AAA &gt; AA &gt; A）、企业规模分类（大型/中型/小型）。处理时需要比类别变量更谨慎——不能简单地用 1/2/3 编码，因为这暗示了等距假设。</p></li>
+<li><p><strong>特例：二值变量（binary）</strong>：只取 0/1 的变量，是类别变量的最简单情形。BasicInf 中的 <code>soe</code>（是否为国企）就是二值变量。</p></li>
+</ul>
 </section>
 <section id="多模态数据" class="level3" data-number="7.3.4">
 <h3 data-number="7.3.4" class="anchored" data-anchor-id="多模态数据"><span class="header-section-number">7.3.4</span> 多模态数据</h3>
@@ -563,7 +661,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="非结构化数据的结构化转换" class="level2" data-number="7.4">
 <h2 data-number="7.4" class="anchored" data-anchor-id="非结构化数据的结构化转换"><span class="header-section-number">7.4</span> 非结构化数据的结构化转换</h2>
-<p>我们的 Announcement 数据是这样的原始文本：</p>
+<p>Announcement 数据包含的原始文本为：</p>
 <blockquote class="blockquote">
 <p>本公司于 2023 年 6 月 1 日，与建行深圳分行签署贷款协议，贷款金额为 2 亿元，期限 3 年，利率为年化 4.2%。</p>
 </blockquote>
@@ -648,52 +746,65 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<div class="sourceCode" id="cb1"><pre class="sourceCode md code-with-copy"><code class="sourceCode markdown"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>我有一批中国上市公司的借贷公告文本，每条文本描述一笔贷款事件。</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>请帮我从以下文本中提取结构化信息，输出为 Python 字典格式，包含以下字段：</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>loan_date: 贷款签署日期，格式为 YYYY-MM-DD</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>bank_name: 贷款银行法人机构名称（标准化，如「建设银行」而非「建行深圳分行」）</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>bank_level: 银行层级，取值为「总行」、「省级分行」、「地级分行」之一</span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>loan_amount: 贷款金额原始数值（浮点数，不做单位换算）</span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>loan_unit: 金额计量单位，取值为「元」、「万元」、「亿元」之一</span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>loan_rate: 年化利率，单位为 %（浮点数）</span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>loan_term_year: 贷款期限，单位为年（整数）</span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>规则：</span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>如果某个字段无法从文本中提取，返回 None 并在 warnings 字段中注明原因</span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>若文本存在歧义或信息不完整，在 warnings 字段中给出提示</span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>输出格式为包含上述字段以及一个 warnings（列表）字段的字典。</span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>文本：「本公司于2023年6月1日，与建行深圳分行签署贷款协议，</span>
-<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>贷款金额为2亿元，期限3年，利率为年化4.2%。」</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>我有一批中国上市公司的借贷公告文本，每条文本描述一笔贷款事件。 请帮我从以下文本中提取结构化信息，输出为 Python 字典格式，包含以下字段：</p>
+<ul>
+<li>loan_date: 贷款签署日期，格式为 YYYY-MM-DD</li>
+<li>bank_name: 贷款银行法人机构名称（标准化，如「建设银行」而非「建行深圳分行」）</li>
+<li>bank_level: 银行层级，取值为「总行」、「省级分行」、「地级分行」之一</li>
+<li>loan_amount: 贷款金额原始数值（浮点数，不做单位换算）</li>
+<li>loan_unit: 金额计量单位，取值为「元」、「万元」、「亿元」之一</li>
+<li>loan_rate: 年化利率，单位为 %（浮点数）</li>
+<li>loan_term_year: 贷款期限，单位为年（整数）</li>
+</ul>
+<p>规则：</p>
+<ul>
+<li>如果某个字段无法从文本中提取，返回 None 并在 warnings 字段中注明原因</li>
+<li>若文本存在歧义或信息不完整，在 warnings 字段中给出提示</li>
+</ul>
+<p>输出格式为包含上述字段以及一个 warnings（列表）字段的字典。</p>
+<p>文本：「本公司于2023年6月1日，与建行深圳分行签署贷款协议， 贷款金额为2亿元，期限3年，利率为年化4.2%。」</p>
 <p>提取完成后，统一换算金额的步骤：</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>unit_map <span class="op">=</span> {<span class="st">'元'</span>: <span class="dv">1</span>, <span class="st">'万元'</span>: <span class="dv">10000</span>, <span class="st">'亿元'</span>: <span class="dv">100000000</span>}</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>df[<span class="st">'loan_amount_yuan'</span>] <span class="op">=</span> df[<span class="st">'loan_amount'</span>] <span class="op">*</span> df[<span class="st">'loan_unit'</span>].<span class="bu">map</span>(unit_map)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>unit_map <span class="op">=</span> {<span class="st">'元'</span>: <span class="dv">1</span>, <span class="st">'万元'</span>: <span class="dv">10000</span>, <span class="st">'亿元'</span>: <span class="dv">100000000</span>}</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>df[<span class="st">'loan_amount_yuan'</span>] <span class="op">=</span> df[<span class="st">'loan_amount'</span>] <span class="op">*</span> df[<span class="st">'loan_unit'</span>].<span class="bu">map</span>(unit_map)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
 </section>
-<section id="数据清洗的整体流程" class="level2" data-number="7.5">
-<h2 data-number="7.5" class="anchored" data-anchor-id="数据清洗的整体流程"><span class="header-section-number">7.5</span> 数据清洗的整体流程</h2>
-<section id="项目文件夹结构" class="level3" data-number="7.5.1">
-<h3 data-number="7.5.1" class="anchored" data-anchor-id="项目文件夹结构"><span class="header-section-number">7.5.1</span> 项目文件夹结构</h3>
-<p>在开始任何数据操作之前，先建立清晰的项目结构。这不是可选项，而是可复现研究的基本要求。</p>
-<pre class="dos"><code>project/
+<section id="项目文件夹结构" class="level2" data-number="7.5">
+<h2 data-number="7.5" class="anchored" data-anchor-id="项目文件夹结构"><span class="header-section-number">7.5</span> 项目文件夹结构</h2>
+<p>在开始任何数据操作之前，先建立清晰的项目结构。这不是可选项，而是可复现研究的基本要求。<strong>一个有条理的文件夹结构，能帮助你在几个月后还能迅速找到数据来源、理解处理逻辑，也能让协作者在没有口头说明的情况下快速上手。</strong></p>
+<p><strong>推荐的基本结构如下：</strong></p>
+<ul>
+<li>本地新建一个文件夹，如 <code>../{Proj_name}</code></li>
+<li>（推荐）在该文件夹下新建以下几个子文件夹，用于分类存放文件：
+<ul>
+<li><code>./data_raw</code>：存放原始数据文件（.csv、.xlsx 等），<strong>只读，任何情况下不得覆盖或修改</strong></li>
+<li><code>./data_clean</code>：存放处理完毕、可直接用于分析的数据文件</li>
+<li><code>./doc</code>：存放说明文档、文献、报告草稿等文件</li>
+<li><code>./codes</code>：存放代码文件，包括自编函数、清洗脚本、分析模块等</li>
+<li><code>./output</code>：存放输出文件，包括图表、回归结果、报告正文等</li>
+<li><code>readme.md</code>（放在根目录）：对项目进行说明，内容包括项目背景与目标、数据来源与下载方式、程序执行顺序、主要变量定义等</li>
+</ul></li>
+</ul>
+<p><strong>变通原则：</strong></p>
+<p>以上结构是一个起点，实际项目中可根据需要灵活调整：</p>
+<ol type="1">
+<li><strong>增加 <code>./data_temp</code> 文件夹</strong>：用于存放中间过程文件（如提取后尚未聚合的数据）。这类文件可随时由代码重新生成，不属于「最终可用数据」，单独存放有助于区分数据的处理阶段。</li>
+<li><strong>简化 <code>./codes</code> 文件夹</strong>：如果整个分析流程只需 1–2 个 <code>.ipynb</code> 文档，可省去 <code>./codes</code> 文件夹，直接将 <code>.ipynb</code> 文档放在项目根目录下，结构更简洁。</li>
+<li><strong>拆分 <code>./output</code> 文件夹</strong>：输出内容较多时，可将 <code>./output</code> 拆分为 <code>./output/figures</code>（图形）和 <code>./output/tables</code>（表格），便于按类查找。若不希望文件夹层级过深，也可以直接在项目根目录下设置 <code>./figures</code> 和 <code>./tables</code> 两个文件夹。</li>
+<li><strong>按阶段命名代码文件</strong>：在 <code>./codes</code> 中，推荐为脚本加序号前缀（如 <code>01_clean.py</code>、<code>02_merge.py</code>、<code>03_analysis.py</code>），便于理解执行顺序。</li>
+</ol>
+<p>例如，一个初始的项目结构可能如下：</p>
+<pre><code>project/
 ├── data_raw/          # 原始数据，只读，永远不修改
 │   ├── BasicInf.csv
 │   ├── FinRatio.csv
 │   └── Announcement/
 │       └── raw_html/  # 爬取的原始 HTML 文件
 ├── data_temp/         # 中间过程文件，可随时重新生成
-│   ├── announcement_extracted.csv
-│   └── finratio_checked.csv
 ├── data_clean/        # 最终可用于分析的数据
-│   └── merged_clean.csv
-├── code/              # 清洗和分析代码
-│   ├── 01_extract_announcement.py
-│   ├── 02_clean_each_table.py
-│   └── 03_merge.py
+├── codes/             # 清洗和分析代码
 ├── output/            # 图表和结果
+├── main.ipynb         # 主执行脚本，调用 codes 中的函数
 └── README.md          # 记录数据来源、处理逻辑、变量定义</code></pre>
 <div class="callout callout-style-default callout-important callout-titled">
 <div class="callout-header d-flex align-content-center">
@@ -713,18 +824,21 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>这样即使处理逻辑出错，原始数据始终可以回溯。</p>
 </div>
 </div>
+<hr>
 </section>
-<section id="清洗的五个步骤" class="level3" data-number="7.5.2">
-<h3 data-number="7.5.2" class="anchored" data-anchor-id="清洗的五个步骤"><span class="header-section-number">7.5.2</span> 清洗的五个步骤</h3>
+<section id="数据清洗的整体流程" class="level2" data-number="7.6">
+<h2 data-number="7.6" class="anchored" data-anchor-id="数据清洗的整体流程"><span class="header-section-number">7.6</span> 数据清洗的整体流程</h2>
+<p>本节介绍的五个步骤适用于<strong>单张表</strong>的清洗。多表合并是在每张表清洗完毕之后的独立环节，将在「第二层：多表操作问题」中单独讨论。</p>
 <p><strong>第一步：导入与初步查看</strong></p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_csv(<span class="st">'data_raw/FinRatio.csv'</span>)</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>df.shape</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>df.head()</span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>df.dtypes</span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>df.info()</span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>df.describe()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>将数据读入 Python，用几个基本命令全面了解数据的形态：行列数、变量类型、缺失情况、基本统计量。这一步的目的不是处理问题，而是<strong>发现问题</strong>——在没有全面了解数据之前，不要急于动手清洗。</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_csv(<span class="st">'data_raw/FinRatio.csv'</span>)</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>df.shape</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>df.head()</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>df.dtypes</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>df.info()</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>df.describe()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -739,14 +853,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <ol type="1">
 <li>数据的行列数</li>
 <li>每列的数据类型、缺失值数量和缺失比例</li>
-<li>数值型列的描述性统计 (均值、中位数、标准差、min、25%、75%、max)，小数点后保留 2-3 位</li>
+<li>数值型列的描述性统计（均值、中位数、标准差、min、25%、75%、max），小数点后保留 2-3 位</li>
 <li>检查是否存在完全重复的行</li>
 <li>输出前 5 行数据，确保格式正确</li>
 </ol>
 </div>
 </div>
 <p><strong>第二步：识别问题</strong></p>
-<p>通过第一步的输出，系统性地检查每一列，记录发现的问题：</p>
+<p>通过第一步的输出，系统性地检查每一列，将发现的问题逐一记录下来，形成一张「问题清单」。不要边看边改——先把所有问题摸清楚，再统一规划处理顺序，避免前后步骤相互干扰。</p>
 <table class="caption-top table">
 <colgroup>
 <col style="width: 17%">
@@ -796,23 +910,77 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tbody>
 </table>
 <p><strong>第三步：处理</strong></p>
-<p>按照识别出的问题逐一处理。顺序很重要：<strong>先处理格式和类型问题，再处理报表类型筛选，然后处理缺失值，最后处理离群值</strong>。格式错误会影响缺失值的识别，报表混入会影响统计量的计算。</p>
+<p>按照第二步的问题清单逐一处理。<strong>顺序很重要</strong>，建议遵循以下逻辑：先处理格式和类型问题，再筛选报表类型，然后处理缺失值，最后处理离群值。原因在于：格式错误会导致后续缺失值统计失真（例如 <code>"2"</code> 和 <code>"000002"</code> 被识别为两个不同主键，合并后产生大量假性缺失）；报表类型混入会干扰统计量的计算，影响离群值阈值的判断；而离群值的判断依赖于数值分布的准确性，因此放在最后处理最为稳妥。</p>
 <p><strong>第四步：验证</strong></p>
-<p>每一步处理完之后，验证结果是否符合预期。具体的验证方法在各小节中介绍。</p>
+<p>每一步处理完之后，立即验证结果是否符合预期，不要等到全部处理完再统一核查。通用的验证动作包括：比对处理前后的行数（有没有意外丢失观测）、检查关键变量的取值范围（处理后的 min/max 是否合理）、抽查几行原始数据与处理结果是否对应。各类问题的具体验证方法将在后续各小节中介绍。</p>
 <p><strong>第五步：输出</strong></p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>df_clean.to_csv(<span class="st">'data_clean/merged_clean.csv'</span>, index<span class="op">=</span><span class="va">False</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>清洗完毕后，将结果保存到 <code>data_clean/</code> 文件夹，不覆盖原始数据。建议同时在 <code>readme.md</code> 中补充一条记录，说明本次清洗的主要操作和输出文件名。</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>df_clean.to_csv(<span class="st">'data_clean/merged_clean.csv'</span>, index<span class="op">=</span><span class="va">False</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
-</section>
-<section id="第一层单表内部问题" class="level2" data-number="7.6">
-<h2 data-number="7.6" class="anchored" data-anchor-id="第一层单表内部问题"><span class="header-section-number">7.6</span> 第一层：单表内部问题</h2>
+<section id="第一层单表内部问题" class="level2" data-number="7.7">
+<h2 data-number="7.7" class="anchored" data-anchor-id="第一层单表内部问题"><span class="header-section-number">7.7</span> 第一层：单表内部问题</h2>
 <p>下面用虚构的小型数据集演示各类问题。数据规模刻意压缩（5–10 行），以便清晰展示问题的本质。</p>
-<section id="虚构数据" class="level3" data-number="7.6.1">
-<h3 data-number="7.6.1" class="anchored" data-anchor-id="虚构数据"><span class="header-section-number">7.6.1</span> 虚构数据</h3>
+<section id="虚构数据" class="level3" data-number="7.7.1">
+<h3 data-number="7.7.1" class="anchored" data-anchor-id="虚构数据"><span class="header-section-number">7.7.1</span> 虚构数据</h3>
 <p><strong>BasicInf</strong>（5 家公司）：</p>
-<div class="line-block">stkcd | comp_name | industry | soe |</div>
-<p>|— |—— |—– | | | 000001 | 平安银行 | 银行业 | 0 | | 2 | 万科 A | 房地产业 | 0 | | 000063 | 中兴通讯 | 通信设备 | 0 | | 600028 | 中国石化 | 石油化工 | 1 | | 600036 | 招商银行 | 银行业 | 0 |</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>stkcd</th>
+<th>comp_name</th>
+<th>industry</th>
+<th>soe</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>000001</td>
+<td>平安银行</td>
+<td>银行业</td>
+<td>0</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td>万科 A</td>
+<td>房地产业</td>
+<td>0</td>
+</tr>
+<tr class="odd">
+<td>000063</td>
+<td>中兴通讯</td>
+<td>通信设备</td>
+<td>0</td>
+</tr>
+<tr class="even">
+<td>600028</td>
+<td>中国石化</td>
+<td>石油化工</td>
+<td>1</td>
+</tr>
+<tr class="odd">
+<td>600036</td>
+<td>招商银行</td>
+<td>银行业</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
 <p>注意：<code>stkcd</code> 第二行是整数 <code>2</code>，其余为 6 位字符串——这是格式不一致问题。</p>
 <p><strong>FinRatio</strong>（10 行，2 家公司 × 2 年 × 2 种报表类型）：</p>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+提示：变量名缩写
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>为了确保表格不至于过宽，部分变量名使用了缩写：<code>type</code> 代表 <code>report_type</code>，<code>Cash</code> 代表 <code>Cash_holding</code>。<br>
+实际操作中请使用完整变量名。</p>
+</div>
+</div>
 <table class="caption-top table">
 <colgroup>
 <col style="width: 8%">
@@ -829,12 +997,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <tr class="header">
 <th>stkcd</th>
 <th>year</th>
-<th>report_type</th>
+<th><strong>type</strong></th>
 <th>Leverage</th>
 <th>Size</th>
 <th>ROA</th>
 <th>CFlow</th>
-<th>Cash_holding</th>
+<th><strong>Cash</strong></th>
 <th>RD</th>
 </tr>
 </thead>
@@ -952,6 +1120,29 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tbody>
 </table>
 <p>注意植入的问题：<code>stkcd=2</code> 格式不一致；<code>000001</code> 同时有 A/B 两种报表；<code>Leverage=3.21</code> 是离群值；<code>ROA=-0.18</code> 是极端值；<code>Size="23.9"</code> 被存为字符串；<code>RD</code> 有缺失值。</p>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+提示：变量名缩写
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>为了确保下表显示时不至于过宽，部分变量名使用了缩写：</p>
+<ul>
+<li><code>date</code> 代表 <code>loan_date</code></li>
+<li><code>bank</code> 代表 <code>bank_name</code></li>
+<li><code>level</code> 代表 <code>bank_level</code></li>
+<li><code>amount</code> 代表 <code>loan_amount</code></li>
+<li><code>unit</code> 代表 <code>loan_unit</code></li>
+<li><code>rate</code> 代表 <code>loan_rate</code></li>
+<li><code>term</code> 代表 <code>loan_term_year</code></li>
+</ul>
+<p>实际操作中请使用完整变量名。</p>
+</div>
+</div>
 <p><strong>Announcement（提取后，加总前）</strong>（5 行）：</p>
 <table class="caption-top table">
 <colgroup>
@@ -969,13 +1160,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <tr class="header">
 <th>stkcd</th>
 <th>year</th>
-<th>loan_date</th>
-<th>bank_name</th>
-<th>bank_level</th>
-<th>loan_amount</th>
-<th>loan_unit</th>
-<th>loan_rate</th>
-<th>loan_term_year</th>
+<th>date</th>
+<th>name</th>
+<th>level</th>
+<th>amount</th>
+<th>unit</th>
+<th>rate</th>
+<th>term</th>
 </tr>
 </thead>
 <tbody>
@@ -1043,9 +1234,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>金额单位混用（亿元/万元）。</li>
 </ul>
 </section>
-<section id="缺失值" class="level3" data-number="7.6.2">
-<h3 data-number="7.6.2" class="anchored" data-anchor-id="缺失值"><span class="header-section-number">7.6.2</span> 缺失值</h3>
-<p>在处理缺失值之前，先要搞清楚缺失的原因和机制。缺失值的处理方式，取决于它是随机缺失（Missing Completely at Random, MCAR）、条件缺失（Missing at Random, MAR）还是非随机缺失（Missing Not at Random, MNAR）。</p>
+<section id="缺失值" class="level3" data-number="7.7.2">
+<h3 data-number="7.7.2" class="anchored" data-anchor-id="缺失值"><span class="header-section-number">7.7.2</span> 缺失值</h3>
+<p>在处理缺失值之前，先要搞清楚缺失的原因和机制。缺失值的处理方式，取决于它是随机缺失（Missing Completely at Random, <strong>MCAR</strong>）、条件缺失（Missing at Random, <strong>MAR</strong>）还是非随机缺失（Missing Not at Random, <strong>MNAR</strong>）。</p>
 <p>在我们的例子中，由于早期年份披露规则不完善，<code>RD</code> 的缺失很可能是 MNAR。例如，研发投入少 (设置为零) 的公司更倾向于不披露；也有可能恰恰相反，研发投入多的公司由于担心泄露商业秘密而不披露。这意味着缺失不是随机分布的，不能简单删除。文献中常用 Little’s MCAR test 来检验缺失机制，但在实际操作中，结合业务理解和数据探索更为重要。实证分析中，这种非随机缺失往往是导致内生性问题的根源之一，通常会采用 Heckman 两步法或 IV 方法来纠正。</p>
 <p><strong>三种处理思路：</strong></p>
 <ul>
@@ -1077,18 +1268,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </section>
-<section id="离群值与缩尾winsorize处理" class="level3" data-number="7.6.3">
-<h3 data-number="7.6.3" class="anchored" data-anchor-id="离群值与缩尾winsorize处理"><span class="header-section-number">7.6.3</span> 离群值与缩尾（Winsorize）处理</h3>
+<section id="离群值与缩尾winsorize处理" class="level3" data-number="7.7.3">
+<h3 data-number="7.7.3" class="anchored" data-anchor-id="离群值与缩尾winsorize处理"><span class="header-section-number">7.7.3</span> 离群值与缩尾（Winsorize）处理</h3>
 <p><strong>问题的本质：</strong> 离群值是指在统计上远离其他观测值的数据点。在我们的虚构数据中，<code>Leverage=3.21</code>（即负债是资产的 3.21 倍）和 <code>ROA=-0.18</code> 都是极端值。这类数值在回归中会对估计结果产生不成比例的影响。</p>
 <p><strong>识别方法：</strong></p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> col <span class="kw">in</span> [<span class="st">'Leverage'</span>, <span class="st">'ROA'</span>, <span class="st">'CFlow'</span>]:</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="sc">{</span>col<span class="sc">}</span><span class="ss">:"</span>)</span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(df[col].describe(percentiles<span class="op">=</span>[<span class="fl">.01</span>, <span class="fl">.05</span>, <span class="fl">.95</span>, <span class="fl">.99</span>]))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> col <span class="kw">in</span> [<span class="st">'Leverage'</span>, <span class="st">'ROA'</span>, <span class="st">'CFlow'</span>]:</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="sc">{</span>col<span class="sc">}</span><span class="ss">:"</span>)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(df[col].describe(percentiles<span class="op">=</span>[<span class="fl">.01</span>, <span class="fl">.05</span>, <span class="fl">.95</span>, <span class="fl">.99</span>]))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>如果 max 远大于第 99 百分位数，或 min 远小于第 1 百分位数，说明存在极端值。也可以用箱型图进行直观判断：</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>df[[<span class="st">'Leverage'</span>, <span class="st">'ROA'</span>, <span class="st">'CFlow'</span>]].boxplot()</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'处理前的变量分布'</span>)</span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>df[[<span class="st">'Leverage'</span>, <span class="st">'ROA'</span>, <span class="st">'CFlow'</span>]].boxplot()</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'处理前的变量分布'</span>)</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p><strong>缩尾（Winsorize）处理：</strong></p>
 <p>缩尾不删除极端值，而是将超出阈值的值替换为阈值本身——通常是上下各 1%分位数。注意区分两个概念：</p>
 <ul>
@@ -1116,8 +1307,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>第二，比较处理前后的均值和标准差，两者应无系统性差异——缩尾只影响分布的尾部，不应大幅改变均值。</p>
 <p>第三，绘制处理前后的箱型图或密度图，直观确认极端值已被压缩至合理范围。</p>
 </section>
-<section id="格式不一致" class="level3" data-number="7.6.4">
-<h3 data-number="7.6.4" class="anchored" data-anchor-id="格式不一致"><span class="header-section-number">7.6.4</span> 格式不一致</h3>
+<section id="格式不一致" class="level3" data-number="7.7.4">
+<h3 data-number="7.7.4" class="anchored" data-anchor-id="格式不一致"><span class="header-section-number">7.7.4</span> 格式不一致</h3>
 <p><strong>问题的本质：</strong> 同一个变量，在不同数据来源或不同导出方式下，可能用不同格式记录。格式不一致不会让代码报错，但会让合并失败或产生错误结果。</p>
 <p>在我们的虚构数据中，<code>stkcd</code> 在 BasicInf 和 FinRatio 里大多是 6 位字符串（<code>"000001"</code>），但万科 A 的代码被存为整数 <code>2</code>。合并时 <code>"000002" != 2</code>，结果是这家公司找不到匹配，产生大量 NaN——Python 不会报错，只是静默失败。</p>
 <p>其他常见格式问题还有：日期格式混用（<code>"2023-06-01"</code> vs <code>"20230601"</code>）、行业编码含多余空格（<code>" 银行业"</code> vs <code>"银行业"</code>）、金额单位混用。</p>
@@ -1147,12 +1338,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </section>
-<section id="重复观测" class="level3" data-number="7.6.5">
-<h3 data-number="7.6.5" class="anchored" data-anchor-id="重复观测"><span class="header-section-number">7.6.5</span> 重复观测</h3>
+<section id="重复观测" class="level3" data-number="7.7.5">
+<h3 data-number="7.7.5" class="anchored" data-anchor-id="重复观测"><span class="header-section-number">7.7.5</span> 重复观测</h3>
 <p><strong>问题的本质：</strong> 同一个观测单位出现了不止一次。重复分三种情形，性质和处理方式各不相同。</p>
 <p><strong>情形一：精确重复</strong></p>
 <p>每一列的值完全相同。在我们的 Announcement 提取数据中，同一条公告被爬取了两次，产生完全相同的两行。处理最简单：</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>df.drop_duplicates(inplace<span class="op">=</span><span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>df.drop_duplicates(inplace<span class="op">=</span><span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p><strong>情形二：模糊重复</strong></p>
 <p>关键字段相同，但部分字段略有差异。比如同一笔贷款的原始公告和补充公告，金额和利率相同但日期不同。需要根据业务逻辑定义「什么算同一笔贷款」，然后按规则保留其中一条。</p>
 <div class="callout callout-style-default callout-tip callout-titled">
@@ -1214,20 +1405,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <p>典型代码如下：</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 检查主键唯一性</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df.duplicated(subset<span class="op">=</span>[<span class="st">'stkcd'</span>, <span class="st">'year'</span>]).<span class="bu">sum</span>(), <span class="st">"组 (stkcd, year) 存在重复"</span>)</span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="co"># 查看重复的报表类型分布</span></span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df[<span class="st">'report_type'</span>].value_counts())</span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="co"># 仅保留合并报表</span></span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> df[df[<span class="st">'report_type'</span>] <span class="op">==</span> <span class="st">'A'</span>].copy()</span>
-<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a><span class="co"># 验证处理后主键唯一</span></span>
-<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> df.duplicated(subset<span class="op">=</span>[<span class="st">'stkcd'</span>, <span class="st">'year'</span>]).<span class="bu">sum</span>() <span class="op">==</span> <span class="dv">0</span>, <span class="st">"仍有重复，请检查"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 检查主键唯一性</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df.duplicated(subset<span class="op">=</span>[<span class="st">'stkcd'</span>, <span class="st">'year'</span>]).<span class="bu">sum</span>(), <span class="st">"组 (stkcd, year) 存在重复"</span>)</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="co"># 查看重复的报表类型分布</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df[<span class="st">'report_type'</span>].value_counts())</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="co"># 仅保留合并报表</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> df[df[<span class="st">'report_type'</span>] <span class="op">==</span> <span class="st">'A'</span>].copy()</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="co"># 验证处理后主键唯一</span></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> df.duplicated(subset<span class="op">=</span>[<span class="st">'stkcd'</span>, <span class="st">'year'</span>]).<span class="bu">sum</span>() <span class="op">==</span> <span class="dv">0</span>, <span class="st">"仍有重复，请检查"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
-<section id="数据类型错误" class="level3" data-number="7.6.6">
-<h3 data-number="7.6.6" class="anchored" data-anchor-id="数据类型错误"><span class="header-section-number">7.6.6</span> 数据类型错误</h3>
+<section id="数据类型错误" class="level3" data-number="7.7.6">
+<h3 data-number="7.7.6" class="anchored" data-anchor-id="数据类型错误"><span class="header-section-number">7.7.6</span> 数据类型错误</h3>
 <p><strong>问题的本质：</strong> 变量的存储类型与其语义类型不符。最常见的情形是数值型变量被存储为字符串。</p>
 <p>在我们的虚构数据中，<code>Size</code> 列的 2023 年值被存为字符串 <code>"23.9"</code>——可能是该单元格含有注释符号或空格，导致 pandas 将整列识别为 <code>object</code> 类型。对这列求均值会直接报错。</p>
 <div class="callout callout-style-default callout-tip callout-titled">
@@ -1251,8 +1442,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>注意第 4 步：先展示问题，确认后再处理，避免 AI 猜对了问题但处理方式不符合实际需求。</p>
 </section>
-<section id="宽表与长表的转换" class="level3" data-number="7.6.7">
-<h3 data-number="7.6.7" class="anchored" data-anchor-id="宽表与长表的转换"><span class="header-section-number">7.6.7</span> 宽表与长表的转换</h3>
+<section id="宽表与长表的转换" class="level3" data-number="7.7.7">
+<h3 data-number="7.7.7" class="anchored" data-anchor-id="宽表与长表的转换"><span class="header-section-number">7.7.7</span> 宽表与长表的转换</h3>
 <p>数据分析中经常需要在两种表格形式之间转换：</p>
 <ul>
 <li><strong>长表（long format）</strong>：每行是一个观测单位在某个时间点的一条记录。适合面板数据分析。</li>
@@ -1285,21 +1476,33 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p><strong>场景二：宽表转长表（reshape）</strong></p>
 <p>来自网页或部分数据库的原始数据常常是宽表格式。以收入和失业率数据为例，原始宽表可能长这样：</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode md code-with-copy"><code class="sourceCode markdown"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>| id  | sex | inc_1980 | inc_1981 | inc_1982 | ue_1980 | ue_1981 | ue_1982 |</span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>| | |----- |----- |----- |---- |---- |---- |</span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>| 1   | 0   | 5000     | 5500     | 6000     | 0       | 1       | 0       |</span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>| 2   | 1   | 2000     | 2200     | 3300     | 1       | 0       | 0       |</span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>| 3   | 0   | 3000     | 2000     | 1000     | 0       | 0       | 1       |</span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>面板回归需要的长表格式是：</span>
-<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>| id  | year | sex | inc  | ue  |</span>
-<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>| |- | |- | |</span>
-<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>| 1   | 1980 | 0   | 5000 | 0   |</span>
-<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>| 1   | 1981 | 0   | 5500 | 1   |</span>
-<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>| 1   | 1982 | 0   | 6000 | 0   |</span>
-<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>| 2   | 1980 | 1   | 2000 | 1   |</span>
-<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>| ... | ...  | ... | ...  | ... |</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode md code-with-copy"><code class="sourceCode markdown"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>原始资料(可能来自网页等途径)  【wide 型数据】</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>                     income                unemployee      </span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a> -----------------------------------+----------------------</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  id   sex    1980    1981    1982  |  1980   1981    1982 </span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a> -----------------------------------+----------------------</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>   1     0    5000    5500    6000  |    0      1      0   </span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>   2     1    2000    2200    3300  |    1      0      0   </span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>   3     0    3000    2000    1000  |    0      0      1   </span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a> -----------------------------------+----------------------</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>整理后的资料     【wide 型数据】</span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>  id  sex  inc1980  inc1981  inc1982  ue1980  ue1981  ue1982 </span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>   1    0     5000     5500     6000       0       1       0 </span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>   2    1     2000     2200     3300       1       0       0 </span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>   3    0     3000     2000     1000       0       0       1 </span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>最终需要的资料 (panel data)    【long 型数据】</span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a>  id   year   sex    inc   ue  </span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a>   1   1980     0   5000    0  </span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a>   1   1981     0   5500    1  </span>
+<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a>   1   1982     0   6000    0  </span>
+<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a>   2   1980     1   2000    1  </span>
+<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a>   2   1981     1   2200    0  </span>
+<span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a>   2   1982     1   3300    0  </span>
+<span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a>   3   1980     0   3000    0  </span>
+<span id="cb9-26"><a href="#cb9-26" aria-hidden="true" tabindex="-1"></a>   3   1981     0   2000    0  </span>
+<span id="cb9-27"><a href="#cb9-27" aria-hidden="true" tabindex="-1"></a>   3   1982     0   1000    1  </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>注意这里有两组时变变量（<code>inc</code> 和 <code>ue</code>），每组各三列，这比单组变量的 reshape 复杂，是实际工作中最常见的「卡壳点」。</p>
 <div class="callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center">
@@ -1324,10 +1527,10 @@ id, year, sex, inc, ue</p>
 </div>
 </section>
 </section>
-<section id="第二层多表操作问题" class="level2" data-number="7.7">
-<h2 data-number="7.7" class="anchored" data-anchor-id="第二层多表操作问题"><span class="header-section-number">7.7</span> 第二层：多表操作问题</h2>
-<section id="合并前的准备" class="level3" data-number="7.7.1">
-<h3 data-number="7.7.1" class="anchored" data-anchor-id="合并前的准备"><span class="header-section-number">7.7.1</span> 合并前的准备</h3>
+<section id="第二层多表操作问题" class="level2" data-number="7.8">
+<h2 data-number="7.8" class="anchored" data-anchor-id="第二层多表操作问题"><span class="header-section-number">7.8</span> 第二层：多表操作问题</h2>
+<section id="合并前的准备" class="level3" data-number="7.8.1">
+<h3 data-number="7.8.1" class="anchored" data-anchor-id="合并前的准备"><span class="header-section-number">7.8.1</span> 合并前的准备</h3>
 <p>在做任何合并之前，需要明确三张表各自的主键：</p>
 <ul>
 <li>BasicInf：主键为 <code>stkcd</code>（每家公司一行）</li>
@@ -1349,8 +1552,8 @@ id, year, sex, inc, ue</p>
 </div>
 </div>
 </section>
-<section id="连接类型选错导致样本丢失" class="level3" data-number="7.7.2">
-<h3 data-number="7.7.2" class="anchored" data-anchor-id="连接类型选错导致样本丢失"><span class="header-section-number">7.7.2</span> 连接类型选错导致样本丢失</h3>
+<section id="连接类型选错导致样本丢失" class="level3" data-number="7.8.2">
+<h3 data-number="7.8.2" class="anchored" data-anchor-id="连接类型选错导致样本丢失"><span class="header-section-number">7.8.2</span> 连接类型选错导致样本丢失</h3>
 <p>四种连接类型的核心区别在于<strong>如何处理找不到匹配的行</strong>：</p>
 <ul>
 <li><code>inner</code>：只保留两表都有的记录，会静默丢弃单边记录</li>
@@ -1373,25 +1576,25 @@ id, year, sex, inc, ue</p>
 </div>
 </div>
 </section>
-<section id="键不唯一导致行数膨胀" class="level3" data-number="7.7.3">
-<h3 data-number="7.7.3" class="anchored" data-anchor-id="键不唯一导致行数膨胀"><span class="header-section-number">7.7.3</span> 键不唯一导致行数膨胀</h3>
+<section id="键不唯一导致行数膨胀" class="level3" data-number="7.8.3">
+<h3 data-number="7.8.3" class="anchored" data-anchor-id="键不唯一导致行数膨胀"><span class="header-section-number">7.8.3</span> 键不唯一导致行数膨胀</h3>
 <p>如果 BasicInf 中某家公司的 <code>stkcd</code> 出现了两次（录入错误），合并时该公司的每条财务记录都会被复制，行数静默增加，且不报错。</p>
 <p>预警信号就是合并后行数超过预期，因此上面的合并后验证步骤至关重要。</p>
 </section>
-<section id="第三层系统性数据质量问题" class="level3" data-number="7.7.4">
-<h3 data-number="7.7.4" class="anchored" data-anchor-id="第三层系统性数据质量问题"><span class="header-section-number">7.7.4</span> 第三层：系统性数据质量问题</h3>
+<section id="第三层系统性数据质量问题" class="level3" data-number="7.8.4">
+<h3 data-number="7.8.4" class="anchored" data-anchor-id="第三层系统性数据质量问题"><span class="header-section-number">7.8.4</span> 第三层：系统性数据质量问题</h3>
 <p>完成了前两层的清洗，数据在技术上已经「干净」了。但这里有一个重要的区分：</p>
 <blockquote class="blockquote">
 <p><strong>数据干净</strong> ≠ <strong>数据准确</strong> ≠ <strong>数据适合回答你的研究问题</strong></p>
 </blockquote>
 </section>
-<section id="样本选择偏差" class="level3" data-number="7.7.5">
-<h3 data-number="7.7.5" class="anchored" data-anchor-id="样本选择偏差"><span class="header-section-number">7.7.5</span> 样本选择偏差</h3>
+<section id="样本选择偏差" class="level3" data-number="7.8.5">
+<h3 data-number="7.8.5" class="anchored" data-anchor-id="样本选择偏差"><span class="header-section-number">7.8.5</span> 样本选择偏差</h3>
 <p>我们的数据来自 CSMAR，只包含上市公司。这意味着样本中不包含非上市企业，而上市公司本身是「通过了市场筛选」的企业，在规模、信息披露质量和融资能力上与普通企业有系统性差异。用这份数据估计出的系数，严格来说只适用于上市公司群体，这是在解读结论时需要明确说明的限制。</p>
 </section>
 </section>
-<section id="自选择偏误预告" class="level2" data-number="7.8">
-<h2 data-number="7.8" class="anchored" data-anchor-id="自选择偏误预告"><span class="header-section-number">7.8</span> 自选择偏误（预告）</h2>
+<section id="自选择偏误预告" class="level2" data-number="7.9">
+<h2 data-number="7.9" class="anchored" data-anchor-id="自选择偏误预告"><span class="header-section-number">7.9</span> 自选择偏误（预告）</h2>
 <p>观察到「国有企业的平均借款利率低于民营企业」，这能说明「国企身份导致了更低的融资成本」吗？不一定。国企可能同时在财务质量上优于同类民企，银行给出更低利率是因为风险评估，而非国企身份本身。这就是<strong>自选择偏误</strong>——某种特征（国企身份）的获得不是随机的，而是与其他影响结果的变量同时相关。</p>
 <p>类似的问题在经济研究中无处不在：</p>
 <ul>
@@ -1400,8 +1603,8 @@ id, year, sex, inc, ue</p>
 </ul>
 <p>这类问题不能通过数据清洗解决，需要专门的因果推断方法（工具变量、双重差分、断点回归等）。我们将在第六章详细讨论。</p>
 </section>
-<section id="提示词模式从问题描述到可运行代码" class="level2" data-number="7.9">
-<h2 data-number="7.9" class="anchored" data-anchor-id="提示词模式从问题描述到可运行代码"><span class="header-section-number">7.9</span> 提示词模式：从问题描述到可运行代码</h2>
+<section id="提示词模式从问题描述到可运行代码" class="level2" data-number="7.10">
+<h2 data-number="7.10" class="anchored" data-anchor-id="提示词模式从问题描述到可运行代码"><span class="header-section-number">7.10</span> 提示词模式：从问题描述到可运行代码</h2>
 <p>一个好的数据处理提示词通常包含四个要素：</p>
 <p><strong>① 数据背景</strong>：这是什么数据，来自哪里，分析单位是什么。</p>
 <blockquote class="blockquote">
@@ -1420,11 +1623,11 @@ id, year, sex, inc, ue</p>
 <p>「输出处理前后的缺失值数量对比，以及新列的 value_counts。」</p>
 </blockquote>
 <p>当你能够完整写出这四个要素，生成的代码通常可以直接运行。相反，「帮我处理缺失值」这样的提示词生成的代码在技术上可能正确，但完全不符合实际需求。</p>
-<section id="综合案例与章末练习" class="level3" data-number="7.9.1">
-<h3 data-number="7.9.1" class="anchored" data-anchor-id="综合案例与章末练习"><span class="header-section-number">7.9.1</span> 综合案例与章末练习</h3>
+<section id="综合案例与章末练习" class="level3" data-number="7.10.1">
+<h3 data-number="7.10.1" class="anchored" data-anchor-id="综合案例与章末练习"><span class="header-section-number">7.10.1</span> 综合案例与章末练习</h3>
 </section>
-<section id="完整处理流程" class="level3" data-number="7.9.2">
-<h3 data-number="7.9.2" class="anchored" data-anchor-id="完整处理流程"><span class="header-section-number">7.9.2</span> 完整处理流程</h3>
+<section id="完整处理流程" class="level3" data-number="7.10.2">
+<h3 data-number="7.10.2" class="anchored" data-anchor-id="完整处理流程"><span class="header-section-number">7.10.2</span> 完整处理流程</h3>
 <ol type="1">
 <li>分别导入 BasicInf、FinRatio、Announcement 原始数据至 <code>data_raw/</code></li>
 <li>对 Announcement 文本做非结构化提取，保存至 <code>data_temp/</code></li>
@@ -1441,8 +1644,8 @@ id, year, sex, inc, ue</p>
 <li>输出最终数据集至 <code>data_clean/merged_clean.csv</code></li>
 </ol>
 </section>
-<section id="章末练习" class="level3" data-number="7.9.3">
-<h3 data-number="7.9.3" class="anchored" data-anchor-id="章末练习"><span class="header-section-number">7.9.3</span> 章末练习</h3>
+<section id="章末练习" class="level3" data-number="7.10.3">
+<h3 data-number="7.10.3" class="anchored" data-anchor-id="章末练习"><span class="header-section-number">7.10.3</span> 章末练习</h3>
 <p>请使用本章提供的虚构数据集完成以下任务：</p>
 <ol type="1">
 <li>用提示词生成代码，输出一份完整的数据质量报告</li>
@@ -1452,8 +1655,8 @@ id, year, sex, inc, ue</p>
 </ol>
 </section>
 </section>
-<section id="参考文献" class="level2" data-number="7.10">
-<h2 data-number="7.10" class="anchored" data-anchor-id="参考文献"><span class="header-section-number">7.10</span> 参考文献</h2>
+<section id="参考文献" class="level2" data-number="7.11">
+<h2 data-number="7.11" class="anchored" data-anchor-id="参考文献"><span class="header-section-number">7.11</span> 参考文献</h2>
 <ul>
 <li><p>Card, D. (1995). Using geographic variation in college proximity to estimate the return to schooling. In L. N. Christofides, E. K. Grant, &amp; R. Swidinsky (Eds.), <em>Aspects of labour market behaviour: Essays in honour of John Vanderkamp</em> （pp.&nbsp;201–222）. University of Toronto Press. <a href="https://scholar.google.com/scholar?q=Using%20geographic%20variation%20in%20college%20proximity%20to%20estimate%20the%20return%20to%20schooling%20Card%201995">Google</a>.</p></li>
 <li><p>Herndon, T., Ash, M., &amp; Pollin, R. (2014). Does high public debt consistently stifle economic growth? A critique of Reinhart and Rogoff. <em>Cambridge Journal of Economics</em>, 38（2）, 257–279. <a href="https://doi.org/10.1093/cje/bet075">Link</a>, <a href="http://sci-hub.ren/10.1093/cje/bet075">PDF</a>, <a href="https://scholar.google.com/scholar?q=Does%20high%20public%20debt%20consistently%20stifle%20economic%20growth?%20A%20critique%20of%20Reinhart%20and%20Rogoff">Google</a>.</p></li>
@@ -1461,8 +1664,6 @@ id, year, sex, inc, ue</p>
 </ul>
 
 
-</section>
-</div>
 </section>
 
 </main> <!-- /main -->
@@ -2045,6 +2246,19 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   </div>
 </nav>
 </div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+      &nbsp;
+    </div>   
+    <div class="nav-footer-center">
+<p><a href="https://www.lianxh.cn">lianxh.cn</a></p>
+</div>
+    <div class="nav-footer-right">
+<p>Support: <a href="https://lianxhcn.github.io/quarto_book/">Quarto</a></p>
+</div>
+  </div>
+</footer>
 
 
 

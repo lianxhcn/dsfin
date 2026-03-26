@@ -1,0 +1,308 @@
+# A8. 上下文管理与调试 {.unnumbered}
+
+本章解决「代码跑通了但结果不对」「AI 忘记了之前说过什么」「循环跑了一晚上还没完」这三类最让人崩溃的问题。
+
+## A8.1 管理 AI 的上下文记忆
+
+### A8.1.1 为什么上下文管理很重要？
+
+当你的对话变长，或者开启了新的对话窗口，AI 会「忘记」你的数据结构，重新生成的代码可能和之前的变量名对不上——这是提示词用户最常遇到、也最容易忽视的问题。
+
+**A. 三种常见的上下文断裂场景**
+
+| 场景 | 现象 | 解决方法 |
+|------|------|---------|
+| 新开对话窗口 | AI 不认识 `df` 是什么 | 用「项目背景卡片」重新交代 |
+| 对话太长 | AI 忘记了 10 轮前的数据结构 | 在关键节点重新粘贴数据信息 |
+| 换了 AI 工具 | 从 ChatGPT 切换到 Claude | 重新提供完整背景 |
+
+::: {.callout-tip}
+### 提示词：项目背景卡片（每次新对话时使用）
+
+把这个卡片保存在 Notebook 的第一个 Markdown 单元格，每次开启新对话时粘贴给 AI。
+
+```md
+【项目背景】请记住以下信息，本次对话中所有代码都基于这个背景。
+
+项目：A 股上市公司并购事件研究
+运行环境：Python 3.11，Anaconda，Jupyter Notebook，Windows 11
+主要库：pandas 2.x，numpy，matplotlib，statsmodels，seaborn
+
+核心数据框：
+- `df`：股票日度面板数据，列为 date（datetime）、stock_code（str）、
+  close（float）、volume（int）、return（float）、industry（str）
+  行数约 500,000，时间范围 2018–2023，股票数量约 500 只
+- `df_events`：并购事件列表，列为 acquirer_code（str）、
+  event_date（datetime）、target_name（str）
+  行数约 300
+
+当前进度：已完成数据清洗，正在做事件研究的超额收益计算。
+变量命名规范：使用下划线分隔，如 df_clean、car_mean、result_ols。
+
+接下来请帮我：[在这里写本次的具体任务]
+```
+:::
+
+::: {.callout-tip}
+### 提示词：在长对话中途重置上下文
+
+当对话已经很长，发现 AI 开始「犯迷糊」（用错变量名、忘记数据结构）时使用。
+
+```md
+我们的对话已经很长了，请忽略对话中的所有历史信息，
+重新从以下背景开始：
+
+当前状态：
+- 数据框 `df_clean` 已清洗完毕：[X] 只股票，[Y] 个交易日
+  列：date、stock_code、close、return、industry
+- 已完成：数据清洗、缺失值处理、Winsorize 异常值处理
+- 下一步目标：计算每只股票的年化收益率和夏普比率
+
+请基于以上状态，帮我完成「下一步目标」中的任务。
+```
+:::
+
+
+## A8.2 读懂报错：让 AI 帮你调试
+
+### A8.2.1 报错信息的结构
+
+Python 报错信息看起来复杂，但结构很简单：
+
+```
+Traceback (most recent call last):          ← 出错的调用链
+  File "analysis.py", line 35, in <module>
+    df_merged = pd.merge(df_price, df_fund, on=['stock_code', 'year'])
+KeyError: 'year'                            ← 最重要：错误类型 + 错误原因
+```
+
+**最重要的永远是最后一行**：错误类型（`KeyError`）和错误信息（`'year'`）。
+
+**A. 金融数据分析中最常见的报错类型**
+
+| 报错类型 | 最常见原因 | 提示词关键词 |
+|---------|----------|------------|
+| `KeyError` | 列名不存在或拼写错误 | 「找不到列名」 |
+| `TypeError` | 对字符串列做了数学运算 | 「类型不匹配」 |
+| `ValueError` | 日期格式错误、merge 键类型不一致 | 「值格式不合法」 |
+| `MemoryError` | 数据量太大，内存不足 | 「内存溢出」 |
+| `FileNotFoundError` | 文件路径错误 | 「找不到文件」 |
+| `AttributeError` | 方法名拼写错误或对象类型不对 | 「对象没有这个方法」 |
+
+::: {.callout-tip}
+### 提示词：让 AI 分析报错原因（万能调试模板）
+
+这是最常用的调试提示词。**关键原则：把完整的报错信息和出错的代码都粘贴给 AI，不要只描述「出错了」。**
+
+```md
+我的 Python 代码出现了报错，请帮我分析原因并给出修复方案。
+
+【完整报错信息】（直接复制终端输出）：
+```
+Traceback (most recent call last):
+  File "analysis.py", line 35, in <module>
+    df_merged = pd.merge(df_price, df_fund, on=['stock_code', 'year'])
+KeyError: 'year'
+```
+
+【出错的代码片段】：
+```python
+df_price = pd.read_csv('../data/raw/stock_price.csv')
+df_fund = pd.read_csv('../data/raw/fundamental.csv')
+df_merged = pd.merge(df_price, df_fund, on=['stock_code', 'year'])
+```
+
+【两个数据框的列名】：
+- df_price 的列名：date, stock_code, close, return
+- df_fund 的列名：fiscal_year, stock_code, roe, leverage
+
+【我想实现的目标】：
+将股票日度价格数据和年度财务数据，按股票代码和年份对齐合并。
+
+请：
+1. 解释报错的原因
+2. 给出修复后的完整代码
+3. 如果有多种修复方案，说明各自的适用场景
+```
+:::
+
+::: {.callout-tip}
+### 提示词：诊断「结果跑通了但数值不对」
+
+这比代码报错更难排查，需要系统地检查中间步骤。
+
+```md
+我的代码运行没有报错，但最终结果数值异常，请帮我排查原因。
+
+【异常现象】：
+计算了 500 只股票在 2018–2023 年间的年化收益率，
+发现有 30 只股票的年化收益率超过了 500%，
+还有 15 只股票是负无穷大（-inf）。
+
+【相关代码】：
+```python
+df['log_return'] = np.log(df['close'] / df['close'].shift(1))
+df_annual = df.groupby(['stock_code', df['date'].dt.year])['log_return'].sum()
+df_annual = df_annual * 252  # 年化
+```
+
+【数据说明】：
+- df 是面板数据，约 50 万行
+- close 列已经过 Winsorize 处理
+- date 列是 datetime 类型
+
+请帮我：
+1. 指出最可能导致极端值的原因
+   （提示：shift(1) 在面板数据中跨股票计算的问题？close 列是否有 0 或负值？）
+2. 打印出那 30 只极端收益率股票的代码和异常值，帮助定位
+3. 修复代码，确保对数收益率只在每只股票内部按时间顺序计算
+4. 增加一个验证步骤：检查修复后是否还有极端值
+```
+:::
+
+
+## A8.3 代码效率优化
+
+### A8.3.1 什么时候需要优化？
+
+数据量小（10 万行以内）时，代码慢一些通常不是问题。但金融数据往往有几百万行（全市场日度数据），以下这些写法会让你等到天黑：
+
+| 低效写法 | 原因 | 向 AI 描述时说 |
+|---------|------|-------------|
+| `for i, row in df.iterrows()` | 逐行循环，不利用向量化 | 「把 iterrows 改为向量化操作」 |
+| 每次循环都读取一次文件 | 重复 I/O | 「把文件读取移到循环外面」 |
+| 对整个数据框做多次 groupby | 重复分组 | 「合并多个 groupby 操作」 |
+| 存储大量中间数据框 | 内存浪费 | 「减少中间变量，用链式操作」 |
+
+::: {.callout-tip}
+### 提示词：将低效循环改为向量化操作
+
+这是最常见的效率问题，影响最大，改造收益最高。
+
+```md
+我有以下 Python 代码，在数据框 `df`（约 300 万行）上运行非常慢，
+已经跑了超过 10 分钟还没结束：
+
+【当前代码（慢）】：
+```python
+results = []
+for i, row in df.iterrows():
+    if row['industry'] == '银行':
+        log_ret = np.log(row['close'] / row['prev_close'])
+        results.append({
+            'stock_code': row['stock_code'],
+            'date': row['date'],
+            'log_return': log_ret
+        })
+df_result = pd.DataFrame(results)
+```
+
+【数据框结构】：
+- 列：date, stock_code, close, prev_close, industry
+- 行数：约 300 万行
+
+请帮我：
+1. 解释为什么 iterrows() 在大数据框上这么慢
+2. 用 pandas 的向量化操作重写这段代码，
+   要求功能完全相同，但速度提升 100 倍以上
+3. 在优化后的代码末尾加上运行时间测量（用 time 模块），
+   让我能直接对比优化前后的速度
+```
+:::
+
+::: {.callout-tip}
+### 提示词：处理内存不足问题（大数据集）
+
+当数据量很大（如全市场 5 年日度数据），一次性读入可能导致内存溢出。
+
+```md
+我需要处理一个很大的 CSV 文件（约 2GB，包含 A 股全市场 5 年日度数据），
+用 pandas 一次性读入时出现 MemoryError。
+
+我的电脑内存为 16GB，操作系统为 Windows 11。
+
+请帮我：
+1. 用 pandas 的 chunksize 参数分块读取：
+   每次读取 100,000 行，对每块数据只保留「银行」行业的股票，
+   最后将所有块合并为一个数据框
+2. 在读取时只加载需要的列：date、stock_code、close、return、industry，
+   跳过其他列（减少内存占用）
+3. 将 date 列存为 datetime 类型，stock_code 存为 category 类型
+   （category 类型在有大量重复值时比 str 节省约 70% 内存）
+4. 读取完成后，打印最终数据框的内存占用，
+   对比直接读取全部列时的内存占用差异
+
+用 tqdm 显示分块读取的进度。
+```
+:::
+
+
+## A8.4 与 AI 高效对话的实用技巧
+
+**A. 让每一轮追问都有效的三个原则**
+
+| 原则 | 错误示范 | 正确示范 |
+|------|---------|---------|
+| 贴具体信息，不要描述 | 「代码有问题」 | 直接粘贴报错信息和代码 |
+| 说明期望结果 | 「结果不对」 | 「应该输出 X，但实际输出了 Y」 |
+| 指定修改范围 | 「帮我改一下」 | 「只修改第 3 步，其余不变」 |
+
+::: {.callout-tip}
+### 提示词：让 AI 解释你不理解的代码
+
+AI 生成的代码不一定第一次就能完全看懂。理解代码是比「能用」更重要的能力。
+
+```md
+请逐行解释以下 Python 代码，用我能理解的语言（我是金融专业背景，
+Python 基础较弱）。对每一行说明：
+① 这行代码做了什么操作；
+② 为什么要这样写，而不是用更直观的方法；
+③ 如果去掉这行，会有什么影响。
+
+【需要解释的代码】：
+```python
+df['log_return'] = df.groupby('stock_code')['close'].transform(
+    lambda x: np.log(x / x.shift(1))
+)
+
+df_annual = df.groupby(['stock_code', df['date'].dt.year]).agg(
+    annual_return=('log_return', lambda x: np.expm1(x.sum())),
+    volatility=('log_return', lambda x: x.std() * np.sqrt(252)),
+    sharpe=('log_return', lambda x: x.mean() / x.std() * np.sqrt(252))
+).reset_index()
+```
+
+特别解释：
+- `transform` 和 `apply` 有什么区别？
+- `np.expm1(x.sum())` 为什么用 expm1 而不是 exp？
+- `reset_index()` 的作用是什么？
+```
+:::
+
+::: {.callout-tip}
+### 提示词：让 AI 审查你自己写的代码
+
+当你已经能自己写一些代码时，让 AI 扮演「代码审查员」，找出潜在问题。
+
+```md
+请帮我审查以下 Python 代码，找出潜在的错误、低效写法和可能产生错误结果的地方。
+我是 Python 初学者，请用清晰的语言说明每个问题和改进方法。
+
+【需要审查的代码】：
+```python
+[将你写的代码粘贴在这里]
+```
+
+重点检查：
+1. 是否存在会产生错误结果但不报错的逻辑问题
+   （如跨股票计算收益率、merge 后行数异常）
+2. 是否有内存或效率问题（如在大循环中用 iterrows）
+3. 是否有潜在的除以零、log(负数) 等数值错误
+4. 变量命名是否清晰，代码是否需要添加注释
+
+请用以下格式输出：
+- 问题 [序号]：[问题描述]
+- 影响：[会导致什么后果]
+- 修改建议：[具体如何改]
+```
+:::

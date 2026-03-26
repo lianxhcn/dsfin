@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>🚀作业 – 金融数据分析与建模</title>
+<title>A2. 项目规划与版本控制 – 金融数据分析与建模</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -20,6 +20,40 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -30,8 +64,8 @@ ul.task-list li input[type="checkbox"] {
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
-<link href="../Lecture/00-setup/01_00_coding_with_AI.html" rel="next">
-<link href="../Lecture/00_intro.html" rel="prev">
+<link href="../appendix_python/a3_concepts.html" rel="next">
+<link href="../appendix_python/a1_setup.html" rel="prev">
 <link href="../images/book-logo.png" rel="icon" type="image/png">
 <script src="../site_libs/quarto-html/quarto.js"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
@@ -85,7 +119,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../Lecture/01_homework.html">🚀作业</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../appendix_python/index.html">附录</a></li><li class="breadcrumb-item"><a href="../appendix_python/a2_project.html">A2. 项目规划与版本控制</a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -132,7 +166,7 @@ ul.task-list li input[type="checkbox"] {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../Lecture/01_homework.html" class="sidebar-item-text sidebar-link active">
+  <a href="../Lecture/01_homework.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">🚀作业</span></a>
   </div>
 </li>
@@ -252,7 +286,7 @@ ul.task-list li input[type="checkbox"] {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../appendix_python/a2_project.html" class="sidebar-item-text sidebar-link">
+  <a href="../appendix_python/a2_project.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text">A2. 项目规划与版本控制</span></a>
   </div>
 </li>
@@ -299,15 +333,25 @@ ul.task-list li input[type="checkbox"] {
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#a2.1-项目结构设计" id="toc-a2.1-项目结构设计" class="nav-link active" data-scroll-target="#a2.1-项目结构设计">A2.1 项目结构设计</a>
+  <ul class="collapse">
+  <li><a href="#a2.1.1-推荐的项目结构" id="toc-a2.1.1-推荐的项目结构" class="nav-link" data-scroll-target="#a2.1.1-推荐的项目结构">A2.1.1 推荐的项目结构</a></li>
+  </ul></li>
+  <li><a href="#a2.2-git-版本控制" id="toc-a2.2-git-版本控制" class="nav-link" data-scroll-target="#a2.2-git-版本控制">A2.2 Git 版本控制</a></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default">
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../appendix_python/index.html">附录</a></li><li class="breadcrumb-item"><a href="../appendix_python/a2_project.html">A2. 项目规划与版本控制</a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title">🚀作业</h1>
+<h1 class="title">A2. 项目规划与版本控制</h1>
 </div>
 
 
@@ -324,16 +368,218 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<hr>
-<blockquote class="blockquote">
-<p>🍓 <strong><a href="https://send2me.cn/FCAjV_t7/So-WPbzxrA1YiQ">点此提交作业</a></strong></p>
-</blockquote>
-<blockquote class="blockquote">
-<p>🍏 <a href="https://github.com/lianxhcn/dsfin/blob/main/homework/readme.md">查看作业通知</a></p>
-</blockquote>
-<hr>
+<p>一个清晰的项目结构和基本的版本控制习惯，能让你的分析代码可复现、可备份、可分享。本章的核心思路是：<strong>先和 AI 讨论结构设计，确认后再让 AI 生成代码框架</strong>。</p>
+<section id="a2.1-项目结构设计" class="level2">
+<h2 class="anchored" data-anchor-id="a2.1-项目结构设计">A2.1 项目结构设计</h2>
+<section id="a2.1.1-推荐的项目结构" class="level3">
+<h3 class="anchored" data-anchor-id="a2.1.1-推荐的项目结构">A2.1.1 推荐的项目结构</h3>
+<p>金融数据分析项目建议采用以下标准结构：</p>
+<pre><code>fin_project/
+├── data/
+│   ├── raw/          # 原始数据，永远不修改
+│   └── processed/    # 清洗后的数据
+├── notebooks/        # Jupyter Notebook（探索性分析）
+├── scripts/          # 可复用的 Python 脚本
+├── outputs/
+│   ├── figures/      # 图形输出（PDF/PNG）
+│   └── tables/       # 表格输出（CSV/Excel）
+├── environment.yml   # 环境配置（供他人复现）
+└── README.md         # 项目说明</code></pre>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+提示词（第一轮）：与 AI 讨论项目结构
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>对于一个新项目，先描述你的任务背景，让 AI 推荐合适的结构，再做调整。这比直接套用模板更符合你的实际需求。</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode md code-with-copy"><code class="sourceCode markdown"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>我正在启动一个 Python 数据分析项目，任务是：</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>「用事件研究法分析上市公司并购公告对 A 股股价的短期影响」。</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>数据来源：Wind 金融终端，包括日度股票行情数据和并购事件列表。</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>分析工具：pandas、statsmodels、matplotlib。</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>运行环境：VS Code + Jupyter Notebook，Windows 11，Anaconda。</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>请帮我：</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>设计一个合理的项目文件夹结构，说明每个文件夹的用途</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>推荐主要脚本文件的命名和分工</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>   （数据下载、数据清洗、建模分析、结果绘图各自独立成文件）</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>解释为什么不能直接修改 data/raw/ 中的原始数据</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>请用树形结构展示最终目录，并为每个文件/文件夹附一行说明。</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+提示词（第二轮）：让 AI 生成项目初始化脚本
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>确认好结构后，让 AI 生成一键创建脚本，避免手动建文件夹。</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode md code-with-copy"><code class="sourceCode markdown"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>请基于我们刚才讨论的项目结构，帮我写一个 Python 脚本</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="in">`setup_project.py`</span>，在当前目录下自动创建所有文件夹，</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>并生成以下初始文件：</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>README.md：包含项目名称「fin_event_study」、创建日期和三行简介</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>.gitignore：忽略 data/raw/ 下的所有文件、__pycache__/、</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>   .ipynb_checkpoints/、.env</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>要求：</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>使用 Python 的 pathlib 模块</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>如果文件夹已存在则跳过（不报错）</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>代码有注释，适合在终端直接运行：python setup_project.py</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+追问模板
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-3" class="callout-3-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div class="sourceCode" id="cb4"><pre class="sourceCode md code-with-copy"><code class="sourceCode markdown"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>脚本运行后，文件夹结构创建成功，但有以下问题：</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>[描述具体问题，例如：「README.md 创建了，但内容是空的」</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>或「.gitignore 没有被创建」]</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>请在上面代码的基础上修复这个问题，其余部分不变。</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="a2.2-git-版本控制" class="level2">
+<h2 class="anchored" data-anchor-id="a2.2-git-版本控制">A2.2 Git 版本控制</h2>
+<p>Git 对金融分析学生最实用的价值只有两个：<strong>备份代码</strong>（防止误删）和<strong>记录修改历史</strong>（知道哪次改动导致了问题）。</p>
+<p><strong>A. 写提示词时需要知道的 Git 核心术语</strong></p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>术语</th>
+<th>含义</th>
+<th>类比</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>仓库（repository）</td>
+<td>项目的所有文件 + 历史记录</td>
+<td>项目档案室</td>
+</tr>
+<tr class="even">
+<td>提交（commit）</td>
+<td>保存当前状态的快照</td>
+<td>按下「存档」键</td>
+</tr>
+<tr class="odd">
+<td>暂存（add）</td>
+<td>选择哪些文件纳入本次提交</td>
+<td>放进「待存档」区</td>
+</tr>
+<tr class="even">
+<td>推送（push）</td>
+<td>将本地提交上传到 GitHub</td>
+<td>上传到云端</td>
+</tr>
+<tr class="odd">
+<td>拉取（pull）</td>
+<td>将 GitHub 的更新下载到本地</td>
+<td>从云端下载</td>
+</tr>
+<tr class="even">
+<td><code>.gitignore</code></td>
+<td>告诉 Git 哪些文件不需要追踪</td>
+<td>「不存档」清单</td>
+</tr>
+</tbody>
+</table>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+提示词：初始化本地项目并推送到 GitHub
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>适用于第一次将本地项目同步到 GitHub 的场景。</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode md code-with-copy"><code class="sourceCode markdown"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>我有一个本地 Python 项目，路径为 C:/Users/zhangsan/fin_project，</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>想将它推送到 GitHub。</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>我已经安装了 Git，GitHub 账号为 zhangsan，操作系统为 Windows 11。</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>请帮我给出完整的操作步骤，包括：</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>在项目根目录初始化 Git 仓库</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>进行第一次提交，提交信息为「初始化项目」</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>在 GitHub 上新建同名仓库的操作说明（在哪里点击）</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span>将本地仓库关联到 GitHub 远程仓库并推送</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>请给出每一步的完整终端命令，以及各命令的作用说明。</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+提示词：日常提交与同步的标准流程
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>每次分析工作结束后，用这组提示词保存进度。</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode md code-with-copy"><code class="sourceCode markdown"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>我已经将本地项目 fin_project 关联到 GitHub 仓库。</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>请帮我写出「每日提交」的标准命令序列：</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>查看哪些文件有改动</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>将所有改动加入暂存区</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>提交，提交信息格式为：「YYYY-MM-DD: 本次工作内容简述」</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span>推送到 GitHub 主分支</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>同时说明：</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>在另一台电脑上拉取最新代码的命令</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>如何查看过去 10 条提交历史</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>请给出可以直接在终端（Anaconda Prompt 或 Git Bash）运行的命令。</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-6-contents" aria-controls="callout-6" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+追问模板
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-6" class="callout-6-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div class="sourceCode" id="cb7"><pre class="sourceCode md code-with-copy"><code class="sourceCode markdown"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>执行上面的 git push 命令时出现了以下报错：</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">将报错信息完整粘贴在这里</span><span class="co">]</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>我使用的是 Windows 11，GitHub 账号为 zhangsan。</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>请帮我分析报错原因并给出修复步骤。</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</div>
 
 
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
@@ -904,13 +1150,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="../Lecture/00_intro.html" class="pagination-link" aria-label="📚课程资料">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">📚课程资料</span>
+      <a href="../appendix_python/a1_setup.html" class="pagination-link" aria-label="A1. 环境配置">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">A1. 环境配置</span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../Lecture/00-setup/01_00_coding_with_AI.html" class="pagination-link" aria-label="借助 AI 写代码">
-        <span class="nav-page-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">借助 AI 写代码</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="../appendix_python/a3_concepts.html" class="pagination-link" aria-label="A3. 提示词核心词汇">
+        <span class="nav-page-text">A3. 提示词核心词汇</span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

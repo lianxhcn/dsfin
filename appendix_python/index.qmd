@@ -1,0 +1,92 @@
+# 附录：提示词导向的 Python 数据分析 {.unnumbered}
+
+## 定位与使用方法 {.unnumbered}
+
+本附录**不是**一份系统的 Python 语法教程。你不需要背语法，不需要记函数名。
+
+本附录只做一件事：**帮你用准确的专业语言，指挥 AI 工具生成可运行的 Python 代码。**
+
+同样是让 AI 清洗数据，下面两种提示词的效果差距巨大：
+
+> ❌ 「帮我清洗一下数据」
+
+> ✅ 「我有一个 pandas 数据框 `df`，包含 `date`、`stock_code`、`return` 三列，其中 `return` 列有缺失值。请用**前向填充法**处理缺失值，将 `date` 列转换为 **datetime 类型**，最后按 `stock_code` 和 `date` 升序排列。」
+
+差别只有一个：第二种用了 **Python 专业术语**。有了这些词，AI 才知道你的数据结构、处理目标和技术偏好。**本附录的核心任务，就是帮你积累这套词汇，并给出可以直接套用的提示词框。**
+
+
+## 最重要的心智模型：与 AI 的对话是迭代过程 {.unnumbered}
+
+初学者最常见的误区是：**期待一次提示词生成完美代码**。这几乎不可能发生。
+
+真实的工作流是这样的：
+
+```
+第 1 轮  描述任务背景 + 数据结构
+         → AI 生成基础代码，能跑通
+            ↓
+第 2 轮  「代码报错」或「结果不对」
+         → 贴上错误信息或具体问题，继续追问
+            ↓
+第 3 轮  「结果对了，但图不好看」或「表格太乱」
+         → 用微调提示词修细节
+            ↓
+第 4 轮  「这段代码太慢」或「想理解这行代码」
+         → 优化 / 解释提示词
+```
+
+因此，本附录中的每一个提示词框，都设计为**两层结构**：
+
+- **第一层（主提示词）**：生成基础代码
+- **第二层（追问模板）**：根据第一轮的结果，选择合适的追问方式继续迭代
+
+**管理 AI 的上下文记忆也很重要。** 当对话变长，或你开启了新的对话窗口，AI 会「忘记」你之前说过的数据结构和变量名，导致生成的代码和前文对不上。解决方法见 [A8. 上下文管理与调试](a8_workflow.qmd)。
+
+
+## 章节安排 {.unnumbered}
+
+| 章节 | 主题 | 核心收获 |
+|------|------|----------|
+| [A1. 环境配置](a1_setup.qmd) | 包安装、路径、常见报错 | 能向 AI 描述你的运行环境 |
+| [A2. 项目规划与 Git](a2_project.qmd) | 项目结构、GitHub 同步 | 建立可复现的分析项目 |
+| [A3. 提示词核心词汇](a3_concepts.qmd) | 数据类型、数据结构术语 | 写出 AI 能理解的提示词 |
+| [A4. 数据获取与清洗](a4_data.qmd) | 读取、清洗、合并、变换 | 数据处理类提示词模板 |
+| [A5. 数据可视化](a5_visualization.qmd) | 图形要素、风格、金融专题图 | 可视化类提示词模板 |
+| [A6. 统计建模](a6_modeling.qmd) | 回归、机器学习、模型评估 | 建模类提示词模板 |
+| [A7. 结果呈现与表格](a7_results.qmd) | Notebook 输出、表格美化、导出 | 让结果好看、可汇报 |
+| [A8. 上下文管理与调试](a8_workflow.qmd) | 验证结果、报错处理、代码加速 | 遇到问题时怎么问 AI |
+
+**建议使用方式：**
+
+1. 先读完本页，建立迭代工作流的心智模型
+2. 通读 A3，掌握核心专业词汇
+3. 按需查阅 A4–A7 中的提示词框，稍作修改即可使用
+4. 遇到报错或结果不对，直接跳到 A8
+
+
+## 推荐参考资料 {.unnumbered}
+
+### Python 语言基础
+
+- Downey, A. (**2024**). *Think Python: How to Think Like a Computer Scientist* (3rd ed.). O'Reilly. [在线阅读](https://greenteapress.com/wp/think-python-3rd-edition/) | [PDF](https://greenteapress.com/thinkpython/thinkpython.pdf)
+  - Python 入门首选，通俗易懂，适合零基础读者
+- Johansson, R. (**2024**). *Numerical Python: Scientific Computing and Data Science Applications with NumPy, SciPy and Matplotlib* (3rd ed.). Apress. [链接](https://link.springer.com/book/10.1007/979-8-8688-0413-7) | [github](https://github.com/Apress/Numerical-Python-3rd-ed)
+  - 覆盖科学计算、绘图、统计与机器学习初步；第 4 章系统介绍 matplotlib 绘图元素
+
+### Python 数据分析
+
+- McKinney, W. (**2022**). *Python for Data Analysis: Data Wrangling with pandas, NumPy, and Jupyter* (3rd ed.). O'Reilly. [在线阅读](https://wesmckinney.com/book/) | [github](https://github.com/wesm/pydata-book)
+  - pandas 作者亲写，数据处理最权威的参考书
+- VanderPlas, J. (**2023**). *Python Data Science Handbook* (2nd ed.). O'Reilly. [在线阅读](https://jakevdp.github.io/PythonDataScienceHandbook/) | [github](https://github.com/jakevdp/PythonDataScienceHandbook)
+  - 数据分析 + 可视化 + 机器学习，提供 Colab 版本，可直接在线运行
+- QuantEcon. [网站](https://quantecon.org/lectures/) | [github](https://github.com/QuantEcon)
+  - 面向经济与金融的开源计算教程，内容持续更新
+
+### 金融数据分析
+
+- Scheuch, C., Voigt, S., Weiss, P., & Frey, C. (**2024**). *Tidy Finance with Python* (1st ed.). Chapman and Hall/CRC. [在线阅读](https://www.tidy-finance.org/python/index.html) | [github](https://github.com/tidy-finance/website/tree/main/python)
+  - 涵盖股票回报、CAPM、投资组合、Fama-French 因子模型等金融核心主题
+- Hilpisch, Y. (**2019**). *Python for Finance: Mastering Data-Driven Finance* (2nd ed.). O'Reilly. [PDF](https://www.sea-stat.com/wp-content/uploads/2021/05/Yves-Hilpisch-Python-for-Finance_-Mastering-Data-Driven-Finance-Book-OReilly-2018.pdf) | [github](https://github.com/yhilpisch/py4fi2nd)
+  - 量化金融方向，覆盖期权定价、风险管理、算法交易
+- Jansen, S. (**2020**). *Machine Learning for Algorithmic Trading* (2nd ed.). [网站](https://ml4trading.io/) | [github](https://github.com/stefan-jansen/machine-learning-for-trading)
+  - 机器学习在算法交易中的应用，案例丰富

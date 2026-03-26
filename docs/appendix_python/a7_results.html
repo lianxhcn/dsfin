@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>🚀作业 – 金融数据分析与建模</title>
+<title>A7. 结果呈现与表格美化 – 金融数据分析与建模</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -20,6 +20,40 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -30,8 +64,8 @@ ul.task-list li input[type="checkbox"] {
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
-<link href="../Lecture/00-setup/01_00_coding_with_AI.html" rel="next">
-<link href="../Lecture/00_intro.html" rel="prev">
+<link href="../appendix_python/a8_workflow.html" rel="next">
+<link href="../appendix_python/a6_modeling.html" rel="prev">
 <link href="../images/book-logo.png" rel="icon" type="image/png">
 <script src="../site_libs/quarto-html/quarto.js"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
@@ -85,7 +119,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../Lecture/01_homework.html">🚀作业</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../appendix_python/index.html">附录</a></li><li class="breadcrumb-item"><a href="../appendix_python/a7_results.html">A7. 结果呈现与表格美化</a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -132,7 +166,7 @@ ul.task-list li input[type="checkbox"] {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../Lecture/01_homework.html" class="sidebar-item-text sidebar-link active">
+  <a href="../Lecture/01_homework.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">🚀作业</span></a>
   </div>
 </li>
@@ -282,7 +316,7 @@ ul.task-list li input[type="checkbox"] {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../appendix_python/a7_results.html" class="sidebar-item-text sidebar-link">
+  <a href="../appendix_python/a7_results.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text">A7. 结果呈现与表格美化</span></a>
   </div>
 </li>
@@ -299,15 +333,27 @@ ul.task-list li input[type="checkbox"] {
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#a7.1-在-notebook-中美化输出" id="toc-a7.1-在-notebook-中美化输出" class="nav-link active" data-scroll-target="#a7.1-在-notebook-中美化输出">A7.1 在 Notebook 中美化输出</a>
+  <ul class="collapse">
+  <li><a href="#a7.1.1-为什么默认输出不够用" id="toc-a7.1.1-为什么默认输出不够用" class="nav-link" data-scroll-target="#a7.1.1-为什么默认输出不够用">A7.1.1 为什么默认输出不够用？</a></li>
+  </ul></li>
+  <li><a href="#a7.2-导出为-excel-报告" id="toc-a7.2-导出为-excel-报告" class="nav-link" data-scroll-target="#a7.2-导出为-excel-报告">A7.2 导出为 Excel 报告</a></li>
+  <li><a href="#a7.3-导出为-latex-格式" id="toc-a7.3-导出为-latex-格式" class="nav-link" data-scroll-target="#a7.3-导出为-latex-格式">A7.3 导出为 LaTeX 格式</a></li>
+  <li><a href="#a7.4-在-notebook-中呈现分析摘要" id="toc-a7.4-在-notebook-中呈现分析摘要" class="nav-link" data-scroll-target="#a7.4-在-notebook-中呈现分析摘要">A7.4 在 Notebook 中呈现分析摘要</a></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default">
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../appendix_python/index.html">附录</a></li><li class="breadcrumb-item"><a href="../appendix_python/a7_results.html">A7. 结果呈现与表格美化</a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title">🚀作业</h1>
+<h1 class="title">A7. 结果呈现与表格美化</h1>
 </div>
 
 
@@ -324,16 +370,238 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<hr>
-<blockquote class="blockquote">
-<p>🍓 <strong><a href="https://send2me.cn/FCAjV_t7/So-WPbzxrA1YiQ">点此提交作业</a></strong></p>
-</blockquote>
-<blockquote class="blockquote">
-<p>🍏 <a href="https://github.com/lianxhcn/dsfin/blob/main/homework/readme.md">查看作业通知</a></p>
-</blockquote>
-<hr>
+<p>代码跑通只是第一步——如何让结果好看、易读、可汇报，是分析工作中同样重要的一环。本章针对 Notebook 输出和最终报告两个场景，提供结果呈现的提示词框。</p>
+<p><strong>本章解决的核心问题：</strong></p>
+<ul>
+<li>Notebook 里打印出来的统计量是一堆数字，怎么让它变成格式整洁的表格？</li>
+<li>回归结果默认输出的 summary 太长，怎么提取关键信息？</li>
+<li>如何将结果导出为 Excel 或 LaTeX 格式，直接放进报告和论文？</li>
+</ul>
+<section id="a7.1-在-notebook-中美化输出" class="level2">
+<h2 class="anchored" data-anchor-id="a7.1-在-notebook-中美化输出">A7.1 在 Notebook 中美化输出</h2>
+<section id="a7.1.1-为什么默认输出不够用" class="level3">
+<h3 class="anchored" data-anchor-id="a7.1.1-为什么默认输出不够用">A7.1.1 为什么默认输出不够用？</h3>
+<p>pandas 默认的 <code>print(df)</code> 输出在 Notebook 中又小又难读，数字没有千分位符，小数位数不统一，列名是英文缩写。向老师或同学展示分析结果时，这些细节很影响专业感。</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+提示词：美化数据框在 Notebook 中的显示效果
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<div class="sourceCode" id="cb1"><pre class="sourceCode md code-with-copy"><code class="sourceCode markdown"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>我在 Jupyter Notebook 中有一个 pandas 数据框 <span class="in">`df_result`</span>，</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>包含以下列：</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>stock_code：股票代码（字符串）</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>annual_return：年化收益率（浮点数，如 0.1523）</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>volatility：年化波动率（浮点数，如 0.2341）</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>sharpe：夏普比率（浮点数，如 1.23）</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>max_drawdown：最大回撤（浮点数，如 -0.1823）</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>total_volume：总成交量（整数，如 12345678901）</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>请帮我写代码，让这个数据框在 Notebook 中显示得更专业：</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>将列名改为中文：</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>   [stock_code→股票代码, annual_return→年化收益率, </span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>    volatility→年化波动率, sharpe→夏普比率, </span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>    max_drawdown→最大回撤, total_volume→总成交量（万手）]</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>格式化数值：</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="ss">   - </span>annual_return、volatility、max_drawdown 列：显示为百分比，</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>     保留 2 位小数（如 15.23%）</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="ss">   - </span>sharpe 列：保留 2 位小数（如 1.23）</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="ss">   - </span>total_volume 列：换算为万手（除以 10000），加千分位符（如 1,234,567）</span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>条件格式：</span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a><span class="ss">   - </span>annual_return 列：正值显示绿色背景，负值显示红色背景</span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a><span class="ss">   - </span>sharpe 列：大于 1 的值加粗显示</span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span>在 Notebook 中用 display() 显示，而不是 print()</span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>请说明：用 .style 方法格式化后，数据框的底层数值是否被修改？</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+提示词：提取并格式化回归结果摘要
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>statsmodels 的 <code>result.summary()</code> 输出很完整，但格式不适合直接展示。这组提示词帮你提取关键信息并重新排版。</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode md code-with-copy"><code class="sourceCode markdown"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>我用 statsmodels 跑了一个 OLS 回归，结果存储在 <span class="in">`result`</span> 对象中。</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>现在需要提取关键信息，整理为一个格式整洁的汇总表格。</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>请帮我写代码：</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>【提取系数表】从 result.summary2().tables<span class="co">[</span><span class="ot">1</span><span class="co">]</span> 中提取：</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>   变量名、系数（保留 4 位小数）、标准误（保留 4 位小数）、</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>   t 值（保留 2 位小数）、p 值（保留 3 位小数）</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>【添加显著性标注】根据 p 值添加星号列：</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>   *** p &lt; 0.01，** p &lt; 0.05，* p &lt; 0.1，无星号则留空</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>【添加模型统计量】在表格底部添加：</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>   样本量 N、R²（保留 3 位小数）、调整后 R²（保留 3 位小数）、</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>   F 统计量（保留 2 位小数）、p 值（F 统计量）</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span>【格式化输出】</span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a><span class="ss">   - </span>在 Notebook 中用 display() 显示</span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a><span class="ss">   - </span>变量名改为中文（截距→常数项，beta→市场β，size→公司规模等）</span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a><span class="ss">   - </span>整体左对齐，数字右对齐</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+追问模板
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-3" class="callout-3-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div class="sourceCode" id="cb3"><pre class="sourceCode md code-with-copy"><code class="sourceCode markdown"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>上面整理好的回归结果表格，现在需要展示多个模型的对比。</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>我共有 3 个回归结果：</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>result1：基准 OLS（不含固定效应）</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>result2：加入年份固定效应</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>result3：加入双向固定效应 + 聚类标准误</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>请帮我写代码，将三个模型的结果整合为一个「并列回归表格」：</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>行为变量名，列为「模型(1)」「模型(2)」「模型(3)」</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>每格显示：系数值（标准误），系数下方括号内为标准误，</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>  如：0.0312***（0.0098）</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>表格底部显示：N、R²、是否控制年份固定效应、是否控制企业固定效应</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>  （用「是」/「否」表示）</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="a7.2-导出为-excel-报告" class="level2">
+<h2 class="anchored" data-anchor-id="a7.2-导出为-excel-报告">A7.2 导出为 Excel 报告</h2>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+提示词：将分析结果导出为格式化 Excel 文件
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>适用于向老师、同学或未来的工作汇报提交分析结果。</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode md code-with-copy"><code class="sourceCode markdown"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>我完成了一个投资组合分析，有多个结果需要整合为一份 Excel 报告：</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>数据：</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>df_performance：各策略年化绩效指标（年化收益、夏普比率、最大回撤）</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>df_holdings：投资组合持仓明细（股票代码、权重、市值）</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>df_regression：回归系数表（变量名、系数、t 值、p 值、显著性）</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>请帮我用 openpyxl 生成 Excel 文件，要求：</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>工作表结构：</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Sheet 1「绩效摘要」：df_performance，列宽自动适配</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Sheet 2「持仓明细」：df_holdings，按权重降序排列</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Sheet 3「回归结果」：df_regression，含列标题</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>格式要求（每个工作表）：</span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>第一行（表头）：深蓝色背景（#003366），白色字体，加粗，居中</span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>数字格式：</span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>收益率、权重列：百分比格式，2 位小数（如 12.35%）</span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>系数、t 值列：保留 4 位小数</span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>市值列：千分位符，无小数（如 1,234,567）</span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>奇偶行交替填色：奇数行白色，偶数行浅灰色（#F2F2F2）</span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>所有工作表第一行冻结（方便滚动时始终看到表头）</span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>文件：在「绩效摘要」工作表的 A1 单元格上方，</span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a>插入标题「投资组合分析报告」和当前日期。</span>
+<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a>保存路径：../outputs/tables/portfolio_report.xlsx</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</section>
+<section id="a7.3-导出为-latex-格式" class="level2">
+<h2 class="anchored" data-anchor-id="a7.3-导出为-latex-格式">A7.3 导出为 LaTeX 格式</h2>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+提示词：将回归结果导出为 LaTeX 表格
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>适用于需要将结果放入 LaTeX 论文的场景。</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode md code-with-copy"><code class="sourceCode markdown"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>我有一个 pandas 数据框 <span class="in">`df_reg_table`</span>，</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>包含整理好的回归结果（变量名、系数、标准误、显著性标注）。</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>请帮我将这个数据框导出为 LaTeX 格式的三线表（booktabs 风格），要求：</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>表格格式：</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>使用 booktabs 宏包的 \toprule、\midrule、\bottomrule</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>第一列为变量名（左对齐），其余列为数值（居中对齐）</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>三列：变量、系数（t 值），显著性标注注释在表格底部</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>注释行：*p&lt;0.10, **p&lt;0.05, ***p&lt;0.01</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>输出方式：</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>在 Notebook 中打印 LaTeX 代码（用 print()）</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>同时保存为 .tex 文件：../outputs/tables/regression_table.tex</span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>请在代码中说明：</span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>如何在 LaTeX 文档中引用这个表格文件（\input{} 命令）</span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>为什么用 escape=False 参数，以及什么时候不应该用它</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</section>
+<section id="a7.4-在-notebook-中呈现分析摘要" class="level2">
+<h2 class="anchored" data-anchor-id="a7.4-在-notebook-中呈现分析摘要">A7.4 在 Notebook 中呈现分析摘要</h2>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+提示词：生成一份完整的分析摘要单元格
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>这组提示词帮你在 Notebook 的最后生成一个结构清晰的分析摘要，适合直接截图或打印提交。</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode md code-with-copy"><code class="sourceCode markdown"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>我的 Jupyter Notebook 分析了 A 股银行股在政策公告后的超额收益，</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>已经有以下变量：</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="in">`event_n`</span>：事件数量（整数）</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="in">`car_mean`</span>：平均 CAR（浮点数）</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="in">`car_t`</span>：t 统计量（浮点数）</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="in">`car_pvalue`</span>：p 值（浮点数）</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="in">`df_car`</span>：包含每天 CAR 和置信区间的数据框</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>请帮我写一段代码，在 Notebook 中用 IPython.display 的 Markdown 或 HTML</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>渲染一个格式整洁的分析摘要，包含：</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>标题：「事件研究结果摘要」（加粗，字号 16）</span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>分析参数：事件数量、事件窗口（-10, +10）、估计窗口（-200, -21）</span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>核心结果表格：</span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>   | 指标 | 数值 |</span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>   事件日（Day 0）CAR | <span class="co">[</span><span class="ot">car_mean 的格式化值，百分比</span><span class="co">]</span></span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>   t 统计量 | <span class="co">[</span><span class="ot">car_t，保留 2 位小数</span><span class="co">]</span></span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>   p 值 | <span class="co">[</span><span class="ot">car_pvalue，保留 3 位小数</span><span class="co">]</span></span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>   统计显著性 | <span class="co">[</span><span class="ot">根据 p 值自动显示：***/**/* 或「不显著」</span><span class="co">]</span></span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span>结论：一句话自动生成（根据系数正负和显著性判断）：</span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>   如「结果表明，政策公告后银行股出现显著正向超额收益（CAR=X%，p&lt;0.01）」</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
 
 
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
@@ -904,13 +1172,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="../Lecture/00_intro.html" class="pagination-link" aria-label="📚课程资料">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">📚课程资料</span>
+      <a href="../appendix_python/a6_modeling.html" class="pagination-link" aria-label="A6. 统计建模">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">A6. 统计建模</span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../Lecture/00-setup/01_00_coding_with_AI.html" class="pagination-link" aria-label="借助 AI 写代码">
-        <span class="nav-page-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">借助 AI 写代码</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="../appendix_python/a8_workflow.html" class="pagination-link" aria-label="A8. 上下文管理与调试">
+        <span class="nav-page-text">A8. 上下文管理与调试</span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
