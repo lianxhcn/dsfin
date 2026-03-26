@@ -40,7 +40,7 @@ book:
     - Lecture/00_intro.md
     - Lecture/01_homework.md
 
-    - part: "**环境配置**"
+    - part: "⚙️**环境配置**"
       chapters:
         - Lecture/00-setup/01_00_coding_with_AI.ipynb
         - Lecture/00-setup/01_01_install_anaconda.ipynb
@@ -48,18 +48,18 @@ book:
         - Lecture/00-setup/01_03_install_FAQs.ipynb
         - Lecture/00-setup/01_04_markdown.md
 
-    - part: "**数据分析**"
+    - part: "📊**数据分析**"
       chapters:
         - Lecture/data_get_data/lec_get_data.ipynb 
         - Lecture/data_clean/lec_data_clean.ipynb 
     
-    - part: "**数据爬取**"
+    - part: "🌐**数据爬取**"
       chapters:
         - Lecture/crawing/craw_01_introduction.md
         - Lecture/crawing/craw_02_sec01_lingnan_prompt.md
         - Lecture/crawing/craw_02_sec02_lingnan_dialog.ipynb
 
-    - part: "附录"
+    - part: "📑**附录：常用 Python 提示词**"
       chapters:
         - appendix_python/index.qmd
         - appendix_python/a1_setup.qmd
