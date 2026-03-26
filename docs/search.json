@@ -76,7 +76,7 @@
     "section": "",
     "text": "1.1 主要工具\n我平时主要使用 ChatGPT、Claude code 和 豆包，前者擅长代码生成和调试，后者在文字编排和翻译方面表现出色。有些时候，我会将同一个任务分配给这两个工具，并让他们交叉验证和补充彼此的结果，以提高准确性和可靠性。\n在编写 .ipynb 文件时，我经常使用 VScode 插件 github copilot，它能够根据上下文提供代码建议和补全，并对我选中部分的代码或文字进行智能修改。\ncopilot 最核心的功能根据用户编写的提示词，自动生成相应的代码片段或文本内容。详见：",
     "crumbs": [
-      "⚙️**环境配置**",
+      "**环境配置**",
       "<span class='chapter-number'>1</span>  <span class='chapter-title'>借助 AI 写代码</span>"
     ]
   },
@@ -87,7 +87,7 @@
     "section": "",
     "text": "ChatGPT：由 OpenAI 开发的聊天机器人，支持代码生成、调试和问题解答。\nGithub Copilot：GitHub 推出的 AI 编程助手，能在主流编辑器中实时补全和建议代码。首月免费，后续 $10/月。\nClaude：由 Anthropic 开发的 AI 助手，专注于代码生成和调试。",
     "crumbs": [
-      "⚙️**环境配置**",
+      "**环境配置**",
       "<span class='chapter-number'>1</span>  <span class='chapter-title'>借助 AI 写代码</span>"
     ]
   },
@@ -98,7 +98,7 @@
     "section": "1.2 AI 通用工具",
     "text": "1.2 AI 通用工具\n\nDeepSeek：国内访问顺畅，整体表现不错，但结果的稳定性欠佳。\n豆包：更适合文字编排、翻译等。\nkimi：与豆包相当。",
     "crumbs": [
-      "⚙️**环境配置**",
+      "**环境配置**",
       "<span class='chapter-number'>1</span>  <span class='chapter-title'>借助 AI 写代码</span>"
     ]
   },
@@ -109,7 +109,7 @@
     "section": "1.3 AI 编程工具",
     "text": "1.3 AI 编程工具\nNote: 这些都是 VScode 中的插件。(VScode 插件安装方法；常用插件)\n\nCodeium：免费 AI 代码补全工具，支持多种语言和编辑器，提升开发效率。\nClint：基于 AI 的代码补全插件，支持多种编程语言和开发环境。\nTabnine：基于 AI 的代码补全插件，兼容多种编程语言和开发环境。",
     "crumbs": [
-      "⚙️**环境配置**",
+      "**环境配置**",
       "<span class='chapter-number'>1</span>  <span class='chapter-title'>借助 AI 写代码</span>"
     ]
   },
@@ -120,7 +120,7 @@
     "section": "1.4 其他工具",
     "text": "1.4 其他工具\n\nReplit：在线编程平台，支持多种语言，适合协作和快速原型开发。\nKite：AI 驱动的代码补全工具，支持主流编辑器，提升编程效率。\nCodex：由 OpenAI 开发的代码生成模型，可理解自然语言并生成代码。\nCodeium：免费 AI 代码补全工具，支持多种语言和编辑器。\nCodeWhisperer：AWS 推出的 AI 编程助手，支持云服务集成和代码建议。\nPolyCoder：开源代码生成模型，专注于 C 语言代码生成。\nCodeGen：由 Salesforce 研究团队开发的代码生成模型，支持多种编程语言。",
     "crumbs": [
-      "⚙️**环境配置**",
+      "**环境配置**",
       "<span class='chapter-number'>1</span>  <span class='chapter-title'>借助 AI 写代码</span>"
     ]
   },
@@ -131,7 +131,7 @@
     "section": "1.5 参考资料",
     "text": "1.5 参考资料\n\n24 Best ChatGPT Alternatives (February 2025)\n陈庭伟, 2025, 2025年学术研究中的15大最佳AI工具",
     "crumbs": [
-      "⚙️**环境配置**",
+      "**环境配置**",
       "<span class='chapter-number'>1</span>  <span class='chapter-title'>借助 AI 写代码</span>"
     ]
   },
@@ -142,7 +142,7 @@
     "section": "1.6 理念",
     "text": "1.6 理念\n\n自然语言编程 vs. 传统编程\n\n\n「自然语言编程」与 Python、C++ 等传统编程本质上都是向计算机发出指令，要求其执行特定操作\n区别在于：\n\n传统编程语言（如 Python、C++）有严格的语法和结构\n自然语言编程则用人类语言（如中文、英文）描述操作\n\n\n\n思维方式与沟通能力\n\n\n初学时，自然语言编程似乎更简单\n真正发挥其潜力，关键在于思维方式和沟通方式（如何提问）\n学习曲线很陡峭：\n\n知识广度：你要知道很多东西以及他们的关联，才能提出好的问题\n知识深度：基本概念、核心理论、核心算法\n逻辑思维：界定问题、拆解问题、追问（横向 v.s. 纵向）\n语言表达：简洁、准确、清晰\n\n\n\n最核心的理念转变\n\n\n提示词 = 自然语言的”代码”\n写好提示词，就像写好 Python/C++ 代码一样重要\n许多高校已开设「提示词工程」课程，「Prompt 工程师」将成为热门职业\n\n\n推荐学习资料\n\n\nPrompt Engineering Guide\n吴恩达老师的 ChatGPT Prompt Engineering for Developers",
     "crumbs": [
-      "⚙️**环境配置**",
+      "**环境配置**",
       "<span class='chapter-number'>1</span>  <span class='chapter-title'>借助 AI 写代码</span>"
     ]
   },
@@ -153,7 +153,7 @@
     "section": "1.7 提示词",
     "text": "1.7 提示词\n\nTips\n\n\n先粗后细 e.g. 生成讲义 v.s 先细后粗\n顺藤摸瓜-迁移 e.g. 各种抽样方法\n虚构角色 e.g. 你是一个资深的英文经济学期刊的编辑 → 推文\n\n\n收集整理自己的提示词\n\n\nChatGPT Prompting Cheat Sheet\nThe Complete ChatGPT Cheat Sheet 2025!\nPrompt工作手册 - 方法篇",
     "crumbs": [
-      "⚙️**环境配置**",
+      "**环境配置**",
       "<span class='chapter-number'>1</span>  <span class='chapter-title'>借助 AI 写代码</span>"
     ]
   },
@@ -164,7 +164,7 @@
     "section": "1.8 我的使用经验",
     "text": "1.8 我的使用经验\n\n我常用的提示词\n\n\nhttps://github.com/arlionn/UseChatGPT\nhttps://gitee.com/arlionn/UseChatGPT (码云版)\n\n\n借助 AI 找 IV：连玉君的实战经验\n\n\n帮我找 20 个 IV\n寻找 IV 的提示词如何写？\n\n\n1.8.1 实例：使用 AI 写一篇完整的论文推介\n\nDu-2024-EE-中文精要生成过程\n\n核心提示词： 参见 连玉君的 Prompts\n\n\n\n\n\n\n提示词\n\n\n\nPrompt 1:\n{先上传论文的 PDF 版本给 ChatGPT，然后输入以下提示词：}\n“写一篇论文推介，介绍附件中的论文。先列个提纲给我。”\nPrompt 2:\n分批次输出吧：\n\n计量模型的证明和详细推导过程可以省略，但要补充简单直白的语言来解释模型和参数的经济含义\n把数学符号和公式都采用 Latex 格式来写，以保证输出美观\n行内公式采用 $f=x$ 格式，单行公式采用 $$f=x$$ 格式\n所有括号都用半角模式，中英文混排注意加空格\n不要添加任何表情符号\n按 ‘## 1. xxx’，‘### 1.1 xxx’，‘#### xxx’(不编号) 的格式来分 Section, Subsection, Subsubsection\n参考文献格式：\n\nxxx, xxx, xxx. (2023). xxx. Journal of xxx, 1(1), 1-10. [Link](https://doi.org/{DOI}), [-PDF-](http://sci-hub.ren/{DOI}), [Google](&lt;https://scholar.google.com/scholar?q={Title of the Paper}&gt;).\n\n注意：每次生成答案时，都在首行按如下格式添加 label，以便我追问时定位：‘mylabel-01’，‘mylabel-02’，……\n\nPrompt 3:\n连续输出，中间无需停顿\nPrompt 4:\n详细介绍一下 4.4 模型四：部分线性函数系数面板模型（PLFC）中的模型设定和估计方法\nPrompt 5:\n补充一个 Subsection，添加如下内容： - 为没有任何非参数估计基础的读者解释一下样条基函数（Sieve Estimation） - 再补充一个 subsection，解释一下边际效应的置信区间是如何计算的",
     "crumbs": [
-      "⚙️**环境配置**",
+      "**环境配置**",
       "<span class='chapter-number'>1</span>  <span class='chapter-title'>借助 AI 写代码</span>"
     ]
   },
@@ -175,7 +175,7 @@
     "section": "",
     "text": "2.1 安装 Anaconda\n在开始安装 Python 之前，首先要明确自己需要使用 Python 来做什么。Python 是一门功能强大的编程语言，广泛应用于数据分析、机器学习、人工智能、网络开发等领域。根据你的需求，选择合适的工具和环境进行安装和配置。\n对于初学者来讲，建议安装 Anaconda 套装。它是一个开源的 Python 发行版，集成了 Python 解释器、包管理器 Conda 和许多常用的科学计算和数据分析库（如 NumPy、Pandas、Matplotlib 等）。\n虽然 Anaconda 自带的编辑器 Jupyter Notebook 很好用，但如果你平时经常用 VScode 写东西，建议安装 VScode 作为编辑器。VScode 支持多种编程语言，可以安装各种插件来增强功能。对于编写 Python 代码而言，仅需安装 python 和 jupyter 插件就可以满足基本需求。\n网上有不少关于 Anaconda 和 VScode 的安装和配置的教程，如：\n根据我的使用经验，基本步骤总结如下：\n下面，我详细说明每个步骤的操作。",
     "crumbs": [
-      "⚙️**环境配置**",
+      "**环境配置**",
       "<span class='chapter-number'>2</span>  <span class='chapter-title'>Python：安装和环境配置</span>"
     ]
   },
@@ -186,7 +186,7 @@
     "section": "",
     "text": "提示\n\n\n\n\n请务必认真阅读安装步骤，不要跳过任何步骤，尤其是安装路径的选择和环境变量的配置。否则后续出错后，需要大量时间排查问题。\n安装过程中，可以借助 DeepSeek，ChatGPT, 豆包等 AI 助手来解决问题。\n\n\n\n\n下载 Anaconda（建议注册一个账号，若不注册，可以点击 Skip）。\n安装 Anaconda。安装 Anaconda 最重要的事情：\n\nSelect Installation Type 页面，建议选择 Just Me，然后点击 Next。\nChoose Install Location 页面，建议使用默认路径 C:\\Users\\用户名\\Anaconda3 作为 Anaconda 的安装路径，这样可以避免一些潜在的权限和路径问题。然而， 如果你的用户名中包含中文字符或空格，建议选择「自定义路径」，并选择一个英文路径，如 C:\\myProgram\\Anaconda3。\nAdvanced Installation Options 页面，确保同时勾选如下两个选项：\n\n[√] Add Anaconda to my PATH environment variable\n[√] Register Anaconda as my default Python 3.x\n\n\n详情参见：VSCode 与 Anaconda安装配置\n\n安装完成后，打开 Anaconda Prompt（命令行界面），输入以下命令检查安装是否成功：\nconda --version\n如果显示版本号，则表示安装成功。\n\n\n\n\n\n\n\n可选步骤\n\n\n\n\n安装完成后，打开 Anaconda Navigator (在开始菜单或应用程序中找到它)。在 Anaconda Prompt 中输入以下命令更新 Conda 到最新版本：\nconda update conda\n创建一个新的虚拟环境（可选）：如果你想在一个独立的环境中工作，比如，你要同时使用 Python 3.8 和 Python 3.12，以便完成不同的项目，你可以创建一个新的虚拟环境。输入以下命令创建一个名为 myenv38 的虚拟环境，并安装 Python 3.8：\nconda create --name myenv38 python=3.8\n同理，如果你想使用 Python 3.12，你可以创建一个名为 myenv312 的虚拟环境，并安装 Python 3.12：\nconda create --name myenv312 python=3.12\n接下来，你可以激活特定的虚拟环境，比如 myenv38，输入以下命令：\nconda activate myenv38\n此时，若执行 canda list 命令，你会看到当前环境中安装的所有包和版本信息；而执行 canda install Stargazer, v = 2.1.1，则会在当前环境中安装 Stargazer 包的 2.1.1 版本。",
     "crumbs": [
-      "⚙️**环境配置**",
+      "**环境配置**",
       "<span class='chapter-number'>2</span>  <span class='chapter-title'>Python：安装和环境配置</span>"
     ]
   },
@@ -197,7 +197,7 @@
     "section": "2.2 安装 VScode 及插件",
     "text": "2.2 安装 VScode 及插件\n\n\n\n\n\n\nVScode 及插件的安装和使用\n\n\n\n\n王胜文, 2023, VScode编辑器：安装、使用与常用快捷键\n初虹, 2022, Markdown-LaTeX：经管人的VSCode配置大全.\n连玉君, 2024, VScode 插件：安装、配置和使用.\n连玉君, 2024, VScode：实用 Markdown 插件推荐.\n连玉君, 2024, 从基础到 AI 助手：Python 用户最爱的 VScode 插件清单\n\n\n\nVisual Studio Code (VS Code) 是微软推出的轻量但功能强大的源代码编辑器，基于 Electron 开发，支持 Windows、Linux 和 macOS 操作系统。VScode 免费开源且功能强大，VScode 写代码支持各种流行的编程语言，包括 C++、Java 等，使用熟练之后，基本不会再使用其他的编辑器。最重要的是，VScode 平台上有大量的插件，极大地扩展了其功能。\n\n下载 VScode (请酌情选择适合你操作系统的版本)。\n安装 VScode（双击下载的安装包，按照提示完成安装）。\n安装完成后，打开 VScode。\n在 VScode 中，安装插件以扩展 VScode 的性能，比如 Python、Jupyter 等。\n\n\n2.2.1 VScode 插件\n插件安装方法：点击图中的 四个小方块 图标 (Ctrl+Shift+X)，在搜索框中填入插件名称，点击 Install 即可。\n详情参见 VScode 插件：安装、配置和使用。\n\n为了能在 VScode 中借助 Jupyter Notebook 中同时运行 Python 和 Stata 代码，我们需要安装 python, Jupyter, nbstata, Copilot 等插件，具体说明如下。\n\n\n\n\n\n\n提示词\n\n\n\n{要点：} 新用户 (不确定哪个插件比较好用) 常常安装很多插件，结果导致 VScode 运行缓慢，彼此冲突、甚至崩溃。建议如下：\n\n预先通过网络搜索和自选 AI，了解每个插件的功能和用途，选择最适合自己需求的插件。\n安装插件后，建议重启 VScode，以确保插件正确加载和运行。\n如果安装插件后 VScode 运行缓慢，可以尝试禁用一些不常用的插件 (点击插件名称右侧的齿轮图标，选择 Disable)。\n完成某项任务时，可以先临时禁用一些不相关的插件，以提高 VScode 的性能和响应速度。\n当有些插件自动更新后，插件图标会显示一个小更新标志，必要时还需点击 restart 来重启插件。\n\n\n\n\n\n2.2.2 Python 和 Jupyter 插件\n为了能够在 VScode 中使用 Jupyter Notebook 运行 Python 代码，并借助 AI 提升工作效率，你需要安装以下插件：\n\nPython (必装，作者：Microsoft)：运行 Python 代码\nJupyter (必装，作者：Microsoft)：用于编辑和运行 Jupyter Notebook 文件\nPylance (推荐，作者：Microsoft)：代码补全和智能提示等功能\nGitHub Copilot (建议安装，作者为：Github)：AI 编程助手\n\n收费：首月免费，后续每月 $10.0，支持国内发行的 Visa 或 Master 信用卡付款。\n建议同时安装 Github Copilot Chat 插件，提供更好的交互体验。\n\n\n\n\n\n\n\n\n有关编程助手的说明\n\n\n\n\n安装编程助手前，请确保能顺畅上网。\n建议预先申请一个 GitHub 账号，使用 Copilot 时，可以用 GitHub 账号进行关联和登录。\n建议选定一个编程助手，不同同时使用多个助手，以免造成冲突。如果已经安装了多个编程助手，可以在 VScode 的插件管理界面中，点击已安装的插件旁的齿轮按钮，选择 unable (暂停使用) 或 Uninstall (卸载)。\n我个人使用 Copilot，觉得效果还不错。也有人说 Codeium 也不错 (Copilot 的替代品，Free，目前已经更名为 Windsurf Plugin)，它在 VScode 中的安装量比 Copilot 还要多。Cline (作者：Cline，Free) 是最近新出的，我没有尝试，无法评判。\n\n\n\nVScode 插件市场提供了诸多 Python 相关的插件，可以酌情安装，详见：VScode：实用 Python 插件清单。\n\n\n2.2.3 Markdown 插件\nVScode 支持 Markdown 语法，可以用来编写文档、笔记等。安装 Markdown 插件可以增强 VScode 对 Markdown 的支持，比如预览、语法高亮、制作幻灯片等。多数情况下，安装如下三个插件就可以满足需求：\n\nMarkdown All in One\nMarkdown Preview Enhanced\nMarp (制作幻灯片)\n\n若想较为全面的了解 Markdown 类插件，可参阅 VScode：实用 Markdown 插件推荐。\n\nMarkdown Paste (可选)：可以将剪贴板中的内容直接粘贴为 Markdown 格式，支持表格、图片等多种格式的转换。快捷键为：Ctrl + Shift + V (Windows) 或 Cmd + Shift + V (Mac)。\n\n你也可以点击 VScode 左边栏中的 四个小方块 图标，在搜索框中输入 markdown，酌情安装其他插件。\n\n\n2.2.4 Stata 插件\n\n\n\n\n\n\n提示！\n\n\n\n如果你不使用 Stata，可以跳过此节。\n\n\n如果你需要在 VScode 中使用 Stata，可以在 VScode 的扩展搜索框中搜索 stata，安装如下插件：\n\nStata Enhanced (作者：Kyle Barron)：语法高亮支持；\nStata MCP (作者：Kyle Barron)：提供了一个交互式的 Stata 命令面板，可以直接在 VScode 中输入 Stata 命令并执行，支持命令历史记录和自动补全功能。\nstataRun (作者：Yeaoh Media Inc)：用于建立 VScode 和 Stata 的后台关联。\n\n要顺利运行 Stata 代码，还需要安装 nbstata 包，下文将详细介绍。\n\n\n2.2.5 其他插件\n根据个人需求，可以安装其他插件来增强 VScode 的功能，比如：\n\nData Wrangler (可选)：表格呈现效果很美观。\nRainbow CSV (by mechatroner) 和 CSV (by ReprEng)：CSV 文件的高亮显示和表格预览功能很棒。",
     "crumbs": [
-      "⚙️**环境配置**",
+      "**环境配置**",
       "<span class='chapter-number'>2</span>  <span class='chapter-title'>Python：安装和环境配置</span>"
     ]
   },
@@ -208,7 +208,7 @@
     "section": "2.3 配置 Stata 环境：nbstata",
     "text": "2.3 配置 Stata 环境：nbstata\n如需在 VS Code 中的 .ipynb 文档中运行 Stata 代码，我们可以借助 nbstata 扩展包 (注意：nbstata 是 Python 包，不是 VScode 插件)。下面介绍如何在已有 Python + Jupyter 环境基础上完成配置。\n\n\n\n\n\n\n前提条件：你已经完成以下配置\n\n\n\n\n已经安装 Anaconda 套装；\n已经安装 VS Code 编辑器；并在插件市场安装了 Python 和 Jupyter 插件；\n可以在 VS Code 中新建 .ipynb 文件并执行代码块中的 Python 代码。\n\n\n\n注意事项：\n\nnbstata 仅适用于 Stata 17+ 及以上版本 (配置了 pystata)；\nStata 的安装路径中不要包含中文字符和空格 (在 Stata 中输入 sysdir 可以查看你的 Stata 安装路径)；\nStata 安装目录下有 STATA.LIC 文件：该文件是 Stata 的授权文件，里面记录了 Stata 软件的序列号等信息。\n\n有些用户使用的不是官方发布的 Stata 版本，或没有正确完成安装程序，都会导致该文件缺失，从而导致 nbstata 无法正常工作。\n\nnbstata 是在 Python 3.12 版本下开发和测试的，如果你在 Python 3.13 或更高版本环境下安装了 nbstata，可能会遇到兼容性问题，导致无法正常使用。因此，建议大家创建一个专属于 Stata 的虚拟环境，并在其中安装 Python 3.12 或更低的版本。详情参见 nbstata 安装和使用常见问题 🍎 小节。\n\n\n2.3.1 配置步骤\n\n\n\n\n\n\n注意：\n\n\n\n\n下面的配置步骤需要在 VS Code 的终端中完成，而不是在 Jupyter Notebook 中。\n打开 VS Code 的终端的快捷键为 Ctrl + ~。详见 Python 安装常见问题。\n如果按下面的方法无法配置成功，可以参阅 nbstata User Guide 和 Jupyter + Stata 配置方法 (第 4 小节)。也可以打开 豆包，把你的错误代码截图和粘贴给它，多数情况下你都能在它的引导下完成配置。\n我的学生倪璐同学写了一份详细的笔记，也可以参考：如何在 VScode 的 Jupyter Notebook 中创建 Stata 代码单元。\n\n\n\n按快捷键 Ctrl + ~ 打开 VS Code 的终端，依次执行以下命令：\npip install nbstata\n\npython -m nbstata.install --conf-file\n该指令将生成一个配置文件，便于我们后续修改配置。运行成功后，提示信息如下：\nC:\\Users\\Administrator\\.config\\nbstata\\nbstata.conf\n你可以定位到上述路径，用 VScode 打开 nbstata.conf 文件，查看或修改配置。我的配置如下：\n[nbstata]\nstata_dir = D:\\stata17\nedition = mp\nsplash = False\ngraph_format = png    # 可选值：png, svg, pystata\ngraph_width = 7.5in\ngraph_height = 5.0in\necho = None\nmissing = .\nbrowse_auto_height = True\n完成上述配置后，nbstata 就可以在 VS Code 的 .ipynb 文件中运行 Stata 代码了。\n\n\n\n\n\n\n借助 nbstata 运行 Stata 命令\n\n\n\n\n打开或新建一个 .ipynb 文件；\n点击右上角的 Select Kernel 下拉菜单，指定 Kernel 为 Stata (nbstata)。\n\n若清单中没有显示 Stata (nbstata)，可以点击 + Select Another Kernel，在弹出的窗口中选择 Stata (nbstata)。\n\n若此时仍然没有显示 Stata (nbstata)，可以点击 Jupyter Kernels，在弹出的窗口中选择 Stata (nbstata)。\n\n\n点击 + Codes 按钮，创建一个新的代码单元格，输入 display 2 + 2。\n按快捷键 Shift + Enter 或点击单元格左上角的 Run 按钮，若输出 4，说明配置成功。\n\n\n\n\n\n\n\n\n\n无法运行？\n\n\n\n常见表现是执行命令后显示错误信息或代码块左下角一直在转圈，但始终无法执行。这有可能是 Stata 的安装路径或版本类型没有正确配置导致的。\n可以尝试按如下方式修改 nbstata.conf 文件：\n\n确认 Stata 的安装路径。在 Stata 命令窗口中输入 sysdir 命令，结果中第一行显示的就是 Stata 的安装路径 (因人而异)：\n. sysdir\n  STATA:  D:\\stata17\\\n复制 D:\\stata17\\，填入 nbstata.conf 文件的 stata_dir 字段中 (有时需要把反斜杠 \\ 改成斜杠 /)。\n确认 Stata 的版本类型。进入 D:\\stata17\\ 目录可以查看 Stata 的版本类型，如 StataMP-64.exe、StataSE-64.exe 或 StataIC-64.exe。根据你的 Stata 版本，对照修改 nbstata.conf 文件中 edition 字段的值为 mp、se 或 ic。\n修改图形输出格式。如果上述两点都确认无误，但仍然无法使用 twoway 绘图。可以尝试修改 nbstata.conf 文件中的 graph_format 字段的值为 svg 或 pystata，保存后重启 VS Code 或当前 Notebook 的 kernel，再重新运行代码。\n\n\n\n\n\n\n\n\n\n补充说明：更新 nbstata 和完整的安装命令语法\n\n\n\n\nNote：安装过程中遇到问题，可以将错误代码，以及你当前的 Python 和 Stata 安装信息发送给豆包或 ChatGPT，它会引导你排除问题。我的 ChatGPT 对话 - nbstata 安装讲义 供各位参考。\n\n如下步骤都是可选的，主要是为了方便后续的配置和使用。\nA. 更新 nbstata\n如需更新 nbstata，只需在 VS Code 终端中执行以下命令：\npip install --upgrade nbstata\nB. python -m nbstata.install 的完整语法\n安装时，如果需要更改安装环境或安装路径，可以按如下语法规则编写命令 (方括号表示选项)：\npython -m nbstata.install [--sys-prefix] [--prefix PREFIX] [--conf-file]\n其中，\n\n--sys-prefix 指定安装的环境，例如 virtualenv (虚拟环境) 或 conda env (Conda 环境)。\n--prefix PREFIX 指定安装路径。\n--conf-file 将创建一个配置文件。\n\n详情参见 nbstata User Guide。\n\n\n\n\n2.3.2 nbstata 安装和使用常见问题 🍎\n\n2.3.2.1 Stata 升级后如何修改配置？\n如果你在 Stata 17 版本下配置了 nbstata，但后来升级到了 Stata 18 或更高版本，你需要修改 nbstata.conf 文件中的 stata_dir 和 edition 字段，以匹配新的 Stata 安装路径和版本类型。假设你安装了 Stata 19 SE 版本，并且安装路径为 D:\\stata19，你可以按照上文介绍的方式打开 nbstata.conf 文件，并修改相关字段：\n[nbstata]\nstata_dir = D:\\stata19\nedition = se\n……\n完成后，保存文件并重新启动 VS Code，即可在新的 Stata 版本下使用 nbstata。\n\n\n2.3.2.2 nbstata 无法输出图形\n若 display 2 + 2 可以正常运行，但一执行 twoway scatter mpg weight、histogram price 等绘图命令就报错。典型报错信息如下：\n\njava.lang.UnsatisfiedLinkError:D:-x64-jdk1.10.10.dll:找不到指定的程序\n\n这通常是 nbstata 的图形输出格式配置有问题，而非 Stata 命令本身出错。\n此时可打开 nbstata.conf 文件，将 graph_format = png 改为 graph_format = svg 或 graph_format = pystata，保存后重启 VS Code 或当前 Notebook 的 kernel，再重新运行绘图代码。若图形可以正常显示，则说明问题已解决。\n\nNote：如何打开 nbstata.conf 文件？\n\n\n按快捷键 Ctrl + ~ 打开终端，运行如下代码： python -m nbstata.install --conf-file\n记下返回的 nbstata.conf 文件路径，如 C:\\Users\\Administrator\\.config\\nbstata\\nbstata.conf；\n然后在 VS Code 中依次点击 File → Open File...，打开该文件。\n\n图片的保存\n在 nbstata.conf 文件中设定 graph_format = svg 后，则使用 graph export 导出图片时，文件后缀应写为 .svg，例如\ngraph export \"Fig02.svg\", width(300) replace\n简言之，nbstata.conf 中设置的图片格式应于 Stata 命令中 graph export 的文件后缀保持一致，否则会报错。\n若想将图片保存为 .png 或 .pdf 格式，有如下几种方式：\n\n手动另存：在 Notebook 中生成图形后，直接点击图形右上角的图标，手动另存为 PDF、png 或 svg 格式。\n本地转换：先用 graph export 导出为 .svg，再在本地转换为其他格式。例如，可在终端中使用 ImageMagick： bash  magick Fig02.svg Fig02.png  magick Fig02.svg Fig02.pdf 若电脑已安装 Inkscape，也可以使用：\ninkscape Fig02.svg --export-type=png\ninkscape Fig02.svg --export-type=pdf\n\n\n\n2.3.2.3 kernel 损坏了应该怎么修复？\n有些情况下，安装了新的 Python 包后，可能会导致 ipykernel 包损坏，并导致你无法选择 Stata (nbstata) 作为内核，或者选择后无法运行 Stata 代码。通常会以红色字体显示如下信息：\n\n无法启动 Kernel.有关更多详细信息，请查看 Jupyter log.\n\n你可以尝试重新安装 ipykernel 包来修复这个问题。打开 VS Code 的终端，输入以下命令：\npython -m pip install ipykernel -U --force-reinstall\n其中，-U 表示升级到最新版本，--force-reinstall 表示强制重新安装。安装完成后，重新启动 VS Code，并尝试选择 Stata (nbstata) 作为内核，看看问题是否解决。\n\n\n2.3.2.4 创建新的虚拟环境\nnbstata 是在 Python 3.12 版本下开发和测试的，如果你在 Python 3.13 环境下安装了 nbstata，可能会遇到兼容性问题，导致无法正常使用。因此，我强烈建议各位创建一个新的虚拟环境，并在其中安装 nbstata 和 ipykernel。这样可以避免与其他项目的依赖冲突。你可以按照以下步骤操作 (这里以 Conda 为例)：\n\n打开 VS Code 的终端，输入以下命令创建一个新的虚拟环境（假设你使用的是 Conda）：\nconda create --name nbstata_env python=3.12\n激活新的虚拟环境：\nconda activate nbstata_env\n在新的虚拟环境中安装 nbstata 和 ipykernel：\nconda install nbstata ipykernel\n重新启动 VS Code，并在 .ipynb 文件中选择 Stata (nbstata) 作为内核。\n切换回原来的环境：\nconda deactivate\n\n\n\n\n2.3.3 nbstata 扩展信息\n有关 nbstata 的更多信息和使用方法，参见：\n\nnbstata 文档，以及 nbstata User Guide\nJupyter + Stata 配置方法，第 4 小节。\n黄晨晨, 2023, Jupyter Notebook 与 Stata 交互：nbstata\n韩少真, 展金永, 2020, 珠联璧合 I：Jupyter Notebook 和 Stata 关联 (windows系统)。这个推文介绍了如何在原生 Jupyter Notebook 中安装 nbstata 包。\n\n\n\n\n\n\n\n后续\n\n\n\n\n安装过程中可能会遇到各种小挫折，参见 Python 安装常见问题。\n完成上述环境配置后，就可以使用 Jupyter Notebook 编写代码了，参见 Jupyter Notebook 的使用。",
     "crumbs": [
-      "⚙️**环境配置**",
+      "**环境配置**",
       "<span class='chapter-number'>2</span>  <span class='chapter-title'>Python：安装和环境配置</span>"
     ]
   },
@@ -219,7 +219,7 @@
     "section": "",
     "text": "3.1 简介\n顾名思义，Jupyter Notebook 是一个文本编辑器。它类似于 Stata 的 Do 文件 (.do)；或 R 语言中 RStudio 的 RMarkdown 文件 (.rmd)。Jupyter Notebook 的特征更接近于 RMardown，它提供了一个交互式的计算环境，允许你在一个文档中编写和运行代码、可视化数据、撰写文本和公式等。\n简言之，你可以把你的分析目的 (文本块)，分析过程 (代码块)，分析结果 (表格或图形) 都整合到一个文档中，形成一个完整的分析报告。如果安装了编程助手 (如 Copilot)，还可以在编写代码时获得智能提示、自动补全和根据提示词自动编写代码和修改文字的功能。",
     "crumbs": [
-      "⚙️**环境配置**",
+      "**环境配置**",
       "<span class='chapter-number'>3</span>  <span class='chapter-title'>Jupyter Notebook 的使用</span>"
     ]
   },
@@ -230,7 +230,7 @@
     "section": "",
     "text": "说明\n\n\n\n\n这里介绍的 Jupyter Notebook 是指在 VScode 中使用的 Jupyter Notebook，而不是 Anaconda 自带的 Jupyter Notebook。VScode 中的 Jupyter Notebook 更加灵活和强大，支持多种编程语言和插件。\n阅读本章之前，请务必按照 Python：安装和环境配置 完成环境配置。",
     "crumbs": [
-      "⚙️**环境配置**",
+      "**环境配置**",
       "<span class='chapter-number'>3</span>  <span class='chapter-title'>Jupyter Notebook 的使用</span>"
     ]
   },
@@ -241,7 +241,7 @@
     "section": "3.2 运行 Python 代码",
     "text": "3.2 运行 Python 代码\n我们先演示一下如何在 VScode 中编写 Python 代码：\n\n点击 File → New File …，选择 Jupyter Notebook .ipynb，填入文件名，即可新建一个 Jupyter Notebook。\n点击 + Code 按钮，添加一个代码单元格，输入 Python 代码，然后点击运行按钮 (或按 Shift + Enter) 执行代码。\n\n\n\ngithub - 原始 .ipynb 文件，version 2\n\n由于 Jupyter Notebook 对 Python 的支持一直非常好，因此在 Jupyter Notebook 中编写和运行 Python 代码非常顺畅。比如，你可以运行或修改上图中的代码：\n\n# 绘制一幅简单的函数图\n\nimport numpy as np\nimport matplotlib.pyplot as plt\n\nx = np.linspace(-10, 10, 200)\ny = x ** 2\n\nplt.figure(figsize=(3, 2.5))\nplt.plot(x, y)\nplt.title(\"y = x^2\")\nplt.xlabel(\"x\")\nplt.ylabel(\"y\")\nplt.grid(True)\nplt.show()",
     "crumbs": [
-      "⚙️**环境配置**",
+      "**环境配置**",
       "<span class='chapter-number'>3</span>  <span class='chapter-title'>Jupyter Notebook 的使用</span>"
     ]
   },
@@ -252,7 +252,7 @@
     "section": "3.3 运行 Stata 代码",
     "text": "3.3 运行 Stata 代码\n多数情况下，你能在 dofile 或 Stata 命令窗口中运行的代码，都可以在 Jupyter Notebook 中运行。以下是一个简单的 Stata 代码示例，比如：\n\ndis \"nbstata is so NB\"\n\nnbstata is so NB\n\n\n再看一个更完整的例子：使用 Stata 自带的 sysuse auto 数据集，绘制汽车价格与重量的散点图，并把图形保存到当前工作路径下。\n\ncd \"D:/temp\"  // 设置工作目录，酌情修改或忽略此行\n\n// 安装绘图模板\nnet install scheme_scientific.pkg, from(http://fmwww.bc.edu/RePEc/bocode/s)\nset scheme scientific\n\nsysuse \"auto.dta\", clear\n\nlist price weight mpg in 1/3, clean \n\nscatter price weight\ngraph export \"scatter_price_weight.png\", replace width(700)\n\nD:\\temp\nchecking scheme_scientific consistency and verifying not already installed...\nall files already exist and are up to date.\n(1978 automobile data)\n\n       price   weight   mpg  \n  1.   4,099    2,930    22  \n  2.   4,749    3,350    17  \n  3.   3,799    2,640    22  \nfile scatter_price_weight.png written in PNG format\n\n\n\n\n\n\n\n\n\n\n3.3.1 魔法命令\n有少数 Stata 命令是无法在 Jupyter Notebook 中直接使用的，比如 browse, doedit, set graph_width 等。这些命令通常都涉及到文件的读写和图形的显示，而不是简单地在结果窗中打印文字和数字结果。\n不过，我们可以借助 nbstata 的魔法命令来实现多数功能。\nnbstata 目前支持以下魔法指令，详情参见 nbstata 文档，以及 nbstata User Guide。\n\n\n\n命令\n描述\n\n\n\n\n%browse\n查看数据集\n\n\n%head\n查看前 5 (或 N) 行\n\n\n%tail\n查看最后 5 (或 N) 行\n\n\n%frbrowse\n查看数据框\n\n\n%frhead\n查看前 5 (或 N) 个数据框\n\n\n%frtail\n查看最后 5 (或 N) 个数据框\n\n\n%locals\n列出暂元和它们的值\n\n\n%delimit\n打印当前分隔符\n\n\n%help\n显示 Stata 帮助\n\n\n%set\n设置单个配置选项\n\n\n%%set\n设置多个配置选项\n\n\n%status\n显示 Stata 或配置状态\n\n\n%%echo\n显示命令回显\n\n\n%%noecho\n不显示命令回显\n\n\n%%quietly\n静默所有单元输出，包括图表\n\n\n\n我设置的图片默认尺寸比较大，如需调整，可以使用 nbstata 的 魔法命令 设置图片尺寸。\n需要注意的是，魔法命令需要以 % 或 %% 开头，且只有放在代码块的第一行才会被识别为魔法命令。因此，建议让魔法命令独占一行：\n\n%set graph_width = 5.0in   // 将图形宽度设置为 5.0 英寸\n\ngraph size was (7.0in, 5.0in), is now (5.0in, 5.0in).\n\n\n\n%set graph_height = 4.0in  // 将图形高度设置为 4.0 英寸\n\ngraph size was (5.0in, 5.0in), is now (5.0in, 4.0in).\n\n\n执行完上述两行命令后，再绘制的图形就会按照指定的宽度和高度显示了：\n\nscatter price weight\n\n\n\n\n\n\n\n\n再看几个有趣的例子：\n\n%status 可以显示当前 Stata 的版本和配置状态。\n%head 可以查看数据集的前 5 行，或者指定行数。我猜是借用了 Python 中的 head() 函数。\n\n\n%status\n\n    System information\n      Python version         3.12.7\n      Stata version          Stata 17.0 (MP)\n      Stata library path     D:\\stata17\\mp-64.dll\n      Stata initialized      True\n      sfi initialized        True\n\n    Settings\n      graphic display        True\n      graphic size           width = 5.0in, height = 4.0in\n      graphic format         png\n\n      echo                   None\n      missing                .\n      browse_auto_height     True\n      config file path       C:\\Users\\Administrator\\.config\\nbstata\\nbstata.conf\n\n\n\n%head price weight mpg make foreign\n\n\n\n\n\n\n\n\nprice\nweight\nmpg\nmake\nforeign\n\n\n\n\n1\n4,099\n2,930\n22\nAMC Concord\nDomestic\n\n\n2\n4,749\n3,350\n17\nAMC Pacer\nDomestic\n\n\n3\n3,799\n2,640\n22\nAMC Spirit\nDomestic\n\n\n4\n4,816\n3,250\n20\nBuick Century\nDomestic\n\n\n5\n7,827\n4,080\n15\nBuick Electra\nDomestic",
     "crumbs": [
-      "⚙️**环境配置**",
+      "**环境配置**",
       "<span class='chapter-number'>3</span>  <span class='chapter-title'>Jupyter Notebook 的使用</span>"
     ]
   },
@@ -263,7 +263,7 @@
     "section": "3.4 项目结构文档",
     "text": "3.4 项目结构文档\n下面，我会从项目的角度，介绍如何建立一个规范的项目文件结构，以便于管理和组织你的代码、数据和文档。养成良好的项目管理习惯对于后续处理大型项目很有帮助。\n首先，我们会新建一个文件夹，然后在该文件夹下按需创建几个子文件夹，用于分类存储 Data, Codes 和输出结果。最后，我们会在根目录下或 Codes 文件夹下创建 Jupyter Notebook 文件，编写代码并运行。\n\n3.4.1 新建项目文件夹\n\n本地新建一个文件夹，如 D:/FinData/Proj_Maotai\n(推荐) 在该文件夹下新建如下几个子文件夹，用于分类存放文件\n\n[./data]：存放 .csv、.xlsx 等数据文件\n[./doc]：存放说明文档、报告等文件\n[./codes]：存放代码文件，包括自编函数、模块等\n[./output]：存放输出文件，包括图表、结果等\n此外，建议在该文件夹下新建一个 README.md 文件，对项目进行说明 (如项目背景、目标、数据来源、程序的执行顺序和方法等)。\n\n\n\n\n\n3.4.2 新建 Jupyter Notebook 文件 (.ipynb)\n\n打开 VScode，依次点击 文件 -&gt; 打开文件夹，选择 D:/FinData/Proj_Maotai 文件夹。\n右击该文件夹，选择 New File (亦可直接点击下图中的 New File 图标)，新建一个文件，名称为 data_clean.ipynb。注意：一定要以 .ipynb 结尾，否则无法用 Jupyter Notebook 打开，也无法添加 Python 代码块。\n\n你也可以使用命令行方式新建一个 .ipynb 文件：按快捷键 Ctrl+Shift+P &gt;&gt; 输入或选择 Create: New Jupyter Notebook 会打开一个名为 Untitled-1.ipynb 的文件，输入内容后另存到目标文件夹即可 (可以重命名，如 data_clean.ipynb)。\n\n\n完成上述设定后，VScode 的文件目录结构如下：\n# 目录结构\nD:/FinData/Proj_Maotai\n├── codes\n├── data\n├── doc\n├── output\n├── README.md\n└── data_clean.ipynb\n\n\n\n\n\n\n自动创建项目文档结构\n\n\n\n如果你有多个项目需要建立，或者需要在多个项目中使用相同的文件结构，可以借助 AI 工具自动创建项目文档。本章附录中提供了一个示例提示词，供你参考。",
     "crumbs": [
-      "⚙️**环境配置**",
+      "**环境配置**",
       "<span class='chapter-number'>3</span>  <span class='chapter-title'>Jupyter Notebook 的使用</span>"
     ]
   },
@@ -274,7 +274,7 @@
     "section": "3.5 使用 Jupyter Notebook",
     "text": "3.5 使用 Jupyter Notebook\nStep 1：选择解释器。初次打开 data_clean.ipynb 文件时，可能需要按下图方式设定 Python 解释器，以便随后用 python.exe 来运行新增的代码块。\n\n如果你没有看到该按钮，可以按快捷键 Ctrl + Shift + P，输入或选择 Python: Select Interpreter，然后选择你安装的 Python 解释器。\n若要运行 Stata 代码，可以选择 Stata (nbstata) 解释器。\n\n\nStep 2：添加 Markdown 文本块。点击上图中的 + Markdown 按钮，添加一个 Markdown 文本块。可以用 Markdown 语法撰写文档说明。\n\n预览：点击图中的 √ 或按快捷键 Esc；\n编辑：在预览 双击鼠标 区可重新计入编辑模式。\n\n\nStep 3a： 让 AI 自动生成代码 (可选)：如果你已经在 VScode 中安装了插件 Github Copilot，可以点击图中的 Generate 按钮，输入提示词 (比如，生成随机数 x~N(0,1)，N=100，绘制直方图+密度函数图, 英文标题)，敲回车，或点击下图中的右箭头，Copilot 会自动生成代码。注意：代码块右下角有时会显示为 Ini，表示没有指定该代码快的类型，可以点击选择合适的类型或解释器。\n\n\nStep 3b： 自行添加代码块。点击上图中的 + Code 按钮，添加一个代码块。可以在代码块中输入 Python 代码。\n\n运行代码块：点击上图中的 ▶ 按钮，或按快捷键 Ctrl + Enter；\n\n\nStep 4： 修改和调试代码。你可以酌情修改代码。\n\n若出现大量警告信息或程序无法运行，可以选中全部代码或被标注了红色波浪线代码，点击下图中的黄色星星按钮，选择 Fix using copilot，多数情况下都能自动修复。\n若需现有代码进行优化，可以选中代码后，点击黄色星星，选择 Modify using copilot，然后输入提示词。\n\n\n\n3.5.1 界面和主要功能\n在上文中，为了突出重点，我没有让 VScode 编辑器全屏。事实上，全屏后，你会发现 Jupyter Notebook 提供了一组功能强大的工具栏和菜单栏，帮助你更好地编写和运行代码。下面是 Jupyter Notebook 的主要界面元素：\n\n多数菜单的功能都是比较直观的，下面我简单介绍几个常用的功能：\n\nView data：查看数据和概要信息。注意：需要安装 Data Wrangler 插件才具有此功能。\n...：最右侧的三个点，点击后可以选择 Export，将当前 Notebook 导出为 PDF、HTML、Markdown 等格式；还有预览 (Preview) 等功能 (快捷键 Esc)。",
     "crumbs": [
-      "⚙️**环境配置**",
+      "**环境配置**",
       "<span class='chapter-number'>3</span>  <span class='chapter-title'>Jupyter Notebook 的使用</span>"
     ]
   },
@@ -285,7 +285,7 @@
     "section": "3.6 在文档间复制 cell",
     "text": "3.6 在文档间复制 cell\n\n3.6.1 单个 cell 的复制和粘贴\n在 Jupyter Notebook 中，你可以通过以下方式在不同的 Notebook 文档之间复制 cell：\n\n打开源 Notebook 文档，选中要复制的 cell。\n使用快捷键 Ctrl+C 复制选中的 cell；亦可单击三个点图标，选择 Copy Cell。\n打开目标 Notebook 文档，将光标定位到要粘贴的位置。\n使用快捷键 Ctrl+V 粘贴 cell；亦可单击三个点图标，选择 Paste Cell。\n\n\n\n3.6.2 多个 cell 的复制和粘贴\n\n在 VS Code 的资源管理器（Explorer）中，分别打开需要操作的两个 Notebook 文件（如 A.ipynb 和 B.ipynb）。\n\n如需分屏显示，可拖动标签，将两个文档左右排列，方便拖拽和对比操作。\n\n在源 Notebook（如 A.ipynb）中，按住 Ctrl（Mac 下为 Command）逐个点击左侧 cell 区域，可多选不连续的 cell；或先点击一个 cell，再按住 Shift 点击另一个 cell，选择一段连续的 cell。\n\n多选后，cell 区域会高亮显示，表示已被选中。\n\n按 Ctrl+C（Command+C）或右键点击选中区域，选择“Copy Cell”。\n切换到目标 Notebook（如 B.ipynb），点击你希望插入的位置。\n按 Ctrl+V（Command+V）或右键选择 “Paste Cell”，即可将所有选中 cell 批量粘贴到目标位置。",
     "crumbs": [
-      "⚙️**环境配置**",
+      "**环境配置**",
       "<span class='chapter-number'>3</span>  <span class='chapter-title'>Jupyter Notebook 的使用</span>"
     ]
   },
@@ -296,7 +296,7 @@
     "section": "3.7 导出和文档转换",
     "text": "3.7 导出和文档转换\n在 VScode 中，你可以将 Jupyter Notebook 导出为多种格式，包括 HTML、PDF 和 Markdown。你可以在菜单栏中选择 文件 -&gt; 导出为，然后选择你想要的格式。当然，还需要安装一些额外的工具来支持这些导出功能，主要包括 Pandoc 和 TeX Live。\n\n3.7.1 转换为 HTML\n\n3.7.1.1 方法 1：借助 quarto 插件\n如果已经安装了 Quarto，并在 VScode 中安装了 Quarto 插件，你可以直接在 VScode 中使用 Quarto 导出 HTML。\n首先，在 .ipynb 文件的顶部新增一个 Markdown 代码块，并填入以下 YAML 头信息：\n---\ntitle: \"这是我的笔记\"\nformat: html\ntoc: true\nnumber-sections: true\n---\n然后，按快捷键 Ctrl + ~ 打开终端，运行以下命令：\ncd path_name_of_your_notebook\nquarto render your_notebook.ipynb --to html\n输出的 HTML 文件将保存在当前目录下，支持目录和章节编号和 :::.callout 等样式。\n\n\n3.7.1.2 方法 2：使用 Jupyter Notebook 的导出功能\n\n单击 .ipynb 文档顶部 ... 按钮 (在 Outline 右侧)，选择 Export -&gt; HTML，即可将当前 Notebook 导出为 HTML 格式。\n要求：需要预先通过安装 nbconvert 来支持 HTML 导出。\n\n安装 nbconvert 的命令为：pip install nbconvert。\n\n\n这种方式的转换效果不及 quarto，但对于简单的 Notebook 文档来说，已经足够使用。\n\n\n3.7.1.3 方法 3：使用 nbconvert 命令行工具\n如果不想本地转换，你也可以把 .ipynb 文件同步到你的 GitHub 仓库，然后使用 Github 的在线转换功能。你只需复制 .ipynb 文件的链接地址，粘贴到浏览器中，GitHub 会自动渲染并显示该 Notebook。你可以在页面上右键选择“另存为”来保存为 HTML 格式。\n若想获得更好的格式和样式，可以使用 nbviewer 在线查看和转换为 HTML 格式。具体方法是： nbviewer 在线查看和转换为 HTML 格式。\n\n\n\n3.7.2 安装 Pandoc（用于文档格式转换）\nJupyter 和 Quarto 在导出 Markdown、Word、PDF 时都会调用 Pandoc。\n\n推荐安装方式（适用于 Anaconda 用户）：\nconda install -c conda-forge pandoc\n或者前往官网下载安装包（Windows/macOS/Linux 均支持）： https://pandoc.org/install\n安装完成后，你可以在终端中输入以下命令测试是否成功：\npandoc --version\n\n\n\n3.7.3 安装 TeX Live（用于导出 PDF）\nJupyter 和 Quarto 的 PDF 导出依赖 LaTeX 引擎，如 pdflatex 或 xelatex。推荐安装完整版本的 TeX Live。\n\nWindows 用户请访问官网下载器： https://tug.org/texlive/windows.html\n安装过程中可选择 “完整版” 或 “Typical full installation”；\n安装完成后，务必重启 VS Code 和终端；\n然后在终端中测试：\npdflatex --version\n\n\n\n3.7.4 如何打开终端？\n很多初学者不清楚“在终端中输入命令”具体指什么。你可以按以下方式打开终端：\n\n方式一（推荐）： 在 VS Code 中按下快捷键 Ctrl + ~（就是数字 1 左侧的波浪线），即可打开内置终端。\n方式二： 从系统菜单中打开：\n\nWindows：点击开始 → 输入 cmd 或 Anaconda Prompt 或 PowerShell；\nmacOS：打开 Launchpad → 搜索「终端（Terminal）」；\nLinux：按下 Ctrl + Alt + T 打开终端窗口。\n\n\n终端窗口中，你可以输入如 conda install、pandoc --version 等命令，按下回车运行。\n\n\n3.7.5 安装完成后即可使用以下方式导出 PDF\n\n在 VS Code 中点击右上角「导出（Export）」按钮；\n或在终端中运行：\njupyter nbconvert your_notebook.ipynb --to pdf\n或使用 Quarto（如果你已安装）：\nquarto render your_notebook.ipynb --to pdf\n\n完成上述安装和设定后，即可顺利将 Notebook 文档导出为 PDF、HTML、Word 等多种格式，满足教学、写作和发布的常见需求。\n\n\n3.7.6 高阶用法：使用 Quarto 导出漂亮 PDF 或制作电子书网站\n如果你希望导出的文档更美观、格式更统一，或者希望将多个 Jupyter Notebook 或 Markdown 文档整合成一个电子书（book）或教学网站（website），可以考虑使用 Quarto。详情参见 连玉君：Quarto Book，以及采用该教程编写的 讲义。\nQuarto 是 RStudio 团队开发的下一代科学与技术出版平台，同时支持 .ipynb、.qmd、.md 文件的混合编写和发布。常见功能包括：\n\n一键导出 排版美观的 PDF 文档（支持标题、目录、脚注、交叉引用、引用文献等）；\n创建结构化的电子书（Quarto Book），适合撰写讲义、教程和学术教材；\n部署交互式教学网站（Quarto Website），可发布为静态网页托管在 GitHub Pages 上。\n\n\n3.7.6.1 示例命令：\n将 .ipynb 或 .qmd 导出为 PDF：\nquarto render your_notebook.ipynb --to pdf\n将多个文档组织为电子书结构（在 _quarto.yml 中设置章节）：\nquarto render\n\n\n3.7.6.2 安装方式：\n\n可从官网下载安装：https://quarto.org/download\n安装完成后，在终端中测试：\nquarto --version\n\nQuarto 完全兼容你现有的 VS Code 工作流，安装 Quarto 插件后即可直接在 VS Code 中预览、渲染和发布。对于希望构建专业文档的用户，Quarto 是目前最值得推荐的方案。",
     "crumbs": [
-      "⚙️**环境配置**",
+      "**环境配置**",
       "<span class='chapter-number'>3</span>  <span class='chapter-title'>Jupyter Notebook 的使用</span>"
     ]
   },
@@ -307,7 +307,7 @@
     "section": "3.8 附录",
     "text": "3.8 附录\n\n3.8.1 借助 AI 工具自动创建项目文档 (备选)\n\nChatGPT 对话过程\n\n如果觉得手动创建文件夹麻烦，可以借助 ChatGPT 等 AI 工具，自动创建项目文档。下面是我编写的一个示例提示词 (你只需要指定目标文件夹路径即可，即使这个文件夹不存在也没有关系)：\n\n\n\n\n\n\n提示词：自动项目文档目录\n\n\n\n请帮我在 {Windows / Mac} 系统上为一个数据分析项目生成标准的项目结构。 项目的根目录是 D:/FinData/Proj_Maotai，请在该路径下创建以下结构：\nD:/FinData/Proj_Maotai\n├── codes             # 用于存放脚本代码\n├── data_raw          # 原始数据\n├── data_clean        # 处理后的数据\n├── doc               # 项目文档与说明资料\n├── output            # 图表、模型结果、分析报告等输出文件\n├── README.md         # 项目说明文件，简要介绍项目目的与结构\n├── 01_data_clean.ipynb       # 数据清洗与预处理\n├── 02_EDA.ipynb              # 探索性数据分析\n└── 03_regression.ipynb       # 回归分析与建模\n请提供 Python 代码，以便我在写 Jupyter Notebook 中运行。 请确保必要的 .ipynb 文件和 README.md 都被自动生成。如果文件已存在，请保留原文件不覆盖。 你可以默认这些 .ipynb 文件为空白，也可以加一两行注释。\n\n\n经过测试，ChatGPT 和 豆包生成的代码都可以一次性顺利执行：\n\nChatGPT 对话过程\n豆包对话过程\n\n\n\n3.8.2 采用插件创建项目模板\n除了上述方法，你也可以在 VScode 中搜索 Project Templates，安装对应的插件来创建项目模板。安装完成后，点击左侧的 Project Templates 图标，选择 Create New Project，然后选择你需要的模板即可。\n\n该插件提供了多种项目模板，包括数据分析、机器学习、Web 开发等，可以酌情选择。\n该插件也支持自定义模板，具体操作请参考插件的说明文档。\n\n不过，如果项目不是很复杂，建议还是手动创建项目文件夹，这样更灵活，也更容易管理。",
     "crumbs": [
-      "⚙️**环境配置**",
+      "**环境配置**",
       "<span class='chapter-number'>3</span>  <span class='chapter-title'>Jupyter Notebook 的使用</span>"
     ]
   },
@@ -318,7 +318,7 @@
     "section": "",
     "text": "4.1 安装了 Anaconda 还需要安装 Python 3.12/3.13 吗？\n答：不需要！ 而且，强烈反对。Anaconda 是一个完整的 Python 科学计算发行版，安装时会自动集成 Python 解释器和常用扩展包 (如 NumPy、Pandas 等)，并通过 Conda 环境管理器提供灵活的版本控制。\n若额外安装官网 Python，可能引发以下问题：\n建议通过 Conda 统一管理 Python 环境，既能自由切换不同版本（如 conda create -n py312 python=3.12），又能确保依赖隔离和生态兼容性，避免因混合安装导致的技术债。",
     "crumbs": [
-      "⚙️**环境配置**",
+      "**环境配置**",
       "<span class='chapter-number'>4</span>  <span class='chapter-title'>Python 安装常见问题</span>"
     ]
   },
@@ -329,7 +329,7 @@
     "section": "",
     "text": "版本混乱：系统环境变量可能优先指向非 Anaconda 的 Python，导致命令行调用错误的解释器版本；\n\n依赖冲突：Conda 和 pip 混合管理包时，依赖项版本容易冲突（例如 TensorFlow 或 PyTorch 的兼容性问题）；\n\n环境隔离失效：全局安装的 Python 可能干扰 Conda 创建的独立环境，破坏项目隔离性；\n\n维护困难：需手动协调多个 Python 实例的更新与兼容性，增加运维复杂度。",
     "crumbs": [
-      "⚙️**环境配置**",
+      "**环境配置**",
       "<span class='chapter-number'>4</span>  <span class='chapter-title'>Python 安装常见问题</span>"
     ]
   },
@@ -340,7 +340,7 @@
     "section": "4.2 安装 Anaconda 时需要注意什么？",
     "text": "4.2 安装 Anaconda 时需要注意什么？\n\nChoose Install Location 页面，建议使用默认路径 C:\\Users\\用户名\\Anaconda3 作为 Anaconda 的安装路径，这样可以避免一些潜在的权限和路径问题。注意： 如果你的用户名中包含中文字符或空格，建议选择「自定义路径」，并选择一个英文路径，例如 C:\\PromgramFile\\Anaconda3。\nAdvanced Installation Options 页面，确保同时勾选如下两个选项：\n\n[√] Add Anaconda to my PATH environment variable\n[√] Register Anaconda as my default Python 3.x\n\n\n详情参见：VSCode 与 Anaconda 安装配置",
     "crumbs": [
-      "⚙️**环境配置**",
+      "**环境配置**",
       "<span class='chapter-number'>4</span>  <span class='chapter-title'>Python 安装常见问题</span>"
     ]
   },
@@ -351,7 +351,7 @@
     "section": "4.3 默认解释器的路径",
     "text": "4.3 默认解释器的路径\n问题描述：每次在 VScode 的 Jupyter 中运行代码时，都会弹出一个窗口询问选择解释器的路径。\n\n原因 1：VScode 设置问题：VScode 在运行 Jupyter Notebook 时需要指定 Python 解释器的路径，如果没有设置默认解释器，就会弹出这个窗口。 environment variable`，导致 VScode 无法找到 Python 解释器的路径。\n\n解决方法：在 VScode 中，按下 Ctrl + Shift + P，输入Python: Select Interpreter\\，选择你想要的 Python 解释器路径即可。\n\n原因 2：Anaconda 安装时的配置有问题。\n在安装 Anaconda 时，在 Advanced Installation Options 页面，你可能没有勾选 Add Anaconda to my PATH environment variable，导致 VScode 无法找到 Python 解释器的路径。\n\n解决方案：将 Anaconda 的安装路径添加到系统的环境变量中。具体步骤如下：\n\n在 Windows 中，右键点击 “此电脑”，选择 “属性”。\n依次点击 高级系统设置 &gt;&gt; 环境变量\n在 “系统变量” 中找到 Path，点击 “编辑”。\n点击 “新建”，添加 Anaconda 的安装路径，例如 C:\\Users\\用户名\\Anaconda3 和 C:\\Users\\用户名\\Anaconda3\\Scripts。\n点击“确定”，保存设置。",
     "crumbs": [
-      "⚙️**环境配置**",
+      "**环境配置**",
       "<span class='chapter-number'>4</span>  <span class='chapter-title'>Python 安装常见问题</span>"
     ]
   },
@@ -362,7 +362,7 @@
     "section": "4.4 pip install 在哪里执行？",
     "text": "4.4 pip install 在哪里执行？\n答：pip install pkg_name 通常在命令行界面中执行。最方便的方法就是在 VScode 的集成终端/控制台 (terminal) 中执行。详见下一个问题。\n\nVScode 控制台快捷打开方式：\n\nWindows：按下 Ctrl + ~ 键 (~ 在 Esc 键下方)。\nMac：按下 Command + Shift + ~ 键。\n\n\n除此之外，你也可以在计算机操作系统的命令行界面中执行：\n\nWindows 系统：按下 Win + R 键，输入 cmd，然后按下 Enter 键。\nMac 系统：按下 Command + Space 键，输入 Terminal，然后按下 Enter 键。\nVSCode 中：按下 Ctrl + Shift + P，输入 Terminal: Create New Terminal，然后按下 Enter 键。",
     "crumbs": [
-      "⚙️**环境配置**",
+      "**环境配置**",
       "<span class='chapter-number'>4</span>  <span class='chapter-title'>Python 安装常见问题</span>"
     ]
   },
@@ -373,7 +373,7 @@
     "section": "4.5 如何打开 VScode 的终端/控制台 (terminal)？",
     "text": "4.5 如何打开 VScode 的终端/控制台 (terminal)？\n答：VScode 的 terminal 是一个集成的命令行界面，允许用户在 VScode 编辑器中直接执行命令行操作。它支持多种 Shell，如 PowerShell、Bash 和 Command Prompt 等。用户可以在 terminal 中运行 Python 脚本、安装包、管理版本控制等操作，而无需切换到外部命令行窗口。\n\n开启方法：\n\n方法一： 使用快捷键。\n\nWindows 系统：在 VScode 中按下 Ctrl + ~ 键（~ 在 Esc 键下方）。\nMac 系统：按下 Command + Shift + ~ 键。\n\n方法二： 使用 VScode 命令面板。\n\n在 VScode 中，按下 Ctrl + Shift + P，输入 Terminal: Create New Terminal，然后按下 Enter 键。\n\n方法三： 使用 Windows 命令行。\n\n在 Windows 系统中，按下 Win + R 键，输入 cmd，然后按下 Enter 键，打开命令提示符窗口。\n举例：输入 pip install pkg_name 来安装 Python 包。\n\n\n用途：\n\n执行命令行操作，如安装 Python 包（pip install pkg_name）、运行脚本等。\n运行 Git 命令进行版本控制：\n\ngit clone：克隆远程仓库到本地。\ngit add：将更改添加到暂存区。\ngit commit：提交更改到本地仓库。\ngit push：将本地提交推送到远程仓库。\n\n管理虚拟环境和依赖项。\n调试和测试代码。\n查看系统信息和环境变量等。",
     "crumbs": [
-      "⚙️**环境配置**",
+      "**环境配置**",
       "<span class='chapter-number'>4</span>  <span class='chapter-title'>Python 安装常见问题</span>"
     ]
   },
@@ -384,7 +384,7 @@
     "section": "4.6 Conda install 与 pip install 有何差别？",
     "text": "4.6 Conda install 与 pip install 有何差别？\n相似点：都是 Python 的包管理工具；都能安装 Python 库和包，并自动处理依赖关系。\n主要区别：\n\n包来源不同：\n\nConda：主要从 Anaconda 官方仓库（例如 Anaconda Cloud）安装包，并且可以安装 Python 之外的其他工具和库（例如 R 语言的库）。它支持更广泛的语言和工具。\npip：从 Python 官方包索引（PyPI）安装 Python 包，通常只用于 Python 相关的包。\n\n虚拟环境管理：\n\nConda：不仅可以管理 Python 包，还可以管理虚拟环境。在 Conda 环境中，你可以控制整个环境的配置，包括 Python 版本和依赖的库。\npip：仅管理 Python 包，不负责环境的管理。虽然 virtualenv 或 venv 可以配合 pip 使用来管理虚拟环境，但这需要额外的配置。\n\n依赖解决：\n\nConda：在安装包时，Conda 会自动解决依赖冲突，确保所有包和环境的兼容性。\npip：通常会安装指定的包，但不总是自动解决复杂的依赖关系。如果发生依赖冲突，pip 可能不会提醒用户。\n\n适用场景：\n\nConda：适用于需要管理多个工具和语言环境（如 Python、R）的情况，尤其在数据科学、机器学习等领域中，Conda 更加常用。\npip：适用于单纯的 Python 项目，尤其是当你不需要其他语言支持时，pip 更简便。\n\n\n\n总结\n\nAnaconda 是一个包含 Conda 的大套件，提供了用于数据分析和科学计算的工具。\nConda 是 Anaconda 的包和环境管理工具，可以管理 Python 以及其他语言的包。\npip 是 Python 的官方包管理工具，通常用于管理 Python 包，适用于纯 Python 项目。",
     "crumbs": [
-      "⚙️**环境配置**",
+      "**环境配置**",
       "<span class='chapter-number'>4</span>  <span class='chapter-title'>Python 安装常见问题</span>"
     ]
   },
@@ -395,7 +395,7 @@
     "section": "4.7 Conda 和 Anaconda 有何关系？",
     "text": "4.7 Conda 和 Anaconda 有何关系？\nAnaconda 是一个开源的 Python 发行版，旨在简化 Python 和 R 编程语言中数据科学、机器学习和科学计算的使用。Anaconda 提供了包括 Python 和 R 语言在内的各种开源库以及管理和部署环境所需的工具。\nConda 是 Anaconda 的一个组件，它是一个包管理器和环境管理器。Conda 负责安装、更新、卸载包和管理虚拟环境。实际上，Conda 不仅仅可以用来管理 Python 包，还可以管理其他语言（例如 R 和 Ruby）的包。\n总结：Anaconda 是一个包含 Conda 的完整发行版，Conda 是其中的包管理工具。\n\nConda 的用途\n\n包管理：Conda 用于安装、升级和卸载 Python 包以及其他语言的包。它能够管理并解决依赖问题，确保你安装的包兼容且稳定。\n环境管理：Conda 允许创建和管理虚拟环境。通过虚拟环境，你可以在同一台机器上管理多个不同版本的 Python 和包，而不会发生冲突。例如，你可以为一个项目使用 Python 3.7，为另一个项目使用 Python 3.9，并且确保每个项目有独立的依赖。",
     "crumbs": [
-      "⚙️**环境配置**",
+      "**环境配置**",
       "<span class='chapter-number'>4</span>  <span class='chapter-title'>Python 安装常见问题</span>"
     ]
   },
@@ -406,7 +406,7 @@
     "section": "4.8 虚拟环境",
     "text": "4.8 虚拟环境\n什么是虚拟环境？\n虚拟环境是一个自包含的目录，用于存放特定项目所需的所有依赖包。通过使用虚拟环境，你可以避免不同项目之间的依赖冲突，并且可以在同一台机器上同时运行多个项目，而不必担心它们之间的相互影响。\n虚拟环境的主要作用包括：\n\n隔离依赖：每个虚拟环境都有自己的独立包和依赖，不会与系统的全局包冲突。\n版本控制：可以为不同项目创建不同的虚拟环境，使用不同的包版本。\n简化部署：虚拟环境可以轻松地复制和共享，使得项目部署更加简单和一致。\n\n如何创建和管理虚拟环境？\n\n使用 Conda 创建虚拟环境：\nconda create -n env_stata python=3.12\n这将创建一个名为 env_stata 的虚拟环境，并安装 Python 3.12。\n激活虚拟环境：\nconda activate env_stata\n随后，你可以在该环境中安装所需的包，例如：\nconda install nbstata\n退出虚拟环境：\nconda deactivate\n删除虚拟环境：\nconda remove -n env_stata --all\n列出所有虚拟环境：\nconda env list",
     "crumbs": [
-      "⚙️**环境配置**",
+      "**环境配置**",
       "<span class='chapter-number'>4</span>  <span class='chapter-title'>Python 安装常见问题</span>"
     ]
   },
@@ -417,7 +417,7 @@
     "section": "",
     "text": "5.1 何谓 Markdown？\nMarkdown 是一种轻量级的标记语言，允许你使用易读易写的纯文本格式编写文档，然后转换成结构化的 HTML, PDF, Word 等多种格式的文档。Markdown 语法简单易学，适合用来撰写笔记、文档、幻灯片等。\n大家在网上看到的很多博客文章，程序说明文档，甚至是在线书籍 (Python for Data Analysis, 3E)，都是用 Markdown 写的。",
     "crumbs": [
-      "⚙️**环境配置**",
+      "**环境配置**",
       "<span class='chapter-number'>5</span>  <span class='chapter-title'>Markdown</span>"
     ]
   },
@@ -428,7 +428,7 @@
     "section": "5.2 语法速览",
     "text": "5.2 语法速览\n\n\n\n\n\n\nFigure 5.1: Markdown 语法对照\n\n\n\n你可以在如下网站按部就班地学习 Markdown 的基本用法，大概五分钟后你就可以掌握常用 Markdown 语法规则了：\n\nhttps://www.markdowntutorial.com/zh-cn\nhttps://md.doocs.org/",
     "crumbs": [
-      "⚙️**环境配置**",
+      "**环境配置**",
       "<span class='chapter-number'>5</span>  <span class='chapter-title'>Markdown</span>"
     ]
   },
@@ -439,7 +439,7 @@
     "section": "5.3 Markdown 基本语法",
     "text": "5.3 Markdown 基本语法\n\nSource: markdownguide.org/cheat-sheet/\n\n这份 Markdown 备忘单介绍了常用的 Markdown 语法。为了便于您快速了解基本的语法规则，这里略去了很多细节信息，详情参见：基础语法 和 扩展语法。\n以下是 John Gruber 原始设计文档中列出的基本元素，所有 Markdown 应用程序都支持这些元素。\n\n\n\n\n\n\n\n元素\nMarkdown 语法\n\n\n\n\n标题\n# 一级标题## 二级标题### 三级标题\n\n\n粗体\n**粗体文本**\n\n\n斜体\n*斜体文本*\n\n\n引用块\n&gt; 引用内容\n\n\n有序列表\n1. 第一项2. 第二项3. 第三项\n\n\n无序列表\n- 第一项  -  第一条- 第二项- 第三项\n\n\n代码高亮显示\n`代码` (`xtreg` → xtreg)\n\n\n水平线\n---\n\n\n链接\n[连享会主页](https://www.lianxh.cn)\n\n\n图片\n![图片标题](/Fig/image.jpg) 或 ![](图片网址)\n\n\n\n\n5.3.1 表格\n| 命令    | 范例                 |\n| :------ | :------------------- |\n| xtreg   | `xtreg y x, fe`      |\n| reghdfe | `reghdfe y x, a(id)` |\n\n\n\n命令\n范例\n\n\n\n\nxtreg\nxtreg y x, fe\n\n\nreghdfe\nreghdfe y x, a(id)\n\n\n\n\n\n5.3.2 数学公式\n\n单行数学公式用 $$ 符号包围起来；\n行内数学公式用 $ 符号包围起来；\n包围符号内侧不要有空格，否则在有些 Markdown 编辑器中无法正常显示公式\n\n正确：$y = f(x)$\n错误：$ y = f(x) $ 或 $y = f(x) $\n\n有关 LaTeX 数学公式的语法和工具，参见：\n\nMarkdown常用LaTex数学公式\n神器-数学公式识别工具-mathpix\n\n\n模型设定为：\n\n$$y_{it} = \\alpha_i + x_{it}\\beta + u_{it}$$\n\n其中，$y_{it}$ 为被解释变量，$\\alpha_i$ 为个体效应。\n模型设定为：\n\\[y_{it} = \\alpha_i + x_{it}\\beta + u_{it}\\]\n其中，\\(y_{it}\\) 为被解释变量，\\(\\alpha_i\\) 为个体效应。\n\n\n5.3.3 代码块\n```python\nimport pandas as pd\n\ndf = pd.DataFrame({\n    'A': [1, 2, 3],\n    'B': [4, 5, 6]\n})\n```\n\n```stata\nsysuse \"auto.dta\", clear\nregress mpg weight\ndisplay \"Results: \" 2 + 3\n```\n渲染效果：\nimport pandas as pd\n\ndf = pd.DataFrame({\n    'A': [1, 2, 3],\n    'B': [4, 5, 6]\n})\nsysuse \"auto.dta\", clear\nregress mpg weight\ndisplay \"Results: \" 2 + 3\n\n\n5.3.4 输出为 PDF 或 HTML 文档\n虽然 VScode 中有些插件 (如 Markdown PDF) 可以将 Markdown 文档直接导出为 PDF 或 HTML，但不够美观。我建议两种方法：\n\n使用 https://md.doocs.org/：你只需把 Markdown 文档复制粘贴到该网站的编辑器中，就可以一键导出 PDF 或 HTML 文档了。点击右上角的「样式」按钮，你还可以选择不同的文档样式，满足不同的需求。\n对于排版要求较高的用户，可以考虑使用 Quarto，它是一个功能强大的文档编译工具，支持将 Markdown 文档转换为多种格式，包括 PDF、HTML、Word 等。使用 Quarto，你可以轻松地将 Markdown 文档编译成专业的报告、论文或幻灯片。\n\n\n\n5.3.5 扩展阅读\n\n初虹, 2024, 让「记录」变得简单：Markdown使用详解, 连享会 No.1456.\n初虹, 2021, 学术论文写作新武器：Markdown-上篇, 连享会 No.603.\n初虹, 2021, 学术论文写作新武器：Markdown-下篇, 连享会 No.604.\n初虹, 2021, 学术论文写作新武器：Markdown-中篇, 连享会 No.605.\n连玉君, 2024, VScode插件：安装、配置和使用, 连享会 No.1490.\n连玉君, 2024, VScode：实用 Markdown 插件推荐, 连享会 No.1390.",
     "crumbs": [
-      "⚙️**环境配置**",
+      "**环境配置**",
       "<span class='chapter-number'>5</span>  <span class='chapter-title'>Markdown</span>"
     ]
   },
@@ -450,7 +450,7 @@
     "section": "5.4 Marp 幻灯片",
     "text": "5.4 Marp 幻灯片\n\n有关 Marp 幻灯片的详情可以参考： 连玉君，2026. Marp 幻灯片指南. 在线版, PDF, GitHub\n\n在 VScode 中安装 Marp 插件后，你可以使用 Markdown 语法来创建幻灯片。使用 Marp 最大的好处是你可以专注于内容，而不必担心幻灯片的格式和样式。Marp 会自动将你的 Markdown 文档转换为美观的幻灯片。\n\n\n5.4.1 安装\n1. VScode 编辑器\n2. Marp 插件 - 在 VScode 中打开扩展市场，搜索 Marp for VS Code，点击安装。\n3. 如需使用 PDF 导出功能，还需要安装 Marp CLI： - 打开终端 (TERMINAL)：在 VScode 中，点击左侧活动栏的终端图标，或使用快捷键 Ctrl + ~（反引号）打开终端。 - 在终端中运行以下命令安装 Marp CLI： bash      npm install -g @marp-team/marp-cli\n扩展阅读：\n\n连玉君, 2024, VScode插件：安装、配置和使用, 连享会 No.1490.\n连玉君, 2024, VScode：实用 Markdown 插件推荐, 连享会 No.1390.",
     "crumbs": [
-      "⚙️**环境配置**",
+      "**环境配置**",
       "<span class='chapter-number'>5</span>  <span class='chapter-title'>Markdown</span>"
     ]
   },
@@ -461,227 +461,227 @@
     "section": "5.5 用 Markdown 编写个人网站和简历",
     "text": "5.5 用 Markdown 编写个人网站和简历\n使用 Markdown 语法，你可以轻松地创建个人网站和简历。\n你可以参考如下推文，轻松创建个人主页 (无需购买域名，也无需学习 HTML 和 CSS)：\n\n连小白, 2025, 50 分钟搞定个人主页：Fork 模板 + GitHub Pages + Quarto 完整教程\n\nMarkdown 也可以用来制作简历，参见：\n\nlapis-cv.bingyan.net，github\nresume.todev.cc/，github",
     "crumbs": [
-      "⚙️**环境配置**",
+      "**环境配置**",
       "<span class='chapter-number'>5</span>  <span class='chapter-title'>Markdown</span>"
     ]
   },
   {
-    "objectID": "Lecture/data_get_data/lec_get_data.html",
-    "href": "Lecture/data_get_data/lec_get_data.html",
+    "objectID": "Lecture/data_get_data/lecture_get_data.html",
+    "href": "Lecture/data_get_data/lecture_get_data.html",
     "title": "6  金融数据获取",
     "section": "",
     "text": "6.1 数据在哪里？\n做金融分析，数据是一切的起点。听起来像废话，但很多人在这一步就卡住了——不知道数据在哪里，不知道怎么拿，好不容易拿到了，又不知道从哪里开始看。\n这一章就是要解决这些问题。我们不追求介绍所有数据源，而是选出几个覆盖面广、免费易用、在业界真正用得上的工具，配套完整的代码示例，让你能够直接上手。\n本章的主线是：找到数据 → 读进 Python → 看清结构 → 画图确认。每一节都遵循这个逻辑。\n在开始写代码之前，先花一点时间弄清楚：做金融分析，数据到底从哪来？",
     "crumbs": [
-      "📊**数据分析**",
+      "**数据分析**",
       "<span class='chapter-number'>6</span>  <span class='chapter-title'>金融数据获取</span>"
     ]
   },
   {
-    "objectID": "Lecture/data_get_data/lec_get_data.html#数据在哪里",
-    "href": "Lecture/data_get_data/lec_get_data.html#数据在哪里",
+    "objectID": "Lecture/data_get_data/lecture_get_data.html#数据在哪里",
+    "href": "Lecture/data_get_data/lecture_get_data.html#数据在哪里",
     "title": "6  金融数据获取",
     "section": "",
     "text": "6.1.1 金融数据的现实格局\n如果你将来进入投行、基金或券商的研究部门，第一件事大概是申请 Wind（万得） 的账号。Wind 是国内金融行业的标配数据终端，覆盖 A 股、债券、衍生品、宏观经济等几乎所有品种，数据质量高、更新及时，但价格也很贵——机构订阅费通常是每年数万元起。Bloomberg 在国际市场上扮演同样的角色，费用更高。\n对于在校学生来说，CSMAR（国泰安数据库）是更现实的选择。中山大学校园网用户可以免费访问 CSMAR，它覆盖了 A 股的股票、财务、公司治理等主要数据，是国内学术研究最常用的金融数据库之一。\n但即便没有 Wind 和 CSMAR，做金融分析也不是无路可走。近些年，一批免费的开源 Python 数据接口发展得相当成熟，能够满足大多数学习和研究场景的需求。本章的重点就是这些免费工具。\n\n\n6.1.2 四类数据来源\n把金融数据的来源归纳一下，大致有四类：\n第一类：商业数据库。 Wind、Bloomberg、CSMAR、Refinitiv 等。数据质量最高，覆盖最全，自动更新，是业界标准。缺点是需要机构账号，个人使用成本很高。在学期间最好充分利用学校提供的访问权限。\n第二类：开源 Python 数据接口。 以 akshare 为代表，另有 yfinance、baostock 等。这类工具将各大财经网站（东方财富、新浪财经等）的公开数据封装成统一的 Python 接口，免费使用，涵盖 A 股、期货、债券、宏观、加密货币等主要品种。本章的核心内容。\n第三类：国际官方机构 API。 世界银行、IMF、美联储 FRED、OECD 等机构都提供了官方的数据接口，免费开放，数据权威，特别适合做跨国宏观研究。世界银行覆盖 200 多个国家的经济发展指标，FRED 则是研究美国经济和金融市场绕不开的数据来源。\n第四类：数据平台与学术数据库。 Kaggle 是机器学习竞赛平台，上面有大量整理好的金融数据集，非常适合课程作业选题。如果你在做论文，Harvard Dataverse、ICPSR 等学术数据库中存有大量顶刊论文使用过的数据，可以直接下载复现。\n\n\n6.1.3 常用数据源汇总\n下表列出了本课程会涉及的主要数据来源，供日后查阅参考：\n国内金融与经济数据\n\n\n\n数据源\n主要数据类型\n获取方式\n备注\n\n\n\n\nCSMAR\nA股/财务/宏观\n手动下载 / API\n中大校园网免费\n\n\nakshare\nA股/期货/债券/宏观\nPython API\n开源免费，本章重点\n\n\n国家统计局\n宏观经济指标\n手动下载\n官方数据，格式需整理\n\n\n中国人民银行\n货币金融数据\n手动下载\nM2、利率、汇率等\n\n\n\n国际宏观与金融数据\n\n\n\n数据源\n主要数据类型\n获取方式\n备注\n\n\n\n\nWorld Bank\n跨国宏观经济\nPython API\n覆盖 200+ 国家，2.6 节\n\n\nFRED\n美国宏观/金融\nPython API\n需免费申请 API Key，2.7 节\n\n\nGMD\n全球宏观（历史深度）\nCSV 下载\n覆盖 1086 年至今，2.5 节\n\n\nyfinance\n美股/港股/加密货币\nPython API\n开源免费\n\n\n\n学术数据与机器学习数据集\n\n\n\n数据源\n说明\n\n\n\n\nKaggle\n机器学习竞赛数据集，适合课程作业选题\n\n\nHarvard Dataverse\n顶级期刊（AER、QJE、JF 等）论文复现数据\n\n\nICPSR\n密歇根大学社会科学数据档案库\n\n\nEJD\n13000+ 篇经济金融论文的复现数据和代码\n\n\nUCI ML Repository\n经典机器学习数据集仓库\n\n\n\n\n\n\n\n\n\n论文复现数据：比你想象的更有用\n\n\n\n很多同学做论文时苦于找不到合适的数据。其实，几乎所有在 AER、QJE、JPE、JF、JFE 等顶刊发表的论文，作者都会将使用的数据和代码上传到期刊配套的数据库中，供读者下载和复现。\n这些数据不仅质量高，而且往往已经经过了严格的清洗和整理，是很好的分析素材。如果你对某篇论文的研究问题有兴趣，直接下载它的数据来做延伸分析，往往比从头收集数据省力得多。\n详细的论文复现数据网站列表，参见：连享会 No.232：论文重现复现网站大全。",
     "crumbs": [
-      "📊**数据分析**",
+      "**数据分析**",
       "<span class='chapter-number'>6</span>  <span class='chapter-title'>金融数据获取</span>"
     ]
   },
   {
-    "objectID": "Lecture/data_get_data/lec_get_data.html#数据文件的读取",
-    "href": "Lecture/data_get_data/lec_get_data.html#数据文件的读取",
+    "objectID": "Lecture/data_get_data/lecture_get_data.html#数据文件的读取",
+    "href": "Lecture/data_get_data/lecture_get_data.html#数据文件的读取",
     "title": "6  金融数据获取",
     "section": "6.2 数据文件的读取",
     "text": "6.2 数据文件的读取\n有些数据不需要写代码调接口，直接从网站下载一个文件就行。无论是从 CSMAR 下载的 A 股数据、国家统计局导出的宏观指标，还是 Kaggle 上的比赛数据集，最终都是以某种文件格式落在你的硬盘上。这一节介绍如何把它们读进 Python。\npandas 是 Python 数据分析的核心库，针对几乎所有常见的表格格式都提供了对应的读取函数：pd.read_csv()、pd.read_excel()、pd.read_stata() 等。用法十分相近——告诉它文件在哪，它就能把数据读成一个 DataFrame 返回给你，后续的分析都在 DataFrame 上进行。\n\n6.2.1 先想清楚：用 CSV 还是 xlsx？\n在实际工作中，你会不断地在 .csv 和 .xlsx 之间做选择。很多人习惯用 Excel，但在 Python 数据分析的场景里，优先选择 .csv 是更专业的实践。原因有三：\n第一，速度。.csv 是纯文本格式，Python 读取时不需要解析任何格式信息，速度远快于 .xlsx。数据量小的时候感觉不出来，但对于十万行以上的数据，这个差距会非常明显。\n第二，兼容性。.csv 不依赖任何软件，任何文本编辑器都能打开，跨平台、跨语言通用。.xlsx 格式相对复杂，有时不同版本的库读出的结果会有细微差别，在团队协作或自动化流程中容易出问题。\n第三，简单即可靠。.xlsx 的多 Sheet、单元格格式、公式等功能在数据分析过程中几乎用不到。功能越复杂，出问题的可能性越大。\n当然，.xlsx 也有它的用武之地——当你需要把分析结果整理成报告给领导或客户看时，Excel 的格式功能很有价值。但在分析过程中的数据存储，统一用 .csv 就好。\n因此，如果你从 Wind 或 CSMAR 下载数据时有格式选项，请选 .csv。\n\n\n6.2.2 读取本地文件\n最基本的场景：文件已经下载到本地，用 pandas 读进来。\n\nimport pandas as pd\n\n# 读取 CSV 文件——最常用的格式\ndf = pd.read_csv('data/stock_data.csv')\n\n# 读取 Excel 文件\n# sheet_name 可以是 sheet 名称（字符串）或序号（整数，从 0 开始）\ndf = pd.read_excel('data/financial_report.xlsx', sheet_name='Sheet1')\n\n# 读取 Stata 数据文件（.dta 格式）\n# 做经济学研究时常见，许多学术数据集都是 .dta 格式\ndf = pd.read_stata('data/panel_data.dta')\n\n路径问题是初学者最常见的报错来源。上面的代码假设你的工作目录下有一个 data 文件夹，文件放在里面。如果出现「文件找不到」的报错，先用下面的代码确认当前工作目录在哪：\n\nimport os\n\n# 查看当前工作目录\nprint(os.getcwd())\n\n# 如果需要，切换到你的项目目录\n# Windows 路径用双反斜杠，或者在字符串前加 r（raw string）\n# os.chdir(r'D:\\projects\\finance_analysis')\n\n\n\n6.2.3 在线读取数据\n很多数据集直接存放在网络上，尤其是 GitHub 上的公开数据。pd.read_csv() 可以直接接受一个 URL 作为路径参数，省去先下载、再读取的步骤——这在教学环境里非常方便，大家可以运行同一段代码，读取同一份数据，无需提前分发文件。\n需要注意的是，如果是 GitHub 上的文件，要使用原始文件（Raw）的链接，而不是 GitHub 页面的链接。在 GitHub 上打开文件后，点击右上角的 “Raw” 按钮，复制地址栏中的 URL 即可。两者的区别很直观：页面链接以 github.com 开头，而 Raw 链接以 raw.githubusercontent.com 开头。\n\nimport pandas as pd\n\n# 使用 GitHub raw 链接直接读取 CSV，无需下载到本地\nurl = \"https://raw.githubusercontent.com/lianxhcn/ds_data/main/Chinese_resume/Chinese_resume_data.csv\"\n\ndf = pd.read_csv(url)\n\nprint(f'数据规模：{df.shape[0]} 行 × {df.shape[1]} 列')\ndf.head(3)\n\n\n\n6.2.4 在线读取 .dta 文件：一个常见的坑\npd.read_stata() 理论上也支持直接传入 URL，但实际使用中经常出问题。原因在于，pd.read_stata() 本身并不处理 HTTP 请求的细节——它不会模拟浏览器的请求头，也无法应对服务器返回的各种非标准响应。一旦服务器拒绝了这个「非浏览器式」的访问请求，读取就会失败，而且报错信息往往让人摸不着头脑。\n更稳健的做法是：先用 requests 库手动发送 HTTP 请求下载文件内容，再用 BytesIO 把字节流包装成一个类似文件对象的东西，最后传给 pd.read_stata()。这样可以完全控制请求过程，灵活处理各种情况。\n\nfrom io import BytesIO\nimport requests\nimport pandas as pd\n\nurl = 'https://www.stata-press.com/data/r17/auto.dta'\n\n# 设置 User-Agent，模拟浏览器访问，大多数服务器不会拒绝这种请求\nheaders = {'User-Agent': 'Mozilla/5.0'}\n\n# 发送 GET 请求，timeout=30 表示超过 30 秒无响应则放弃\nresp = requests.get(url, headers=headers, timeout=30)\n\n# 如果服务器返回错误（如 404 Not Found、403 Forbidden），\n# raise_for_status() 会直接抛出异常，便于快速定位问题\nresp.raise_for_status()\n\n# BytesIO 把字节内容包装成「文件对象」\n# pd.read_stata 就能像读取本地文件一样正常工作了\ndf = pd.read_stata(BytesIO(resp.content))\ndf.head(3)\n\n这个「requests.get + BytesIO + pd.read_xxx」的组合是在线读取各类二进制格式文件的通用模式，不局限于 .dta。以后遇到 .xlsx、.parquet 等格式在线读取出问题时，同样可以用这个思路来解决。\n\n\n6.2.5 数据读入后：先看清楚再动手\n数据读进来了，很多人的第一反应是马上开始分析。但这往往是个坏习惯——如果数据本身有问题（格式读错了、日期列被识别成字符串、某些行莫名其妙是 NaN），在没有察觉的情况下继续分析，最终得到的结果很可能是错的，而且很难发现错在哪里。\n花三分钟先看清楚数据，能帮你避免大量后续的麻烦。以下四个命令构成一套标准的数据探查流程，每次读入新数据时都建议执行一遍：\n\n# 沿用上面读入的 auto 数据集\n\n# 第一步：数据规模——有多少行、多少列？\n# 这是最基础的检查，确认数据没有在读取过程中丢失行或列\nprint(df.shape)\n\n\n# 第二步：数据长什么样——前几行有什么内容？\n# 这一步让你直观看到数据结构，判断读取是否符合预期\ndf.head(5)\n\n\n# 第三步：变量类型和缺失情况\n# 重点看两件事：\n#   1. dtype 列：类型有没有识别错误？（如日期被识别为 object）\n#   2. Non-Null Count 列：每个变量有多少非缺失值？\ndf.info()\n\n\n# 第四步：数值分布——范围是否合理？有没有明显的异常值？\n# 比如某个「年龄」变量最小值是 -999，十有八九是缺失值的代码，需要处理\ndf.describe().round(2)\n\n这四步的顺序有其内在逻辑：先知道「有多少」，再看「长什么样」，接着确认「类型和完整性」，最后检查「数值是否合理」。每一步都有可能暴露出问题。\n如果需要聚焦到部分变量，可以先做筛选再调用 describe()，还能指定只显示你关心的统计量：\n\n# 只看感兴趣的变量，只显示需要的统计量\nvars_to_check = ['price', 'mpg', 'weight', 'length']\nstats_to_show = ['count', 'mean', 'std', 'min', 'max']\n\ndf[vars_to_check].describe().loc[stats_to_show].round(2)\n\n\n\n\n\n\n\nAI 提示词：数据读取与探查\n\n\n\n遇到格式不熟悉的文件，或者不确定如何处理路径、编码等问题，可以把文件情况描述给 AI，让它生成代码：\n\n我有一个 [文件名及格式，如 stock_data.csv] 文件，存放路径为 [路径]。请帮我写一段 Python 代码，使用 pandas 读取这个文件，完成以下数据探查：(1) 输出数据的行列数；(2) 展示前 5 行；(3) 检查各变量的类型和缺失值情况；(4) 输出数值型变量的描述性统计（保留 2 位小数）。请加上简洁的中文注释，代码适配 Anaconda 环境。\n\n中文乱码是读取国内数据时最常见的问题之一。如果出现乱码，可以补充说明，让 AI 帮你尝试 utf-8、gbk、gb2312 三种编码（中文数据文件最常见的三种）。",
     "crumbs": [
-      "📊**数据分析**",
+      "**数据分析**",
       "<span class='chapter-number'>6</span>  <span class='chapter-title'>金融数据获取</span>"
     ]
   },
   {
-    "objectID": "Lecture/data_get_data/lec_get_data.html#通过-api-获取数据",
-    "href": "Lecture/data_get_data/lec_get_data.html#通过-api-获取数据",
+    "objectID": "Lecture/data_get_data/lecture_get_data.html#通过-api-获取数据",
+    "href": "Lecture/data_get_data/lecture_get_data.html#通过-api-获取数据",
     "title": "6  金融数据获取",
     "section": "6.3 通过 API 获取数据",
     "text": "6.3 通过 API 获取数据\n\n6.3.1 什么是 API？\n前面介绍的方式——从网站手动下载文件——虽然简单，但有明显的局限：数据是静态的，下载之后就不再更新；如果需要不同时间段、不同股票的数据，就要反复操作，效率很低。\n更好的方式是通过 API（Application Programming Interface，应用程序编程接口） 直接从数据源实时获取数据。\nAPI 可以理解为数据提供方开放的一个”数据窗口”：你在代码里说清楚自己想要什么（比如”给我平安银行 2020 年以来的日度收盘价”），API 就把对应的数据打包返回给你。整个过程不需要打开浏览器、不需要手动操作，可以写进代码自动完成。\n用一个比喻来说：如果手动下载数据是去超市自己选货，那 API 就是外卖——你下单（发请求），平台配货（处理查询），送货到家（返回数据）。\n\n\n6.3.2 金融数据 API 的通用调用流程\n不同数据源的 API 在细节上各有差异，但调用逻辑基本一致，可以归纳为四步：\n① 安装并导入对应的 Python 库\n② 指定参数：想要什么数据、哪个时间段、哪个国家/股票……\n③ 调用函数，发送请求\n④ 接收返回的 DataFrame，开始分析\n以后你会发现，不管是 akshare、世界银行 API，还是 FRED，代码结构都是这个样子，只是函数名和参数不同而已。理解了这个通用模式，学任何新的数据接口都会很快上手。\n\n\n\n\n\n\n免费 API 的使用限制\n\n\n\n免费开放的 API 一般有两类限制需要注意：\n一是访问频率限制。大多数 API 不允许短时间内发送太多请求，否则会被暂时封禁。在实际使用中，如果需要批量获取大量股票的数据，最好在循环中加入适当的等待时间（如 time.sleep(0.5)）。\n二是数据用途限制。以 akshare 为例，其官方声明数据”仅限于学术研究用途”，不构成任何投资建议。在课程和研究中使用完全没有问题，但需要了解这一边界。",
     "crumbs": [
-      "📊**数据分析**",
+      "**数据分析**",
       "<span class='chapter-number'>6</span>  <span class='chapter-title'>金融数据获取</span>"
     ]
   },
   {
-    "objectID": "Lecture/data_get_data/lec_get_data.html#国内金融数据akshare",
-    "href": "Lecture/data_get_data/lec_get_data.html#国内金融数据akshare",
+    "objectID": "Lecture/data_get_data/lecture_get_data.html#国内金融数据akshare",
+    "href": "Lecture/data_get_data/lecture_get_data.html#国内金融数据akshare",
     "title": "6  金融数据获取",
     "section": "6.4 国内金融数据：akshare",
     "text": "6.4 国内金融数据：akshare\n\n6.4.1 akshare 是什么？\nakshare 是专为中国金融市场设计的开源 Python 数据库，也是目前国内覆盖最广、使用最活跃的免费金融数据接口库之一。\n它的核心逻辑是做一个”数据中间层”：把东方财富、新浪财经、同花顺等各大财经网站的公开数据，统一封装成规范的 Python 函数，用户调用这些函数，直接拿到整理好的 pandas DataFrame，完全不需要关心底层的数据抓取细节。这就好比你不需要自己去每家超市采购，有人帮你把各家的货统一配送过来，还帮你分好类、贴好标签。\n从数据覆盖来看，akshare 支持 A 股（沪深京三市）、港股、期货、债券、外汇、宏观经济指标、数字货币等主要品类，基本能覆盖做国内金融分析的日常需求。\n\n\n\n\n\n\n扩展阅读\n\n\n\n张祖冲, 2025, akshare 与 Python：中国金融数据分析与获取的开源首选工具, 连享会 No.1642.\n\n\n\n\n6.4.2 安装与导入\n\n# 在终端或 Jupyter 中运行安装命令（只需安装一次）\n# !pip install akshare\n\nimport akshare as ak\nprint(ak.__version__)   # 确认安装成功，查看版本号\n\n安装完成后，后续所有接口都通过 ak.函数名() 的方式调用。函数名本身有一定规律：stock_zh_a_ 开头的是 A 股数据，macro_china_ 开头的是国内宏观数据，futures_zh_ 开头的是国内期货数据，以此类推。不需要死记，用到哪类数据时查一下官方文档或让 AI 帮你找函数名就行。\n\n\n6.4.3 A 股实时行情\nak.stock_zh_a_spot_em() 可以一次性获取沪深京全部 A 股的实时行情快照，返回的 DataFrame 包含最新价、涨跌幅、成交量、市盈率、市净率、总市值等常用字段，是做股票筛选和市场概览的便捷工具。\n\nimport akshare as ak\n\n# 获取全部 A 股实时行情（约 5000 只股票）\ndf_spot = ak.stock_zh_a_spot_em()\n\nprint(f'共获取 {len(df_spot)} 只股票的行情数据')\ndf_spot.head(3)\n\n返回的 DataFrame 字段较多，下表列出最常用的几列：\n\n\n\n字段\n说明\n\n\n\n\n代码\n股票代码（6位数字）\n\n\n名称\n股票简称\n\n\n最新价\n当前最新成交价（元）\n\n\n涨跌幅\n当日涨跌幅（%）\n\n\n成交额\n当日成交额（元）\n\n\n换手率\n当日换手率（%）\n\n\n市盈率-动态\n动态市盈率（TTM）\n\n\n市净率\n市净率（PB）\n\n\n总市值\n总市值（元）\n\n\n\n\n\n\n\n\n\nNote\n\n\n\n这个接口返回的是当前时刻的行情快照，每次调用结果都不同。如果需要可复现的历史数据，请使用下一节的历史 K 线接口。\n\n\n\n\n6.4.4 A 股历史 K 线数据与复权\n历史 K 线数据是做回测、时序分析、收益率计算的基础。akshare 通过 ak.stock_zh_a_hist() 提供个股历史日度（或周度、月度）行情数据，覆盖 1990 年上市以来的完整记录。\n在使用历史价格数据时，有一个概念必须搞清楚：复权。\n股票会因为分红、送股、配股等原因出现价格”跳空”——比如某股票昨天收盘 10 元，今天因为每股派发 1 元现金红利，除息后开盘价直接变成 9 元左右，但公司并没有发生任何实质变化。如果不处理这个跳空，直接计算收益率就会出现虚假的大幅下跌，严重影响分析结果。\nakshare 提供三种复权方式，通过 adjust 参数指定：\n\n\n\n\n\n\n\n\n\nadjust 参数\n复权方式\n特点\n适用场景\n\n\n\n\n\"\"\n不复权\n原始价格，有除权跳空\n看当前实际价格\n\n\n\"qfq\"\n前复权\n历史价格向下调整，当前价不变\n看盘、画 K 线图\n\n\n\"hfq\"\n后复权\n上市首日价格不变，此后向上调整\n计算真实历史收益率\n\n\n\n做收益率分析和量化研究时，请务必使用后复权（hfq）数据。\n\nimport akshare as ak\nimport pandas as pd\n\n# 获取平安银行（000001）后复权日 K 线数据\ndf_stock = ak.stock_zh_a_hist(\n    symbol     = \"000001\",   # 股票代码，6 位数字字符串\n    period     = \"daily\",    # 周期：daily / weekly / monthly\n    start_date = \"20200101\", # 开始日期，格式 YYYYMMDD\n    end_date   = \"20241231\", # 结束日期\n    adjust     = \"hfq\"       # 复权方式：'' / 'qfq' / 'hfq'\n)\n\nprint(f'数据规模：{df_stock.shape}')\ndf_stock.tail(3)\n\n\n\n6.4.5 简单可视化：收盘价走势\n数据拿到手后，先画一张图看看走势，是一个好习惯。\n\nimport matplotlib.pyplot as plt\nimport matplotlib.dates as mdates\n\n# 日期列转为 datetime 类型，方便绘图\ndf_stock['日期'] = pd.to_datetime(df_stock['日期'])\ndf_stock = df_stock.set_index('日期')\n\nfig, ax = plt.subplots(figsize=(12, 4))\n\nax.plot(df_stock.index, df_stock['收盘'], color='steelblue', linewidth=1)\n\nax.set_title('平安银行（000001）后复权收盘价', fontsize=13)\nax.set_xlabel('日期')\nax.set_ylabel('后复权价格（元）')\nax.xaxis.set_major_formatter(mdates.DateFormatter('%Y-%m'))\nax.grid(True, alpha=0.3)\nfig.autofmt_xdate()\n\nplt.tight_layout()\nplt.show()\n\n\n\n6.4.6 国内宏观经济数据\n除股票数据外，akshare 也提供了丰富的国内宏观经济指标接口。这里以两个常用指标为例：季度 GDP 和银行间同业拆借利率（Shibor）。\n中国季度 GDP\n\nimport akshare as ak\n\n# 获取中国季度 GDP 数据\ndf_gdp = ak.macro_china_gdp()\n\nprint(f'数据规模：{df_gdp.shape}')\ndf_gdp.head(5)\n\n银行间同业拆借利率（Shibor）\nShibor（上海银行间同业拆放利率）是中国货币市场的基准利率，类似于美国的 LIBOR。rate_interbank 接口支持获取不同期限（隔夜、1 周、1 个月、3 个月、1 年等）的历史数据。\n\nimport akshare as ak\n\n# 获取 3 个月期 Shibor 历史数据\ndf_shibor = ak.rate_interbank(\n    market    = \"上海银行同业拆借市场\",\n    symbol    = \"Shibor人民币\",\n    indicator = \"3月\"       # 可选：隔夜、1周、1月、3月、6月、1年\n)\n\nprint(f'数据规模：{df_shibor.shape}，时间范围：{df_shibor[\"报告日\"].iloc[0]} 至 {df_shibor[\"报告日\"].iloc[-1]}')\ndf_shibor.tail(5)\n\n\n\n\n\n\n\nAI 提示词：用 akshare 获取指定数据\n\n\n\n不知道某类数据对应哪个函数名？直接问 AI：\n\n请帮我用 akshare 库获取 [数据描述，如：沪深 300 指数 2015 年以来的日度行情数据]，返回 pandas DataFrame，并绘制收盘价的时序折线图。请加上简洁的中文注释，代码适配 Anaconda 环境。\n\nakshare 的接口函数多达数百个，不需要记忆，遇到新的数据需求直接让 AI 查文档、写代码即可。",
     "crumbs": [
-      "📊**数据分析**",
+      "**数据分析**",
       "<span class='chapter-number'>6</span>  <span class='chapter-title'>金融数据获取</span>"
     ]
   },
   {
-    "objectID": "Lecture/data_get_data/lec_get_data.html#全球宏观历史数据gmd",
-    "href": "Lecture/data_get_data/lec_get_data.html#全球宏观历史数据gmd",
+    "objectID": "Lecture/data_get_data/lecture_get_data.html#全球宏观历史数据gmd",
+    "href": "Lecture/data_get_data/lecture_get_data.html#全球宏观历史数据gmd",
     "title": "6  金融数据获取",
     "section": "6.5 全球宏观历史数据：GMD",
     "text": "6.5 全球宏观历史数据：GMD\n\n6.5.1 为什么需要 GMD？\n世界银行、IMF 等国际机构虽然提供了覆盖面广的宏观数据，但它们的历史深度有限——大多数指标只能追溯到 1960 年代。如果你想研究大萧条对各国经济的冲击、两次世界大战之间的贸易格局变化，或者更长周期的经济发展规律，这些数据库就显得捉襟见肘了。\n全球宏观数据库（Global Macro Database，GMD） 就是为了填补这个空白而生的。它由普林斯顿大学 Müller 教授团队开发，整合了来自 32 个主要国际组织和 78 个历史数据集的资料，构建了一个覆盖 243 个国家、46 个宏观变量的年度时间序列数据库，时间跨度从 1086 年延续至 2024 年，并包含对 2025-2030 年的预测。\n更难得的是，GMD 完全开源免费，且团队承诺持续更新。\n\n\n\n\n\n\n扩展阅读\n\n\n\n连小白, 2025, GMD：最新全球宏观数据库-243个国家46个宏观变量, 连享会 No.1559.\n\n\n\n\n6.5.2 GMD 涵盖哪些变量？\nGMD 的 46 个变量覆盖了宏观经济分析的主要维度，常用的包括：\n\n\n\n变量名\n含义\n\n\n\n\ngdp\nGDP（本币）\n\n\ngdp_USD\nGDP（美元）\n\n\ngdppc\n人均 GDP\n\n\ninf\n通货膨胀率（%）\n\n\nunemp\n失业率（%）\n\n\ninv_GDP\n投资占 GDP 比重（%）\n\n\ngovexp_GDP\n政府支出占 GDP 比重（%）\n\n\nexports_GDP\n出口占 GDP 比重（%）\n\n\nimports_GDP\n进口占 GDP 比重（%）\n\n\nexports\n出口总额（本币）\n\n\nUSDfx\n对美元汇率\n\n\ndebt_GDP\n政府债务占 GDP 比重（%）\n\n\n\n完整变量列表和定义请参考 GMD 官方网站 或数据文件中的 variable 列。\n\n\n6.5.3 获取数据\nGMD 的获取方式很简单：直接从官网下载一个 CSV 文件，一次性拿到全部数据，之后从本地读取即可。文件约 9MB，下载需要十几秒钟。\n\nimport pandas as pd\nimport os\n\n# ── 第一次运行：从官网下载数据并保存到本地 ──────────────\n# 文件约 9MB，下载需要 10-15 秒，请耐心等待\n# 下载完成后，后续运行只需从本地读取，无需重复下载\n\nurl = \"https://www.globalmacrodata.com/GMD.csv\"\n\n# 如果本地还没有这个文件，就下载并保存\nif not os.path.exists(\"data/GMD.csv\"):\n    os.makedirs(\"data\", exist_ok=True)\n    print(\"正在从官网下载 GMD 数据，请稍候...\")\n    data = pd.read_csv(url)\n    data.to_csv(\"data/GMD.csv\", index=False)\n    print(f\"下载完成，已保存到 data/GMD.csv\")\nelse:\n    print(\"本地文件已存在，直接读取\")\n\n# ── 从本地读取 ───────────────────────────────────────────\ndata = pd.read_csv(\"data/GMD.csv\")\n\nprint(f\"数据规模：{data.shape[0]} 行 × {data.shape[1]} 列\")\nprint(f\"国家数量：{data['ISO3'].nunique()} 个\")\nprint(f\"年份范围：{data['year'].min()} - {data['year'].max()}\")\ndata.head(3)\n\n数据的基本结构是长面板格式（long panel）：每一行代表某个国家在某一年的观测值，国家用 ISO3 代码标识（如 CHN 代表中国，USA 代表美国），年份存放在 year 列，其余列是各宏观变量的值。\n\n\n6.5.4 示例一：中国经济结构变化（1978-2024）\n改革开放以来，中国经济结构发生了深刻变化。投资驱动、出口导向是过去几十年的显著特征，近年来则逐渐转向消费和内需。我们用 GMD 数据来直观展示这一演变过程。\n\nimport matplotlib.pyplot as plt\n\n# 筛选中国数据，截取改革开放以来的样本\nchina = data[data[\"ISO3\"] == \"CHN\"].copy()\nchina = china[(china[\"year\"] &gt;= 1978) & (china[\"year\"] &lt;= 2024)]\n\n# 关注四个结构性指标\nvlist  = [\"inv_GDP\", \"exports_GDP\", \"imports_GDP\", \"govexp_GDP\"]\nlabels = [\"投资/GDP\", \"出口/GDP\", \"进口/GDP\", \"政府支出/GDP\"]\ncolors = [\"steelblue\", \"tomato\", \"orange\", \"seagreen\"]\n\nfig, ax = plt.subplots(figsize=(10, 4))\n\nfor var, label, color in zip(vlist, labels, colors):\n    ax.plot(china[\"year\"], china[var], label=label, color=color, linewidth=1.8)\n\nax.set_title(\"中国经济结构变化（1978-2024）\", fontsize=13)\nax.set_xlabel(\"年份\")\nax.set_ylabel(\"占 GDP 比重（%）\")\nax.set_xticks(range(1978, 2025, 5))\nax.tick_params(axis='x', rotation=45)\nax.legend(loc=\"upper left\", fontsize=9)\nax.grid(True, alpha=0.3)\n\nplt.tight_layout()\nplt.show()\n\n\n\n6.5.5 示例二：主要经济体出口份额变化（1980-2024）\n这个例子展示了一个稍复杂一点的数据处理流程：先构造新变量（各国出口额的全球占比），再做多国对比图。这是宏观经济研究中很常见的分析思路。\n\nimport matplotlib.pyplot as plt\nimport matplotlib as mpl\n\n# 将出口转换为美元计价（原始数据是本币）\ndata_ex = data.copy()\ndata_ex[\"exports_USD\"] = data_ex[\"exports\"] / data_ex[\"USDfx\"]\n\n# 剔除部分数据质量存疑的国家\nbad_countries = [\"MMR\", \"SLE\", \"ROU\", \"ZWE\", \"POL\", \"YUG\"]\ndata_ex = data_ex[~data_ex[\"ISO3\"].isin(bad_countries)]\n\n# 计算每年各国出口占全球总出口的份额\ndata_ex = data_ex[[\"ISO3\", \"year\", \"exports_USD\"]].dropna()\ndata_ex = data_ex.query(\"1980 &lt;= year &lt;= 2024\")\ndata_ex[\"total_exports\"] = data_ex.groupby(\"year\")[\"exports_USD\"].transform(\"sum\")\ndata_ex[\"export_share\"]  = data_ex[\"exports_USD\"] / data_ex[\"total_exports\"] * 100\n\n# 选取主要经济体\nfocus = [\"USA\", \"CHN\", \"DEU\", \"JPN\", \"GBR\", \"FRA\"]\nlabel_map = {\"USA\": \"美国\", \"CHN\": \"中国\", \"DEU\": \"德国\",\n             \"JPN\": \"日本\", \"GBR\": \"英国\", \"FRA\": \"法国\"}\n\ndf_plot = data_ex[data_ex[\"ISO3\"].isin(focus)].copy()\n\n# 绘图\nfig, ax = plt.subplots(figsize=(10, 4))\n\nfor country in focus:\n    sub = df_plot[df_plot[\"ISO3\"] == country].sort_values(\"year\")\n    ax.plot(sub[\"year\"], sub[\"export_share\"],\n            label=label_map[country], linewidth=1.8)\n\nax.set_title(\"主要经济体全球出口份额（1980-2024）\", fontsize=13)\nax.set_xlabel(\"年份\")\nax.set_ylabel(\"出口份额（%）\")\nax.legend(fontsize=9)\nax.grid(True, alpha=0.3)\n\nplt.tight_layout()\nplt.show()\n\n\n\n\n\n\n\nAI 提示词：GMD 数据分析模板\n\n\n\n以下提示词可以帮你快速生成针对任意国家和变量的分析代码：\n你是 Python 数据分析助手。我已有一个名为 data 的 DataFrame，是 GMD 全球宏观数据库，包含 ISO3（国家代码）、year（年份）和若干宏观变量列。\n请帮我完成：从 data 中筛选国家 [ISO3代码，如 USA]，截取 [起始年份] 至 [结束年份] 的数据，绘制变量 [变量名，如 gdppc] 的时序折线图，图中包含标题、坐标轴标签、网格，x 轴每 5 年一个刻度。代码简洁，加中文注释。",
     "crumbs": [
-      "📊**数据分析**",
+      "**数据分析**",
       "<span class='chapter-number'>6</span>  <span class='chapter-title'>金融数据获取</span>"
     ]
   },
   {
-    "objectID": "Lecture/data_get_data/lec_get_data.html#国际宏观数据世界银行-api",
-    "href": "Lecture/data_get_data/lec_get_data.html#国际宏观数据世界银行-api",
+    "objectID": "Lecture/data_get_data/lecture_get_data.html#国际宏观数据世界银行-api",
+    "href": "Lecture/data_get_data/lecture_get_data.html#国际宏观数据世界银行-api",
     "title": "6  金融数据获取",
     "section": "6.6 国际宏观数据：世界银行 API",
     "text": "6.6 国际宏观数据：世界银行 API\n\n6.6.1 世界银行数据简介\n世界银行（World Bank）维护着一个庞大的公开数据库，覆盖全球 200 多个国家和地区，涵盖经济增长、贫困、教育、医疗、环境等数十个领域，是做跨国比较研究最常用的数据来源之一。\n与 GMD 不同，世界银行数据的获取方式是通过官方 API 实时查询，不需要预先下载整个数据库。Python 的 world_bank_data 库对这个 API 做了封装，用起来相当简洁。\npip install world-bank-data\n\n\n6.6.2 找到你需要的指标代码\n调用世界银行 API 的关键是知道目标数据的指标代码（indicator code）。代码的格式类似 NY.GDP.PCAP.CD——这是人均 GDP（现价美元）的代码。\n找指标代码有两个方法：\n方法一：去世界银行官网 data.worldbank.org 搜索你想要的指标，打开数据页面后，URL 里就包含了指标代码。\n方法二：用 Python 直接搜索。\n\nimport world_bank_data as wb\n\n# 搜索包含 \"GDP per capita\" 的指标\nresults = wb.get_indicators(query=\"GDP per capita\")\nprint(results[[\"name\", \"unit\"]].head(10))\n\n下表列出了一些常用的世界银行指标代码，供参考：\n\n\n\n指标代码\n含义\n\n\n\n\nNY.GDP.PCAP.CD\n人均 GDP（现价美元）\n\n\nNY.GDP.MKTP.KD.ZG\nGDP 增长率（%）\n\n\nFP.CPI.TOTL.ZG\nCPI 通货膨胀率（%）\n\n\nSL.UEM.TOTL.ZS\n失业率（%，占劳动力）\n\n\nNE.EXP.GNFS.ZS\n出口占 GDP 比重（%）\n\n\nGC.DOD.TOTL.GD.ZS\n政府债务占 GDP 比重（%）\n\n\nSP.POP.TOTL\n总人口\n\n\n\n\n\n6.6.3 获取数据：以人均 GDP 为例\n下面以获取中美德日四国 1990 年以来的人均 GDP 为例，演示完整的调用流程。\n\nimport world_bank_data as wb\nimport pandas as pd\n\n# 指定国家（ISO2 代码）和指标代码\ncountries  = [\"CN\", \"US\", \"DE\", \"JP\"]        # 中国、美国、德国、日本\nindicator  = \"NY.GDP.PCAP.CD\"                 # 人均 GDP（现价美元）\ndate_range = \"1990:2023\"                      # 时间范围\n\n# 调用 API 获取数据\ndf_raw = wb.get_series(\n    indicator,\n    country = countries,\n    date    = date_range,\n    mrv     = None        # mrv=None 表示获取全部年份，否则只取最近 N 年\n)\n\n# 原始返回是 MultiIndex Series，转换为普通 DataFrame\ndf = df_raw.reset_index()\ndf.columns = [\"country\", \"year\", \"gdppc\"]\ndf[\"year\"] = df[\"year\"].astype(int)\n\nprint(f\"数据规模：{df.shape}\")\ndf.head(8)\n\n\n\n6.6.4 可视化：四国人均 GDP 对比\n\nimport matplotlib.pyplot as plt\n\ncountry_labels = {\"China\": \"中国\", \"United States\": \"美国\",\n                  \"Germany\": \"德国\", \"Japan\": \"日本\"}\n\nfig, ax = plt.subplots(figsize=(10, 4))\n\nfor country, sub in df.groupby(\"country\"):\n    sub = sub.sort_values(\"year\").dropna(subset=[\"gdppc\"])\n    label = country_labels.get(country, country)\n    ax.plot(sub[\"year\"], sub[\"gdppc\"], label=label, linewidth=1.8)\n\nax.set_title(\"中美德日人均 GDP 比较（1990-2023）\", fontsize=13)\nax.set_xlabel(\"年份\")\nax.set_ylabel(\"人均 GDP（现价美元）\")\nax.legend(fontsize=9)\nax.grid(True, alpha=0.3)\n\nplt.tight_layout()\nplt.show()\n\n\n\n6.6.5 拓展：同时获取多个指标\n如果需要同时获取多个指标，可以循环调用，或者直接使用 wb.get_dataframe() 方法，它支持一次传入多个指标代码，返回宽格式 DataFrame，方便后续合并分析。\n\nimport world_bank_data as wb\nimport pandas as pd\n\n# 一次获取多个指标\nindicators = {\n    \"NY.GDP.MKTP.KD.ZG\" : \"gdp_growth\",   # GDP 增长率\n    \"FP.CPI.TOTL.ZG\"    : \"inflation\",     # CPI 通胀率\n    \"SL.UEM.TOTL.ZS\"    : \"unemployment\",  # 失业率\n}\n\nframes = []\nfor code, name in indicators.items():\n    s = wb.get_series(code, country=[\"CN\", \"US\"], date=\"2000:2023\").reset_index()\n    s.columns = [\"country\", \"year\", name]\n    s[\"year\"] = s[\"year\"].astype(int)\n    frames.append(s)\n\n# 合并所有指标到一张宽表\nfrom functools import reduce\ndf_wide = reduce(lambda a, b: pd.merge(a, b, on=[\"country\", \"year\"]), frames)\n\nprint(df_wide.shape)\ndf_wide[df_wide[\"country\"] == \"China\"].tail(5)\n\n\n\n\n\n\n\nAI 提示词：世界银行数据获取\n\n\n\n请帮我用 Python 的 world_bank_data 库， 获取 [国家列表，如：中国、印度、巴西] 在 [年份范围，如：2000-2023] 年间的 [指标描述，如：人均 GDP 和 CPI 通胀率] 数据， 整理为宽格式 DataFrame，并绘制各国的对比折线图。\n请帮我查找正确的世界银行指标代码，加上简洁的中文注释。",
     "crumbs": [
-      "📊**数据分析**",
+      "**数据分析**",
       "<span class='chapter-number'>6</span>  <span class='chapter-title'>金融数据获取</span>"
     ]
   },
   {
-    "objectID": "Lecture/data_get_data/lec_get_data.html#本章小结",
-    "href": "Lecture/data_get_data/lec_get_data.html#本章小结",
+    "objectID": "Lecture/data_get_data/lecture_get_data.html#本章小结",
+    "href": "Lecture/data_get_data/lecture_get_data.html#本章小结",
     "title": "6  金融数据获取",
     "section": "6.7 本章小结",
     "text": "6.7 本章小结\n本章介绍了金融与宏观经济数据获取的主要途径，核心要点归纳如下：\n\n\n\n数据类型\n推荐工具\n获取方式\n免费？\n\n\n\n\nA 股行情（实时/历史）\nakshare\nPython API\n是\n\n\n国内宏观（GDP、利率等）\nakshare\nPython API\n是\n\n\n全球宏观（历史深度）\nGMD\nCSV 下载\n是\n\n\n跨国宏观（当代）\n世界银行\nPython API\n是\n\n\n美国宏观/金融\nFRED\nPython API\n是（需 Key）\n\n\nA 股研究级数据\nCSMAR\n手动下载/API\n校园网免费\n\n\n机器学习数据集\nKaggle\n手动下载\n是\n\n\n\n获取数据只是起点。拿到数据后，养成「先探查、再分析」的习惯——.shape、.head()、.info()、.describe() 四件套，每次读入新数据都跑一遍，是避免后续错误的最低成本保险。",
     "crumbs": [
-      "📊**数据分析**",
+      "**数据分析**",
       "<span class='chapter-number'>6</span>  <span class='chapter-title'>金融数据获取</span>"
     ]
   },
   {
-    "objectID": "Lecture/data_clean/lec_data_clean.html",
-    "href": "Lecture/data_clean/lec_data_clean.html",
+    "objectID": "Lecture/data_clean/lecture_data_clean.html",
+    "href": "Lecture/data_clean/lecture_data_clean.html",
     "title": "7  数据清洗",
     "section": "",
     "text": "7.1 为什么数据清洗至关重要？\n在金融数据分析与建模的实践中，分析师往往将大部分精力投入到模型设计与参数估计上，却容易低估数据质量对最终结论的决定性影响。事实上，无论模型多么精巧，若输入数据存在错误、缺失或单位不一致，所有后续分析都将建立在不稳固的基础之上。\n本节通过两个真实的历史案例，说明数据清洗疏失所带来的严重后果——从影响国家政策走向的学术研究，到耗资数亿美元的太空任务失败，错误的根源都是在数据处理阶段可以避免的疏漏。",
     "crumbs": [
-      "📊**数据分析**",
+      "**数据分析**",
       "<span class='chapter-number'>7</span>  <span class='chapter-title'>数据清洗</span>"
     ]
   },
   {
-    "objectID": "Lecture/data_clean/lec_data_clean.html#为什么数据清洗至关重要",
-    "href": "Lecture/data_clean/lec_data_clean.html#为什么数据清洗至关重要",
+    "objectID": "Lecture/data_clean/lecture_data_clean.html#为什么数据清洗至关重要",
+    "href": "Lecture/data_clean/lecture_data_clean.html#为什么数据清洗至关重要",
     "title": "7  数据清洗",
     "section": "",
     "text": "7.1.1 案例一：Reinhart & Rogoff 的 Excel 错误（2010）\nA. 背景\n2010 年，哈佛大学经济学家 Reinhart and Rogoff (2010) 发表论文《债务时代的增长》（Growth in a Time of Debt），提出一个影响深远的结论：当一国公共债务与 GDP 之比超过 90% 时，经济增长率将急剧下滑，平均仅为 −0.1%。这一结论迅速被欧美多国政府引用，成为推行财政紧缩政策的重要学术依据。\nB. 数据出错了\n2013 年，麻省大学经济系研究生 Thomas Herndon 在课堂作业中尝试复现该研究，意外发现原始 Excel 工作表中存在三类错误：\n\n公式范围遗漏： 计算平均增长率的公式未涵盖全部国家的数据行，澳大利亚、奥地利、比利时、加拿大和丹麦的数据被排除在外；\n数据选择性排除： 早期若干年份（如新西兰 1946–1949 年）的数据未被纳入分析；\n加权方式有误： 对各国数据采用了不合理的等权重处理，未按年份数量加权。\n\nHerndon et al. (2014) 发表论文 (该文在 Google 学术的引用率超过 2000 次) 指出上述错误后，Reinhart 和 Rogoff 承认了这些错误，并修正了数据处理方式。\nC. 后果\n修正上述错误后，高债务国家的平均增长率从 −0.1% 大幅修正为 +2.2%，结论完全逆转。然而此时，多国已基于原始错误结论实施了数年的紧缩政策，对经济社会造成了难以估量的影响。\n\n\n\n7.1.2 案例二：NASA 火星气候轨道飞行器坠毁（1999）\nA. 背景\n1999 年 9 月，美国国家航空暨太空总署（NASA）耗资 3.27 亿美元研发的火星气候轨道飞行器（Mars Climate Orbiter）在抵达火星后，因轨道偏差过大进入大气层解体，任务彻底失败。这是 NASA 历史上因数据错误导致的最著名的任务失败之一。\nB. 数据错的有点离谱\n事故调查委员会查明，根本原因是两个工程团队之间的计量单位不一致：\n\n洛克希德·马丁公司 的导航软件输出推力数据，单位为英制的磅力·秒（lbf·s）；\nNASA 喷气推进实验室（JPL） 的接收系统则假设数据单位为公制的牛顿·秒（N·s）。\n\n由于 1 lbf·s ≈ 4.45 N·s，两者相差约 4.45 倍，导致飞行轨迹在长达数月的飞行中持续偏移，最终无法修正，任务失败。\nC. 损失有点大\n飞行器在抵达火星轨道时因高度严重偏低，进入大气层后解体。整个任务历时 9 个月、耗资逾 3 亿美元，最终付诸东流。事后 NASA 正式将此次失败归咎于「未能采用统一的公制单位」这一流程疏漏。\n\n启示： 在数据处理中，量纲与单位的一致性检查是数据清洗的基本步骤。常见的隐患包括：收益率未统一为日频或年化、货币单位在不同来源间混用（如元与万元）、价格数据未区分前复权与后复权等。这些问题看似细微，累积效应却足以导致模型输出严重失真。\n\n\n\n7.1.3 小结\n上述两个案例横跨经济学与航天工程两个截然不同的领域，却共同揭示了同一个规律：数据质量问题的危害，与领域无关，后果普遍。 无论是学术研究还是工程实践，一旦在数据处理阶段引入错误，后续所有分析都将在错误的基础上叠加。\n在金融数据分析中，数据清洗的目标正是在模型建立之前，系统性地识别并处理以下问题：\n\n缺失值与异常值（Missing Values & Outliers）\n数据类型与格式不一致（Type & Format Inconsistency）\n量纲与单位差异（Unit Mismatch）\n样本偏差与数据对齐问题（Sample Bias & Alignment）\n重复记录（Duplicates）\n\n本章以下各节将逐一介绍上述问题的识别方法与处理策略，并结合 Python 代码示例加以说明。",
     "crumbs": [
-      "📊**数据分析**",
+      "**数据分析**",
       "<span class='chapter-number'>7</span>  <span class='chapter-title'>数据清洗</span>"
     ]
   },
   {
-    "objectID": "Lecture/data_clean/lec_data_clean.html#本章导读",
-    "href": "Lecture/data_clean/lec_data_clean.html#本章导读",
+    "objectID": "Lecture/data_clean/lecture_data_clean.html#本章导读",
+    "href": "Lecture/data_clean/lecture_data_clean.html#本章导读",
     "title": "7  数据清洗",
     "section": "7.2 本章导读",
     "text": "7.2 本章导读\n本章的目标不是教你记住所有清洗函数的语法，而是帮你建立两种能力：第一，看到数据时能快速识别潜在问题；第二，能用准确的语言把问题描述清楚，让 AI 辅助你生成可靠的处理代码。\n贯穿本章的例子来自一个真实的研究场景：上市公司借款利率的影响因素分析。我们有三张来源不同的表，需要把它们合并成一份可以直接用于回归分析的干净数据。三张表的基本情况如下 (生成如下模拟数据的代码：create_sample_data)：\nBasicInf——上市公司基本信息，来源：CSMAR 上市公司基本信息库 - 观测维度：公司（截面） - 主键：stkcd（公司ID） - 字段：stkcd（公司ID）、comp_name（公司简称）、industry（行业归属）、soe（是否为国企，1=是，0=否）\nFinRatio——上市公司财务比率，来源：CSMAR 财务比率数据库 - 观测维度：公司 × 年度（面板） - 主键：(stkcd, year) - 字段：stkcd、year、Leverage（总负债/总资产）、Size（ln 总资产）、ROA（资产回报率）、CFlow（经营现金流/总资产）、Cash_holding（现金/总资产）、RD（研发支出/总资产）、report_type（报表类型：A=合并报表，B=母公司报表）\nAnnouncement——上市公司借贷公告，来源：网络爬虫 - 观测维度：公司 × 年度 × 贷款笔数（非结构化文本） - 字段：stkcd、year、text（公告原文） - 示例：「本公司于2023年6月1日，与建行深圳分行签署贷款协议，贷款金额为2亿元，期限3年，利率为年化4.2%。」",
     "crumbs": [
-      "📊**数据分析**",
+      "**数据分析**",
       "<span class='chapter-number'>7</span>  <span class='chapter-title'>数据清洗</span>"
     ]
   },
   {
-    "objectID": "Lecture/data_clean/lec_data_clean.html#数据的分类",
-    "href": "Lecture/data_clean/lec_data_clean.html#数据的分类",
+    "objectID": "Lecture/data_clean/lecture_data_clean.html#数据的分类",
+    "href": "Lecture/data_clean/lecture_data_clean.html#数据的分类",
     "title": "7  数据清洗",
     "section": "7.3 数据的分类",
     "text": "7.3 数据的分类\n在动手清洗之前，先要知道你面对的是什么类型的数据。不同类型的数据，问题的表现形式不同，处理方式也不同。\n\n7.3.1 结构化 vs 非结构化\n\n结构化数据 是指能够自然地用行列表格表示的数据。每一行是一个观测单位，每一列是一个变量，单元格里是对应的值。我们的 BasicInf 和 FinRatio 就是典型的结构化数据。\n非结构化数据 没有预定义的格式。文本、图片、音频、视频都属于这一类。我们的 Announcement 公告文本就是非结构化数据——它是一段自然语言，不能直接作为变量放进回归方程。\n\n实际研究中，大量有价值的信息藏在非结构化数据里：上市公司公告、新闻报道、社交媒体、卫星图像…… 处理它们的第一步，通常是把非结构化数据转换为结构化数据，我们在第 2 节专门讨论这个问题。\n\n\n7.3.2 数值型 vs 字符型\n结构化数据中，最基本的区分是数值型和字符型。\n\n数值型变量可以直接参与数学运算。FinRatio 中的 Leverage、ROA、Size 都是数值型——你可以对它们求均值、做回归、画散点图。数值型变量又可以进一步分为：\n\n连续变量：理论上可以取任意值，比如 ROA = 0.0437，Size = 22.6。\n离散变量：只取整数或有限个值，比如贷款期限（1年、3年、5年）。\n\n字符型变量存储的是文本。BasicInf 中的 comp_name、industry 都是字符型。字符型变量不能直接做运算，但在数据分析中有两种常见用途：用于合并（作为连接键）或转换为可以建模的形式。\n\n\n\n7.3.3 类别变量 vs 有序类别变量\n字符型变量中，有一类在经济研究中极为常见，需要特别说明。\n\n类别变量（nominal）：变量的取值是若干个没有大小关系的类别。BasicInf 中的 industry 就是——制造业和金融业之间，没有「哪个更大」的关系。处理方式通常是创建虚拟变量（dummy variables）。\n有序类别变量（ordinal）：取值之间有明确的顺序关系，但间距不一定相等。比如信用评级（AAA &gt; AA &gt; A）、企业规模分类（大型/中型/小型）。处理时需要比类别变量更谨慎——不能简单地用 1/2/3 编码，因为这暗示了等距假设。\n特例：二值变量（binary）：只取 0/1 的变量，是类别变量的最简单情形。BasicInf 中的 soe（是否为国企）就是二值变量。\n\n\n\n7.3.4 多模态数据\n当一个数据集同时包含文本、图像、数值等多种类型时，称为多模态数据。在经济研究中，这个概念正在变得越来越重要——比如用卫星夜间灯光图像来衡量经济活动，同时结合文本新闻和数值统计。目前处理多模态数据的主要工具是大型语言模型和多模态模型，这超出了本章的范围，但值得知道这个方向的存在。\n\n\n7.3.5 结构化数据与整洁数据\n结构化数据是指能够用行列表格表示的数据——每一行是一个观测单位，每一列是一个变量，每个单元格只含一个值。下面两张表是本章贯穿始终的示例数据的子集。\n表 3-1　BasicInf（上市公司基本信息，节选）\n\n\n\nstkcd\ncomp_name\nindustry\nsoe\n\n\n\n\n000001\n平安银行\n银行业\n0\n\n\n2\n万科A\n房地产业\n0\n\n\n000063\n中兴通讯\n通信设备\n0\n\n\n600028\n中国石化\n石油化工\n1\n\n\n600036\n招商银行\n银行业\n0\n\n\n\n每行代表一家公司，stkcd 是唯一标识每家公司的主键。\n表 3-2　FinRatio（上市公司财务比率，节选）\n\n\n\nstkcd\nyear\nreport_type\nLeverage\nSize\nROA\nRD\n\n\n\n\n000001\n2022\nA\n0.89\n25.3\n0.012\nNaN\n\n\n000001\n2023\nA\n0.88\n25.4\n0.013\nNaN\n\n\n2\n2022\nA\n0.65\n24.1\n0.045\n0.008\n\n\n2\n2023\nA\n0.68\n24.2\n0.041\n0.009\n\n\n000063\n2022\nA\n0.52\n23.8\n0.038\n0.052\n\n\n000063\n2023\nA\n3.21\n“23.9”\n−0.18\n0.048\n\n\n\n每行代表一家公司在某一年度的财务状况，主键是 (stkcd, year) 的组合。\n然而，细心的读者可能已经发现，这两张表虽然是结构化的，但并不完全符合「整洁数据」的标准。\n仔细观察这两张表，即便是这份只有几行的小数据，也已经能发现若干问题：\n\nstkcd 列中 2 与其他行的 6 位编码格式不一致；\nSize 列中出现了带引号的 \"23.9\"，说明该值被存储为文本而非数值；\nLeverage=3.21 和 ROA=−0.18 明显偏离正常范围；\nRD 列存在缺失值。\n\n这些问题在真实数据集中普遍存在，且往往比这里展示的更隐蔽。对照本章开头提出的三个标准来看：\n\n结构正确：stkcd 格式不统一，Size 类型错误，违反了这一标准\n内容可信：Leverage=3.21、ROA=−0.18 超出合理范围，需要核查\n样本明确：RD 的缺失是随机的还是有规律的？需要搞清楚才能决定如何处理\n\n本章接下来的所有操作，都是为了让这份数据最终满足这三个标准。",
     "crumbs": [
-      "📊**数据分析**",
+      "**数据分析**",
       "<span class='chapter-number'>7</span>  <span class='chapter-title'>数据清洗</span>"
     ]
   },
   {
-    "objectID": "Lecture/data_clean/lec_data_clean.html#非结构化数据的结构化转换",
-    "href": "Lecture/data_clean/lec_data_clean.html#非结构化数据的结构化转换",
+    "objectID": "Lecture/data_clean/lecture_data_clean.html#非结构化数据的结构化转换",
+    "href": "Lecture/data_clean/lecture_data_clean.html#非结构化数据的结构化转换",
     "title": "7  数据清洗",
     "section": "7.4 非结构化数据的结构化转换",
     "text": "7.4 非结构化数据的结构化转换\nAnnouncement 数据包含的原始文本为：\n\n本公司于 2023 年 6 月 1 日，与建行深圳分行签署贷款协议，贷款金额为 2 亿元，期限 3 年，利率为年化 4.2%。\n\n要把这条信息纳入定量分析，我们需要从中提取以下字段：\n\n\n\n\n\n\n\n\n字段名\n说明\n示例值\n\n\n\n\nstkcd\n公司 ID（从公告来源获取，非提取）\n\"000001\"\n\n\nloan_date\n贷款签署日期\n\"2023-06-01\"\n\n\nbank_name\n银行名称（标准化至法人机构）\n\"建设银行\"\n\n\nbank_level\n银行层级\n\"地级分行\"\n\n\nloan_amount\n贷款金额（原始数值）\n2.0\n\n\nloan_unit\n金额计量单位\n\"亿元\"\n\n\nloan_rate\n年化利率（%）\n4.2\n\n\nloan_term_year\n贷款期限（年）\n3\n\n\n\n\n\n\n\n\n\n为什么把金额和单位分开存储？\n\n\n\n公告中的金额表达方式多样：「2 亿元」、「20000 万元」、「0.2 十亿元」指的是同一个数。如果在提取阶段就统一换算，一旦换算逻辑有误，原始信息就永久丢失了。更稳健的做法是先提取原始值和单位，在后续的清洗步骤中再统一换算，并保留换算过程可供核查。\n\n\n银行层级（总行/省级分行/地级分行）对贷款利率有实质性影响——地级分行通常有更大的利率浮动空间，而总行贷款往往意味着更优惠的条件。因此将「建行深圳分行」拆分为银行名称和银行层级两个字段，而非简单保留全称。\n\n\n\n\n\n\n提示词：非结构化文本信息提取\n\n\n\n我有一批中国上市公司的借贷公告文本，每条文本描述一笔贷款事件。 请帮我从以下文本中提取结构化信息，输出为 Python 字典格式，包含以下字段：\n\nloan_date: 贷款签署日期，格式为 YYYY-MM-DD\nbank_name: 贷款银行法人机构名称（标准化，如「建设银行」而非「建行深圳分行」）\nbank_level: 银行层级，取值为「总行」、「省级分行」、「地级分行」之一\nloan_amount: 贷款金额原始数值（浮点数，不做单位换算）\nloan_unit: 金额计量单位，取值为「元」、「万元」、「亿元」之一\nloan_rate: 年化利率，单位为 %（浮点数）\nloan_term_year: 贷款期限，单位为年（整数）\n\n规则：\n\n如果某个字段无法从文本中提取，返回 None 并在 warnings 字段中注明原因\n若文本存在歧义或信息不完整，在 warnings 字段中给出提示\n\n输出格式为包含上述字段以及一个 warnings（列表）字段的字典。\n文本：「本公司于2023年6月1日，与建行深圳分行签署贷款协议， 贷款金额为2亿元，期限3年，利率为年化4.2%。」\n提取完成后，统一换算金额的步骤：\nunit_map = {'元': 1, '万元': 10000, '亿元': 100000000}\ndf['loan_amount_yuan'] = df['loan_amount'] * df['loan_unit'].map(unit_map)",
     "crumbs": [
-      "📊**数据分析**",
+      "**数据分析**",
       "<span class='chapter-number'>7</span>  <span class='chapter-title'>数据清洗</span>"
     ]
   },
   {
-    "objectID": "Lecture/data_clean/lec_data_clean.html#项目文件夹结构",
-    "href": "Lecture/data_clean/lec_data_clean.html#项目文件夹结构",
+    "objectID": "Lecture/data_clean/lecture_data_clean.html#项目文件夹结构",
+    "href": "Lecture/data_clean/lecture_data_clean.html#项目文件夹结构",
     "title": "7  数据清洗",
     "section": "7.5 项目文件夹结构",
     "text": "7.5 项目文件夹结构\n在开始任何数据操作之前，先建立清晰的项目结构。这不是可选项，而是可复现研究的基本要求。一个有条理的文件夹结构，能帮助你在几个月后还能迅速找到数据来源、理解处理逻辑，也能让协作者在没有口头说明的情况下快速上手。\n推荐的基本结构如下：\n\n本地新建一个文件夹，如 ../{Proj_name}\n（推荐）在该文件夹下新建以下几个子文件夹，用于分类存放文件：\n\n./data_raw：存放原始数据文件（.csv、.xlsx 等），只读，任何情况下不得覆盖或修改\n./data_clean：存放处理完毕、可直接用于分析的数据文件\n./doc：存放说明文档、文献、报告草稿等文件\n./codes：存放代码文件，包括自编函数、清洗脚本、分析模块等\n./output：存放输出文件，包括图表、回归结果、报告正文等\nreadme.md（放在根目录）：对项目进行说明，内容包括项目背景与目标、数据来源与下载方式、程序执行顺序、主要变量定义等\n\n\n变通原则：\n以上结构是一个起点，实际项目中可根据需要灵活调整：\n\n增加 ./data_temp 文件夹：用于存放中间过程文件（如提取后尚未聚合的数据）。这类文件可随时由代码重新生成，不属于「最终可用数据」，单独存放有助于区分数据的处理阶段。\n简化 ./codes 文件夹：如果整个分析流程只需 1–2 个 .ipynb 文档，可省去 ./codes 文件夹，直接将 .ipynb 文档放在项目根目录下，结构更简洁。\n拆分 ./output 文件夹：输出内容较多时，可将 ./output 拆分为 ./output/figures（图形）和 ./output/tables（表格），便于按类查找。若不希望文件夹层级过深，也可以直接在项目根目录下设置 ./figures 和 ./tables 两个文件夹。\n按阶段命名代码文件：在 ./codes 中，推荐为脚本加序号前缀（如 01_clean.py、02_merge.py、03_analysis.py），便于理解执行顺序。\n\n例如，一个初始的项目结构可能如下：\nproject/\n├── data_raw/          # 原始数据，只读，永远不修改\n│   ├── BasicInf.csv\n│   ├── FinRatio.csv\n│   └── Announcement/\n│       └── raw_html/  # 爬取的原始 HTML 文件\n├── data_temp/         # 中间过程文件，可随时重新生成\n├── data_clean/        # 最终可用于分析的数据\n├── codes/             # 清洗和分析代码\n├── output/            # 图表和结果\n├── main.ipynb         # 主执行脚本，调用 codes 中的函数\n└── README.md          # 记录数据来源、处理逻辑、变量定义\n\n\n\n\n\n\n原始数据只读原则\n\n\n\n\ndata_raw/ 文件夹中的文件在任何情况下都不应被覆盖或修改。\n所有处理结果保存到 data_temp/ 或 data_clean/。\n真正需要修改和实时保存的是代码文件和 README 文档，而非原始数据。\n\n这样即使处理逻辑出错，原始数据始终可以回溯。",
     "crumbs": [
-      "📊**数据分析**",
+      "**数据分析**",
       "<span class='chapter-number'>7</span>  <span class='chapter-title'>数据清洗</span>"
     ]
   },
   {
-    "objectID": "Lecture/data_clean/lec_data_clean.html#数据清洗的整体流程",
-    "href": "Lecture/data_clean/lec_data_clean.html#数据清洗的整体流程",
+    "objectID": "Lecture/data_clean/lecture_data_clean.html#数据清洗的整体流程",
+    "href": "Lecture/data_clean/lecture_data_clean.html#数据清洗的整体流程",
     "title": "7  数据清洗",
     "section": "7.6 数据清洗的整体流程",
     "text": "7.6 数据清洗的整体流程\n本节介绍的五个步骤适用于单张表的清洗。多表合并是在每张表清洗完毕之后的独立环节，将在「第二层：多表操作问题」中单独讨论。\n第一步：导入与初步查看\n将数据读入 Python，用几个基本命令全面了解数据的形态：行列数、变量类型、缺失情况、基本统计量。这一步的目的不是处理问题，而是发现问题——在没有全面了解数据之前，不要急于动手清洗。\nimport pandas as pd\n\ndf = pd.read_csv('data_raw/FinRatio.csv')\ndf.shape\ndf.head()\ndf.dtypes\ndf.info()\ndf.describe()\n\n\n\n\n\n\n提示词：数据导入与初步检查\n\n\n\n我刚导入了一个名为 FinRatio 的 DataFrame，包含上市公司财务比率数据。 请帮我生成一段 Python 代码，输出以下信息：\n\n数据的行列数\n每列的数据类型、缺失值数量和缺失比例\n数值型列的描述性统计（均值、中位数、标准差、min、25%、75%、max），小数点后保留 2-3 位\n检查是否存在完全重复的行\n输出前 5 行数据，确保格式正确\n\n\n\n第二步：识别问题\n通过第一步的输出，系统性地检查每一列，将发现的问题逐一记录下来，形成一张「问题清单」。不要边看边改——先把所有问题摸清楚，再统一规划处理顺序，避免前后步骤相互干扰。\n\n\n\n\n\n\n\n\n\n问题类型\n涉及列\n严重程度\n处理方向\n\n\n\n\n缺失值\nRD\n高（约 25%）\n填 0 + 缺失指示变量\n\n\n离群值\nLeverage, ROA, CFlow\n中\n缩尾（Winsorize）\n\n\n格式不一致\nstkcd\n高\n统一为 6 位字符串\n\n\n报表类型混入\nreport_type\n高\n仅保留合并报表（A）\n\n\n类型错误\nSize\n中\n转换为数值型\n\n\n\n第三步：处理\n按照第二步的问题清单逐一处理。顺序很重要，建议遵循以下逻辑：先处理格式和类型问题，再筛选报表类型，然后处理缺失值，最后处理离群值。原因在于：格式错误会导致后续缺失值统计失真（例如 \"2\" 和 \"000002\" 被识别为两个不同主键，合并后产生大量假性缺失）；报表类型混入会干扰统计量的计算，影响离群值阈值的判断；而离群值的判断依赖于数值分布的准确性，因此放在最后处理最为稳妥。\n第四步：验证\n每一步处理完之后，立即验证结果是否符合预期，不要等到全部处理完再统一核查。通用的验证动作包括：比对处理前后的行数（有没有意外丢失观测）、检查关键变量的取值范围（处理后的 min/max 是否合理）、抽查几行原始数据与处理结果是否对应。各类问题的具体验证方法将在后续各小节中介绍。\n第五步：输出\n清洗完毕后，将结果保存到 data_clean/ 文件夹，不覆盖原始数据。建议同时在 readme.md 中补充一条记录，说明本次清洗的主要操作和输出文件名。\ndf_clean.to_csv('data_clean/merged_clean.csv', index=False)",
     "crumbs": [
-      "📊**数据分析**",
+      "**数据分析**",
       "<span class='chapter-number'>7</span>  <span class='chapter-title'>数据清洗</span>"
     ]
   },
   {
-    "objectID": "Lecture/data_clean/lec_data_clean.html#第一层单表内部问题",
-    "href": "Lecture/data_clean/lec_data_clean.html#第一层单表内部问题",
+    "objectID": "Lecture/data_clean/lecture_data_clean.html#第一层单表内部问题",
+    "href": "Lecture/data_clean/lecture_data_clean.html#第一层单表内部问题",
     "title": "7  数据清洗",
     "section": "7.7 第一层：单表内部问题",
     "text": "7.7 第一层：单表内部问题\n下面用虚构的小型数据集演示各类问题。数据规模刻意压缩（5–10 行），以便清晰展示问题的本质。\n\n7.7.1 虚构数据\nBasicInf（5 家公司）：\n\n\n\nstkcd\ncomp_name\nindustry\nsoe\n\n\n\n\n000001\n平安银行\n银行业\n0\n\n\n2\n万科 A\n房地产业\n0\n\n\n000063\n中兴通讯\n通信设备\n0\n\n\n600028\n中国石化\n石油化工\n1\n\n\n600036\n招商银行\n银行业\n0\n\n\n\n注意：stkcd 第二行是整数 2，其余为 6 位字符串——这是格式不一致问题。\nFinRatio（10 行，2 家公司 × 2 年 × 2 种报表类型）：\n\n\n\n\n\n\n提示：变量名缩写\n\n\n\n为了确保表格不至于过宽，部分变量名使用了缩写：type 代表 report_type，Cash 代表 Cash_holding。\n实际操作中请使用完整变量名。\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nstkcd\nyear\ntype\nLeverage\nSize\nROA\nCFlow\nCash\nRD\n\n\n\n\n000001\n2022\nA\n0.89\n25.3\n0.012\n0.015\n0.08\nNaN\n\n\n000001\n2022\nB\n0.91\n25.1\n0.010\n0.013\n0.07\nNaN\n\n\n000001\n2023\nA\n0.88\n25.4\n0.013\n0.016\n0.09\nNaN\n\n\n000001\n2023\nB\n0.90\n25.2\n0.011\n0.014\n0.08\nNaN\n\n\n2\n2022\nA\n0.65\n24.1\n0.045\n0.032\n0.12\n0.008\n\n\n2\n2022\nB\n0.67\n24.0\n0.043\n0.030\n0.11\n0.008\n\n\n2\n2023\nA\n0.68\n24.2\n0.041\n-0.05\n0.10\n0.009\n\n\n2\n2023\nB\n0.69\n24.1\n0.040\n-0.04\n0.10\n0.009\n\n\n000063\n2022\nA\n0.52\n23.8\n0.038\n0.028\n0.15\n0.052\n\n\n000063\n2023\nA\n3.21\n“23.9”\n-0.18\n0.021\n0.13\n0.048\n\n\n\n注意植入的问题：stkcd=2 格式不一致；000001 同时有 A/B 两种报表；Leverage=3.21 是离群值；ROA=-0.18 是极端值；Size=\"23.9\" 被存为字符串；RD 有缺失值。\n\n\n\n\n\n\n提示：变量名缩写\n\n\n\n为了确保下表显示时不至于过宽，部分变量名使用了缩写：\n\ndate 代表 loan_date\nbank 代表 bank_name\nlevel 代表 bank_level\namount 代表 loan_amount\nunit 代表 loan_unit\nrate 代表 loan_rate\nterm 代表 loan_term_year\n\n实际操作中请使用完整变量名。\n\n\nAnnouncement（提取后，加总前）（5 行）：\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nstkcd\nyear\ndate\nname\nlevel\namount\nunit\nrate\nterm\n\n\n\n\n000001\n2023\n2023-06-01\n建设银行\n地级分行\n2.0\n亿元\n4.2\n3\n\n\n000001\n2023\n2023-06-01\n建设银行\n地级分行\n2.0\n亿元\n4.2\n3\n\n\n000001\n2023\n2023-08-15\n工商银行\n省级分行\n15000.0\n万元\n4.5\n5\n\n\n2\n2022\n2022-03-10\n中国银行\n总行\n5.0\n亿元\n3.8\n3\n\n\n000063\n2023\n2023-11-20\n农业银行\n地级分行\n8000.0\n万元\n4.6\n2\n\n\n\n这份数据存在如下问题：\n\n前两行完全重复（同一笔贷款被爬取了两次）；\nstkcd=2 格式不一致；\n金额单位混用（亿元/万元）。\n\n\n\n7.7.2 缺失值\n在处理缺失值之前，先要搞清楚缺失的原因和机制。缺失值的处理方式，取决于它是随机缺失（Missing Completely at Random, MCAR）、条件缺失（Missing at Random, MAR）还是非随机缺失（Missing Not at Random, MNAR）。\n在我们的例子中，由于早期年份披露规则不完善，RD 的缺失很可能是 MNAR。例如，研发投入少 (设置为零) 的公司更倾向于不披露；也有可能恰恰相反，研发投入多的公司由于担心泄露商业秘密而不披露。这意味着缺失不是随机分布的，不能简单删除。文献中常用 Little’s MCAR test 来检验缺失机制，但在实际操作中，结合业务理解和数据探索更为重要。实证分析中，这种非随机缺失往往是导致内生性问题的根源之一，通常会采用 Heckman 两步法或 IV 方法来纠正。\n三种处理思路：\n\n删除：缺失比例很低（通常 &lt;5%）且缺失是随机的，可以删除含缺失值的行。对于 RD 这样 25% 缺失且非随机的情况，删除会导致样本严重偏向「有研发投入」的公司。\n替换为 0：在有些情况下，若有足够的理由说明缺失数据的实际值为 0 (比如一些小型企业确实没有研发支出)，可以将缺失值填充为 0。更稳健的做法创建指示变量 RD_missing（1=原本缺失），在回归中同时纳入两个变量：RD_filled（填充后的值）和 RD_missing（缺失指示）。这样既保留了样本量，又能捕捉缺失背后的信息。参见 缺失值能否用零代替？。\n插补：用其他变量预测缺失值（多重插补）。适用于缺失比例较高且后续分析对该变量要求严格的情况。常用方法包括基于回归的插补、KNN 插补、随机森林插补等。需要注意的是，插补后的数据不应直接用于分析，而是需要进行多重插补的 Rubin 规则来合并结果。\n\n\n\n\n\n\n\n提示词：缺失值分析\n\n\n\n我有一个 DataFrame df，其中 RD 列有约 25% 的缺失值。 背景：RD 表示研发支出占总资产的比例，缺失原因可能是企业未进行研发投入或未披露。 请帮我：\n\n统计 RD 的缺失数量和比例\n检验缺失是否与公司规模 (Size 列)、行业 (industry 列) 和年份 (year 列) 相关 (用缺失指示变量对这两个变量做交叉统计，如 t-test 或样本分布对比)\n生成两个新列：\n\nRD_filled：将缺失值填充为 0\nRD_missing：1 表示原本缺失，0 表示有值\n\n输出处理前后 RD 列的描述性统计对比（包含均值、中位数、标准差）\n\n\n\n\n\n7.7.3 离群值与缩尾（Winsorize）处理\n问题的本质： 离群值是指在统计上远离其他观测值的数据点。在我们的虚构数据中，Leverage=3.21（即负债是资产的 3.21 倍）和 ROA=-0.18 都是极端值。这类数值在回归中会对估计结果产生不成比例的影响。\n识别方法：\nfor col in ['Leverage', 'ROA', 'CFlow']:\n    print(f\"\\n{col}:\")\n    print(df[col].describe(percentiles=[.01, .05, .95, .99]))\n如果 max 远大于第 99 百分位数，或 min 远小于第 1 百分位数，说明存在极端值。也可以用箱型图进行直观判断：\nimport matplotlib.pyplot as plt\ndf[['Leverage', 'ROA', 'CFlow']].boxplot()\nplt.title('处理前的变量分布')\nplt.show()\n缩尾（Winsorize）处理：\n缩尾不删除极端值，而是将超出阈值的值替换为阈值本身——通常是上下各 1%分位数。注意区分两个概念：\n\n截尾（trimming）：直接删除超出阈值的观测行，样本量减少\n缩尾（winsorizing）：将超出阈值的值替换为阈值，样本量不变\n\n实证论文中绝大多数情况使用缩尾，因为它保留了样本量，不改变数据的分布形状。\n\n\n\n\n\n\n提示词：缩尾处理\n\n\n\n我有一个 DataFrame df，需要对以下列进行缩尾（Winsorize）处理： [‘Leverage’, ‘ROA’, ‘CFlow’, ‘Cash_holding’]\n要求： 1. 按上下各 1% 分位数进行缩尾（即将低于 1% 分位数的值替换为该分位数值， 高于 99% 分位数的值替换为该分位数值） 2. 处理在每一列内独立进行 3. 生成新列，命名规则为原列名加 _w 后缀（如 Leverage_w），保留原列不变 4. 输出处理前后各列的 min、均值、中位数、标准差、max 对比表格 5. 分别绘制处理前后各变量的箱型图，并排显示\n\n\n验证处理结果：\n缩尾之后需要从以下几个角度确认结果合理：\n第一，查看基本统计量，处理后的均值和标准差应与文献中同类研究的报告值大体一致。比如，中国上市公司的平均资产负债率通常在 0.4–0.6 之间，若处理后均值大幅偏离，说明阈值设定或数据本身有问题。\n第二，比较处理前后的均值和标准差，两者应无系统性差异——缩尾只影响分布的尾部，不应大幅改变均值。\n第三，绘制处理前后的箱型图或密度图，直观确认极端值已被压缩至合理范围。\n\n\n7.7.4 格式不一致\n问题的本质： 同一个变量，在不同数据来源或不同导出方式下，可能用不同格式记录。格式不一致不会让代码报错，但会让合并失败或产生错误结果。\n在我们的虚构数据中，stkcd 在 BasicInf 和 FinRatio 里大多是 6 位字符串（\"000001\"），但万科 A 的代码被存为整数 2。合并时 \"000002\" != 2，结果是这家公司找不到匹配，产生大量 NaN——Python 不会报错，只是静默失败。\n其他常见格式问题还有：日期格式混用（\"2023-06-01\" vs \"20230601\"）、行业编码含多余空格（\" 银行业\" vs \"银行业\"）、金额单位混用。\n\n\n\n\n\n\n提示词：格式不一致处理\n\n\n\n我有两个 DataFrame BasicInf 和 FinRatio，都有 stkcd 列作为公司ID。 请帮我：\n\n检查两张表中 stkcd 列的数据类型和前 10 个唯一值样本\n将两张表的 stkcd 统一转换为 6 位字符串格式（不足 6 位的补前导零）\n验证转换后的重叠情况：\n\n两表共同 stkcd 数量\nBasicInf 独有的 stkcd 数量\nFinRatio 独有的 stkcd 数量\n\n对 industry 列检查是否含有多余空格，如有则去除\n输出处理后的 stkcd 列的前 10 个唯一值样本，确认格式正确\n\n\n\n\n\n7.7.5 重复观测\n问题的本质： 同一个观测单位出现了不止一次。重复分三种情形，性质和处理方式各不相同。\n情形一：精确重复\n每一列的值完全相同。在我们的 Announcement 提取数据中，同一条公告被爬取了两次，产生完全相同的两行。处理最简单：\ndf.drop_duplicates(inplace=True)\n情形二：模糊重复\n关键字段相同，但部分字段略有差异。比如同一笔贷款的原始公告和补充公告，金额和利率相同但日期不同。需要根据业务逻辑定义「什么算同一笔贷款」，然后按规则保留其中一条。\n\n\n\n\n\n\n提示词：重复观测处理 (精确重复 + 模糊重复)\n\n\n\n我有一个 DataFrame df_loans，包含从上市公司公告中提取的贷款信息。\n\n列名：stkcd, year, loan_date, bank_name, loan_amount, loan_unit, loan_rate, loan_term_year\n\n请帮我：\n\n检查并删除完全重复的行，输出删除前后的行数\n检查「业务意义上的重复」：同一公司（stkcd）、同年（year）、 相同金额（loan_amount）、相同利率（loan_rate）的记录是否有多条\n对于步骤2中的重复，保留 loan_date 最早的一条，删除其余\n输出最终行数及每步操作删除的行数\n\n\n\n情形三：报表类型混入导致的「伪重复」\n这是一种更隐蔽的情形。在我们的 FinRatio 数据中，(stkcd=\"000001\", year=2022) 出现了两次，但 Leverage 等变量的值并不相同——分别是合并报表（report_type=\"A\"）和母公司报表（report_type=\"B\"）的数据。\n这种情况如果不处理，会导致面板数据的主键不唯一，无法进行固定效应估计、一阶差分等运算，且报错信息往往不直观，很难定位原因。\n\n\n\n\n\n\n这本质上不是重复值问题\n\n\n\n这种「伪重复」的根本原因是样本混淆：两种口径的数据被装进了同一张表。正确的处理方式不是随机保留其中一行，而是明确研究需要哪种口径（通常选合并报表），然后按 report_type 筛选。\n\n\n\n\n\n\n\n\n提示词：检查主键唯一性和报表类型混入\n\n\n\n我有一个 DataFrame df，包含上市公司财务数据。 请帮我：\n\n检查主键 (stkcd, year) 是否唯一\n查看重复的报表类型分布\n仅保留合并报表（report_type=\"A\"）{可以替换为其他内容}\n验证处理后主键唯一性\n\n\n\n典型代码如下：\n# 检查主键唯一性\nprint(df.duplicated(subset=['stkcd', 'year']).sum(), \"组 (stkcd, year) 存在重复\")\n\n# 查看重复的报表类型分布\nprint(df['report_type'].value_counts())\n\n# 仅保留合并报表\ndf = df[df['report_type'] == 'A'].copy()\n\n# 验证处理后主键唯一\nassert df.duplicated(subset=['stkcd', 'year']).sum() == 0, \"仍有重复，请检查\"\n\n\n7.7.6 数据类型错误\n问题的本质： 变量的存储类型与其语义类型不符。最常见的情形是数值型变量被存储为字符串。\n在我们的虚构数据中，Size 列的 2023 年值被存为字符串 \"23.9\"——可能是该单元格含有注释符号或空格，导致 pandas 将整列识别为 object 类型。对这列求均值会直接报错。\n\n\n\n\n\n\n提示词：数据类型错误检查与处理\n\n\n\n我有一个 DataFrame df，怀疑部分应为数值型的列被读取为字符串类型。 请帮我：\n\n列出所有 dtype 为 object 的列\n对这些列，尝试用 pd.to_numeric(errors=‘coerce’) 转换， 统计转换过程中产生了多少个 NaN（即原本含非数值字符的单元格数量）\n对于产生 NaN 数量 &gt; 0 的列，输出那些无法转换的原始值（value_counts 前10个）\n在我确认后，再生成最终的类型转换代码\n\n\n\n注意第 4 步：先展示问题，确认后再处理，避免 AI 猜对了问题但处理方式不符合实际需求。\n\n\n7.7.7 宽表与长表的转换\n数据分析中经常需要在两种表格形式之间转换：\n\n长表（long format）：每行是一个观测单位在某个时间点的一条记录。适合面板数据分析。\n宽表（wide format）：每行是一个个体，不同时间点的数据分布在不同列。适合某些可视化场景或来自网页的原始数据。\n\n场景一：多笔贷款聚合（长表内部聚合）\n一家公司在同一年可能有多笔贷款，Announcement 提取结果是每笔贷款一行，而 FinRatio 是每个公司-年一行。合并前需要先聚合 (对同年度的多笔贷款进行加总)：\n\n\n\n\n\n\n提示词：长表聚合\n\n\n\n我有一个长表 df_loans，包含公司-年-贷款层面的数据： stkcd, year, loan_amount（已统一为万元）, loan_rate, loan_term_year, bank_name, bank_level\n请将其聚合为公司-年层面，生成以下指标：\n\nloan_count: 贷款笔数\navg_loan_rate: 以 loan_amount 为权重的加权平均利率\ntotal_loan_wan: 贷款总金额（万元）\navg_loan_term: 简单平均贷款期限（年）\nbank_count: 涉及不同银行数量\ntop_bank: 贷款金额最大的银行名称\n\n请使用 groupby + agg 实现，输出聚合前后的行数对比。\n\n\n场景二：宽表转长表（reshape）\n来自网页或部分数据库的原始数据常常是宽表格式。以收入和失业率数据为例，原始宽表可能长这样：\n* 原始资料(可能来自网页等途径)  【wide 型数据】\n                     income                unemployee      \n -----------------------------------+----------------------\n  id   sex    1980    1981    1982  |  1980   1981    1982 \n -----------------------------------+----------------------\n   1     0    5000    5500    6000  |    0      1      0   \n   2     1    2000    2200    3300  |    1      0      0   \n   3     0    3000    2000    1000  |    0      0      1   \n -----------------------------------+----------------------\n\n* 整理后的资料     【wide 型数据】\n  id  sex  inc1980  inc1981  inc1982  ue1980  ue1981  ue1982 \n   1    0     5000     5500     6000       0       1       0 \n   2    1     2000     2200     3300       1       0       0 \n   3    0     3000     2000     1000       0       0       1 \n\n* 最终需要的资料 (panel data)    【long 型数据】\n  id   year   sex    inc   ue  \n   1   1980     0   5000    0  \n   1   1981     0   5500    1  \n   1   1982     0   6000    0  \n   2   1980     1   2000    1  \n   2   1981     1   2200    0  \n   2   1982     1   3300    0  \n   3   1980     0   3000    0  \n   3   1981     0   2000    0  \n   3   1982     0   1000    1  \n注意这里有两组时变变量（inc 和 ue），每组各三列，这比单组变量的 reshape 复杂，是实际工作中最常见的「卡壳点」。\n\n\n\n\n\n\n提示词：宽表转长表\n\n\n\n我有一个宽表 df_wide，结构如下：\n\n固定列（不随时间变化）：id, sex\n时变列（格式为「变量名_年份」）：inc_1980, inc_1981, inc_1982,\nue_1980, ue_1981, ue_1982\n\n请帮我将其转换为长表，目标格式为：\nid, year, sex, inc, ue\n其中 year 列应为整数（1980, 1981, 1982）， 请使用 pd.wide_to_long() 或 pd.melt() 实现， 并输出转换前后的行列数对比和前 9 行结果。",
     "crumbs": [
-      "📊**数据分析**",
+      "**数据分析**",
       "<span class='chapter-number'>7</span>  <span class='chapter-title'>数据清洗</span>"
     ]
   },
   {
-    "objectID": "Lecture/data_clean/lec_data_clean.html#第二层多表操作问题",
-    "href": "Lecture/data_clean/lec_data_clean.html#第二层多表操作问题",
+    "objectID": "Lecture/data_clean/lecture_data_clean.html#第二层多表操作问题",
+    "href": "Lecture/data_clean/lecture_data_clean.html#第二层多表操作问题",
     "title": "7  数据清洗",
     "section": "7.8 第二层：多表操作问题",
     "text": "7.8 第二层：多表操作问题\n\n7.8.1 合并前的准备\n在做任何合并之前，需要明确三张表各自的主键：\n\nBasicInf：主键为 stkcd（每家公司一行）\nFinRatio（筛选合并报表后）：主键为 (stkcd, year)\nAnnouncement（聚合后）：主键为 (stkcd, year)\n\n合并策略：先将 BasicInf 与 FinRatio 以 stkcd 为键进行左连接（以 FinRatio 为主表），再将结果与聚合后的 Announcement 以 (stkcd, year) 为键进行左连接。\n\n\n\n\n\n\n提示词：合并前检查\n\n\n\n在合并 BasicInf 和 FinRatio 之前，请帮我做以下检查： 1. 验证 BasicInf 中 stkcd 是否唯一 2. 验证 FinRatio 中 (stkcd, year) 组合是否唯一 3. 统计两张表 stkcd 的重叠情况： 共同 stkcd 数量、BasicInf 独有数量、FinRatio 独有数量 4. 根据检查结果，建议合并类型并说明理由\n\n\n\n\n7.8.2 连接类型选错导致样本丢失\n四种连接类型的核心区别在于如何处理找不到匹配的行：\n\ninner：只保留两表都有的记录，会静默丢弃单边记录\nleft：保留左表所有记录，右表无匹配的填 NaN\nright：保留右表所有记录\nouter：保留两表全部记录\n\n一个典型的错误场景：用 inner join 合并 FinRatio 和 Announcement，会丢弃所有「有财务数据但当年无贷款公告」的公司-年观测——这意味着样本隐含了「有借款行为」的条件，结论无法推广到所有公司。\n\n\n\n\n\n\n提示词：合并后验证\n\n\n\n我刚完成了一次 merge 操作，结果存储在 df_merged 中。 请帮我验证合并是否符合预期： 1. 输出左表行数、右表行数、合并后行数 2. 统计合并后来自右表的列的缺失值数量 3. 若合并后行数 &gt; 左表行数，警告可能发生了一对多导致的行数膨胀 4. 若合并后行数 &lt; 左表行数 × 0.9，警告可能有大量记录未匹配\n\n\n\n\n7.8.3 键不唯一导致行数膨胀\n如果 BasicInf 中某家公司的 stkcd 出现了两次（录入错误），合并时该公司的每条财务记录都会被复制，行数静默增加，且不报错。\n预警信号就是合并后行数超过预期，因此上面的合并后验证步骤至关重要。\n\n\n7.8.4 第三层：系统性数据质量问题\n完成了前两层的清洗，数据在技术上已经「干净」了。但这里有一个重要的区分：\n\n数据干净 ≠ 数据准确 ≠ 数据适合回答你的研究问题\n\n\n\n7.8.5 样本选择偏差\n我们的数据来自 CSMAR，只包含上市公司。这意味着样本中不包含非上市企业，而上市公司本身是「通过了市场筛选」的企业，在规模、信息披露质量和融资能力上与普通企业有系统性差异。用这份数据估计出的系数，严格来说只适用于上市公司群体，这是在解读结论时需要明确说明的限制。",
     "crumbs": [
-      "📊**数据分析**",
+      "**数据分析**",
       "<span class='chapter-number'>7</span>  <span class='chapter-title'>数据清洗</span>"
     ]
   },
   {
-    "objectID": "Lecture/data_clean/lec_data_clean.html#自选择偏误预告",
-    "href": "Lecture/data_clean/lec_data_clean.html#自选择偏误预告",
+    "objectID": "Lecture/data_clean/lecture_data_clean.html#自选择偏误预告",
+    "href": "Lecture/data_clean/lecture_data_clean.html#自选择偏误预告",
     "title": "7  数据清洗",
     "section": "7.9 自选择偏误（预告）",
     "text": "7.9 自选择偏误（预告）\n观察到「国有企业的平均借款利率低于民营企业」，这能说明「国企身份导致了更低的融资成本」吗？不一定。国企可能同时在财务质量上优于同类民企，银行给出更低利率是因为风险评估，而非国企身份本身。这就是自选择偏误——某种特征（国企身份）的获得不是随机的，而是与其他影响结果的变量同时相关。\n类似的问题在经济研究中无处不在：\n\n「名校毕业生的教育回报率更高吗？」——还是因为能进名校的人本来就能力更强？(Card, 1995)\n「政府对高新技术企业的税收优惠是否促进了创新投入？」——还是因为本来就有创新意愿的企业更容易获得认定资格？\n\n这类问题不能通过数据清洗解决，需要专门的因果推断方法（工具变量、双重差分、断点回归等）。我们将在第六章详细讨论。",
     "crumbs": [
-      "📊**数据分析**",
+      "**数据分析**",
       "<span class='chapter-number'>7</span>  <span class='chapter-title'>数据清洗</span>"
     ]
   },
   {
-    "objectID": "Lecture/data_clean/lec_data_clean.html#提示词模式从问题描述到可运行代码",
-    "href": "Lecture/data_clean/lec_data_clean.html#提示词模式从问题描述到可运行代码",
+    "objectID": "Lecture/data_clean/lecture_data_clean.html#提示词模式从问题描述到可运行代码",
+    "href": "Lecture/data_clean/lecture_data_clean.html#提示词模式从问题描述到可运行代码",
     "title": "7  数据清洗",
     "section": "7.10 提示词模式：从问题描述到可运行代码",
     "text": "7.10 提示词模式：从问题描述到可运行代码\n一个好的数据处理提示词通常包含四个要素：\n① 数据背景：这是什么数据，来自哪里，分析单位是什么。\n\n「我有一个上市公司面板数据，来自 CSMAR，每行代表一个公司-年观测。」\n\n② 问题描述：你观察到了什么现象，或者你担心存在什么问题。\n\n「RD 列有约 25%的缺失值，怀疑缺失与行业和年份有关。」\n\n③ 处理要求：你希望如何处理，包括具体的参数、字段名和格式要求。\n\n「将缺失值填充为 0，同时创建指示变量 RD_missing，新列保留原列名加后缀。」\n\n④ 验证要求：处理完之后需要验证什么。\n\n「输出处理前后的缺失值数量对比，以及新列的 value_counts。」\n\n当你能够完整写出这四个要素，生成的代码通常可以直接运行。相反，「帮我处理缺失值」这样的提示词生成的代码在技术上可能正确，但完全不符合实际需求。\n\n7.10.1 综合案例与章末练习\n\n\n7.10.2 完整处理流程\n\n分别导入 BasicInf、FinRatio、Announcement 原始数据至 data_raw/\n对 Announcement 文本做非结构化提取，保存至 data_temp/\n对 Announcement 提取结果做去重（精确重复 + 模糊重复）\n统一三张表的 stkcd 格式（6位字符串）\n筛选 FinRatio 仅保留合并报表（report_type=\"A\"）\n对 FinRatio 做类型检查（修复 Size 列）\n将 Announcement 提取结果金额统一换算为万元\n按 (stkcd, year) 聚合 Announcement（长表→宽表）\n验证三张表的主键唯一性\n分两步合并三张表，每步合并后验证行数\n对 Leverage、ROA、CFlow、Cash_holding 做缩尾处理（上下各1%）\n对 RD 创建填充列和缺失指示变量\n输出最终数据集至 data_clean/merged_clean.csv\n\n\n\n7.10.3 章末练习\n请使用本章提供的虚构数据集完成以下任务：\n\n用提示词生成代码，输出一份完整的数据质量报告\n逐步执行第7节的完整处理流程，记录每步处理前后的行数和关键统计量变化\n尝试对 FinRatio 不筛选报表类型直接合并，观察结果有何异常\n思考题：若要将本研究的结论推广至所有中国企业，需要补充哪些论证？CSMAR 数据的样本特征对哪类研究问题影响最大？",
     "crumbs": [
-      "📊**数据分析**",
+      "**数据分析**",
       "<span class='chapter-number'>7</span>  <span class='chapter-title'>数据清洗</span>"
     ]
   },
   {
-    "objectID": "Lecture/data_clean/lec_data_clean.html#参考文献",
-    "href": "Lecture/data_clean/lec_data_clean.html#参考文献",
+    "objectID": "Lecture/data_clean/lecture_data_clean.html#参考文献",
+    "href": "Lecture/data_clean/lecture_data_clean.html#参考文献",
     "title": "7  数据清洗",
     "section": "7.11 参考文献",
     "text": "7.11 参考文献\n\nCard, D. (1995). Using geographic variation in college proximity to estimate the return to schooling. In L. N. Christofides, E. K. Grant, & R. Swidinsky (Eds.), Aspects of labour market behaviour: Essays in honour of John Vanderkamp （pp. 201–222）. University of Toronto Press. Google.\nHerndon, T., Ash, M., & Pollin, R. (2014). Does high public debt consistently stifle economic growth? A critique of Reinhart and Rogoff. Cambridge Journal of Economics, 38（2）, 257–279. Link, PDF, Google.\nReinhart, C. M., & Rogoff, K. S. (2010). Growth in a time of debt. American Economic Review: Papers & Proceedings, 100（2）, 573–578. Link, PDF, Google.",
     "crumbs": [
-      "📊**数据分析**",
+      "**数据分析**",
       "<span class='chapter-number'>7</span>  <span class='chapter-title'>数据清洗</span>"
     ]
   },
@@ -692,7 +692,7 @@
     "section": "",
     "text": "8.1 什么是网络爬虫？\nA. 学习目标\n学完本章，你应当能够：\nB. 学习路径\n我们采用「AI 辅助提示词编程」的学习模式：你负责理解任务、描述需求；AI 负责生成代码；你负责阅读、验证、修改。学习过程中不要求你记忆 Python 语法，也不要求你从零写代码、自己调试 bug。这不是偷懒，而是贴近真实工作场景的技能——在银行、券商、政府机构里，能够清晰描述分析需求，往往比会手写代码更有价值。\n网络爬虫 (web crawler)，又称网络蜘蛛 (web spider) 或网络抓取程序 (web scraper)，是一种自动访问网页、提取所需数据并保存到本地的程序。\n类比：你每天浏览网页时，是手动点击、阅读、复制信息。爬虫做的是同一件事，只不过是由程序自动完成，速度是人工的数千倍。",
     "crumbs": [
-      "🌐**数据爬取**",
+      "**数据爬取**",
       "<span class='chapter-number'>8</span>  <span class='chapter-title'>网络爬虫简介</span>"
     ]
   },
@@ -703,7 +703,7 @@
     "section": "",
     "text": "应用场景\n网络爬虫的典型用途包括：\n\n价格监控：电商平台商品价格的实时追踪与比价\n舆情分析：社交媒体、新闻平台的评论与话题追踪\n学术研究：从公开数据库批量获取研究素材\n商业情报：竞品信息、招聘数据、房产挂牌数据等\n政府与监管：公开政务信息、企业工商数据的汇总整理\n\n以下是爬虫与文本分析在各行业的典型应用：\n\n银行：抓取企业官网、新闻公告、行业数据，辅助信贷评估、客户画像与市场风险研判\n券商：收集上市公司公告、行业舆情、消费评论数据，支持行业研究与投资标的分析\n政府机构：整理公开政务数据、民生反馈、政策文本，辅助数据统计与政策效果评估\n市场调研：从电商平台、社交媒体抓取用户评论与行为数据，支持产品优化与营销策略制定\n\n\n\n合法边界\n爬虫本身是中性工具，但使用方式决定合规性。在写代码之前，请先确认以下三点：\n\n查看 robots.txt：在目标网站域名后加 /robots.txt（例如 https://www.dianping.com/robots.txt），查看该网站声明的爬取规则。Disallow 字段列出的路径表示禁止爬取。\nUser-agent: GPTBot\nDisallow: /\n\nUser-agent: ByteSpider\nDisallow: /\n\nUser-agent: ToutiaoSpider\nDisallow: /\n\nUser-agent: koubeispider\nDisallow: /\n\nUser-agent: koubei.com\nDisallow: /\n\nUser-agent: amap.com\nDisallow: /\n\nUser-agent: *\nAllow: /note/*\nDisallow: /events/\n阅读服务条款：大多数平台的用户协议明确禁止自动化批量抓取数据，违反条款可能导致账号封禁或法律风险。\n判断数据用途：即使技术上可以爬取，将数据用于商业目的（销售、竞品分析对外售卖等）在中国《数据安全法》和《反不正当竞争法》框架下可能存在法律风险。\n\n\n\n\n\n\n\n法律红线\n\n\n\n爬虫实操须严格遵守《网络安全法》《数据安全法》《个人信息保护法》《反不正当竞争法》等相关法规。以下行为有明确法律风险，本课程代码不得用于：\n\n大规模爬取并转售数据\n爬取涉及个人隐私的信息（姓名、电话、位置等）\n对目标服务器发送高频请求，造成服务中断（相当于 DDoS 攻击）\n突破网站权限限制获取非公开内容\n\n本课程所有代码和示例仅用于教学演示。\n\n\n\n\n爬虫适用的场景判断\n在实际工作中，拿到一个数据需求时，可以用以下流程快速判断是否适合用爬虫：\n\n数据是否公开可见？（非登录状态下浏览器能否直接看到）\n数据量是否超过手动整理的合理范围？（通常超过几百条就值得自动化）\n是否有官方 API (Application Programming Interface，应用程序接口) 可用？（优先使用官方接口，更稳定、更合规）\nrobots.txt 和服务条款是否允许？\n\n如果以上四个问题的答案是「是、是、否、是」，爬虫是合适的选择。",
     "crumbs": [
-      "🌐**数据爬取**",
+      "**数据爬取**",
       "<span class='chapter-number'>8</span>  <span class='chapter-title'>网络爬虫简介</span>"
     ]
   },
@@ -714,7 +714,7 @@
     "section": "8.2 爬虫与文本分析的整体流程",
     "text": "8.2 爬虫与文本分析的整体流程\n下图展示了从原始网页到分析结论的完整链条，后续我们将通过一些实例来展示各个环节的实操：\nStep 1  确定目标\n        └─ 要获取什么数据？字段是什么？分析目的是什么？\n\nStep 2  分析页面\n        └─ 数据在 HTML 里还是 API 接口里？\n        └─ 用浏览器开发者工具定位数据位置\n\nStep 3  编写爬虫（AI 生成代码）\n        └─ 写提示词 → AI 生成代码 → 运行验证 → 修改提示词\n\nStep 4  数据清洗\n        └─ 处理缺失值、重复记录、噪音文本、格式不一致\n\nStep 5  词频与词云\n        └─ 分词（jieba）→ 去停用词 → 统计词频 → 可视化\n\nStep 6  主题分析\n        └─ LDA 主题模型 → 发现潜在话题结构\n\nStep 7  情感分析\n        └─ 词典法 / 监督学习 → 判断评论情感极性\n\nStep 8  可视化与决策建议\n        └─ 图表呈现 → 从数据洞察到经营建议\n\n\n\n\n\n\n本章定位\n\n\n\n本章覆盖 Step 1 和 Step 2，即「搞清楚要什么」和「知道数据在哪里」。搞清楚这两步，才能写出准确的提示词，提高 AI 生成代码的效率和准确性。\nStep 3 至 Step 8 在后续章节逐步实现。",
     "crumbs": [
-      "🌐**数据爬取**",
+      "**数据爬取**",
       "<span class='chapter-number'>8</span>  <span class='chapter-title'>网络爬虫简介</span>"
     ]
   },
@@ -725,7 +725,7 @@
     "section": "8.3 核心概念与术语",
     "text": "8.3 核心概念与术语\n以下概念在后续章节中会反复出现，首次遇到时请回来查阅。主要包括：\n\n请求与响应\n网页结构：HTML\n接口：API 与 JSON\n解析、请求头、参数\n\n\nA. 请求与响应\n当你在浏览器里输入一个网址并按下回车，发生的事情是：\n\n浏览器向服务器发送一个请求 (request)，说「我要这个页面」\n服务器处理后，向浏览器返回一个响应 (response)，内容是网页的原始文本\n\n爬虫模仿的正是这个过程，只不过是由 Python 代码发出请求、接收响应，而不是浏览器。\n\n\nB. 网页结构：HTML\nHTML (HyperText Markup Language，超文本标记语言) 是网页的基本格式。你在浏览器里看到的一切——文字、图片、按钮、表格——都是由 HTML 标签描述的。一个简单的例子：\n&lt;div class=\"review-card\"&gt;\n  &lt;span class=\"stars\"&gt;4&lt;/span&gt;\n  &lt;p class=\"review-text\"&gt;口味不错，服务有点慢。&lt;/p&gt;\n  &lt;span class=\"date\"&gt;2024-03-15&lt;/span&gt;\n&lt;/div&gt;\n这段 HTML 描述了一条评论卡片，包含星级 stars)、文字内容 (review-text) 和日期 (date) 三个字段。爬虫的工作就是找到这些标签，提取其中的文本。\n\n\nC. 接口：API 与 JSON\n很多现代网站不直接把数据写在 HTML 里，而是通过接口 (API) 动态加载。你看到的页面是空壳，数据在浏览器加载后由 JavaScript 从后台接口请求回来。\n\n\n\n\n\n\n什么是 API？\n\n\n\nAPI 是 Application Programming Interface 的缩写，中文翻译为「应用程序编程接口」。它是一套让你方便、安全、标准地远程获取服务或数据的规则和工具。\n这里以「扫码点餐」为例来说明 API 的原理。去餐厅吃饭时，点餐流程大致如下：\n\n你在 5 号桌落座后，扫描餐桌上的二维码，手机上会弹出点餐界面（菜单）。\n你在菜单上勾选：酸菜鱼，并设置口味：微辣、不要香菜。\n下单后，手机会自动把你的菜品和要求发送到厨房。\n厨师收到信息后开始烹饪，最后上菜到你的桌前。\n\nAPI 的工作原理和这个点餐流程非常相似。采用 API 的术语，上述点餐流程包括如下几个关键概念：\n\nAPI 就像餐厅的「点餐系统」，让你不用直接进厨房，只需通过手机菜单（API 接口）就能完成复杂的操作。\nEndpoint（端点）：你扫描了 5 号桌上的二维码后进入的点餐页面，就是 API 的 “入口” 或 “网址”。\nRequest（请求）：你勾选菜品、填写口味、按下 “提交” 按钮，这一系列操作就组成了一个 API 请求，把你的要求传递给餐厅的后厨系统。\nParameter（参数）：你点了哪道菜 (酸菜鱼)、选择了什么口味（微辣、不要香菜），这些都属于 API 的参数。\nAPI Key（密钥）：类似于账号和密码。就像有些高档餐厅只对会员开放，需要出示会员卡才能点餐，API Key 就像这张会员卡，是一串唯一的字符串，用于证明你的身份和权限。\n\n以上点餐过程的完整请求数据可以采用如下参数方式表示：\nrequest = {\"table_number\"=5,\n           \"dish\"=\"酸菜鱼\",\n           \"spiciness\"=\"微辣\",\n           \"no_coriander\"=True}\n\n\n这类接口返回的数据通常是 JSON (JavaScript Object Notation) 格式——一种结构清晰、易于程序处理的文本格式。可以看出，JSON 由键值对组成，类似于 Python 的字典 (dict)：所有数据都被组织在大括号 {} 里，字段名是字符串，字段值可以是字符串、数字、布尔值，甚至嵌套的列表或字典。\n下面是一个带嵌套结构的 JSON 示例，表示某餐厅的评论数据：\n{\n  \"restaurant_name\": \"老字号川菜馆\",\n  \"reviews\": [\n    {\n      \"stars\": 4,\n      \"text\": \"口味不错，服务有点慢。\",\n      \"date\": \"2024-03-15\"\n    },\n    {\n      \"stars\": 5,\n      \"text\": \"强烈推荐！招牌菜必点。\",\n      \"date\": \"2024-03-14\"\n    }\n  ]\n}\n对比 HTML 和 JSON：\n\n\n\n特征\nHTML\nJSON\n\n\n\n\n主要用途\n描述页面结构和样式\n传输结构化数据\n\n\n可读性\n混杂大量标签，较难直接读取\n结构清晰，键值对形式\n\n\n爬取方式\nCSS 选择器 / XPath 定位标签\n直接解析为 Python 字典\n\n\n常见场景\n传统网页、静态内容\n动态加载内容、移动端 App\n\n\n\n\n\nD. 解析\n解析 (parse) 指从 HTML 或 JSON 文本中提取所需字段的过程。常用工具是 BeautifulSoup 包（处理 HTML）和 Python 内置的 json 模块（处理 JSON）。\n\n\nE. 请求头\n请求头 (headers) 是随请求一起发送的元信息，告诉服务器请求方是「谁」：来自什么设备、浏览器版本、语言偏好等。简言之，这有点类似于我们向他人发送求助邮件时的自我介绍。\n爬虫需要设置合适的请求头，尤其是 User-Agent 字段，否则服务器可能拒绝请求或返回异常内容。\n真实浏览器的 User-Agent 形如：\nMozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36\n其中，Mozilla/5.0 表示兼容 Mozilla 浏览器，Macintosh; Intel Mac OS X 10_15_7 表示操作系统是 macOS 10.15.7，Chrome/120.0.0.0 表示浏览器版本。\n\n\nF. 参数\n参数 (params) 是附在请求中的查询条件，控制返回哪部分数据。例如：\nhttps://api.example.com/reviews?city=上海&category=川菜&page=2\n这里 city=上海、category=川菜、page=2 都是参数，告诉服务器「返回上海川菜第 2 页的评论」。\n又如，我们可以使用 akshare 包在线获取股票数据，传入的 symbol、start_date、end_date、adjust 等都是参数：\n!pip install akshare\nimport akshare as ak\n\n# 获取平安银行（000001）从 2022-01-01 到 2026-03-12 期间\n# 的后复权（hfq）日 K 线数据\nstock_df_pingan = ak.stock_zh_a_hist(\n    symbol=\"000001\",\n    period=\"daily\",\n    start_date=\"20220101\",\n    end_date=\"20260312\",\n    adjust=\"hfq\"\n)\n# 显示后复权数据\nprint(stock_zh_a_hist_hfq_df.tail())",
     "crumbs": [
-      "🌐**数据爬取**",
+      "**数据爬取**",
       "<span class='chapter-number'>8</span>  <span class='chapter-title'>网络爬虫简介</span>"
     ]
   },
@@ -736,7 +736,7 @@
     "section": "8.4 网页结构分析：使用浏览器开发者工具",
     "text": "8.4 网页结构分析：使用浏览器开发者工具\n理解「数据在哪里」是写好爬虫提示词的前提。浏览器内置的开发者工具 (DevTools) 是完成这项工作的核心工具，完全免费，无需安装任何软件。\n下面分别以中山大学 教师名录 页面 (静态页面) 和大众点评 餐厅评论 页面 (动态页面) 为例，介绍如何使用 DevTools。\n\n打开开发者工具\n在 Chrome 或 Edge 浏览器中打开 https://lingnan.sysu.edu.cn/Faculty 页面后，有三种方式打开开发者工具：\n\n快捷键：Windows 按 F12，Mac 按 Command + Option + I\n在页面任意位置右键 → 检查 (Inspect)\n菜单栏：更多工具 → 开发者工具\n\n\n\n三个最常用的面板\n开发者工具打开后，顶部是一排标签页，本课程主要使用以下三个：\n\nElements（元素）面板：查看和定位 HTML 结构\nNetwork（网络）面板：监控网络请求，找到数据接口\nConsole（控制台）面板：运行 JavaScript 代码，测试数据提取逻辑\n\n\nA. Elements（元素）面板\n显示当前页面的 HTML 结构。你可以在这里查看任何页面元素对应的 HTML 标签，找到数据所在的标签名和 class 属性。\n操作步骤：\n\n点击面板左上角的「箭头选择器」图标（Windows/Mac：Ctrl+Shift+C / Command+Shift+C），此时左侧网页会变成可点击状态 (带有蓝色高亮框)\n在页面上点击你想提取的内容（例如一条评论的文字）\n右侧 Elements 面板会自动跳转到对应的 HTML 位置\n记录下标签名（如 &lt;p&gt;、&lt;span&gt;、&lt;div&gt;）和 class 属性值（如 class=\"review-text\"）\n如需将 HTML 复制给 AI，在目标标签上右键 → Copy → Copy outerHTML (Copy element)，即可复制该元素的完整 HTML 代码 (不同的浏览器或不同缩放比例下，显示的结果会略有差异)：\n\n&lt;div class=\"infors\"&gt;\n&lt;h3&gt;&lt;a href=\"/faculty/BiQingmiao\" target=\"_blank\" hreflang=\"zh-hans\"&gt;毕青苗&lt;/a&gt; &lt;span&gt;副教授&lt;/span&gt;&lt;/h3&gt;\n     &lt;p class=\"one-line\"&gt;政治经济学教研室&lt;/p&gt;           \n     &lt;p class=\"one-line\"&gt;biqm@mail.sysu.edu.cn&lt;/p&gt;\n     &lt;p class=\"text-light  two-line\"&gt;\n          &lt;b&gt;研究方向:&lt;/b&gt;\n          中国经济增长，营商环境建设\n        &lt;/p&gt;\n&lt;/div&gt;\n说明： 1. 这些代码片段中，&lt;div&gt;、&lt;h3&gt;、&lt;p&gt; 是标签名 (成对出现，包裹不同类型的字段)，class=\"infors\"、class=\"one-line\" 是 class 属性。 2. 随后可以把这些 HTML 代码贴给 AI，它会自动解析参数。\n\n\n\n\n\n\n\n\n\n复制哪一层？\n\n\n\n点击页面元素后，Elements 面板高亮的通常是最内层的标签（如 &lt;span&gt;）。如果你想连同周围的父级结构一起复制，可以在 Elements 面板里向上点击几层，找到包含完整信息的父级 &lt;div&gt;，再右键复制。给 AI 提供包含完整字段的外层块，比只复制单个标签更有用。\n\n\n\n\n例 2：豆瓣电影 Top 250 评论页面（动态加载数据） 网址：https://movie.douban.com/top250\n\n\n\n\n例 3：同花顺行情页（股票行情列表） 网址：https://q.10jqka.com.cn/\n\n\n\n\nB. Network（网络）面板\n记录浏览器发出的所有网络请求，包括页面本身和动态加载的 API 接口。这是判断「数据从哪个接口来」的关键工具。\n操作步骤：\n\n打开网址 https://movie.douban.com/top250\n打开 Network 面板 → 刷新页面（按 F5 或 Command + R）\n在左侧请求列表中，点击「Fetch/XHR」标签，过滤出 API 请求\n逐个点击请求，查看右侧的「Preview」或「Response」标签，找到包含目标数据的那个请求\n点击「Headers」标签，查看请求的 URL、参数和请求头\n\n\n可以复制 Header 信息给 AI (也可以采用上面的截图)，帮助它生成带有正确请求头的代码：\nreferer\nhttps://movie.douban.com/top250\nuser-agent\nMozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36\n\n\nC. Console（控制台）面板\n可以在这里直接运行 JavaScript，用于快速测试数据提取逻辑，但本课程不深入使用。\n\n\n\n\n8.4.1 两种常见的数据来源模式\n通过 DevTools 分析，大多数网站的数据来源属于以下两种模式之一：\n模式 A：数据直接在 HTML 里\n\nURL：https://lingnan.sysu.edu.cn/Faculty\n特征：刷新页面后 Elements 面板中直接能看到数据内容；Network 面板中没有明显的 XHR/Fetch 请求包含数据。\n提示词关键词：BeautifulSoup、CSS 选择器、find_all\n\n模式 B：数据通过 API 动态加载\n特征：Network 面板中的 XHR/Fetch 请求的 Response 里直接包含 JSON 格式的数据；页面初始 HTML 中数据位置是空的。\n提示词关键词：requests.get、response.json()、API 接口\n\n\n\n\n\n\n快速判断是哪种模式\n\n\n\n在目标页面按 Ctrl+U（Mac 按 Command+U）查看网页源代码。如果源代码中能直接搜索到你要的数据（如评论文字），则是模式 A；如果搜不到，则是模式 B。\n\n\n\n\n\n\n\n\n第三种情况：JS 渲染后写入 HTML\n\n\n\n有些页面用 Ctrl+U 查看源码时找不到数据，但在 Elements 面板里 能看到完整的数据节点 —— 例如上交所科创板股票列表：https://star.sse.com.cn/market/stocklist/。\n这类页面的数据由 JavaScript 请求回来后渲染成 HTML 写入页面， 不是直接暴露为 JSON 接口。requests 只能拿到渲染前的空壳，BeautifulSoup 解析不到任何数据。\n判断方法：Ctrl+U 查不到数据，但 Elements 面板能看到 → 属于这种情形。\n爬取方式：需要用 Selenium 或 Playwright 模拟浏览器执行 JavaScript，等页面渲染完成后再提取数据。这类工具超出本课程范围， 遇到时可以告知 AI「页面数据由 JS 动态渲染，请使用 Playwright」。",
     "crumbs": [
-      "🌐**数据爬取**",
+      "**数据爬取**",
       "<span class='chapter-number'>8</span>  <span class='chapter-title'>网络爬虫简介</span>"
     ]
   },
@@ -747,7 +747,7 @@
     "section": "8.5 数据格式详解：HTML 与 JSON",
     "text": "8.5 数据格式详解：HTML 与 JSON\n\n8.5.1 HTML 小例子\n以下是一个简化的大众点评评论列表的 HTML 结构（实际页面更复杂，仅用于说明结构）：\n&lt;ul class=\"review-list\"&gt;\n\n  &lt;li class=\"review-item\"&gt;\n    &lt;div class=\"user-name\"&gt;匿名用户A&lt;/div&gt;\n    &lt;div class=\"star-score\" data-score=\"4\"&gt;四星&lt;/div&gt;\n    &lt;div class=\"review-content\"&gt;\n      环境很好，招牌菜好吃，就是等位时间比较长。\n    &lt;/div&gt;\n    &lt;div class=\"review-date\"&gt;2024-03-15&lt;/div&gt;\n    &lt;div class=\"useful-count\"&gt;12&lt;/div&gt;\n  &lt;/li&gt;\n\n  &lt;li class=\"review-item\"&gt;\n    &lt;div class=\"user-name\"&gt;匿名用户B&lt;/div&gt;\n    &lt;div class=\"star-score\" data-score=\"2\"&gt;两星&lt;/div&gt;\n    &lt;div class=\"review-content\"&gt;\n      服务态度差，催了两次才上菜，不会再来了。\n    &lt;/div&gt;\n    &lt;div class=\"review-date\"&gt;2024-03-14&lt;/div&gt;\n    &lt;div class=\"useful-count\"&gt;25&lt;/div&gt;\n  &lt;/li&gt;\n\n&lt;/ul&gt;\n从这段 HTML 中，爬虫需要提取的信息是：\n\n评分：div.star-score 的 data-score 属性，值为 4 或 2\n评论内容：div.review-content 的文本\n日期：div.review-date 的文本\n有用数：div.useful-count 的文本\n\n\n\n8.5.2 JSON 小例子\n同样的数据，如果通过 API 接口返回，格式如下：\n{\n  \"status\": \"success\",\n  \"total\": 1283,\n  \"page\": 1,\n  \"data\": [\n    {\n      \"user\": \"匿名用户A\",\n      \"score\": 4,\n      \"content\": \"环境很好，招牌菜好吃，就是等位时间比较长。\",\n      \"date\": \"2024-03-15\",\n      \"useful\": 12\n    },\n    {\n      \"user\": \"匿名用户B\",\n      \"score\": 2,\n      \"content\": \"服务态度差，催了两次才上菜，不会再来了。\",\n      \"date\": \"2024-03-14\",\n      \"useful\": 25\n    }\n  ]\n}\nJSON 的数据提取比 HTML 简单得多——找到 data 这个键，里面的每个元素就是一条评论记录，直接可以转成 pandas DataFrame。\n\n\n8.5.3 真实网址示例\n以下是几个返回公开 JSON 数据的真实接口，可以在浏览器地址栏直接访问查看：\n\nGitHub 用户信息（公开 API）：https://api.github.com/users/{username}\n\n以 Google 为例，其 Github 仓库地址为 github.com/google，用户名为 google，则获取其用户信息的接口是：https://api.github.com/users/google。单击后会看到返回的 JSON 数据。\n\n豆瓣电影 Top 250：可在 Network 面板中找到对应接口\n\n\n\n\n\n\n\n为什么要看真实接口？\n\n\n\n在浏览器里打开一个 JSON 接口，你会看到结构化的文本数据，而不是渲染好的网页。这有助于建立直觉：API 返回的就是原始数据，只需要找到正确的键名就能提取。\n推荐练习：用浏览器访问上面的 GitHub 接口，识别其中有哪些字段，然后尝试写一段提示词让 AI 用 Python 提取其中的 name、public_repos、followers 字段。",
     "crumbs": [
-      "🌐**数据爬取**",
+      "**数据爬取**",
       "<span class='chapter-number'>8</span>  <span class='chapter-title'>网络爬虫简介</span>"
     ]
   },
@@ -758,7 +758,7 @@
     "section": "8.6 基于 AI 提示词的爬虫工作流",
     "text": "8.6 基于 AI 提示词的爬虫工作流\n这是本章最核心的内容。掌握这个工作流，你就掌握了用 AI 辅助完成任何爬虫任务的方法。\n\n8.6.1 完整工作流\n1. 明确任务目标\n   └─ 我要爬什么网站？要哪些字段？分析目的是什么？\n\n2. 分析目标页面\n   └─ 打开 DevTools，判断数据来源模式（HTML 还是 API）\n   └─ 记录关键信息：URL、字段名、CSS class / API 参数\n\n3. 组织提示词\n   └─ 按照「关键要素清单」（见 1.7 节）逐项填写\n\n4. 提交给 AI，获取代码\n   └─ 首选：Claude / ChatGPT / DeepSeek\n\n5. 运行代码，验证输出\n   └─ 输出是否符合预期字段格式？\n   └─ 数量是否合理？有无报错？\n\n6. 根据实际情况修改提示词，迭代\n   └─ 字段名不对 → 回 DevTools 重新确认\n   └─ 数据缺失 → 补充说明翻页逻辑或 API 参数\n   └─ 格式不对 → 在提示词里明确输出格式\n\n\n\n\n\n\n如何分析目标网页？写提示词之前先填这张表\n\n\n\n很多人直接把网址丢给 AI，说「帮我写个爬虫」。AI 不会替你看网页，它只能给出泛化模板。真正提高代码质量的方式，是先把网页观察结果整理清楚，再写提示词。\n建议每次分析一个新网页时，先填写以下记录表：\n\n\n\n\n\n\n\n项目\n内容\n\n\n\n\n目标网址\n\n\n\n一条记录对应什么\n（例如：一条评论 / 一本书 / 一则公告）\n\n\n目标字段清单\n（列出字段名）\n\n\n是否有分页\n是 / 否；翻页规律是_____\n\n\n是否有详情页\n是 / 否\n\n\n数据来源模式\nHTML（模式 A）/ API 动态加载（模式 B）\n\n\n关键定位信息\nHTML class 名 / JSON 键路径\n\n\n字段识别方式\n靠 class 直接定位 / 靠内容特征区分（如含 @ 判断邮箱）\n\n\n希望输出格式\nCSV / DataFrame / Excel\n\n\n后续分析目标\n（例如：词频分析 / 情感分析 / 时序分析）\n\n\n\n填完这张表，你就有了写提示词所需的全部原材料。\n\n\n\n\n8.6.2 一个完整示例：爬取豆瓣电影 Top 250\n步骤 ①：明确任务目标\n我想获取豆瓣电影 Top 250 的电影列表，包含：电影名称、评分、评价人数、上映年份。最终保存为 CSV 文件，用于分析评分与年份的关系。\n步骤 ②：分析目标页面\n访问 https://movie.douban.com/top250，打开 DevTools：\n\nElements 面板可直接看到电影数据，判断为模式 A（HTML）\n每部电影的标题在 &lt;span class=\"title\"&gt; 标签里\n评分在 &lt;span class=\"rating_num\"&gt; 标签里\n每页 25 部，共 10 页，URL 规律为 ?start=0、?start=25、?start=50……\n\n步骤 ③：组织提示词\n\n请帮我用 Python 爬取豆瓣电影 Top 250 的数据。\n目标网站：https://movie.douban.com/top250，共 10 页，翻页规律是 URL 参数 start 从 0 开始，每次加 25。\n每部电影需要提取以下字段（HTML 结构我已确认）： - 电影名称：span.title（第一个，去掉斜线后的副标题） - 评分：span.rating_num - 评价人数：span.rating_people，提取数字部分 - 上映年份：p.bd 中的第一段文字，用正则提取 4 位年份\n要求： - 使用 requests + BeautifulSoup - 每次请求间隔 2 到 3 秒（随机） - 设置 User-Agent 请求头，模拟真实浏览器 - 异常处理：某页请求失败时打印错误并跳过，不中断整体程序 - 最终将所有数据保存为 douban_top250.csv，编码 UTF-8 - 代码中加中文注释，便于理解\n\n步骤 ④-⑥：提交、运行、迭代\n将上面的提示词提交给 AI，获得代码后：\n\n先只运行第一页（把循环限制为 1 次），检查字段是否正确\n确认无误后，开放全部循环，爬取完整数据\n用 df.head() 和 df.info() 检查结果\n\n\n\n\n\n\n\n「先跑一页，验证了再跑全量」\n\n\n\n这是爬虫开发中最重要的习惯。全量爬取可能需要几分钟，中途发现字段错了会浪费大量时间。先用单页验证，代价极低。\n在提示词里加一句：「先只爬第一页并打印前 5 行结果，确认字段正确后再爬全部页数」，AI 通常会生成带有这个验证步骤的代码。",
     "crumbs": [
-      "🌐**数据爬取**",
+      "**数据爬取**",
       "<span class='chapter-number'>8</span>  <span class='chapter-title'>网络爬虫简介</span>"
     ]
   },
@@ -769,7 +769,7 @@
     "section": "8.7 写好爬虫提示词的关键要素",
     "text": "8.7 写好爬虫提示词的关键要素\n一个完整的爬虫提示词应当包含以下八个要素。缺少任何一项，AI 都可能生成不可用或需要大量修改的代码。\n\n8.7.1 要素清单\n① 目标网站 (target URL)\n\n提供完整 URL，包括具体页面地址\n如果有翻页，说明翻页规律（URL 参数如何变化）\n\n示例：目标网站是 https://www.example.com/reviews?page=1，翻页时将 page 参数从 1 递增到 20\n\n② 数据字段 (fields)\n\n列出所有需要提取的字段名\n说明每个字段在 HTML/JSON 中的位置（标签名、class 名、JSON 键名）\n说明是否需要做简单的清洗（如去掉单位、提取数字）\n\n示例：需要提取：评论文字（class=\"review-text\"的 p 标签文本）、星级（class=\"star\"的 span 标签的 data-score 属性）、日期（class=\"date\"的 span 标签文本）\n\n③ 请求方式 (request method)\n\n说明是 GET 请求还是 POST 请求（大多数情况是 GET）\n如果需要登录 Cookie 或特定请求头，说明在 DevTools 里找到的值\n\n示例：使用 GET 请求；需要在 Headers 里设置 Cookie，值为 [从 DevTools 复制的 Cookie 字符串]\n\n④ 数据格式 (data format)\n\n明确说明数据在 HTML 里还是 JSON 接口里\n如果是 JSON，说明目标数据在哪个键下\n\n示例：数据通过 XHR 接口返回 JSON 格式，目标数据在 response.data.list 数组里\n\n⑤ 输出要求 (output)\n\n输出格式：CSV、Excel、还是 pandas DataFrame\n文件名和编码（中文数据指定 UTF-8-sig，避免 Excel 打开乱码）\n是否需要在控制台打印进度\n\n示例：结果保存为 reviews.csv，编码 UTF-8-sig，同时每爬完一页打印当前进度\n\n⑥ 异常处理 (error handling)\n\n网络请求可能超时或失败，说明失败时的处理方式（跳过、重试还是中断）\n数据字段可能为空，说明如何处理（填 None 还是跳过整条记录）\n\n示例：请求失败时重试最多 3 次，仍失败则跳过当前页并打印错误信息；字段为空时填入空字符串\n\n⑦ 合规要求 (compliance)\n\n每次请求的间隔时间（建议 1-3 秒随机，尊重服务器）\nUser-Agent 设置（模拟真实浏览器）\n\n示例：每次请求后随机等待 1.5 到 3 秒；User-Agent 设置为 Chrome 浏览器的标准值\n\n⑧ 代码风格 (code style)\n\n是否需要中文注释\n是否需要封装成函数（便于复用）\n是否需要进度条（适合数据量大的场景）\n\n示例：代码加中文注释，将爬取单页的逻辑封装成函数 fetch_page(url)，主程序调用该函数循环爬取\n\n\n8.7.2 提示词模板\n在使用模板之前，先看一个对比。同样是想爬取餐厅评论，两种提示词的质量差距非常大：\n\n\n\n\n\n\n❌ 低质量提示词（常见写法）\n\n\n\n\n帮我写一段 Python 代码，爬取网站评论。\n\n问题：没有说网址、没有说字段、没有说格式、没有说翻页逻辑。AI 只能给出泛化模板，代码几乎无法直接使用。\n\n\n\n\n\n\n\n\n✅ 高质量提示词（改进后）\n\n\n\n\n编写一段合规的 Python 爬虫代码，仅用于课堂实操学习。\n\n目标网页：某公开餐饮评论页面，数据为 HTML 格式，每条评论对应一个 div，class=\"comment-item\"\n需要提取的字段：店铺名称（class=\"shop-name\"）、用户评论（class=\"review-text\"）、评分（class=\"star-score\" 的 data-score 属性）、评论时间（class=\"review-date\"）\n共 5 页，翻页规律是 URL 参数 page 从 1 递增到 5\n设置常规请求头，每次请求随机等待 2-3 秒\n结果保存为 CSV 文件，编码 UTF-8-sig，字段名用中文\n代码加中文注释；先只爬第一页并打印前 5 行，确认字段正确后再爬全部页\n\n\n改进点：提供了网址特征、字段定位信息、翻页规律、输出格式、验证步骤，AI 可以据此生成直接可用的代码。\n\n\n将以上要素组合，形成以下通用模板：\n\n\n\n\n\n\n爬虫提示词通用模板\n\n\n\n\n请帮我用 Python 写一个爬虫，完成以下任务：\n目标网站：[完整 URL]，共 [N] 页，翻页规律是 [说明参数变化]。\n采集对象：[每条记录是什么，例如：每条用户评论 / 每本书 / 每则公告]\n需要提取的字段： - [字段 1]：位于 [HTML 标签 / JSON 键]，需要 [清洗说明，如无则省略] - [字段 2]：位于 [HTML 标签 / JSON 键] - （依此类推）\n数据格式：[HTML 页面 / JSON 接口，接口 URL 为 …]\n技术要求： - 使用 requests + BeautifulSoup（HTML）/ requests + json（API） - 每次请求随机等待 [X 到 Y] 秒 - User-Agent 设置为真实浏览器值 - 请求失败时 [重试 N 次 / 跳过并记录错误] - 字段缺失时填入 [None / 空字符串]\n输出：保存为 [文件名].csv，编码 UTF-8-sig；同时打印每页进度。\n后续用途：采集完成后我还要做 [词频分析 / 情感分析 / 时序分析]，请保留 [评论正文 / 日期 / 评分] 等相关字段。\n代码要求：加中文注释；将单页爬取封装为函数；先只爬第一页并打印前 5 行，确认字段正确。\n\n\n\n\n\n\n\n\n\n为什么要在提示词里说明「后续用途」？\n\n\n\n后续分析目标不同，需要保留的字段也不同：\n\n做词频分析：必须保留评论正文字段\n做情感分析：需要同时保留评论正文和星级评分\n做时序分析：必须保留日期字段，且格式要规范\n做店铺间比较：必须保留店铺标识字段\n\n在提示词里加一句「后续我还要做 _____ 分析」，AI 会据此调整字段保留策略，生成的代码对后续工作的适配性更强。",
     "crumbs": [
-      "🌐**数据爬取**",
+      "**数据爬取**",
       "<span class='chapter-number'>8</span>  <span class='chapter-title'>网络爬虫简介</span>"
     ]
   },
@@ -780,7 +780,7 @@
     "section": "8.8 常见误区与注意事项",
     "text": "8.8 常见误区与注意事项\n\n误区 1：HTML 里能看到，但爬下来是空的\n\n原因：页面内容由 JavaScript 动态渲染，初始 HTML 是空壳，数据在后续的 API 请求中加载。\n解决方法：回到 DevTools 的 Network 面板，过滤 Fetch/XHR，找到实际返回数据的接口，改为直接调用该接口。\n\n误区 2：本地运行正常，改成循环后报错或被封\n\n原因：高频请求触发了网站的反爬机制，服务器返回 403 或 429 状态码（表示禁止访问或请求过频）。\n解决方法：\n\n增加请求间隔（改为 3-5 秒随机）\n在提示词里要求 AI 处理状态码异常，状态码非 200 时暂停并重试\n考虑是否必须爬全量，还是抽样就够\n\n\n误区 3：代码跑通了，但数据里全是乱码\n\n原因：网页编码与代码指定的编码不一致，或保存 CSV 时没有指定 UTF-8-sig（导致用 Excel 打开时中文乱码）。\n解决方法：在提示词里明确要求「保存为 UTF-8-sig 编码的 CSV 文件」。如果网页本身是 GBK 编码，要求 AI 在 requests.get 后加 response.encoding = 'GBK'。\n\n误区 4：第一次提示词就想一步到位\n\n真实情况：爬虫开发几乎不可能一次成功。网页结构随时可能改变，API 参数需要反复试验，字段清洗规则要在看到真实数据后才能确定。\n正确姿势：接受迭代是正常状态。第一版提示词先跑通单页，看到真实数据后再调整字段和清洗逻辑，再跑全量。每次迭代都在提示词里描述上一版的问题和期望的修改方向。\n\n误区 5：AI 生成的代码可以直接信任\n\n真实情况：AI 生成的代码可能包含错误，尤其是 CSS 选择器和 API 参数这类依赖真实页面结构的部分，必须对照 DevTools 手动验证。\n验证方法：\n\n打印中间结果（爬到的原始 HTML 或 JSON），确认数据确实在里面\n先只提取一条记录并打印，确认字段名和值都正确\n检查数量是否合理（例如一页应有 20 条评论，实际只有 5 条，说明选择器不完整）\n\n\n\n\n\n\n\n「运行成功」≠「任务完成」\n\n\n\n这是 AI 辅助编程中最容易忽略的陷阱。代码能运行，只说明语法上大致没有问题；并不说明抓到的数据就是正确的。\n一个真实的反例：某段代码运行后输出了如下表格：\n\n\n\ntitle\nprice\nstock_status\n\n\n\n\n£53.74\nIn stock\nbook_1.html\n\n\n£50.10\nIn stock\nbook_2.html\n\n\n\ntitle 列里出现了价格，stock_status 列里出现了链接——字段全部错位，但程序没有报错。\n每次运行 AI 生成的采集代码后，建议检查以下内容：\n\n字段是否都在：输出表中是否出现了你要求的所有列\n字段内容是否合理：标题列中不应出现价格，日期列中不应出现链接\n是否只抓到一页：如果要求多页，结果只有 20 条，要警惕\n是否有空值或乱码：文本为空、中文乱码、时间格式混乱是常见问题\n样本量是否合理：3 页每页 20 条，最终结果只有 10 条，就要检查翻页逻辑\n\n\n\n\n误区 6：同一 class 对应不同字段\n\n原因：部分网页用同一个 class（如 class=\"info-item\"）标记多种不同性质的内容（如姓名、职务、邮箱），无法靠 class 名直接区分字段。如果提示词里只写「提取 class=\"info-item\" 的文本」，代码会把所有内容混在一起，或者只取第一个。\n解决方法：靠内容特征识别字段（如含 @ 的是邮箱，4 位数字开头的是年份），并在提示词里明确说明识别规则。同时，务必向 AI 提供至少两个结构不同的样例——只有一个样例时，AI 无从得知某些字段可能缺失，生成的代码会在遇到边界情况时出错。\n\n误区 7：爬虫等于数据分析\n\n提醒：爬虫只是获取数据的手段，数据采集完成后还需要大量清洗工作。在实际项目中，数据清洗往往占整个分析工作量的 50% 以上。不要在爬虫阶段花太多时间追求完美，够用就行，重心应放在后续分析。",
     "crumbs": [
-      "🌐**数据爬取**",
+      "**数据爬取**",
       "<span class='chapter-number'>8</span>  <span class='chapter-title'>网络爬虫简介</span>"
     ]
   },
@@ -791,7 +791,7 @@
     "section": "8.9 本章小结",
     "text": "8.9 本章小结\n本章建立了爬虫与文本分析的整体认知框架，为第二章的实战案例做好准备。\n核心要点回顾：\n\n爬虫是自动化采集公开网页数据的工具，使用前必须确认合规性\n数据来源有两种模式：HTML 直接渲染（用 BeautifulSoup 提取）和 API 动态加载（直接调用接口获取 JSON）\n浏览器开发者工具的 Elements 面板和 Network 面板是定位数据位置的核心工具；用右键 → Copy → Copy outerHTML 可将任意元素的 HTML 完整复制给 AI\n写好爬虫提示词需要提供八个关键要素：目标网站、字段说明、请求方式、数据格式、输出要求、异常处理、合规要求、代码风格；遇到同一 class 对应多种字段时，还需在提示词里说明字段识别规则，并提供至少两个结构不同的 HTML 样例\n迭代是正常状态，「先跑一页、验证后再跑全量」是最重要的实践习惯",
     "crumbs": [
-      "🌐**数据爬取**",
+      "**数据爬取**",
       "<span class='chapter-number'>8</span>  <span class='chapter-title'>网络爬虫简介</span>"
     ]
   },
@@ -802,7 +802,7 @@
     "section": "8.10 习题",
     "text": "8.10 习题\n\n爬取 Github.com 中同时包含 data science + Finance 这两个关键词的仓库中，Forks 次数最多的 1= 个仓库的列表，输出到一个 Markdown 文档中。\n\nTips：你可以从浏览器地址栏中复制网址：https://github.com/search?q=%22data+science%22+AND+python+AND+Finance&type=repositories&s=forks&o=desc\n要求：先写提示词，然后再由 AI 辅助生成 Python 代码。提交作业时务必提交 AI 对话链接，格式为 [AI 对话记录(URL)",
     "crumbs": [
-      "🌐**数据爬取**",
+      "**数据爬取**",
       "<span class='chapter-number'>8</span>  <span class='chapter-title'>网络爬虫简介</span>"
     ]
   },
@@ -813,7 +813,7 @@
     "section": "",
     "text": "9.1 目标分析：这是一个什么样的页面？\n访问 https://lingnan.sysu.edu.cn/Faculty，用 DevTools 快速判断：\n这是静态页面爬取的最简单情形：一次请求 → 解析 HTML → 输出文件。",
     "crumbs": [
-      "🌐**数据爬取**",
+      "**数据爬取**",
       "<span class='chapter-number'>9</span>  <span class='chapter-title'>实例-提示词模式：爬取岭南学院教师名录</span>"
     ]
   },
@@ -824,7 +824,7 @@
     "section": "",
     "text": "Ctrl+U 查看源码，点击页面，按快捷键 Ctrl+F，在搜索框中填入教师姓名 (如 毕青苗)，即可定位到 毕青苗 老师的信息块，说明数据直接写在 HTML 中。\nNetwork 面板无明显 XHR/Fetch 数据请求 → 无需调用 API 接口\n所有教师在同一个页面，无翻页 → 只需请求一次",
     "crumbs": [
-      "🌐**数据爬取**",
+      "**数据爬取**",
       "<span class='chapter-number'>9</span>  <span class='chapter-title'>实例-提示词模式：爬取岭南学院教师名录</span>"
     ]
   },
@@ -835,7 +835,7 @@
     "section": "9.2 字段设计：爬取什么？",
     "text": "9.2 字段设计：爬取什么？\n按照第一章「网页观察记录表」的思路，先把分析结论填好，再写提示词：\n\n\n\n\n\n\n\n项目\n内容\n\n\n\n\n目标网址\nhttps://lingnan.sysu.edu.cn/Faculty\n\n\n一条记录对应什么\n一位教师的基本信息\n\n\n目标字段清单\n姓名、职称、教研室、职务、研究方向、电子邮箱、个人主页链接\n\n\n是否有分页\n否，所有教师在同一页面\n\n\n是否有详情页\n有，但目标字段在列表页已完整呈现，无需进入详情页\n\n\n数据来源模式\nHTML（模式 A）\n\n\n关键定位信息\n见下方 HTML 结构分析\n\n\n希望输出格式\nExcel（.xlsx）+ Markdown（.md）\n\n\n后续分析目标\n名录整理，供查阅使用",
     "crumbs": [
-      "🌐**数据爬取**",
+      "**数据爬取**",
       "<span class='chapter-number'>9</span>  <span class='chapter-title'>实例-提示词模式：爬取岭南学院教师名录</span>"
     ]
   },
@@ -846,7 +846,7 @@
     "section": "9.3 HTML 结构分析：字段在哪里？",
     "text": "9.3 HTML 结构分析：字段在哪里？\n用 DevTools 的 Elements 面板检查后，每位教师对应一个 div.infors 块。以下是两条真实样例，注意两位教师的结构略有不同：\n样例 A（有职务字段）\n&lt;div class=\"infors\"&gt;\n  &lt;h3&gt;\n    &lt;a href=\"/faculty/LiuGuanchun\" target=\"_blank\"&gt;刘贯春&lt;/a&gt;\n    &lt;span&gt;教授&lt;/span&gt;\n  &lt;/h3&gt;\n  &lt;p class=\"one-line\"&gt;宏观经济教研室&lt;/p&gt;\n  &lt;p class=\"one-line\"&gt;宏观经济教研室主任&lt;/p&gt;\n  &lt;p class=\"one-line\"&gt;liugch9@mail.sysu.edu.cn&lt;/p&gt;\n  &lt;p class=\"text-light two-line\"&gt;\n    &lt;b&gt;研究方向:&lt;/b&gt;财政与金融、企业投融资决策\n  &lt;/p&gt;\n&lt;/div&gt;\n样例 B（无职务字段）\n&lt;div class=\"infors\"&gt;\n  &lt;h3&gt;\n    &lt;a href=\"/faculty/LuoDanglun\" target=\"_blank\"&gt;罗党论&lt;/a&gt;\n    &lt;span&gt;教授&lt;/span&gt;\n  &lt;/h3&gt;\n  &lt;p class=\"one-line\"&gt;公司金融教研室&lt;/p&gt;\n  &lt;p class=\"one-line\"&gt;luodl@mail.sysu.edu.cn&lt;/p&gt;\n  &lt;p class=\"text-light two-line\"&gt;\n    &lt;b&gt;研究方向:&lt;/b&gt;公司治理与政府治理、资本市场、民营企业\n  &lt;/p&gt;\n&lt;/div&gt;\n字段与 HTML 位置的对应关系：\n\n\n\n字段\nHTML 位置\n说明\n\n\n\n\n姓名\nh3 &gt; a 标签文本\n—\n\n\n职称\nh3 &gt; span 标签文本\n如「教授」「副教授」\n\n\n个人主页链接\nh3 &gt; a 的 href 属性\n需拼接域名前缀\n\n\n教研室\n第一个 p.one-line 文本\n固定位置，始终存在\n\n\n职务\n第二个 p.one-line（若不含 @）\n部分教师无此字段\n\n\n电子邮箱\n含 @ 符号的 p.one-line 文本\n靠内容特征识别\n\n\n研究方向\np.two-line 文本，去掉「研究方向:」前缀\n—\n\n\n\n\n\n\n\n\n\n⚠️ 本例的解析难点\n\n\n\nclass=\"one-line\" 的 &lt;p&gt; 标签被同时用于教研室、职务、邮箱三种内容，没有独立的 class 可以区分。正确的识别方式是靠文本特征：含 @ 的是邮箱，第一个出现的是教研室，两者之间若有其他文本则是职务。这是提示词里必须说明的关键细节，否则 AI 生成的选择器大概率会错位。",
     "crumbs": [
-      "🌐**数据爬取**",
+      "**数据爬取**",
       "<span class='chapter-number'>9</span>  <span class='chapter-title'>实例-提示词模式：爬取岭南学院教师名录</span>"
     ]
   },
@@ -857,7 +857,7 @@
     "section": "9.4 提示词",
     "text": "9.4 提示词\n\n\n\n\n\n\n💬 提示词参考\n\n\n\n\n请帮我用 Python 写一个爬虫，完成以下任务。本代码仅用于课堂教学演示。\n目标网站：https://lingnan.sysu.edu.cn/Faculty，教师名录全部在一个页面内，无需翻页。\n采集对象：每一位教师的基本信息，每条记录对应一位教师。\n数据格式：数据直接写在 HTML 中（模式 A）。以下是两条真实 HTML 样例，注意两者结构不同——刘贯春有职务字段，罗党论没有：\n&lt;!-- 样例 A：有职务 --&gt;\n&lt;div class=\"infors\"&gt;\n  &lt;h3&gt;\n    &lt;a href=\"/faculty/LiuGuanchun\" target=\"_blank\"&gt;刘贯春&lt;/a&gt;\n    &lt;span&gt;教授&lt;/span&gt;\n  &lt;/h3&gt;\n  &lt;p class=\"one-line\"&gt;宏观经济教研室&lt;/p&gt;\n  &lt;p class=\"one-line\"&gt;宏观经济教研室主任&lt;/p&gt;\n  &lt;p class=\"one-line\"&gt;liugch9@mail.sysu.edu.cn&lt;/p&gt;\n  &lt;p class=\"text-light two-line\"&gt;\n    &lt;b&gt;研究方向:&lt;/b&gt;财政与金融、企业投融资决策\n  &lt;/p&gt;\n&lt;/div&gt;\n\n&lt;!-- 样例 B：无职务 --&gt;\n&lt;div class=\"infors\"&gt;\n  &lt;h3&gt;\n    &lt;a href=\"/faculty/LuoDanglun\" target=\"_blank\"&gt;罗党论&lt;/a&gt;\n    &lt;span&gt;教授&lt;/span&gt;\n  &lt;/h3&gt;\n  &lt;p class=\"one-line\"&gt;公司金融教研室&lt;/p&gt;\n  &lt;p class=\"one-line\"&gt;luodl@mail.sysu.edu.cn&lt;/p&gt;\n  &lt;p class=\"text-light two-line\"&gt;\n    &lt;b&gt;研究方向:&lt;/b&gt;公司治理与政府治理、资本市场、民营企业\n  &lt;/p&gt;\n&lt;/div&gt;\n字段识别规则（请严格按此逻辑解析）： - h3 &gt; a 文本为姓名；href 属性拼接 https://lingnan.sysu.edu.cn 后为个人主页链接 - h3 &gt; span 文本为职称 - class=\"one-line\" 的 &lt;p&gt; 标签按顺序处理：第一个文本为教研室；之后若存在不含 @ 的文本则为职务；含 @ 的文本为电子邮箱 - class 包含 two-line 的 &lt;p&gt; 标签内容去掉「研究方向:」前缀后为研究方向 - 某字段不存在时填入空字符串，不跳过整条记录\n需要提取的字段（共 7 个，按此顺序）： 姓名、职称、教研室、职务、研究方向、电子邮箱、个人主页链接\n技术要求： - 使用 requests + BeautifulSoup - User-Agent 设置为真实 Chrome 浏览器值 - 请求失败时打印错误信息并终止，不静默失败 - 将解析单条教师信息的逻辑封装为函数 parse_faculty(card)\n输出： - 一份 Excel 文件，命名为 lingnan_faculty.xlsx，中文字段名 - 一份 Markdown 文件，命名为 lingnan_faculty.md，每位教师用列表格式呈现，邮箱和链接用尖括号包裹（可点击），格式如下：\n- **刘贯春**｜教授\n  - 教研室：宏观经济教研室\n  - 职务：宏观经济教研室主任\n  - 研究方向：财政与金融、企业投融资决策\n  - 邮箱：&lt;liugch9@mail.sysu.edu.cn&gt;\n  - 主页：&lt;https://lingnan.sysu.edu.cn/faculty/LiuGuanchun&gt;\n代码要求：加中文注释；先只打印前 3 条结果，确认字段正确后再保存完整文件。\n\n提示词要点分析：\n\n✅ 粘贴了真实 HTML 样例，且样例刻意覆盖两种结构（有/无职务），AI 能据此处理边界情况\n✅ 明确了字段识别规则，尤其是 class=\"one-line\" 复用问题——这是本例最容易出错的地方\n✅ 指定了输出格式的具体样式，包括 Markdown 尖括号写法，AI 不需要猜\n✅ 要求先打印 3 条再保存，对应「先验证、再输出」的实践习惯\n✅ 封装为函数，代码结构清晰，便于后续修改单条解析逻辑",
     "crumbs": [
-      "🌐**数据爬取**",
+      "**数据爬取**",
       "<span class='chapter-number'>9</span>  <span class='chapter-title'>实例-提示词模式：爬取岭南学院教师名录</span>"
     ]
   },
@@ -868,7 +868,7 @@
     "section": "9.5 代码",
     "text": "9.5 代码\nimport requests\nfrom bs4 import BeautifulSoup\nimport pandas as pd\n\n# ── 请求头：模拟真实浏览器，避免被服务器拒绝 ──\nHEADERS = {\n    'User-Agent': (\n        'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) '\n        'AppleWebKit/537.36 (KHTML, like Gecko) '\n        'Chrome/120.0.0.0 Safari/537.36'\n    )\n}\n\nBASE_URL = 'https://lingnan.sysu.edu.cn'\nLIST_URL = f'{BASE_URL}/Faculty'\n\n\ndef parse_faculty(card) -&gt; dict:\n    \"\"\"\n    解析单个教师信息块（div.infors），返回包含 7 个字段的字典。\n    字段缺失时填入空字符串，不抛出异常。\n    \"\"\"\n    result = {\n        '姓名': '', '职称': '', '教研室': '',\n        '职务': '', '研究方向': '', '电子邮箱': '', '个人主页链接': ''\n    }\n\n    # 姓名 + 个人主页链接\n    h3 = card.find('h3')\n    if h3:\n        a_tag = h3.find('a')\n        if a_tag:\n            result['姓名'] = a_tag.get_text(strip=True)\n            href = a_tag.get('href', '')\n            result['个人主页链接'] = BASE_URL + href if href else ''\n\n        # 职称\n        span = h3.find('span')\n        if span:\n            result['职称'] = span.get_text(strip=True)\n\n    # 逐一处理 class=\"one-line\" 的 &lt;p&gt; 标签\n    one_lines = card.find_all('p', class_='one-line')\n    for i, p in enumerate(one_lines):\n        text = p.get_text(strip=True)\n        if i == 0:\n            # 第一个固定是教研室\n            result['教研室'] = text\n        elif '@' in text:\n            # 含 @ 的是邮箱\n            result['电子邮箱'] = text\n        else:\n            # 其余不含 @ 的文本是职务\n            result['职务'] = text\n\n    # 研究方向：去掉 &lt;b&gt; 标签里的「研究方向:」前缀\n    two_line = card.find('p', class_='two-line')\n    if two_line:\n        raw = two_line.get_text(strip=True)\n        result['研究方向'] = raw.replace('研究方向:', '').strip()\n\n    return result\n\n\ndef main():\n    # ── Step 1：请求页面 ──\n    print(f'正在请求：{LIST_URL}')\n    resp = requests.get(LIST_URL, headers=HEADERS, timeout=15)\n    if resp.status_code != 200:\n        print(f'请求失败，状态码：{resp.status_code}')\n        return\n    resp.encoding = 'utf-8'\n\n    # ── Step 2：解析 HTML，定位所有教师信息块 ──\n    soup = BeautifulSoup(resp.text, 'html.parser')\n    cards = soup.find_all('div', class_='infors')\n    print(f'共找到 {len(cards)} 位教师')\n\n    # ── Step 3：先只解析前 3 条，验证字段是否正确 ──\n    print('\\n【前 3 条预览】')\n    for card in cards[:3]:\n        info = parse_faculty(card)\n        for k, v in info.items():\n            print(f'  {k}：{v}')\n        print()\n\n    # ── Step 4：确认字段无误后，解析全部教师 ──\n    all_faculty = [parse_faculty(card) for card in cards]\n\n    # ── Step 5：输出 Excel ──\n    df = pd.DataFrame(all_faculty)\n    excel_path = 'lingnan_faculty.xlsx'\n    df.to_excel(excel_path, index=False)\n    print(f'✅ Excel 已保存：{excel_path}（共 {len(df)} 条记录）')\n\n    # ── Step 6：输出 Markdown（列表格式，邮箱和链接用尖括号包裹）──\n    md_lines = ['# 中山大学岭南学院教师名录\\n']\n    for row in all_faculty:\n        # 第一行：姓名｜职称\n        md_lines.append(f\"- **{row['姓名']}**｜{row['职称']}\")\n        # 有值才输出，避免空行\n        if row['教研室']:\n            md_lines.append(f\"  - 教研室：{row['教研室']}\")\n        if row['职务']:\n            md_lines.append(f\"  - 职务：{row['职务']}\")\n        if row['研究方向']:\n            md_lines.append(f\"  - 研究方向：{row['研究方向']}\")\n        if row['电子邮箱']:\n            md_lines.append(f\"  - 邮箱：&lt;{row['电子邮箱']}&gt;\")\n        if row['个人主页链接']:\n            md_lines.append(f\"  - 主页：&lt;{row['个人主页链接']}&gt;\")\n        md_lines.append('')  # 教师间空一行\n\n    md_path = 'lingnan_faculty.md'\n    with open(md_path, 'w', encoding='utf-8') as f:\n        f.write('\\n'.join(md_lines))\n    print(f'✅ Markdown 已保存：{md_path}')\n\n\nif __name__ == '__main__':\n    main()",
     "crumbs": [
-      "🌐**数据爬取**",
+      "**数据爬取**",
       "<span class='chapter-number'>9</span>  <span class='chapter-title'>实例-提示词模式：爬取岭南学院教师名录</span>"
     ]
   },
@@ -879,7 +879,7 @@
     "section": "9.6 爬完之后先检查，再保存",
     "text": "9.6 爬完之后先检查，再保存\n第一章强调：「运行成功」≠「任务完成」。对于名录类数据，重点检查以下四项：\n# 爬取完成后，运行以下检查代码\n\nprint(\"【1. 数据量】\")\nprint(f\"  共 {len(df)} 条记录\")\n\nprint(\"\\n【2. 字段完整性】\")\nprint(df.isnull().sum())          # 查看各字段空值数量\n\nprint(\"\\n【3. 字段内容抽查】\")\nprint(df[['姓名', '职称', '电子邮箱']].head(10).to_string())\n\nprint(\"\\n【4. 异常值检查】\")\n# 邮箱列不应出现人名，姓名列不应出现 @\nbad_email = df[~df['电子邮箱'].str.contains('@', na=False) & df['电子邮箱'].ne('')]\nprint(f\"  格式异常的邮箱：{len(bad_email)} 条\")\nprint(f\"  无邮箱记录：{df['电子邮箱'].eq('').sum()} 条\")\nprint(f\"  无职务记录：{df['职务'].eq('').sum()} 条（正常，非所有教师都有行政职务）\")\n\n\n\n\n\n\n💡 「无职务」不是错误\n\n\n\n本例中大多数教师没有行政职务，职务 字段为空是正常现象，不需要修复。检查的目的是区分「正常缺失」和「解析错位」——如果发现邮箱列出现了人名，才说明 one-line 的解析逻辑有问题，需要回头修改 parse_faculty() 函数。",
     "crumbs": [
-      "🌐**数据爬取**",
+      "**数据爬取**",
       "<span class='chapter-number'>9</span>  <span class='chapter-title'>实例-提示词模式：爬取岭南学院教师名录</span>"
     ]
   },
@@ -890,7 +890,7 @@
     "section": "9.7 课堂讨论",
     "text": "9.7 课堂讨论\n\n本例的 class=\"one-line\" 被用于三种不同字段，靠文本内容特征来区分。这种网页设计有什么问题？如果网站改版，增加了一种新的 one-line 内容，你的爬虫会在哪里出错？\nMarkdown 的尖括号写法（&lt;email&gt;）在不同平台的渲染效果可能不同。如果要确保在 GitHub、Typora、Notion 中都能正常显示可点击链接，分别应该用什么格式？\n本例没有设置请求间隔，因为只请求一次。如果改成爬取每位教师的详情页，你需要在提示词里加哪些内容？",
     "crumbs": [
-      "🌐**数据爬取**",
+      "**数据爬取**",
       "<span class='chapter-number'>9</span>  <span class='chapter-title'>实例-提示词模式：爬取岭南学院教师名录</span>"
     ]
   },
@@ -901,7 +901,7 @@
     "section": "",
     "text": "0. 开始之前",
     "crumbs": [
-      "🌐**数据爬取**",
+      "**数据爬取**",
       "<span class='chapter-number'>10</span>  <span class='chapter-title'>实例-对话模式：爬取岭南学院教师名录</span>"
     ]
   },
@@ -912,7 +912,7 @@
     "section": "",
     "text": "安装依赖\n\n\n\n\n\n\n📦 环境准备\n\n\n\npip install requests beautifulsoup4 pandas openpyxl\n\nrequests：发送 HTTP 请求，获取网页内容\nbeautifulsoup4：解析 HTML，提取目标字段\npandas：整理数据，输出 Excel\nopenpyxl：pandas 输出 .xlsx 格式的底层依赖\n\n\n\n\n\n设定 AI 工作模式\n大多数 AI 的默认行为是「收到任务 → 立即给出完整答案」。对于爬虫任务，这意味着：你说「帮我写爬虫」，它会直接生成一段可能完全不符合需求的代码，而不是先问清楚你要什么。\n在发出第一条消息之前，先把以下角色设定提示词完整复制，单独发给 AI（ChatGPT / DeepSeek / 豆包均适用），收到「明白」后再开始对话：\n\n\n\n\n\n\n📋 角色设定提示词\n\n\n\n\n接下来我们要合作完成一个网页爬虫任务。请你扮演一位爬虫开发引导者，遵守以下规则：\n\n不要直接生成代码，除非我明确说「请生成代码」\n每次回复只问我一到两个最关键的问题，等我回答后再继续\n引导我依次提供：目标网址、需要的字段、数据用途、HTML 结构（需我去 DevTools 查）、是否有翻页、输出格式——但不要一次全问\n信息足够后，先把收集到的内容整理成结构化提示词给我确认，我确认后再生成代码\n如果我的信息有歧义或可能导致代码出错，请追问，不要自行假设\n\n收到后请回复「明白，请告诉我你的爬虫任务」。",
     "crumbs": [
-      "🌐**数据爬取**",
+      "**数据爬取**",
       "<span class='chapter-number'>10</span>  <span class='chapter-title'>实例-对话模式：爬取岭南学院教师名录</span>"
     ]
   },
@@ -923,7 +923,7 @@
     "section": "1. 与 AI 的对话过程",
     "text": "1. 与 AI 的对话过程\n下面是一个零基础学生发送角色设定后，与 AI 完成这项任务的完整对话记录。\n阅读方式：通读全部六轮对话，理解每轮在解决什么问题。操作步骤（如何使用 DevTools）集中在第 2 节，读完对话再去操作。\n\n\n\n\n\n\n🧑 学生·第 1 轮\n\n\n\n我想爬取这个网页的信息：https://lingnan.sysu.edu.cn/Faculty，帮我写一个 Python 爬虫。（附上截图）\n\n\n\n岭南学院教师名录页面截图\n\n\n\n\n\n\n\n\n\n\n🤖 AI·第 1 轮\n\n\n\n好的，我看到这是中山大学岭南学院的教师名录页面。在写代码之前，我需要先了解几件事。\n第一个问题：你想提取哪些信息，打算用这份数据做什么？\n从截图来看，每位教师的卡片里包含姓名、职称、邮箱、研究方向，部分教师还有职务信息（如「院长助理」）。你需要全部提取，还是只要其中几个字段？了解用途有助于我决定输出格式。\n\n\n\n💡 本轮要点：AI 没有直接写代码，而是先问「要什么」和「做什么用」——对应第一章提示词八要素中的要素②（数据字段）和要素⑤（输出要求）。\n\n\n\n\n\n\n\n🧑 学生·第 2 轮\n\n\n\n\n我需要的字段：姓名、职称、教研室、职务、邮箱、研究方向，还有个人主页链接。\n输出：整理一份名录存档，方便查阅；输出成一份 Excel + 一个 Markdown 文档。\n\n\n\n\n\n\n\n\n\n🤖 AI·第 2 轮\n\n\n\n明白了。现在我需要了解网页的 HTML 结构，才能告诉代码去哪里找数据。\n请做一件事：在 Chrome 中打开这个页面，对着任意一位教师的姓名右键 → 选「检查」，开发者工具会弹出并高亮对应的 HTML。找到包含该教师完整信息的外层 &lt;div&gt;，右键 → Copy → Copy outerHTML，把复制的内容发给我。\n具体操作方法见本节末尾的「DevTools 操作指引」。\n\n\n\n💡 本轮要点：AI 需要 HTML 结构才能写出正确的选择器，但它看不到网页——必须让你去 DevTools 里取。这正是第一章 1.4 节介绍 DevTools 的实战应用。\n\n\n\n\n\n\n\n🧑 学生·第 3 轮\n\n\n\n我找到了，是这样的：\n&lt;div class=\"infors\"&gt;\n  &lt;h3&gt;\n    &lt;a href=\"/faculty/LuDi\" target=\"_blank\" hreflang=\"zh-hans\"&gt;卢荻&lt;/a&gt;\n    &lt;span&gt;教授&lt;/span&gt;\n  &lt;/h3&gt;\n  &lt;p class=\"one-line\"&gt;政治经济学教研室&lt;/p&gt;\n  &lt;p class=\"one-line\"&gt;ludi26@mail.sysu.edu.cn&lt;/p&gt;\n  &lt;p class=\"text-light two-line\"&gt;\n    &lt;b&gt;研究方向:&lt;/b&gt;中国经济发展\n  &lt;/p&gt;\n&lt;/div&gt;\n\n\n\n\n\n\n\n\n🤖 AI·第 3 轮\n\n\n\n结构很清晰。我能看出：姓名在 h3 &gt; a，职称在 h3 &gt; span，主页链接是 href 属性（需拼接域名），研究方向在 p.two-line（去掉「研究方向:」前缀）。\n但有一个问题：class=\"one-line\" 的 &lt;p&gt; 标签出现了两次——第一个是「政治经济学教研室」，第二个是邮箱。同一个 class 对应不同内容，代码无法靠 class 名直接区分（这是第一章误区⑥提到的情况）。\n另外，截图里「许准」教授有「院长助理」这个职务字段。请再复制一下许准的 HTML，我需要对比两人的结构，确认职务字段是否影响其他字段的位置。\n\n\n\n💡 本轮要点：AI 从截图中发现「院长助理」，主动要求第二个样例——因为只有一个样例时，无法发现字段可能缺失的情况（对应第一章误区⑥）。\n\n\n\n\n\n\n\n🧑 学生·第 4 轮\n\n\n\n好的，许准的是这样：\n&lt;div class=\"infors\"&gt;\n  &lt;h3&gt;\n    &lt;a href=\"/faculty/XuZhun\" target=\"_blank\" hreflang=\"zh-hans\"&gt;许准&lt;/a&gt;\n    &lt;span&gt;教授&lt;/span&gt;\n  &lt;/h3&gt;\n  &lt;p class=\"one-line\"&gt;政治经济学教研室&lt;/p&gt;\n  &lt;p class=\"one-line\"&gt;院长助理&lt;/p&gt;\n  &lt;p class=\"one-line\"&gt;xuzh237@mail.sysu.edu.cn&lt;/p&gt;\n  &lt;p class=\"text-light two-line\"&gt;\n    &lt;b&gt;研究方向:&lt;/b&gt;政治经济学、发展经济学、思想史\n  &lt;/p&gt;\n&lt;/div&gt;\n\n\n\n\n\n\n\n\n🤖 AI·第 4 轮\n\n\n\n两段 HTML 对比，结构差异很清楚了：\n\n\n\n字段\n卢荻（无职务）\n许准（有职务）\n\n\n\n\n教研室\n第 1 个 p.one-line\n第 1 个 p.one-line\n\n\n职务\n❌ 不存在\n第 2 个 p.one-line\n\n\n邮箱\n第 2 个 p.one-line\n第 3 个 p.one-line\n\n\n\n不能靠位置区分，要靠内容特征：含 @ 的是邮箱，其余的是职务。\n还有两个问题：\n\n除了 Excel，是否考虑同时输出一份 Markdown 文件？名录类文档用 Markdown 格式更便于共享和查阅（飞书、Notion、GitHub 均可直接渲染）。\n页面顶部有「政治经济学教研室」等分类标签——切换标签时 URL 有没有变化？请试一下，确认是否需要翻页。\n\n\n\n\n💡 本轮要点：AI 主动建议增加 Markdown 输出（要素⑤），并追问翻页问题（要素①）——不确认翻页逻辑，代码可能只抓到当前筛选下的教师，而非全部名录。\n\n\n\n\n\n\n\n🧑 学生·第 5 轮\n\n\n\nMarkdown 也要，好主意。\n翻页：我切换了几个教研室标签，URL 没有变化，一直是 lingnan.sysu.edu.cn/Faculty。滑到底部也没有「下一页」按钮。\n\n\n\n\n\n\n\n\n🤖 AI·第 5 轮\n\n\n\nURL 不变、无翻页按钮，说明所有教师数据在同一个 HTML 页面里，教研室切换只是前端 JavaScript 的显示/隐藏，不影响爬取——只需请求一次页面。\n现在信息已经足够，先把对话内容整理成提示词，你确认后我再生成代码：\n\n\n\n\n\n\n\n\n📋 整理后的完整提示词\n\n\n\n\n请帮我用 Python 写一个爬虫，完成以下任务。本代码仅用于课堂教学演示。\n目标网站：https://lingnan.sysu.edu.cn/Faculty，所有教师在同一页面，无需翻页，一次请求即可获取全部数据。\n采集对象：每一位教师的基本信息，每条记录对应一位教师。\n数据格式：数据直接写在 HTML 中（模式 A）。以下是两条真实 HTML 样例，注意结构不同——卢荻无职务字段，许准有：\n&lt;!-- 样例 A：无职务 --&gt;\n&lt;div class=\"infors\"&gt;\n  &lt;h3&gt;\n    &lt;a href=\"/faculty/LuDi\" target=\"_blank\"&gt;卢荻&lt;/a&gt;\n    &lt;span&gt;教授&lt;/span&gt;\n  &lt;/h3&gt;\n  &lt;p class=\"one-line\"&gt;政治经济学教研室&lt;/p&gt;\n  &lt;p class=\"one-line\"&gt;ludi26@mail.sysu.edu.cn&lt;/p&gt;\n  &lt;p class=\"text-light two-line\"&gt;&lt;b&gt;研究方向:&lt;/b&gt;中国经济发展&lt;/p&gt;\n&lt;/div&gt;\n\n&lt;!-- 样例 B：有职务 --&gt;\n&lt;div class=\"infors\"&gt;\n  &lt;h3&gt;\n    &lt;a href=\"/faculty/XuZhun\" target=\"_blank\"&gt;许准&lt;/a&gt;\n    &lt;span&gt;教授&lt;/span&gt;\n  &lt;/h3&gt;\n  &lt;p class=\"one-line\"&gt;政治经济学教研室&lt;/p&gt;\n  &lt;p class=\"one-line\"&gt;院长助理&lt;/p&gt;\n  &lt;p class=\"one-line\"&gt;xuzh237@mail.sysu.edu.cn&lt;/p&gt;\n  &lt;p class=\"text-light two-line\"&gt;&lt;b&gt;研究方向:&lt;/b&gt;政治经济学、发展经济学、思想史&lt;/p&gt;\n&lt;/div&gt;\n字段识别规则（请严格按此逻辑解析）： - h3 &gt; a 文本为姓名；href 拼接 https://lingnan.sysu.edu.cn 后为个人主页链接 - h3 &gt; span 文本为职称 - class=\"one-line\" 的 &lt;p&gt; 标签按顺序处理：第一个为教研室；之后含 @ 的为电子邮箱；不含 @ 的为职务 - class 含 two-line 的 &lt;p&gt; 内容去掉「研究方向:」前缀后为研究方向 - 字段不存在时填入空字符串，不跳过整条记录\n需要提取的字段（共 7 个）： 姓名、职称、教研室、职务、研究方向、电子邮箱、个人主页链接\n技术要求：使用 requests + BeautifulSoup；User-Agent 设为真实 Chrome 值；请求失败时打印错误并终止；解析单条逻辑封装为函数 parse_faculty(card)。\n输出： - Excel 文件：lingnan_faculty.xlsx，中文字段名 - Markdown 文件：lingnan_faculty.md，列表格式，邮箱和链接用尖括号包裹（可点击），样式如下：\n- **许准**｜教授\n  - 教研室：政治经济学教研室\n  - 职务：院长助理\n  - 研究方向：政治经济学、发展经济学、思想史\n  - 邮箱：&lt;xuzh237@mail.sysu.edu.cn&gt;\n  - 主页：&lt;https://lingnan.sysu.edu.cn/faculty/XuZhun&gt;\n代码要求：加中文注释；先只打印前 3 条，确认字段正确后再保存完整文件。\n\n\n\n\n💡 本轮要点：AI 在生成代码前先整理提示词、等待确认——这是本章最重要的工作习惯。对话中散落的信息在这一步汇聚成标准格式，也让你看清「提示词是怎么从对话里生长出来的」。\n\n\n\n\n\n\n\n\n🧑 学生·第 6 轮\n\n\n\n好的，请生成代码。\n\n\n\n2. DevTools 操作指引\n\n本节对应第 3 轮对话中 AI 要求「复制 HTML」的操作步骤。如果你已经熟悉 DevTools，可以跳过。\n\nDevTools 的基本用法见第一章 1.4 节。这里只补充一个新动作：如何复制单个元素的完整 HTML。\n第一步：打开 DevTools，定位目标元素\n\nWindows：F12 或 Ctrl+Shift+C（直接进入元素选择模式）\nMac：Command+Option+I 或 Command+Shift+C\n\n用箭头选择器点击页面上任意一位教师的姓名，Elements 面板会自动高亮对应的 &lt;a&gt; 标签。\n\n📷 截图插入点 A：在 lingnan.sysu.edu.cn/Faculty 页面，用箭头选择器点击「卢荻」后，Elements 面板高亮 &lt;a&gt; 标签、周围可见 &lt;div class=\"infors\"&gt; 完整结构的截图。\n\n第二步：向上选取外层 &lt;div&gt;\nElements 面板高亮的是最内层的 &lt;a&gt; 标签。在面板里点击上方的 &lt;div class=\"infors\"&gt;，选中包含该教师全部信息的外层块。\n\n📷 截图插入点 B：在 Elements 面板中，点击 &lt;a&gt; 标签上方的 &lt;div class=\"infors\"&gt;，整个教师信息块被蓝色高亮的截图。\n\n第三步：复制 outerHTML\n在 &lt;div class=\"infors\"&gt; 上右键 → Copy → Copy outerHTML，即可复制该教师的完整 HTML 代码，直接粘贴给 AI。\n\n📷 截图插入点 C：右键菜单展开「Copy」子菜单，「Copy outerHTML」选项高亮的截图。\n\n\n\n\n\n\n\n💡 为什么要复制外层 &lt;div&gt;，而不是直接复制 &lt;a&gt; 标签？\n\n\n\n&lt;a&gt; 标签只包含姓名和链接，AI 看不到邮箱、研究方向等其他字段。复制包含完整信息的外层块，AI 才能分析字段之间的结构关系，写出正确的解析逻辑。",
     "crumbs": [
-      "🌐**数据爬取**",
+      "**数据爬取**",
       "<span class='chapter-number'>10</span>  <span class='chapter-title'>实例-对话模式：爬取岭南学院教师名录</span>"
     ]
   },
@@ -934,7 +934,7 @@
     "section": "3. 代码",
     "text": "3. 代码\n\n# 安装依赖包\n!pip install openpyxl\n\n\nimport requests\nfrom bs4 import BeautifulSoup\nimport pandas as pd\n\n\n# ── 请求头：模拟真实浏览器，避免被服务器拒绝 ──\nHEADERS = {\n    'User-Agent': (\n        'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) '\n        'AppleWebKit/537.36 (KHTML, like Gecko) '\n        'Chrome/120.0.0.0 Safari/537.36'\n    )\n}\n\nBASE_URL = 'https://lingnan.sysu.edu.cn'\nLIST_URL = f'{BASE_URL}/Faculty'\n\n\ndef make_abs_url(href: str) -&gt; str:\n    \"\"\"\n    将相对链接转为绝对链接。\n    \"\"\"\n    if not href:\n        return ''\n\n    href = href.strip()\n    if href.startswith('http://') or href.startswith('https://'):\n        return href\n    if href.startswith('/'):\n        return BASE_URL + href\n\n    return BASE_URL + '/' + href\n\n\ndef parse_faculty(card) -&gt; dict:\n    \"\"\"\n    解析单个教师信息块，返回标准字段字典。\n    字段缺失时填空字符串。\n    \"\"\"\n    result = {\n        '姓名': '',\n        '职称': '',\n        '教研室': '',\n        '职务': '',\n        '研究方向': '',\n        '电子邮箱': '',\n        '个人主页链接': ''\n    }\n\n    # ── 1. 姓名 + 个人主页链接 + 职称 ──\n    h3 = card.find('h3')\n    if h3:\n        a_tag = h3.find('a')\n        if a_tag:\n            result['姓名'] = a_tag.get_text(strip=True)\n            href = a_tag.get('href', '')\n            result['个人主页链接'] = make_abs_url(href)\n\n        # 有些页面把职称放在 h3 内的 span 里\n        span = h3.find('span')\n        if span:\n            result['职称'] = span.get_text(strip=True)\n        else:\n            # 如果没有 span，则尝试从 h3 的纯文本中剥离姓名，提取剩余部分作为职称\n            h3_text = h3.get_text(' ', strip=True)\n            if result['姓名'] and h3_text.startswith(result['姓名']):\n                title = h3_text.replace(result['姓名'], '', 1).strip()\n                result['职称'] = title\n\n    # ── 2. 处理 p 标签：教研室 / 职务 / 邮箱 ──\n    # 原网页中通常：\n    # 第一个 one-line 是教研室\n    # 含 @ 的是邮箱\n    # 其他 one-line 往往是职务\n    one_lines = card.find_all('p', class_='one-line')\n\n    for i, p in enumerate(one_lines):\n        text = p.get_text(' ', strip=True)\n        if not text:\n            continue\n\n        if i == 0 and not result['教研室']:\n            result['教研室'] = text\n        elif '@' in text:\n            result['电子邮箱'] = text\n        else:\n            # 可能存在多个非邮箱 one-line，合并为“职务”\n            if result['职务']:\n                result['职务'] += '；' + text\n            else:\n                result['职务'] = text\n\n    # ── 3. 研究方向 ──\n    two_line = card.find('p', class_='two-line')\n    if two_line:\n        raw = two_line.get_text(' ', strip=True)\n        raw = raw.replace('研究方向:', '').replace('研究方向：', '').strip()\n        result['研究方向'] = raw\n\n    return result\n\n\ndef deduplicate_faculty(records: list) -&gt; list:\n    \"\"\"\n    对教师记录去重。\n    优先使用“个人主页链接”作为唯一标识；\n    若主页链接为空，则退化为“姓名 + 邮箱”。\n    \"\"\"\n    seen = set()\n    clean_records = []\n\n    for row in records:\n        # 优先使用主页链接去重\n        if row['个人主页链接']:\n            key = ('url', row['个人主页链接'])\n        else:\n            key = ('fallback', row['姓名'], row['电子邮箱'])\n\n        if key not in seen:\n            seen.add(key)\n            clean_records.append(row)\n\n    return clean_records\n\n\ndef main():\n    # ── Step 1：请求页面 ──\n    print(f'正在请求：{LIST_URL}')\n    resp = requests.get(LIST_URL, headers=HEADERS, timeout=20)\n    resp.raise_for_status()\n    resp.encoding = 'utf-8'\n\n    # ── Step 2：解析 HTML ──\n    soup = BeautifulSoup(resp.text, 'html.parser')\n\n    # 仍然先按原有 class 抓取，但随后必须去重\n    cards = soup.find_all('div', class_='infors')\n    print(f'原始抓取到 {len(cards)} 个信息块')\n\n    # ── Step 3：解析全部记录 ──\n    all_faculty_raw = []\n\n    for card in cards:\n        info = parse_faculty(card)\n\n        # 过滤明显无效记录：\n        # 至少要有姓名；同时主页链接中不应是列表页本身\n        if not info['姓名']:\n            continue\n\n        if info['个人主页链接'].rstrip('/') == LIST_URL.rstrip('/'):\n            continue\n\n        all_faculty_raw.append(info)\n\n    print(f'解析后得到 {len(all_faculty_raw)} 条原始教师记录')\n\n    # ── Step 4：去重 ──\n    all_faculty = deduplicate_faculty(all_faculty_raw)\n    print(f'去重后保留 {len(all_faculty)} 位教师')\n\n    # ── Step 5：预览前 5 条 ──\n    print('\\n【前 5 条预览】')\n    for row in all_faculty[:5]:\n        for k, v in row.items():\n            print(f'  {k}：{v}')\n        print()\n\n    # ── Step 6：转为 DataFrame ──\n    df = pd.DataFrame(all_faculty)\n\n    # 可选：按姓名排序，便于查阅\n    df = df.sort_values(by='姓名', kind='stable').reset_index(drop=True)\n\n    # ── Step 7：输出 Excel；若环境缺 openpyxl，则退回 CSV ──\n    try:\n        df.to_excel('lingnan_faculty.xlsx', index=False)\n        print(f'✅ Excel 已保存：lingnan_faculty.xlsx（共 {len(df)} 条）')\n    except ModuleNotFoundError:\n        print('⚠️ 未安装 openpyxl，无法写入 xlsx，改为输出 CSV')\n        df.to_csv('lingnan_faculty.csv', index=False, encoding='utf-8-sig')\n        print(f'✅ CSV 已保存：lingnan_faculty.csv（共 {len(df)} 条）')\n\n    # ── Step 8：输出 Markdown ──\n    md_lines = ['# 中山大学岭南学院教师名录', '']\n\n    for row in all_faculty:\n        title_line = f\"- **{row['姓名']}**\"\n        if row['职称']:\n            title_line += f\"｜{row['职称']}\"\n        md_lines.append(title_line)\n\n        if row['教研室']:\n            md_lines.append(f\"  - 教研室：{row['教研室']}\")\n        if row['职务']:\n            md_lines.append(f\"  - 职务：{row['职务']}\")\n        if row['研究方向']:\n            md_lines.append(f\"  - 研究方向：{row['研究方向']}\")\n        if row['电子邮箱']:\n            md_lines.append(f\"  - 邮箱：&lt;{row['电子邮箱']}&gt;\")\n        if row['个人主页链接']:\n            md_lines.append(f\"  - 主页：&lt;{row['个人主页链接']}&gt;\")\n\n        md_lines.append('')\n\n    with open('lingnan_faculty.md', 'w', encoding='utf-8') as f:\n        f.write('\\n'.join(md_lines))\n\n    print('✅ Markdown 已保存：lingnan_faculty.md')\n\n\nif __name__ == '__main__':\n    main()\n\n正在请求：https://lingnan.sysu.edu.cn/Faculty\n原始抓取到 249 个信息块\n解析后得到 249 条原始教师记录\n去重后保留 83 位教师\n\n【前 5 条预览】\n  姓名：毕青苗\n  职称：副教授\n  教研室：政治经济学教研室\n  职务：\n  研究方向：中国经济增长，营商环境建设\n  电子邮箱：biqm@mail.sysu.edu.cn\n  个人主页链接：https://lingnan.sysu.edu.cn/faculty/BiQingmiao\n\n  姓名：才国伟\n  职称：教授\n  教研室：国际经济与区域经济教研室\n  职务：\n  研究方向：经济增长与发展、国际经济与政策、 数字经济与政策等\n  电子邮箱：caiguow@mail.sysu.edu.cn\n  个人主页链接：https://lingnan.sysu.edu.cn/faculty/CaiGuowei\n\n  姓名：蔡荣鑫\n  职称：副教授\n  教研室：公司金融教研室\n  职务：\n  研究方向：企业并购、私募股权与风险投资、经济增长与贫困问题\n  电子邮箱：cairx@mail.sysu.edu.cn\n  个人主页链接：https://lingnan.sysu.edu.cn/faculty/CaiRongxin\n\n  姓名：陈川\n  职称：副教授\n  教研室：计量经济与数据科学教研室\n  职务：\n  研究方向：联邦学习、机器学习鲁棒性、LLM可靠性、图机器学习、社交网络分析\n  电子邮箱：chenchuan@mail.sysu.edu.cn\n  个人主页链接：https://lingnan.sysu.edu.cn/faculty/ChenChuan\n\n  姓名：陈刚\n  职称：教授\n  教研室：国际经济与区域经济教研室\n  职务：\n  研究方向：物流工程、运营管理、数字经济\n  电子邮箱：lnscheng@mail.sysu.edu.cn\n  个人主页链接：https://lingnan.sysu.edu.cn/faculty/ChenGang\n\n✅ Excel 已保存：lingnan_faculty.xlsx（共 83 条）\n✅ Markdown 已保存：lingnan_faculty.md\n\n\n\n\n\n\n\n\n提示词\n\n\n\nAI 生成的原始代码一共输出了 249 条教师记录，我反馈了这个信息后，AI 修正了代码，得到了正确的结果。",
     "crumbs": [
-      "🌐**数据爬取**",
+      "**数据爬取**",
       "<span class='chapter-number'>10</span>  <span class='chapter-title'>实例-对话模式：爬取岭南学院教师名录</span>"
     ]
   },
@@ -945,7 +945,7 @@
     "section": "4. 验证：看到什么才算正确",
     "text": "4. 验证：看到什么才算正确\n代码运行后，Step 3 会打印前 3 条预览。对照以下标准判断是否继续：\n\n\n\n\n\n\n\n\n检查项\n期望结果\n若不符合\n\n\n\n\n姓名列\n全为中文姓名\n若出现邮箱或职称，字段严重错位，检查 parse_faculty 逻辑\n\n\n邮箱列\n含 @，格式如 xxx@mail.sysu.edu.cn\n若为空或出现姓名，@ 识别逻辑有误\n\n\n教师总数\n几十至一百多条\n若只有个位数，find_all('div', class_='infors') 的 class 名可能写错\n\n\n职务列\n少数教师有值，多数为空\n若全部为空，检查职务识别逻辑；全部有值则可能把教研室误判为职务\n\n\n\n\n\n\n\n\n\n💡 「职务为空」是正常现象\n\n\n\n大多数教师没有行政职务，职务 列为空不是错误。检查的目的是区分「正常缺失」（无职务）和「解析错位」（职务被错误地识别为邮箱，或邮箱被丢失）。",
     "crumbs": [
-      "🌐**数据爬取**",
+      "**数据爬取**",
       "<span class='chapter-number'>10</span>  <span class='chapter-title'>实例-对话模式：爬取岭南学院教师名录</span>"
     ]
   },
@@ -956,7 +956,7 @@
     "section": "5. 如果结果不对：发起调试对话",
     "text": "5. 如果结果不对：发起调试对话\n字段出错时，不要从头重写提示词，而是把具体错误现象告诉 AI。有效的调试消息包含三件事：\n① 错误现象（哪列出了什么问题）\n② 已做的验证（你确认了什么）\n③ 中间结果（打印出的原始数据或 HTML）\n示例：\n\n代码跑通了，但「职务」列全部为空。我去页面确认过，许准的卡片里确实有「院长助理」。\n我打印了许准对应的 one_lines 内容：\n政治经济学教研室\n院长助理\nxuzh237@mail.sysu.edu.cn\n三行都在，但职务列还是空的。\n\n这三件事让 AI 能精准定位问题，而不是重写整段代码。信息越具体，修复越快。",
     "crumbs": [
-      "🌐**数据爬取**",
+      "**数据爬取**",
       "<span class='chapter-number'>10</span>  <span class='chapter-title'>实例-对话模式：爬取岭南学院教师名录</span>"
     ]
   },
@@ -967,7 +967,7 @@
     "section": "6. 复盘",
     "text": "6. 复盘\n六轮对话，每轮解决了什么：\n\n\n\n轮次\n学生提供了什么\nAI 追问了什么\n对应要素\n\n\n\n\n第 1 轮\n网址 + 截图\n要哪些字段？做什么用？\n②⑤\n\n\n第 2 轮\n字段清单 + 用途\n去 DevTools 取 HTML\n④\n\n\n第 3 轮\n一段 HTML\n发现结构不一致，要第二段\n②\n\n\n第 4 轮\n第二段 HTML\n建议加 Markdown；追问翻页\n①⑤\n\n\n第 5 轮\n确认无翻页\n整理提示词，等待确认\n—\n\n\n第 6 轮\n确认提示词\n生成代码\n—\n\n\n\n\n\n\n\n\n\n💡 规律：AI 追问 = 填写提示词模板的空格\n\n\n\n对比这次对话和第一章 1.7 节的提示词通用模板，你会发现：AI 每次追问，恰好对应模板里缺失的一个要素。\n理解这个规律后，下次可以反过来操作：先自己对照模板把空格填好，再发给 AI，减少来回追问的轮数，第一次就拿到更可用的代码。",
     "crumbs": [
-      "🌐**数据爬取**",
+      "**数据爬取**",
       "<span class='chapter-number'>10</span>  <span class='chapter-title'>实例-对话模式：爬取岭南学院教师名录</span>"
     ]
   },
@@ -978,7 +978,7 @@
     "section": "课堂讨论",
     "text": "课堂讨论\n\n第 3 轮中，如果学生只贴了卢荻的 HTML（没有许准的），AI 生成的代码会在哪里出错？出错的现象是什么？\n调试消息的三要素（错误现象、已做验证、中间结果）中，哪一项最容易被忽略？忽略它会带来什么后果？\n本例的页面只需请求一次，不需要设置请求间隔。如果改为爬取每位教师的详情页，提示词里需要新增哪些内容？\n浏览输出结果 lingnan_faculty.md 时，发现 曾燕 老师的信息显示格式有误。请分析原因，并撰写提示词，让 AI 优化代码。\n - **曾燕**｜教授\n   - 教研室：保险与金融工程教研室\n   - 研究方向：数字（普惠）金融：创新、风险与监管\n\n 数字经济（发展趋势、社会效应、风险与安全）\n\n 数字保险：创新、风险与监管\n\n 平台经济：定价、风险管理、监管\n\n 金融工程：定价、资产配置\n\n 风险管理：风险测度、风险传染、风险管理策略\n\n 保险精算：保险公司投资、分红与再保险策略等\n   - 邮箱：&lt;zengy36@mail.sysu.edu.cn&gt;\n   - 主页：&lt;https://lingnan.sysu.edu.cn/faculty/ZengYan&gt;",
     "crumbs": [
-      "🌐**数据爬取**",
+      "**数据爬取**",
       "<span class='chapter-number'>10</span>  <span class='chapter-title'>实例-对话模式：爬取岭南学院教师名录</span>"
     ]
   },
@@ -989,7 +989,7 @@
     "section": "",
     "text": "定位与使用方法\n本附录不是一份系统的 Python 语法教程。你不需要背语法，不需要记函数名。\n本附录只做一件事：帮你用准确的专业语言，指挥 AI 工具生成可运行的 Python 代码。\n同样是让 AI 清洗数据，下面两种提示词的效果差距巨大：\n差别只有一个：第二种用了 Python 专业术语。有了这些词，AI 才知道你的数据结构、处理目标和技术偏好。本附录的核心任务，就是帮你积累这套词汇，并给出可以直接套用的提示词框。",
     "crumbs": [
-      "📑**附录：常用 Python 提示词**",
+      "**附录：Python 提示词**",
       "概览"
     ]
   },
@@ -1000,7 +1000,7 @@
     "section": "",
     "text": "❌ 「帮我清洗一下数据」\n\n\n✅ 「我有一个 pandas 数据框 df，包含 date、stock_code、return 三列，其中 return 列有缺失值。请用前向填充法处理缺失值，将 date 列转换为 datetime 类型，最后按 stock_code 和 date 升序排列。」",
     "crumbs": [
-      "📑**附录：常用 Python 提示词**",
+      "**附录：Python 提示词**",
       "概览"
     ]
   },
@@ -1011,7 +1011,7 @@
     "section": "最重要的心智模型：与 AI 的对话是迭代过程",
     "text": "最重要的心智模型：与 AI 的对话是迭代过程\n初学者最常见的误区是：期待一次提示词生成完美代码。这几乎不可能发生。\n真实的工作流是这样的：\n第 1 轮  描述任务背景 + 数据结构\n         → AI 生成基础代码，能跑通\n            ↓\n第 2 轮  「代码报错」或「结果不对」\n         → 贴上错误信息或具体问题，继续追问\n            ↓\n第 3 轮  「结果对了，但图不好看」或「表格太乱」\n         → 用微调提示词修细节\n            ↓\n第 4 轮  「这段代码太慢」或「想理解这行代码」\n         → 优化 / 解释提示词\n因此，本附录中的每一个提示词框，都设计为两层结构：\n\n第一层（主提示词）：生成基础代码\n第二层（追问模板）：根据第一轮的结果，选择合适的追问方式继续迭代\n\n管理 AI 的上下文记忆也很重要。 当对话变长，或你开启了新的对话窗口，AI 会「忘记」你之前说过的数据结构和变量名，导致生成的代码和前文对不上。解决方法见 A8. 上下文管理与调试。",
     "crumbs": [
-      "📑**附录：常用 Python 提示词**",
+      "**附录：Python 提示词**",
       "概览"
     ]
   },
@@ -1022,7 +1022,7 @@
     "section": "章节安排",
     "text": "章节安排\n\n\n\n章节\n主题\n核心收获\n\n\n\n\nA1. 环境配置\n包安装、路径、常见报错\n能向 AI 描述你的运行环境\n\n\nA2. 项目规划与 Git\n项目结构、GitHub 同步\n建立可复现的分析项目\n\n\nA3. 提示词核心词汇\n数据类型、数据结构术语\n写出 AI 能理解的提示词\n\n\nA4. 数据获取与清洗\n读取、清洗、合并、变换\n数据处理类提示词模板\n\n\nA5. 数据可视化\n图形要素、风格、金融专题图\n可视化类提示词模板\n\n\nA6. 统计建模\n回归、机器学习、模型评估\n建模类提示词模板\n\n\nA7. 结果呈现与表格\nNotebook 输出、表格美化、导出\n让结果好看、可汇报\n\n\nA8. 上下文管理与调试\n验证结果、报错处理、代码加速\n遇到问题时怎么问 AI\n\n\n\n建议使用方式：\n\n先读完本页，建立迭代工作流的心智模型\n通读 A3，掌握核心专业词汇\n按需查阅 A4–A7 中的提示词框，稍作修改即可使用\n遇到报错或结果不对，直接跳到 A8",
     "crumbs": [
-      "📑**附录：常用 Python 提示词**",
+      "**附录：Python 提示词**",
       "概览"
     ]
   },
@@ -1033,7 +1033,7 @@
     "section": "推荐参考资料",
     "text": "推荐参考资料\n为了能够写出逻辑清晰、表述准确的提示词，建议大家抽空翻看一下有关 Python 基本语法、数据分析流程相关书籍，理解常用的概念和框架。\n\nPython 语言基础\n\nDowney, A. (2024). Think Python: How to Think Like a Computer Scientist (3rd ed.). O’Reilly. 在线阅读 | PDF\n\nPython 入门首选，通俗易懂，适合零基础读者\n\nJohansson, R. (2024). Numerical Python: Scientific Computing and Data Science Applications with NumPy, SciPy and Matplotlib (3rd ed.). Apress. 链接 | github\n\n覆盖科学计算、绘图、统计与机器学习初步；第 4 章系统介绍 matplotlib 绘图元素\n\n\n\n\nPython 数据分析\n\nMcKinney, W. (2022). Python for Data Analysis: Data Wrangling with pandas, NumPy, and Jupyter (3rd ed.). O’Reilly. 在线阅读 | github\n\npandas 作者亲写，数据处理最权威的参考书\n\nVanderPlas, J. (2023). Python Data Science Handbook (2nd ed.). O’Reilly. 在线阅读 | github\n\n数据分析 + 可视化 + 机器学习，提供 Colab 版本，可直接在线运行\n\nQuantEcon. 网站 | github\n\n面向经济与金融的开源计算教程，内容持续更新\n\n\n\n\n金融数据分析\n\nScheuch, C., Voigt, S., Weiss, P., & Frey, C. (2024). Tidy Finance with Python (1st ed.). Chapman and Hall/CRC. 在线阅读 | github\n\n涵盖股票回报、CAPM、投资组合、Fama-French 因子模型等金融核心主题\n\nHilpisch, Y. (2019). Python for Finance: Mastering Data-Driven Finance (2nd ed.). O’Reilly. PDF | github\n\n量化金融方向，覆盖期权定价、风险管理、算法交易\n\nJansen, S. (2020). Machine Learning for Algorithmic Trading (2nd ed.). 网站 | github\n\n机器学习在算法交易中的应用，案例丰富",
     "crumbs": [
-      "📑**附录：常用 Python 提示词**",
+      "**附录：Python 提示词**",
       "概览"
     ]
   },
@@ -1044,7 +1044,7 @@
     "section": "",
     "text": "A1.1 包的安装\n虚拟环境的概念已在正文中介绍。本章只提供常用的提示词框，帮助你快速完成环境配置、包安装和路径处理，遇到问题时直接向 AI 求助。",
     "crumbs": [
-      "📑**附录：常用 Python 提示词**",
+      "**附录：Python 提示词**",
       "A1. 环境配置"
     ]
   },
@@ -1055,7 +1055,7 @@
     "section": "",
     "text": "提示词：安装缺失的包\n\n\n\n当运行代码出现 ModuleNotFoundError 时使用。\n我在运行 Python 代码时出现了以下报错：\n\nModuleNotFoundError: No module named 'statsmodels'\n\n我使用 Anaconda，当前激活的虚拟环境名为 `fin_analysis`，\n操作系统为 Windows 11。\n\n请告诉我：\n1. 用 conda 命令安装这个包（优先 conda，其次 pip）\n2. 如果 conda 找不到，如何通过添加 conda-forge 频道安装\n3. 安装后如何验证版本号，确认安装成功\n\n\n\n\n\n\n\n\n提示词：屏蔽 warnings 警告信息\n\n\n\npandas、statsmodels 等库运行时常输出大量警告，影响结果可读性。这组提示词适合放在每个 Notebook 的第一个代码单元格。\n我的 Python 代码运行时输出很多 warning 警告信息，\n影响输出结果的可读性。\n\n请帮我在代码开头添加几行代码，屏蔽以下类型的警告：\n1. 所有 UserWarning\n2. 所有 FutureWarning（pandas 版本升级导致的）\n3. 所有 DeprecationWarning\n\n要求：只屏蔽警告输出，不影响真正的报错（Exception）信息。\n代码要有注释，说明每行的作用。\n\n\n\n\n\n\n\n\n追问模板\n\n\n\n\n\n上面屏蔽 warnings 的代码加上去之后，仍然有一类警告没有被屏蔽，\n具体报错信息如下：\n\n[将仍然出现的警告信息粘贴在这里]\n\n请帮我在现有代码基础上，增加屏蔽这类警告的语句。",
     "crumbs": [
-      "📑**附录：常用 Python 提示词**",
+      "**附录：Python 提示词**",
       "A1. 环境配置"
     ]
   },
@@ -1066,7 +1066,7 @@
     "section": "A1.2 文件路径",
     "text": "A1.2 文件路径\n文件路径是初学者最常犯错的地方。写提示词时，一定要告诉 AI 你的项目文件夹结构，否则 AI 生成的路径大概率是错的。\n\n\n\n\n\n\nWarning\n\n\n\n不要在代码中写绝对路径（如 C:/Users/zhangsan/data/stock.csv）。一旦换了电脑，路径立刻失效。应始终使用相对路径，或用 pathlib 动态构建路径。\n\n\nA. 路径相关的核心术语\n\n\n\n术语\n含义\n提示词中如何说\n\n\n\n\n绝对路径\n从根目录出发的完整路径\n「C:/Users/… 这样的绝对路径」\n\n\n相对路径\n相对于当前脚本所在目录\n「用相对路径」\n\n\n工作目录（cwd）\nPython 当前所处的目录\n「当前工作目录」\n\n\npathlib\nPython 内置的路径处理模块\n「用 pathlib 模块处理路径」\n\n\n\n\n\n\n\n\n\n提示词：用相对路径读取数据文件\n\n\n\n我在 Python 中读取数据文件时遇到了路径问题。\n我的项目结构如下：\n\nfin_project/\n├── data/\n│   └── raw/\n│       └── stock_price.csv\n└── notebooks/\n    └── analysis.ipynb   ← 当前运行的文件在这里\n\n请帮我：\n1. 用 Python 的 `pathlib` 模块，写出从 `analysis.ipynb`\n   读取 `stock_price.csv` 的相对路径代码\n2. 用 pandas 读取该文件，文件编码为 GBK（中文 Windows 常见格式）\n3. 写出自动获取项目根目录（fin_project/）的代码，\n   使路径在不同电脑上都能正确运行\n\n要求：使用 `pathlib.Path`，兼容 Windows 和 macOS。\n\n\n\n\n\n\n\n\n提示词：解决中文路径与中文文件名问题\n\n\n\n当文件路径或文件名包含中文字符时，可能出现编码错误。\n我的数据文件路径包含中文（如 `C:/用户/数据/股票数据.csv`），\nPython 读取时出现 FileNotFoundError 或 UnicodeDecodeError。\n\n我使用的是 Windows 11，Python 3.11，pandas 2.x。\n\n请帮我：\n1. 解释为什么中文路径在 Windows 上容易出错\n2. 提供用 pandas 正确读取含中文路径 CSV 文件的代码，\n   分别尝试 UTF-8 和 GBK 两种编码\n3. 给出根本性的建议：如何重命名路径以彻底避免此类问题\n\n\n\n\n\n\n\n\n追问模板\n\n\n\n\n\n上面的代码运行后，仍然出现以下报错：\n\n[将报错信息完整粘贴在这里]\n\n我的项目当前工作目录是：[用 import os; print(os.getcwd()) 查到的路径]\n\n请根据这个实际路径，修改上面的代码，使其能正确读取文件。",
     "crumbs": [
-      "📑**附录：常用 Python 提示词**",
+      "**附录：Python 提示词**",
       "A1. 环境配置"
     ]
   },
@@ -1077,7 +1077,7 @@
     "section": "",
     "text": "A2.1 项目结构设计\n一个清晰的项目结构和基本的版本控制习惯，能让你的分析代码可复现、可备份、可分享。本章的核心思路是：先和 AI 讨论结构设计，确认后再让 AI 生成代码框架。",
     "crumbs": [
-      "📑**附录：常用 Python 提示词**",
+      "**附录：Python 提示词**",
       "A2. 项目规划与版本控制"
     ]
   },
@@ -1088,7 +1088,7 @@
     "section": "",
     "text": "A2.1.1 推荐的项目结构\n金融数据分析项目建议采用以下标准结构：\nfin_project/\n├── data/\n│   ├── raw/          # 原始数据，永远不修改\n│   └── processed/    # 清洗后的数据\n├── notebooks/        # Jupyter Notebook（探索性分析）\n├── scripts/          # 可复用的 Python 脚本\n├── outputs/\n│   ├── figures/      # 图形输出（PDF/PNG）\n│   └── tables/       # 表格输出（CSV/Excel）\n├── environment.yml   # 环境配置（供他人复现）\n└── README.md         # 项目说明\n\n\n\n\n\n\n提示词（第一轮）：与 AI 讨论项目结构\n\n\n\n对于一个新项目，先描述你的任务背景，让 AI 推荐合适的结构，再做调整。这比直接套用模板更符合你的实际需求。\n我正在启动一个 Python 数据分析项目，任务是：\n「用事件研究法分析上市公司并购公告对 A 股股价的短期影响」。\n\n数据来源：Wind 金融终端，包括日度股票行情数据和并购事件列表。\n分析工具：pandas、statsmodels、matplotlib。\n运行环境：VS Code + Jupyter Notebook，Windows 11，Anaconda。\n\n请帮我：\n1. 设计一个合理的项目文件夹结构，说明每个文件夹的用途\n2. 推荐主要脚本文件的命名和分工\n   （数据下载、数据清洗、建模分析、结果绘图各自独立成文件）\n3. 解释为什么不能直接修改 data/raw/ 中的原始数据\n\n请用树形结构展示最终目录，并为每个文件/文件夹附一行说明。\n\n\n\n\n\n\n\n\n提示词（第二轮）：让 AI 生成项目初始化脚本\n\n\n\n确认好结构后，让 AI 生成一键创建脚本，避免手动建文件夹。\n请基于我们刚才讨论的项目结构，帮我写一个 Python 脚本\n`setup_project.py`，在当前目录下自动创建所有文件夹，\n并生成以下初始文件：\n\n1. README.md：包含项目名称「fin_event_study」、创建日期和三行简介\n2. .gitignore：忽略 data/raw/ 下的所有文件、__pycache__/、\n   .ipynb_checkpoints/、.env\n\n要求：\n- 使用 Python 的 pathlib 模块\n- 如果文件夹已存在则跳过（不报错）\n- 代码有注释，适合在终端直接运行：python setup_project.py\n\n\n\n\n\n\n\n\n追问模板\n\n\n\n\n\n脚本运行后，文件夹结构创建成功，但有以下问题：\n\n[描述具体问题，例如：「README.md 创建了，但内容是空的」\n或「.gitignore 没有被创建」]\n\n请在上面代码的基础上修复这个问题，其余部分不变。",
     "crumbs": [
-      "📑**附录：常用 Python 提示词**",
+      "**附录：Python 提示词**",
       "A2. 项目规划与版本控制"
     ]
   },
@@ -1099,7 +1099,7 @@
     "section": "A2.2 Git 版本控制",
     "text": "A2.2 Git 版本控制\nGit 对金融分析学生最实用的价值只有两个：备份代码（防止误删）和记录修改历史（知道哪次改动导致了问题）。\nA. 写提示词时需要知道的 Git 核心术语\n\n\n\n术语\n含义\n类比\n\n\n\n\n仓库（repository）\n项目的所有文件 + 历史记录\n项目档案室\n\n\n提交（commit）\n保存当前状态的快照\n按下「存档」键\n\n\n暂存（add）\n选择哪些文件纳入本次提交\n放进「待存档」区\n\n\n推送（push）\n将本地提交上传到 GitHub\n上传到云端\n\n\n拉取（pull）\n将 GitHub 的更新下载到本地\n从云端下载\n\n\n.gitignore\n告诉 Git 哪些文件不需要追踪\n「不存档」清单\n\n\n\n\n\n\n\n\n\n提示词：初始化本地项目并推送到 GitHub\n\n\n\n适用于第一次将本地项目同步到 GitHub 的场景。\n我有一个本地 Python 项目，路径为 C:/Users/zhangsan/fin_project，\n想将它推送到 GitHub。\n\n我已经安装了 Git，GitHub 账号为 zhangsan，操作系统为 Windows 11。\n\n请帮我给出完整的操作步骤，包括：\n1. 在项目根目录初始化 Git 仓库\n2. 进行第一次提交，提交信息为「初始化项目」\n3. 在 GitHub 上新建同名仓库的操作说明（在哪里点击）\n4. 将本地仓库关联到 GitHub 远程仓库并推送\n\n请给出每一步的完整终端命令，以及各命令的作用说明。\n\n\n\n\n\n\n\n\n提示词：日常提交与同步的标准流程\n\n\n\n每次分析工作结束后，用这组提示词保存进度。\n我已经将本地项目 fin_project 关联到 GitHub 仓库。\n请帮我写出「每日提交」的标准命令序列：\n\n1. 查看哪些文件有改动\n2. 将所有改动加入暂存区\n3. 提交，提交信息格式为：「YYYY-MM-DD: 本次工作内容简述」\n4. 推送到 GitHub 主分支\n\n同时说明：\n- 在另一台电脑上拉取最新代码的命令\n- 如何查看过去 10 条提交历史\n\n请给出可以直接在终端（Anaconda Prompt 或 Git Bash）运行的命令。\n\n\n\n\n\n\n\n\n追问模板\n\n\n\n\n\n执行上面的 git push 命令时出现了以下报错：\n\n[将报错信息完整粘贴在这里]\n\n我使用的是 Windows 11，GitHub 账号为 zhangsan。\n请帮我分析报错原因并给出修复步骤。",
     "crumbs": [
-      "📑**附录：常用 Python 提示词**",
+      "**附录：Python 提示词**",
       "A2. 项目规划与版本控制"
     ]
   },
@@ -1110,7 +1110,7 @@
     "section": "",
     "text": "A3.1 数据类型\n本章不是词汇表，而是帮你建立「用专业词汇描述任务」的习惯。每个术语都直接嵌入在对应的提示词框中，你在使用提示词的过程中自然习得。",
     "crumbs": [
-      "📑**附录：常用 Python 提示词**",
+      "**附录：Python 提示词**",
       "A3. 提示词核心词汇"
     ]
   },
@@ -1121,7 +1121,7 @@
     "section": "",
     "text": "A3.1.1 为什么数据类型在提示词中最重要\n同样是一列数字，\"20240101\" 可能是字符串，也可能是整数。「把日期列转换成可以计算的格式」让 AI 一头雾水，而「把 date 列从字符串类型（str）转换为 datetime 类型」则让 AI 立刻写出正确代码。\nA. 金融数据中的常见类型与陷阱\n\n\n\n\n\n\n\n\n\n类型名\nPython 写法\n金融场景示例\n常见陷阱\n\n\n\n\n整数\nint\n成交量 1200000\n大数字无精度问题\n\n\n浮点数\nfloat\n收盘价 10.52、收益率 0.0132\n浮点精度误差\n\n\n字符串\nstr\n股票代码 \"000001\"、日期 \"2024-01-01\"\n股票代码必须用字符串，否则前导零丢失\n\n\n日期时间\ndatetime\n2024-01-15 09:30:00\n从 CSV 读入后默认是字符串，必须手动转换\n\n\n布尔值\nbool\n是否违约 True、是否处理组 False\n有时被存为 0/1 整数\n\n\n缺失值\nNaN\n停牌日无成交量\n计算时会传染，导致整列结果为 NaN\n\n\n\n\n\n\n\n\n\n提示词：读入数据后的第一步——查询并修正数据类型\n\n\n\n这是每次读入新数据后必做的操作。养成习惯后，后续绝大多数类型相关的报错都能提前避免。\n我用 pandas 读入了一个 CSV 文件，存储在数据框 `df` 中。\n列名为：date、stock_code、open、high、low、close、volume、return。\n\n请帮我写代码完成以下任务：\n1. 打印数据框的基本信息：行数、列数、每列的数据类型、缺失值数量\n2. 将 `date` 列从字符串类型转换为 datetime 类型，\n   日期格式为 YYYY-MM-DD\n3. 将 `stock_code` 列强制转换为字符串类型（避免前导零丢失）\n4. 将 `open`、`high`、`low`、`close`、`return` 列转换为 float 类型\n5. 将 `volume` 列转换为 int 类型\n6. 转换后再次打印每列的数据类型，确认转换成功\n\n如果某列转换失败（如含有非数字的字符串），请用 `errors='coerce'`\n将无法转换的值设为 NaN，并打印出有多少行受到影响。\n\n\n\n\n\n\n\n\n追问模板\n\n\n\n\n\n上面的类型转换代码运行后，`close` 列转换为 float 时出现了问题，\n有 [X] 行被设为了 NaN。\n\n请帮我查找原因：\n1. 打印出 `close` 列中所有无法转换为 float 的原始值\n2. 分析这些值的规律（如包含逗号、百分号、空格等）\n3. 在转换前先做字符串清洗，去除这些异常字符，再重新转换",
     "crumbs": [
-      "📑**附录：常用 Python 提示词**",
+      "**附录：Python 提示词**",
       "A3. 提示词核心词汇"
     ]
   },
@@ -1132,7 +1132,7 @@
     "section": "A3.2 数据结构",
     "text": "A3.2 数据结构",
     "crumbs": [
-      "📑**附录：常用 Python 提示词**",
+      "**附录：Python 提示词**",
       "A3. 提示词核心词汇"
     ]
   },
@@ -1143,7 +1143,7 @@
     "section": "A3.2.1 最常用的数据结构：数据框",
     "text": "A3.2.1 最常用的数据结构：数据框\npandas 数据框（DataFrame）是金融数据分析中几乎一切操作的基础。下面是你在提示词中必须用到的术语。\nA. 数据框的结构与术语\n         date  stock_code   close   volume   return\n0  2024-01-02      600000   10.50  1200000   0.012   ← 行（row）/ 观测\n1  2024-01-03      600000   10.80  1500000   0.029\n2  2024-01-02      601318   85.20   800000  -0.005\n\n↑ 索引（index）         ↑ 列名（column name）\n\n\n\n术语\n英文\n提示词中怎么说\n\n\n\n\n行 / 观测\nrow\n「每行是一只股票某天的数据」\n\n\n列 / 变量\ncolumn\n「close 列」、「收盘价列」\n\n\n索引\nindex\n「重置索引」、「以 date 为索引」\n\n\n子集\nsubset / slice\n「筛选出 industry 为银行的行」\n\n\n分组\ngroupby\n「按 stock_code 分组」\n\n\n聚合\naggregate\n「对每组计算均值」\n\n\n合并\nmerge / join\n「按 stock_code 和 date 左连接两个数据框」\n\n\n拼接\nconcat\n「将多个数据框纵向拼接」\n\n\n长格式\nlong format\n「每行是一个股票在某天的数据」\n\n\n宽格式\nwide format\n「行为日期，列为股票代码，值为收盘价」\n\n\n透视\npivot / melt\n「长格式转宽格式」、「宽格式转长格式」\n\n\n缺失值\nNaN / missing\n「close 列有缺失值」\n\n\n重复行\nduplicate\n「删除重复的股票-日期组合」\n\n\n异常值\noutlier\n「return 列有极端异常值」\n\n\n\n\n\n\n\n\n\n提示词：数据框的核心操作速查\n\n\n\n这组提示词将最常用的 6 类数据框操作集中在一起，可按需拆分单独使用。\n我有一个 pandas 数据框 `df`，面板数据格式（每行是一只股票某天的数据），\n包含以下列：\n- date：datetime 类型的日期\n- stock_code：字符串类型的股票代码\n- close：浮点数类型的收盘价\n- volume：整数类型的成交量\n- industry：字符串类型的行业分类\n\n请分别写代码实现以下操作，每个操作独立一段代码，附中文注释：\n\n1. 【筛选行】保留 industry 为「银行」且 close 大于 10 的行\n2. 【选取列】只保留 date、stock_code、close 三列，存为新数据框 `df_sub`\n3. 【排序】按 date 升序、close 降序排列\n4. 【分组聚合】按 industry 分组，计算每个行业的平均收盘价和总成交量\n5. 【新增列】新增列 `log_return`，值为 close 列的日对数收益率\n   （公式：ln(close_t / close_{t-1})，需要按 stock_code 分组后计算）\n6. 【格式转换】将长格式转换为宽格式：\n   行为 date，列为 stock_code，值为 close\n\n\n\n\n\n\n\n\n追问模板\n\n\n\n\n\n第 5 步计算 log_return 的代码有问题：\n每只股票的第一个交易日的 log_return 应该是 NaN（因为没有前一天的数据），\n但现在显示的是 [描述实际结果]。\n\n请检查代码，确保：\n1. 对数收益率是在每只股票内部按时间顺序计算的（不跨股票）\n2. 每只股票的第一行 log_return 为 NaN\n3. 打印前 5 行验证结果",
     "crumbs": [
-      "📑**附录：常用 Python 提示词**",
+      "**附录：Python 提示词**",
       "A3. 提示词核心词汇"
     ]
   },
@@ -1154,7 +1154,7 @@
     "section": "A3.3 常用库速查",
     "text": "A3.3 常用库速查\n写提示词时明确指定使用哪个库，AI 生成的代码风格会更一致，不同来源的代码之间也更容易混用。\n\n\n\n\n\n\n\n\n任务\n推荐库\n提示词关键词\n\n\n\n\n数据处理\npandas\n「使用 pandas」\n\n\n数值计算\nnumpy\n「使用 numpy」\n\n\n统计绘图\nmatplotlib + seaborn\n「用 seaborn 基于 matplotlib 绘图」\n\n\n交互式图形\nplotly\n「使用 plotly 生成交互式图表」\n\n\n统计建模\nstatsmodels\n「使用 statsmodels 的 OLS 模块」\n\n\n机器学习\nscikit-learn\n「使用 scikit-learn」\n\n\n美股数据\nyfinance\n「用 yfinance 下载 Yahoo Finance 数据」\n\n\nWind 数据\nWindPy\n「通过 WindPy 的 w.wsd 函数获取数据」\n\n\n进度条\ntqdm\n「用 tqdm 显示循环进度条」\n\n\n表格美化\ntabulate\n「用 tabulate 格式化输出表格」\n\n\n报告导出\nopenpyxl\n「用 openpyxl 写入 Excel 文件」",
     "crumbs": [
-      "📑**附录：常用 Python 提示词**",
+      "**附录：Python 提示词**",
       "A3. 提示词核心词汇"
     ]
   },
@@ -1165,7 +1165,7 @@
     "section": "",
     "text": "A4.1 生成模拟数据\n数据清洗往往占据一个分析项目 60–70% 的时间。本章围绕「读取 → 探索 → 清洗 → 变换」的标准流程，提供配套的提示词框和验证性追问模板。\n本章的一个重要原则： 每完成一步清洗操作，都要用追问模板让 AI 帮你验证结果是否合理，不要等到最后才发现数据在某个中间步骤已经出了问题。\n在正式分析前，先用模拟数据测试代码是个好习惯——不需要等到真实数据准备好，也不担心测试过程污染原始数据。",
     "crumbs": [
-      "📑**附录：常用 Python 提示词**",
+      "**附录：Python 提示词**",
       "A4. 数据获取与清洗"
     ]
   },
@@ -1176,7 +1176,7 @@
     "section": "",
     "text": "提示词：生成金融面板模拟数据\n\n\n\n这组提示词用于生成结构上接近真实 A 股数据的模拟数据框，适合在没有 Wind 权限时测试代码逻辑。\n请用 Python 的 pandas 和 numpy 生成一份模拟金融面板数据集，\n设置随机种子 np.random.seed(42) 确保可复现，要求如下：\n\n数据结构（长格式面板数据）：\n- 股票数量：10 只，代码为 \"股票A\" 到 \"股票J\"\n- 时间跨度：2020-01-01 到 2023-12-31，仅保留工作日（交易日）\n- 数据列：\n  - date：datetime 类型的日期\n  - stock_code：字符串类型的股票代码\n  - close：收盘价（初始价格在 10–100 之间随机，\n    后续按几何布朗运动模拟，漂移率 0，波动率 0.02）\n  - volume：成交量（100万到1000万之间的整数）\n  - return：由 close 计算的日对数收益率\n  - industry：行业（从「银行」「科技」「消费」「医药」中随机分配，\n    每只股票固定一个行业）\n\n数据质量模拟：\n- 随机插入约 2% 的缺失值（NaN）在 close 和 volume 列\n- 随机插入约 0.5% 的极端异常值（超过正常值的 5 倍）在 return 列\n\n输出：\n- 数据框命名为 `df`\n- 打印前 5 行和基本统计信息（describe()）\n- 打印每列的缺失值数量\n\n\n\n\n\n\n\n\n追问模板\n\n\n\n\n\n模拟数据生成后，我发现以下问题需要修正：\n\n[从以下几种情况选择描述，或自行描述：]\n- return 列的值范围不对，出现了大于 1 或小于 -1 的值，\n  但日收益率不应该有这么大的波动，请检查计算逻辑\n- industry 列的分布不均匀，某个行业占了 80% 以上，\n  请修改为更均匀的随机分配\n- 日期列包含了周末，请修改为只保留工作日\n\n请在原有代码基础上修复以上问题，其余部分不变。",
     "crumbs": [
-      "📑**附录：常用 Python 提示词**",
+      "**附录：Python 提示词**",
       "A4. 数据获取与清洗"
     ]
   },
@@ -1187,7 +1187,7 @@
     "section": "A4.2 读取数据文件",
     "text": "A4.2 读取数据文件\n\n\n\n\n\n\n提示词：读取各类格式的数据文件\n\n\n\n这组提示词覆盖了金融分析中最常见的数据文件格式，可按需选取对应部分。\n请帮我写 Python 代码，分别读取以下格式的数据文件并存为 pandas 数据框。\n每种格式独立一段代码，附中文注释。\n\n1. 【CSV 文件】路径：../data/raw/stock_data.csv\n   - 编码格式为 GBK（中文 Windows 导出的 CSV 常见编码）\n   - 第一行为列名\n   - 读取时直接将 date 列解析为 datetime 类型\n\n2. 【Excel 文件】路径：../data/raw/financial_report.xlsx\n   - 读取名为「资产负债表」的工作表（sheet）\n   - 跳过前 2 行（前两行是说明文字，不是数据）\n   - 只读取第 A 到 G 列\n\n3. 【批量合并多个 CSV 文件】\n   - ../data/raw/ 目录下有多个以 stock_ 开头的 CSV 文件\n   - 将所有文件读取后纵向拼接（concat）为一个数据框\n   - 新增一列 source_file 记录每行数据来自哪个文件名\n   - 用 tqdm 显示合并进度\n\n\n\n\n\n\n\n\n追问模板\n\n\n\n\n\n读取 CSV 文件后出现以下问题，请帮我修复：\n\n[从以下几种情况选择，或自行描述：]\n- 报错：UnicodeDecodeError，请帮我尝试其他编码格式（UTF-8、GBK、GB18030）\n- 日期列虽然指定了 parse_dates，但读入后仍然是字符串类型，\n  请检查 date 列的原始格式并用 pd.to_datetime() 手动转换\n- 数字列（如 close）读入后变成了字符串，\n  原因可能是原始数据中含有逗号（如 1,200.50），请处理后转为 float",
     "crumbs": [
-      "📑**附录：常用 Python 提示词**",
+      "**附录：Python 提示词**",
       "A4. 数据获取与清洗"
     ]
   },
@@ -1198,7 +1198,7 @@
     "section": "A4.3 数据探索（EDA）",
     "text": "A4.3 数据探索（EDA）\n在清洗之前，先用 AI 帮你生成一份数据「体检报告」，全面了解数据质量，再有针对性地清洗。\n\n\n\n\n\n\n提示词：全面的数据质量检查\n\n\n\n我有一个 pandas 数据框 `df`，来自 Wind 金融数据库，\n是 A 股股票的日度交易数据。\n\n请帮我写代码生成一份数据质量检查报告，包括：\n\n基本信息：\n1. 数据框的行数、列数\n2. 每列的数据类型（dtypes）\n3. 内存占用大小\n\n缺失值分析：\n4. 每列的缺失值数量和缺失比例，按缺失比例降序排列\n5. 可视化：用 seaborn 热图（heatmap）展示哪些行有缺失\n\n数值列分析：\n6. 数值列的描述性统计：均值、中位数、标准差、最小值、最大值、\n   1% 和 99% 分位数\n7. 用箱线图（boxplot）展示数值列的分布，识别异常值\n\n时间序列完整性检查（date 列为 datetime 类型）：\n8. 数据的起止日期\n9. 是否存在同一只股票在同一天有多条记录（重复行）\n10. 每只股票的数据条数是否大致相同（是否有股票数据严重缺失）\n\n图形要求：中文标题，图形尺寸 (12, 8)，风格使用 seaborn 的 whitegrid。\n\n\n\n\n\n\n\n\n追问模板——发现问题后进一步定位\n\n\n\n\n\n数据质量检查发现了以下问题，请帮我进一步定位：\n\n问题 1：close 列有 3.2% 的缺失值，远高于其他列。\n请找出缺失值集中在哪些股票、哪些时间段，\n并打印出缺失行的 stock_code 和 date，判断是否有规律\n（如某只股票停牌期间缺失）。\n\n问题 2：发现了 [X] 条重复的股票-日期组合，\n请打印出这些重复行，判断是否是完全相同的记录（可以直接删除）\n还是同一天有不同来源的数据（需要进一步处理）。",
     "crumbs": [
-      "📑**附录：常用 Python 提示词**",
+      "**附录：Python 提示词**",
       "A4. 数据获取与清洗"
     ]
   },
@@ -1209,7 +1209,7 @@
     "section": "A4.4 数据清洗",
     "text": "A4.4 数据清洗",
     "crumbs": [
-      "📑**附录：常用 Python 提示词**",
+      "**附录：Python 提示词**",
       "A4. 数据获取与清洗"
     ]
   },
@@ -1220,7 +1220,7 @@
     "section": "A4.4.1 处理缺失值",
     "text": "A4.4.1 处理缺失值\n\n\n\n\n\n\n提示词：缺失值处理策略\n\n\n\n我有一个股票日度面板数据框 `df`（10只股票，约1000个交易日），\n包含 date、stock_code、close、volume、return 列，\n其中 close 列有约 2% 的缺失值（来自停牌日）。\n\n请帮我分别实现以下缺失值处理方案，每个方案独立成一段代码：\n\n1. 【前向填充】对 close 列用前向填充（ffill）：\n   用上一个交易日的收盘价填充缺失日的价格。\n   注意：必须先按 stock_code 和 date 排序，\n   再在每只股票内部单独做前向填充（不能跨股票填充）。\n   结果存为 `df_ffill`\n\n2. 【删除缺失行】直接删除 close 列有缺失的行。\n   结果存为 `df_drop`\n\n3. 【分组均值填充】用该股票所有交易日的平均收盘价填充缺失值。\n   按 stock_code 分组计算均值后填充。\n   结果存为 `df_mean`\n\n对每种方案，处理完后打印：处理前后的缺失值数量，以及数据框的行数变化。\n\n最后，请说明：在金融时间序列分析中，这三种方案各自适合什么场景，\n以及哪种方案最常用。\n\n\n\n\n\n\n\n\n追问模板\n\n\n\n\n\n前向填充（ffill）代码运行后，close 列仍有 [X] 个缺失值没有被填充。\n我猜测原因是某些股票的第一个交易日就是缺失值（没有前一天的数据可以填充）。\n\n请帮我：\n1. 确认这个猜测是否正确（打印仍然缺失的行）\n2. 对这些无法前向填充的缺失值，改用后向填充（bfill）处理\n3. 如果仍有缺失，则直接删除这些行",
     "crumbs": [
-      "📑**附录：常用 Python 提示词**",
+      "**附录：Python 提示词**",
       "A4. 数据获取与清洗"
     ]
   },
@@ -1231,7 +1231,7 @@
     "section": "A4.4.2 处理异常值",
     "text": "A4.4.2 处理异常值\n\n\n\n\n\n\n提示词：识别与处理异常值（Winsorize）\n\n\n\n我有一个股票日收益率数据框 `df`，其中 `return` 列包含一些极端异常值\n（可能来自数据错误或停复牌导致的异常涨跌）。\n\n请帮我写代码：\n\n1. 【识别异常值】用两种方法识别 return 列的异常值：\n   - 方法一：超过均值 ±3 个标准差的值\n   - 方法二：超过 1% 和 99% 分位数的值（Winsorize 法）\n   分别打印两种方法识别出的异常值数量\n\n2. 【可视化对比】绘制处理前后的收益率分布直方图（并排两图），\n   x 轴范围固定为 [-0.2, 0.2]，便于对比\n\n3. 【Winsorize 处理】\n   按 stock_code 分组，对每只股票的 return 列分别做 Winsorize：\n   将超过该股票 1% 分位数的值替换为 1% 分位数，\n   将低于 99% 分位数的值替换为 99% 分位数。\n   结果覆盖原 return 列，并新增列 return_raw 保存原始值\n\n4. 处理后打印：被修改的行数，以及修改前后 return 列的极值对比\n\n请说明：为什么按股票分组做 Winsorize，而不是对全样本整体处理？",
     "crumbs": [
-      "📑**附录：常用 Python 提示词**",
+      "**附录：Python 提示词**",
       "A4. 数据获取与清洗"
     ]
   },
@@ -1242,7 +1242,7 @@
     "section": "A4.5 数据合并",
     "text": "A4.5 数据合并\n\n\n\n\n\n\n提示词：合并行情数据与财务数据\n\n\n\n这是金融实证研究中最典型的数据合并场景：将日度价格数据与年度财务数据按「股票代码 + 年份」对齐合并。\n我有两个 pandas 数据框需要合并：\n\n数据框1：df_price（股票日度行情数据）\n- 列：date（datetime）、stock_code（str）、close（float）、return（float）\n- 数据量：约 50 万行\n\n数据框2：df_fundamental（公司年度财务数据）\n- 列：year（int，如 2020、2021）、stock_code（str）、\n  roe（float）、leverage（float）、size（float）\n- 数据量：约 5000 行\n\n合并需求：\n1. 从 df_price 的 date 列提取年份，新增列 year（整数类型）\n2. 以 stock_code 和 year 为键，将两个数据框做左连接（left join）：\n   保留 df_price 的所有行，匹配 df_fundamental 中对应的财务数据\n3. 合并后检查：有多少行在 df_fundamental 中找不到匹配？\n   这些行的 stock_code 和 year 是什么？\n4. 对合并结果按 stock_code 和 date 升序排列\n\n请同时简要说明 left join、inner join、right join 的区别。\n\n\n\n\n\n\n\n\n追问模板——合并后行数异常\n\n\n\n\n\n这是合并操作最常见的陷阱：合并后行数比预期多，说明存在多对多匹配。\ndf_price 和 df_fundamental 合并后，数据框的行数从 500,000 行\n变成了 580,000 行，比预期多了 80,000 行。\n\n请帮我诊断原因：\n1. 检查 df_fundamental 中是否有同一个 stock_code + year 组合出现了多次\n   （即财务数据中有重复记录）\n2. 如果存在重复，请帮我在合并前先对 df_fundamental 去重，\n   保留每个 stock_code + year 组合的最后一条记录\n3. 去重后重新合并，确认行数恢复正常",
     "crumbs": [
-      "📑**附录：常用 Python 提示词**",
+      "**附录：Python 提示词**",
       "A4. 数据获取与清洗"
     ]
   },
@@ -1253,7 +1253,7 @@
     "section": "A4.6 从金融数据库获取数据",
     "text": "A4.6 从金融数据库获取数据\n\n\n\n\n\n\n提示词：用 yfinance 获取美股数据\n\n\n\n适用于获取美股、港股、ETF 等数据的场景。\n请帮我用 yfinance 库下载股票数据，要求：\n\n1. 下载苹果（AAPL）、谷歌（GOOGL）、微软（MSFT）三只股票\n   从 2020-01-01 到 2024-12-31 的日度数据\n2. 获取字段：开盘价、最高价、最低价、调整后收盘价、成交量\n3. 将三只股票的数据整合为长格式数据框\n   （列：date、ticker、open、high、low、adj_close、volume）\n4. 计算每只股票的日对数收益率（log return），存为新列 log_return\n5. 保存为 CSV 文件：../data/raw/us_stock_daily.csv\n\n异常处理：\n- 如果某只股票下载失败，跳过并打印错误信息，不中断整体流程\n- 用 tqdm 显示下载进度\n\n\n\n\n\n\n\n\n提示词：用 WindPy 获取 A 股数据\n\n\n\n适用于有 Wind 金融终端权限的场景。\n请帮我用 WindPy（Wind Python API）获取 A 股数据。\nWind 终端已在本机登录，Python 环境中已安装 WindPy。\n\n任务1：获取沪深300成分股列表\n- 获取当前沪深300（000300.SH）的所有成分股代码\n- 使用 w.wset(\"indexconstituent\", ...)\n\n任务2：获取个股日度行情数据\n- 股票：平安银行（000001.SZ）\n- 时间：2022-01-01 到 2023-12-31\n- 字段：收盘价（close）、成交量（volume）、换手率（turn）、市盈率（pe_ttm）\n- 使用 w.wsd(...)\n\n任务3：将获取的数据转换为 pandas 数据框：\n- 整理列名（去除多余空格，改为英文小写）\n- date 列转换为 datetime 类型\n\n请在代码中说明：\n- 每次调用 Wind API 后，如何检查返回是否成功（ErrorCode == 0）\n- 如果 ErrorCode 不为 0，如何打印错误原因并终止执行",
     "crumbs": [
-      "📑**附录：常用 Python 提示词**",
+      "**附录：Python 提示词**",
       "A4. 数据获取与清洗"
     ]
   },
@@ -1264,7 +1264,7 @@
     "section": "",
     "text": "A5.1 图形要素词汇表\n本章分两个层次：首先帮你建立「图形词汇」——知道如何用专业语言描述图形的每一个元素；然后给出金融分析中最常用图形的提示词框，每个框都配有「微调追问模板」，帮助你在第一轮代码基础上迭代改进。",
     "crumbs": [
-      "📑**附录：常用 Python 提示词**",
+      "**附录：Python 提示词**",
       "A5. 数据可视化"
     ]
   },
@@ -1275,7 +1275,7 @@
     "section": "",
     "text": "A5.1.1 为什么需要图形词汇？\n「图例挡住了折线」「x 轴日期挤在一起看不清」「子图之间的间距太大」——这些是最常见的图形问题。但如果你不知道「图例」的英文是 legend，「x 轴刻度标签」是 xticklabels，AI 就无法帮你精准修改。\nA. 图形结构全览\n┌──────────────────────────────────────────────────┐\n│          主标题 (title / suptitle)                │\n│  y 轴标签  ┌─────────────────────────┐  图例      │\n│  (ylabel)  │       绘图区域           │ (legend)   │\n│            │  ╱╲      /╲            │            │\n│      y 轴  │ ╱  ╲    ╱  ╲           │            │\n│     刻度   │╱    ╲  ╱    ╲──────    │            │\n│   (yticks) └─────────────────────────┘            │\n│               x 轴刻度标签 (xticklabels)           │\n│               x 轴标签 (xlabel)                   │\n└──────────────────────────────────────────────────┘\nB. 图形要素速查\n\n\n\n图形要素\n英文术语\n在提示词中如何描述\n\n\n\n\n整张图形\nfigure\n「整个 figure 对象」\n\n\n绘图区域\naxes / subplot\n「第 1 行第 2 列的子图（axes）」\n\n\n主标题\ntitle / suptitle\n「整张图的主标题」\n\n\n子图标题\naxes title\n「每个子图的标题」\n\n\nx 轴标签\nxlabel\n「x 轴的说明文字」\n\n\ny 轴标签\nylabel\n「y 轴的说明文字」\n\n\nx 轴刻度\nxticks\n「x 轴刻度的位置和数量」\n\n\nx 轴刻度标签\nxticklabels\n「x 轴上显示的文字，如日期」\n\n\n刻度方向\ntick direction\n「刻度线朝内还是朝外」\n\n\n图例\nlegend\n「右上角的图例」\n\n\n图例标签\nlegend label\n「图例中每条线的说明文字」\n\n\n注释\nannotation\n「在某个数据点旁边标注文字」\n\n\n参考线\nreference line\n「在 x=0 处画一条垂直虚线」\n\n\n置信区间\nconfidence interval\n「用阴影区域表示 95% 置信区间」\n\n\n阴影区域\nfill_between\n「两条线之间的半透明填充」\n\n\n背景网格\ngrid\n「淡灰色水平网格线」\n\n\n图形尺寸\nfigsize\n「图形宽 10 英寸、高 6 英寸」\n\n\n分辨率\ndpi\n「300 dpi（学术论文要求）」\n\n\n紧凑布局\ntight_layout\n「自动调整子图间距，避免标题重叠」\n\n\n颜色方案\ncolormap / palette\n「色盲友好的配色方案」\n\n\n透明度\nalpha\n「透明度 0.3（半透明）」\n\n\n线型\nlinestyle\n「实线、虚线（–）、点划线（-.）」\n\n\n线宽\nlinewidth\n「线条宽度 1.5」\n\n\n标记点\nmarker\n「在数据点上画圆形标记」\n\n\n字号\nfontsize\n「标题字号 14，轴标签字号 12」\n\n\n边距\nbbox_inches\n「保存时去除四周白边（‘tight’）」\n\n\n\n\n\n\n\n\n\n提示词：解决图形中文乱码\n\n\n\n这是 matplotlib 最常见的问题，在每个绘图脚本开头运行一次即可。\n我用 matplotlib 绘图时，图形中的中文标题和轴标签显示为方块或乱码。\n操作系统：Windows 11。\n\n请帮我：\n1. 在代码开头添加设置，使 matplotlib 全局支持中文显示，\n   推荐字体：微软雅黑（Microsoft YaHei）\n2. 同时确保负号（-）能正常显示，不显示为方块\n3. 设置代码要放在所有 import 语句之后，绘图代码之前\n\n要求：不改变图形的其他默认样式。\n\n\n\n\n\n\n\n\n提示词：设置图形尺寸、分辨率与保存格式\n\n\n\n请帮我写代码，将 matplotlib 图形保存为高质量文件，要求：\n\n1. 图形尺寸：宽 10 英寸、高 6 英寸（适合 A4 横版页面）\n2. 分辨率：300 dpi（满足学术期刊投稿要求）\n3. 分别保存两种格式：\n   - PNG 格式，用于 PPT 和 Word 报告\n   - PDF 格式，用于 LaTeX 论文（矢量图，无论放多大都不模糊）\n4. 保存时自动去除四周多余白边（bbox_inches='tight'）\n5. 保存路径：../outputs/figures/figure_name.png 和 .pdf\n\n同时说明：什么情况下用 PNG，什么情况下用 PDF？",
     "crumbs": [
-      "📑**附录：常用 Python 提示词**",
+      "**附录：Python 提示词**",
       "A5. 数据可视化"
     ]
   },
@@ -1286,7 +1286,7 @@
     "section": "A5.2 图形风格设置",
     "text": "A5.2 图形风格设置\n\nA5.2.1 推荐绘图方案\n在写具体图形的提示词之前，先让 AI 帮你确定风格，后续所有图形保持一致。\n\n\n\n\n\n\n提示词（第一轮）：推荐绘图方案\n\n\n\n先描述你的需求，让 AI 推荐，而不是直接让它生成代码。\n我需要为一篇金融学术论文绘制若干图形，请推荐最合适的 Python 绘图方案：\n\n我的需求：\n- 风格：学术论文风格，简洁，背景白色，无多余装饰\n- 配色：色盲友好的颜色组合（因为论文可能被打印为黑白）\n- 图形类型：折线图（时间序列）、事件研究图（含置信区间阴影）、\n  散点图、2×2 子图布局\n- 输出格式：PDF（用于 LaTeX 插图）\n- 中文：图形中需要显示中文标题和标签\n\n请：\n1. 推荐最合适的库组合（matplotlib/seaborn/plotly 等）及理由\n2. 推荐一个适合学术论文的全局风格设置（plt.style 或 rcParams）\n3. 推荐具体的色盲友好颜色列表（十六进制代码）\n4. 给出全局风格设置代码，封装为函数 set_academic_style()\n\n\n\n\n\n\n\n\n提示词（第二轮）：商务汇报风格\n\n\n\n适用于给管理层、客户展示的图形。\n我需要为一份向投资委员会汇报的 PPT 制作图形，请设置商务汇报风格：\n\n风格要求：\n- 整体：白底，干净，参考麦肯锡报告风格\n- 主色调：深蓝色（#003366）和橙色（#FF6600）\n- 字体：微软雅黑，标题 16pt 加粗，轴标签 13pt\n- 特殊要求：条形图的每根柱子顶部显示数值标签，\n  图形右下角有数据来源说明（如「数据来源：Wind」）\n\n请给出全局风格设置代码，封装为函数 set_business_style()，\n并用一个季度营收条形图示例演示效果（使用模拟数据）。",
     "crumbs": [
-      "📑**附录：常用 Python 提示词**",
+      "**附录：Python 提示词**",
       "A5. 数据可视化"
     ]
   },
@@ -1297,7 +1297,7 @@
     "section": "A5.3 常用金融图形",
     "text": "A5.3 常用金融图形",
     "crumbs": [
-      "📑**附录：常用 Python 提示词**",
+      "**附录：Python 提示词**",
       "A5. 数据可视化"
     ]
   },
@@ -1308,7 +1308,7 @@
     "section": "A5.3.1 时间序列折线图",
     "text": "A5.3.1 时间序列折线图\n\n\n\n\n\n\n提示词：多股票价格走势图\n\n\n\n我有一个 pandas 数据框 `df`，长格式面板数据，\n列为：date（datetime）、stock_code（str）、close（float）。\n\n请帮我用 matplotlib 绘制多股票价格走势折线图，要求：\n\n图形内容：\n- 每只股票一条折线，不同颜色区分，使用色盲友好配色\n- 在日期「2022-01-17」处添加一条红色垂直虚线，\n  线旁标注文字「政策公告日」（文字不遮挡折线）\n- 折线末端不显示标记点（marker）\n\n图形格式：\n- 图形尺寸：(12, 5) 英寸\n- 中文主标题：「样本股票收盘价走势（2020–2023）」，字号 14\n- x 轴标签：「日期」，y 轴标签：「收盘价（元）」\n- x 轴刻度：每季度一个刻度，格式为 YYYY-MM\n- x 轴刻度标签旋转 45°，避免重叠\n- 图例位于右上角，显示股票代码，无边框\n- 背景：白色，仅显示水平淡灰色网格线\n\n保存为 ../outputs/figures/stock_trend.pdf，300 dpi，去除白边。\n\n\n\n\n\n\n\n\n微调追问模板\n\n\n\n\n\n图形生成后，根据实际效果选择以下追问：\n图形基本正确，但有以下细节需要调整，请在上面代码的基础上修改，\n其余部分不变：\n\n[从以下情况选择，或自行描述：]\n\n- x 轴日期标签太密，刻度改为每 6 个月一个，格式改为 YYYY 年 MM 月\n- 图例中股票代码太多，图例挡住了折线，请将图例移到图形外部右侧\n- 某只股票的折线颜色与其他股票太接近，看不清楚，\n  请手动指定每只股票的颜色，颜色列表为：[\"#0072B2\", \"#E69F00\", \n  \"#009E73\", \"#CC79A7\", \"#F0E442\"]\n- y 轴数值范围不合适，价格集中在 10–30 之间，\n  但 y 轴从 0 开始，折线被压缩在上方，请将 y 轴下限设为数据最小值的 0.95 倍\n- 保存的 PDF 打开后发现中文变成了方块，\n  请在保存前添加字体设置，确保 PDF 中中文正常显示",
     "crumbs": [
-      "📑**附录：常用 Python 提示词**",
+      "**附录：Python 提示词**",
       "A5. 数据可视化"
     ]
   },
@@ -1319,7 +1319,7 @@
     "section": "A5.3.2 事件研究图",
     "text": "A5.3.2 事件研究图\n\n\n\n\n\n\n提示词：事件研究 CAR 图\n\n\n\n这是事件研究法最核心的结果图，展示事件窗口内的平均累计异常收益率及其置信区间。\n我有一个数据框 `df_car`，包含以下列：\n- event_day：整数，事件窗口相对时间（-10 到 +10，0 为事件日）\n- CAR：平均累计异常收益率（浮点数）\n- CI_lower：95% 置信区间下限（CAR - 1.96 × 标准误）\n- CI_upper：95% 置信区间上限（CAR + 1.96 × 标准误）\n\n请帮我用 matplotlib 绘制标准事件研究图，要求：\n\n图形内容：\n- 主线：CAR 的折线，颜色深蓝色（#003399），线宽 2\n- 置信区间：用半透明阴影（fill_between）展示 [CI_lower, CI_upper]，\n  颜色浅蓝色（#99BBFF），透明度（alpha）= 0.3\n- 垂直参考线：在 event_day = 0 处画红色虚线，标注文字「事件日」\n- 水平参考线：在 CAR = 0 处画灰色虚线（baseline）\n\n图形格式：\n- 图形尺寸：(9, 5) 英寸\n- 主标题：「并购公告日前后的平均累计异常收益率（CAR）」，字号 13\n- x 轴标签：「相对事件日（天）」\n- y 轴标签：「累计异常收益率（%）」，y 轴数值乘以 100 显示为百分比\n- x 轴刻度：每 2 天一个，从 -10 到 +10\n- 图例：说明 CAR 和 95% 置信区间\n- 背景：白色，水平淡灰色网格线\n\n保存为 ../outputs/figures/event_study_CAR.pdf。\n\n\n\n\n\n\n\n\n微调追问模板\n\n\n\n\n\n事件研究图基本符合要求，请在上面代码基础上做以下调整：\n\n[选择适用的情况：]\n\n- CAR 在事件日前后的折线较为平滑，但我想在每个数据点上显示一个小圆点\n  标记（marker='o'，大小 4），帮助读者看清楚每天的数值\n- 我需要在同一张图上展示两个子样本（国有企业和民营企业）的 CAR 对比，\n  数据框为 `df_car_soe`（国有）和 `df_car_private`（民营），\n  请用不同颜色的实线和虚线区分，并更新图例\n- 图形的 y 轴范围自动设置后上下空间太多，\n  请将 y 轴范围设置为 [CAR 最小值 - 0.5%, CAR 最大值 + 0.5%]",
     "crumbs": [
-      "📑**附录：常用 Python 提示词**",
+      "**附录：Python 提示词**",
       "A5. 数据可视化"
     ]
   },
@@ -1330,7 +1330,7 @@
     "section": "A5.3.3 分布图与相关系数热图",
     "text": "A5.3.3 分布图与相关系数热图\n\n\n\n\n\n\n提示词：收益率分布图（直方图 + KDE + 正态分布对比）\n\n\n\n我有一个数据框 `df`，其中 `return` 列是股票日收益率（浮点数）。\n\n请帮我用 matplotlib 和 scipy 绘制收益率分布图，要求：\n\n图形内容（全部叠加在同一坐标系中）：\n- 直方图（histogram）：区间数量 50，纵轴为频率密度（density=True），\n  颜色浅蓝色（#AEC6E8），透明度 0.6，有黑色细边框\n- KDE 曲线：核密度估计，颜色深蓝色（#003399），线宽 2\n- 正态分布曲线：用实际数据的均值和标准差参数化，\n  颜色红色（#CC0000），线型为虚线（--），线宽 1.5\n- 文字标注：在图形右上角内侧标注均值、标准差、偏度、峰度的数值，\n  格式为：「均值 = 0.0012，标准差 = 0.0215，偏度 = -0.35，峰度 = 5.82」\n\n图形格式：\n- 图形尺寸：(9, 5) 英寸\n- x 轴范围：[-0.15, 0.15]，x 轴标签：「日收益率」\n- y 轴标签：「频率密度」\n- 主标题：「A 股样本股票日收益率分布（2020–2023）」\n- 图例：说明直方图、KDE 和正态分布曲线\n\n使用 scipy.stats 计算偏度和峰度。\n\n\n\n\n\n\n\n\n提示词：相关系数热图\n\n\n\n我有一个 pandas 数据框 `df`，包含以下数值列：\nreturn（收益率）、beta（市场风险）、size（规模对数）、\nbm（账面市值比）、momentum（动量）、leverage（杠杆率）。\n\n请用 seaborn 绘制变量相关系数热图，要求：\n\n图形内容：\n- 计算所有数值列的 Pearson 相关系数矩阵\n- 颜色方案：负相关为蓝色，正相关为红色，不相关为白色，\n  使用 seaborn 的 RdBu_r 色谱\n- 每个格子中显示相关系数值，保留 2 位小数\n- 仅显示下三角（上三角留白，避免重复）\n- 对角线：显示为 1.00，颜色与最大正相关相同\n\n图形格式：\n- 图形尺寸：(8, 7) 英寸\n- 主标题：「变量相关系数矩阵」，字号 13\n- 变量标签改为中文：\n  [return→收益率, beta→市场β, size→公司规模, \n   bm→账面市值比, momentum→动量, leverage→杠杆率]\n- 颜色条（colorbar）的范围固定为 [-1, 1]\n\n保存为 ../outputs/figures/correlation_heatmap.pdf。",
     "crumbs": [
-      "📑**附录：常用 Python 提示词**",
+      "**附录：Python 提示词**",
       "A5. 数据可视化"
     ]
   },
@@ -1341,7 +1341,7 @@
     "section": "A5.4 批量绘图与交互式图形",
     "text": "A5.4 批量绘图与交互式图形\n\n\n\n\n\n\n提示词：批量生成多子图\n\n\n\n当需要对多只股票或多个变量绘制同类型图形时，批量生成比逐一绘制高效得多。\n我有一个面板数据框 `df`，包含 date、stock_code、close 列，\nstock_code 共有 9 只股票。\n\n请用 matplotlib 批量绘制每只股票的价格走势，以 3×3 子图布局展示，要求：\n\n布局：\n- 3 行 3 列的子图，每个子图对应一只股票\n- 图形尺寸：(15, 12) 英寸\n- 使用 constrained_layout=True 自动调整子图间距\n\n每个子图：\n- 折线图，颜色统一为深蓝色（#003399）\n- 子图标题为股票代码，字号 11\n- x 轴：仅显示年份（格式 %Y），每两年一个刻度\n- x 轴刻度标签旋转 30°\n- y 轴：不显示标签（由整体 y 轴说明）\n\n整体图形：\n- 主标题：「9 只样本股票收盘价走势（2020–2023）」，字号 16\n- 整体 x 轴说明「日期」，y 轴说明「收盘价（元）」\n  （用 fig.supxlabel 和 fig.supylabel 实现）\n\n保存为 ../outputs/figures/stock_grid.pdf。\n\n\n\n\n\n\n\n\n提示词：生成交互式图形（Plotly）\n\n\n\n适合在 Jupyter Notebook 中展示，或嵌入 HTML 报告，支持鼠标悬停查看数据。\n我有一个股票价格数据框 `df`，包含 date、stock_code、close 列。\n\n请用 Plotly 生成一个交互式股价走势图，要求：\n\n交互功能：\n- 鼠标悬停时显示：日期、股票代码、收盘价（保留 2 位小数）\n- 支持框选缩放（box select）和双击重置\n- x 轴有时间范围选择器：可选 1M / 3M / 6M / 1Y / 全部\n- 图例可点击以显示/隐藏单只股票\n\n图形样式：\n- 主题：plotly_white（适合汇报）\n- 每只股票不同颜色，线宽 2px\n- 图形宽 900px，高 500px\n- 主标题：「股票收盘价走势（交互式）」\n\n导出：\n- 在 Jupyter Notebook 中显示（fig.show()）\n- 同时保存为 HTML 文件 ../outputs/figures/stock_interactive.html，\n  可在浏览器中独立打开",
     "crumbs": [
-      "📑**附录：常用 Python 提示词**",
+      "**附录：Python 提示词**",
       "A5. 数据可视化"
     ]
   },
@@ -1352,7 +1352,7 @@
     "section": "",
     "text": "A6.1 生成回归模拟数据\n本章提供从 OLS 回归到机器学习的建模提示词模板。每个提示词框后都有「结果验证追问模板」——因为代码能跑通不代表结果正确，验证中间输出是建模流程中最容易被忽略的一步。\n在开始建模之前，先用模拟数据验证代码逻辑，确认模型估计出的系数和设定的真实值接近，再换成真实数据分析。",
     "crumbs": [
-      "📑**附录：常用 Python 提示词**",
+      "**附录：Python 提示词**",
       "A6. 统计建模"
     ]
   },
@@ -1363,7 +1363,7 @@
     "section": "",
     "text": "提示词：生成回归分析模拟数据\n\n\n\n请用 numpy 和 pandas 生成一份用于 OLS 回归分析的模拟数据，\n随机种子 np.random.seed(42)，样本量 1000：\n\n数据设定（金融场景：影响股票月收益率的因素）：\n- 自变量：\n  - beta：市场 beta，从 N(1, 0.3) 生成\n  - size：公司规模对数，从 N(10, 2) 生成\n  - bm：账面市值比，从 U(0.1, 2) 生成\n  - momentum：过去 12 个月收益率，从 N(0.05, 0.15) 生成\n- 因变量（真实模型）：\n  return = 0.01 + 0.03×beta - 0.005×size + 0.02×bm + 0.1×momentum + ε\n  其中 ε ~ N(0, 0.05)\n\n输出：\n1. 数据框 `df`，打印前 5 行\n2. 打印各自变量与 return 的相关系数\n3. 用 statsmodels 跑一次 OLS 回归，检验估计系数是否接近真实值\n   （真实值：截距 0.01，beta 系数 0.03，size 系数 -0.005 等）",
     "crumbs": [
-      "📑**附录：常用 Python 提示词**",
+      "**附录：Python 提示词**",
       "A6. 统计建模"
     ]
   },
@@ -1374,7 +1374,7 @@
     "section": "A6.2 OLS 线性回归",
     "text": "A6.2 OLS 线性回归\n\n\n\n\n\n\n提示词：OLS 回归的完整分析流程\n\n\n\n我有一个 pandas 数据框 `df`，包含以下列：\n因变量（y）：return（月股票收益率，浮点数）\n自变量（X）：beta、size、bm、momentum\n\n请帮我用 statsmodels 完成完整的 OLS 回归分析：\n\n第一步：运行基准回归\n- 用公式 API（smf.ols）：return ~ beta + size + bm + momentum\n- 自动添加常数项（intercept）\n- 打印回归结果摘要（result.summary()）\n\n第二步：解读核心统计量\n- 在代码注释中说明以下统计量的含义：\n  系数（coef）、标准误（std err）、t 值、p 值、R²、调整后 R²、F 统计量\n\n第三步：诊断检验\n- 残差正态性：绘制残差的 Q-Q 图（一个子图）\n- 异方差性：用 White 检验（sm.stats.diagnostic.het_white）\n- 多重共线性：计算并打印每个自变量的方差膨胀因子（VIF）\n\n第四步：稳健标准误\n- 重新估计模型，使用 HC3 稳健标准误（cov_type='HC3'）\n- 打印稳健标准误下的系数和 p 值，\n  与第一步的普通标准误对比，指出哪些变量的显著性发生了变化\n\n第五步：格式化输出回归表格\n- 用 pandas DataFrame 整理一个「回归结果表」：\n  行为变量名，列为「系数」「标准误」「t 值」「p 值」「显著性标注」\n  显著性标注：*** p&lt;0.01，** p&lt;0.05，* p&lt;0.1\n\n\n\n\n\n\n\n\n结果验证追问模板\n\n\n\n\n\n建模之后，最重要的一步是验证结果是否「合理」。\nOLS 回归跑完了，但我对以下结果有疑问，请帮我分析：\n\n[从以下情况选择，或自行描述：]\n\n- 【系数符号与预期相反】size 系数为正（+0.012），\n  但根据小市值效应，size 系数应该是负的。\n  请帮我检查：① size 列的计算方式是否正确（应该是市值的对数）；\n  ② 是否有遗漏变量或多重共线性导致系数偏误；\n  ③ 打印 size 列的描述性统计，确认数值范围是否合理\n\n- 【R² 异常低】调整后 R² 仅为 0.003，几乎为 0。\n  请帮我判断：这在截面股票收益率回归中是否正常？\n  还是说因为数据或模型设定有问题？\n\n- 【VIF 过高】beta 变量的 VIF 为 12.5（超过 10），\n  存在严重多重共线性。\n  请建议：如何处理这个问题（删除变量 / 主成分回归 / 岭回归）？",
     "crumbs": [
-      "📑**附录：常用 Python 提示词**",
+      "**附录：Python 提示词**",
       "A6. 统计建模"
     ]
   },
@@ -1385,7 +1385,7 @@
     "section": "A6.3 面板数据与双重差分",
     "text": "A6.3 面板数据与双重差分\n\n\n\n\n\n\n提示词：双重差分（DID）回归\n\n\n\n我有一个企业年度面板数据框 `df`，包含以下列：\n- firm_id：企业 ID（字符串）\n- year：年份（整数，2010–2020）\n- return：年股票收益率（因变量）\n- treated：是否受到政策冲击（0/1，处理组 / 控制组）\n- post：政策实施后的时期（0/1，2016 年及之后为 1）\n- size、leverage、roa：控制变量\n\n请帮我完成以下分析：\n\n第一步：构建 DID 变量和基准回归\n- 创建交互项：did = treated × post\n- 用 OLS 估计：return ~ did + treated + post + size + leverage + roa\n- 核心关注：did 的系数（平均处理效应 ATT），以及 p 值\n\n第二步：加入双向固定效应\n- 控制企业固定效应（firm_id）和年份固定效应（year）\n- 使用 linearmodels 库的 PanelOLS，或在 statsmodels 中用 C(firm_id) 哑变量\n- 标准误聚类到企业层面（cluster by firm_id）\n- 对比加入固定效应前后，did 系数的变化\n\n第三步：平行趋势检验（可视化）\n- 分别计算处理组（treated=1）和控制组（treated=0）\n  在政策实施前（2010–2015）每年的平均 return\n- 绘制折线图：两条线随年份的变化，用垂直虚线标注政策年（2016）\n- 如果两条线在 2016 年前大致平行，说明平行趋势假设成立\n\n请用模拟数据（100 家企业，11 年，真实 ATT=0.05）演示完整代码。\n\n\n\n\n\n\n\n\n结果验证追问模板\n\n\n\n\n\nDID 回归结果如下：\n- 基准 OLS（不含固定效应）：did 系数 = 0.068，p &lt; 0.01\n- 双向固定效应：did 系数 = 0.021，p = 0.18（不显著）\n\n我不确定哪个结果更可信，请帮我分析：\n1. 加入固定效应后系数从 0.068 降至 0.021，变化幅度很大，\n   可能的原因是什么？是否说明基准回归存在遗漏变量偏误？\n2. 固定效应结果不显著，是否意味着政策没有效果，\n   还是可能是样本量不足或标准误聚类层级不对？\n3. 我的企业数量只有 100 家，聚类标准误在小样本下是否可靠？\n   有什么替代方案？",
     "crumbs": [
-      "📑**附录：常用 Python 提示词**",
+      "**附录：Python 提示词**",
       "A6. 统计建模"
     ]
   },
@@ -1396,7 +1396,7 @@
     "section": "A6.4 机器学习模型",
     "text": "A6.4 机器学习模型\n\n\n\n\n\n\n提示词：Lasso 变量选择\n\n\n\n我有一个数据框 `df`，包含因变量 return（月收益率）\n和 50 个财务及市场特征（feature_01 到 feature_50）。\n目标是用 Lasso 回归筛选出真正有预测力的变量。\n\n请用 scikit-learn 完成以下步骤：\n\n1. 【数据准备】\n   - 按时间顺序划分训练集（前 80%）和测试集（后 20%），\n     不使用随机划分（防止数据泄露）\n   - 对特征做标准化（StandardScaler），\n     注意：用训练集的均值和标准差对测试集做变换\n\n2. 【交叉验证选择正则化参数】\n   - 用 LassoCV（5 折交叉验证）在训练集上选择最优 alpha（λ）\n   - 绘制 alpha 与均方误差（MSE）的关系图，标出最优 alpha\n\n3. 【模型估计与变量筛选】\n   - 用最优 alpha 在全部训练集上估计 Lasso 模型\n   - 打印被选中的变量（系数不为 0 的特征）及其系数，按绝对值降序\n\n4. 【测试集评估】\n   - 在测试集上计算 MSE、RMSE 和样本外 R²（R²_oos）\n   - 对比 Lasso 和普通 OLS 在测试集上的 R²_oos\n\n5. 使用模拟数据（500 个样本，50 个特征，其中只有 8 个特征真正有效），\n   随机种子 42，验证 Lasso 是否能正确识别出这 8 个特征。\n\n\n\n\n\n\n\n\n提示词：随机森林与信用评分模型\n\n\n\n我想用随机森林建立企业违约预测模型（信用评分模型）。\n\n数据框 `df` 包含：\n- 因变量：default（是否违约，0/1 二分类）\n- 自变量：20 个财务指标（流动比率、资产负债率、净利润率、\n  总资产收益率、营收增速等）\n\n请用 scikit-learn 完成：\n\n1. 【处理类别不平衡】\n   - 查看违约率（default 的均值），预计约 5–10%\n   - 在 RandomForestClassifier 中使用 class_weight='balanced'\n\n2. 【模型训练】\n   - 划分训练集和测试集（80:20），随机种子 42\n   - 用 GridSearchCV（5 折）调整超参数：\n     max_depth（5、10、None），min_samples_leaf（1、5、10）\n   - 打印最优参数组合\n\n3. 【模型评估】\n   - 输出：混淆矩阵、精确率（Precision）、召回率（Recall）、\n     F1 分数、AUC-ROC\n   - 绘制 ROC 曲线（随机森林 vs Logistic 回归 vs 随机猜测基准线），\n     在图中标注各自的 AUC 值\n\n4. 【特征重要性】\n   - 提取特征重要性，绘制水平条形图（降序排列，只显示前 15 个特征）\n   - 解释：特征重要性衡量的是什么？为什么它不等于「因果效应」？\n\n使用模拟数据（1000 个样本，20 个特征，违约率 8%）演示，随机种子 42。\n\n\n\n\n\n\n\n\n结果验证追问模板\n\n\n\n\n\n随机森林模型评估完成，但结果有以下疑问：\n\n[从以下情况选择：]\n\n- 【AUC 异常高】测试集 AUC 达到 0.98，怀疑存在数据泄露。\n  请帮我检查：① 特征中是否包含了因变量本身或与因变量高度相关的变量；\n  ② 训练集和测试集的划分是否有误（时序数据用了随机划分）；\n  ③ 打印 5 个重要性最高的特征，看是否存在可疑特征\n\n- 【召回率很低】AUC = 0.78，但违约企业的召回率只有 0.25，\n  说明模型漏掉了大量实际违约的企业。\n  在信用风险模型中，召回率更重要（漏判代价大）。\n  请帮我调整分类阈值（默认 0.5），找到使召回率不低于 0.6 时\n  对应的最优阈值，并打印该阈值下的完整分类报告。",
     "crumbs": [
-      "📑**附录：常用 Python 提示词**",
+      "**附录：Python 提示词**",
       "A6. 统计建模"
     ]
   },
@@ -1407,7 +1407,7 @@
     "section": "A6.5 Bootstrap 与 Monte Carlo 模拟",
     "text": "A6.5 Bootstrap 与 Monte Carlo 模拟\n\n\n\n\n\n\n提示词：Bootstrap 估计置信区间\n\n\n\n我在对一个小样本（约 200 个观测）做 OLS 回归分析：\nreturn ~ beta + size + bm\n\n担心样本量太小时，标准 OLS 的标准误不可靠，\n想用 Bootstrap 方法计算更稳健的置信区间。\n\n请帮我写代码：\n\n1. 【Bootstrap 循环】\n   - 重复 1000 次，每次有放回地抽取与原样本同规模的子样本\n   - 在子样本上重新估计 OLS，记录每个系数\n   - 用 tqdm 显示进度，设置随机种子 42\n\n2. 【Bootstrap 置信区间】\n   - 计算每个系数的 Bootstrap 标准误（1000 次估计的标准差）\n   - 计算 95% 置信区间（取 2.5% 和 97.5% 分位数）\n\n3. 【对比展示】\n   - 用 pandas DataFrame 整理：行为变量名，列为\n     OLS 系数、OLS 标准误、Bootstrap 标准误、Bootstrap 95% CI\n   - 如果 Bootstrap 标准误明显大于 OLS 标准误，说明什么？\n\n4. 【可视化】\n   - 绘制各系数的 Bootstrap 分布直方图（2×2 子图，含常数项）\n   - 在每个子图上用垂直虚线标注 OLS 点估计值和 Bootstrap CI\n\n使用模拟数据（200 个观测，3 个自变量，随机种子 42）演示。\n\n\n\n\n\n\n\n\n提示词：Monte Carlo 投资组合风险模拟\n\n\n\n请用 Python 对投资组合的未来价值进行 Monte Carlo 模拟：\n\n参数设定：\n- 初始投资：100 万元\n- 投资期限：10 年（120 个月）\n- 月收益率：服从正态分布，均值 0.8%，标准差 4%\n- 模拟次数：10,000 次\n- 随机种子：42\n\n要求：\n\n1. 【高效生成路径】\n   用 numpy 的向量化运算（禁止使用 Python for 循环）生成所有模拟路径，\n   结果矩阵形状为 (10000, 120)，即 10,000 条路径 × 120 个月\n\n2. 【风险指标计算】\n   计算最终价值（第 120 个月末）的：\n   - 均值、中位数、标准差\n   - 95% VaR：最差 5% 情况下，损失超过多少万元？\n   - 95% CVaR（Expected Shortfall）：最差 5% 情况的平均损失\n\n3. 【可视化（2 个子图）】\n   - 上图（路径图）：随机选取 200 条路径，画为浅灰色折线（透明度 0.1）；\n     叠加均值路径（蓝色实线）和 5%、95% 分位数路径（红色虚线）；\n     x 轴为月份，y 轴为投资组合价值（万元）\n   - 下图（最终价值分布）：最终价值的直方图 + KDE 曲线；\n     在图中用垂直线标注 VaR 和 CVaR 的位置\n\n4. 结果汇总表格（用 pandas DataFrame 打印，单位万元，保留 2 位小数）",
     "crumbs": [
-      "📑**附录：常用 Python 提示词**",
+      "**附录：Python 提示词**",
       "A6. 统计建模"
     ]
   },
@@ -1418,7 +1418,7 @@
     "section": "",
     "text": "A7.1 在 Notebook 中美化输出\n代码跑通只是第一步——如何让结果好看、易读、可汇报，是分析工作中同样重要的一环。本章针对 Notebook 输出和最终报告两个场景，提供结果呈现的提示词框。\n本章解决的核心问题：",
     "crumbs": [
-      "📑**附录：常用 Python 提示词**",
+      "**附录：Python 提示词**",
       "A7. 结果呈现与表格美化"
     ]
   },
@@ -1429,7 +1429,7 @@
     "section": "",
     "text": "A7.1.1 为什么默认输出不够用？\npandas 默认的 print(df) 输出在 Notebook 中又小又难读，数字没有千分位符，小数位数不统一，列名是英文缩写。向老师或同学展示分析结果时，这些细节很影响专业感。\n\n\n\n\n\n\n提示词：美化数据框在 Notebook 中的显示效果\n\n\n\n我在 Jupyter Notebook 中有一个 pandas 数据框 `df_result`，\n包含以下列：\n- stock_code：股票代码（字符串）\n- annual_return：年化收益率（浮点数，如 0.1523）\n- volatility：年化波动率（浮点数，如 0.2341）\n- sharpe：夏普比率（浮点数，如 1.23）\n- max_drawdown：最大回撤（浮点数，如 -0.1823）\n- total_volume：总成交量（整数，如 12345678901）\n\n请帮我写代码，让这个数据框在 Notebook 中显示得更专业：\n\n1. 将列名改为中文：\n   [stock_code→股票代码, annual_return→年化收益率, \n    volatility→年化波动率, sharpe→夏普比率, \n    max_drawdown→最大回撤, total_volume→总成交量（万手）]\n\n2. 格式化数值：\n   - annual_return、volatility、max_drawdown 列：显示为百分比，\n     保留 2 位小数（如 15.23%）\n   - sharpe 列：保留 2 位小数（如 1.23）\n   - total_volume 列：换算为万手（除以 10000），加千分位符（如 1,234,567）\n\n3. 条件格式：\n   - annual_return 列：正值显示绿色背景，负值显示红色背景\n   - sharpe 列：大于 1 的值加粗显示\n\n4. 在 Notebook 中用 display() 显示，而不是 print()\n\n请说明：用 .style 方法格式化后，数据框的底层数值是否被修改？\n\n\n\n\n\n\n\n\n提示词：提取并格式化回归结果摘要\n\n\n\nstatsmodels 的 result.summary() 输出很完整，但格式不适合直接展示。这组提示词帮你提取关键信息并重新排版。\n我用 statsmodels 跑了一个 OLS 回归，结果存储在 `result` 对象中。\n现在需要提取关键信息，整理为一个格式整洁的汇总表格。\n\n请帮我写代码：\n\n1. 【提取系数表】从 result.summary2().tables[1] 中提取：\n   变量名、系数（保留 4 位小数）、标准误（保留 4 位小数）、\n   t 值（保留 2 位小数）、p 值（保留 3 位小数）\n\n2. 【添加显著性标注】根据 p 值添加星号列：\n   *** p &lt; 0.01，** p &lt; 0.05，* p &lt; 0.1，无星号则留空\n\n3. 【添加模型统计量】在表格底部添加：\n   样本量 N、R²（保留 3 位小数）、调整后 R²（保留 3 位小数）、\n   F 统计量（保留 2 位小数）、p 值（F 统计量）\n\n4. 【格式化输出】\n   - 在 Notebook 中用 display() 显示\n   - 变量名改为中文（截距→常数项，beta→市场β，size→公司规模等）\n   - 整体左对齐，数字右对齐\n\n\n\n\n\n\n\n\n追问模板\n\n\n\n\n\n上面整理好的回归结果表格，现在需要展示多个模型的对比。\n\n我共有 3 个回归结果：\n- result1：基准 OLS（不含固定效应）\n- result2：加入年份固定效应\n- result3：加入双向固定效应 + 聚类标准误\n\n请帮我写代码，将三个模型的结果整合为一个「并列回归表格」：\n- 行为变量名，列为「模型(1)」「模型(2)」「模型(3)」\n- 每格显示：系数值（标准误），系数下方括号内为标准误，\n  如：0.0312***（0.0098）\n- 表格底部显示：N、R²、是否控制年份固定效应、是否控制企业固定效应\n  （用「是」/「否」表示）",
     "crumbs": [
-      "📑**附录：常用 Python 提示词**",
+      "**附录：Python 提示词**",
       "A7. 结果呈现与表格美化"
     ]
   },
@@ -1440,7 +1440,7 @@
     "section": "A7.2 导出为 Excel 报告",
     "text": "A7.2 导出为 Excel 报告\n\n\n\n\n\n\n提示词：将分析结果导出为格式化 Excel 文件\n\n\n\n适用于向老师、同学或未来的工作汇报提交分析结果。\n我完成了一个投资组合分析，有多个结果需要整合为一份 Excel 报告：\n\n数据：\n- df_performance：各策略年化绩效指标（年化收益、夏普比率、最大回撤）\n- df_holdings：投资组合持仓明细（股票代码、权重、市值）\n- df_regression：回归系数表（变量名、系数、t 值、p 值、显著性）\n\n请帮我用 openpyxl 生成 Excel 文件，要求：\n\n工作表结构：\n- Sheet 1「绩效摘要」：df_performance，列宽自动适配\n- Sheet 2「持仓明细」：df_holdings，按权重降序排列\n- Sheet 3「回归结果」：df_regression，含列标题\n\n格式要求（每个工作表）：\n- 第一行（表头）：深蓝色背景（#003366），白色字体，加粗，居中\n- 数字格式：\n  - 收益率、权重列：百分比格式，2 位小数（如 12.35%）\n  - 系数、t 值列：保留 4 位小数\n  - 市值列：千分位符，无小数（如 1,234,567）\n- 奇偶行交替填色：奇数行白色，偶数行浅灰色（#F2F2F2）\n- 所有工作表第一行冻结（方便滚动时始终看到表头）\n\n文件：在「绩效摘要」工作表的 A1 单元格上方，\n插入标题「投资组合分析报告」和当前日期。\n\n保存路径：../outputs/tables/portfolio_report.xlsx",
     "crumbs": [
-      "📑**附录：常用 Python 提示词**",
+      "**附录：Python 提示词**",
       "A7. 结果呈现与表格美化"
     ]
   },
@@ -1451,7 +1451,7 @@
     "section": "A7.3 导出为 LaTeX 格式",
     "text": "A7.3 导出为 LaTeX 格式\n\n\n\n\n\n\n提示词：将回归结果导出为 LaTeX 表格\n\n\n\n适用于需要将结果放入 LaTeX 论文的场景。\n我有一个 pandas 数据框 `df_reg_table`，\n包含整理好的回归结果（变量名、系数、标准误、显著性标注）。\n\n请帮我将这个数据框导出为 LaTeX 格式的三线表（booktabs 风格），要求：\n\n表格格式：\n- 使用 booktabs 宏包的 \\toprule、\\midrule、\\bottomrule\n- 第一列为变量名（左对齐），其余列为数值（居中对齐）\n- 三列：变量、系数（t 值），显著性标注注释在表格底部\n- 注释行：*p&lt;0.10, **p&lt;0.05, ***p&lt;0.01\n\n输出方式：\n1. 在 Notebook 中打印 LaTeX 代码（用 print()）\n2. 同时保存为 .tex 文件：../outputs/tables/regression_table.tex\n\n请在代码中说明：\n- 如何在 LaTeX 文档中引用这个表格文件（\\input{} 命令）\n- 为什么用 escape=False 参数，以及什么时候不应该用它",
     "crumbs": [
-      "📑**附录：常用 Python 提示词**",
+      "**附录：Python 提示词**",
       "A7. 结果呈现与表格美化"
     ]
   },
@@ -1462,7 +1462,7 @@
     "section": "A7.4 在 Notebook 中呈现分析摘要",
     "text": "A7.4 在 Notebook 中呈现分析摘要\n\n\n\n\n\n\n提示词：生成一份完整的分析摘要单元格\n\n\n\n这组提示词帮你在 Notebook 的最后生成一个结构清晰的分析摘要，适合直接截图或打印提交。\n我的 Jupyter Notebook 分析了 A 股银行股在政策公告后的超额收益，\n已经有以下变量：\n- `event_n`：事件数量（整数）\n- `car_mean`：平均 CAR（浮点数）\n- `car_t`：t 统计量（浮点数）\n- `car_pvalue`：p 值（浮点数）\n- `df_car`：包含每天 CAR 和置信区间的数据框\n\n请帮我写一段代码，在 Notebook 中用 IPython.display 的 Markdown 或 HTML\n渲染一个格式整洁的分析摘要，包含：\n\n1. 标题：「事件研究结果摘要」（加粗，字号 16）\n2. 分析参数：事件数量、事件窗口（-10, +10）、估计窗口（-200, -21）\n3. 核心结果表格：\n   | 指标 | 数值 |\n   事件日（Day 0）CAR | [car_mean 的格式化值，百分比]\n   t 统计量 | [car_t，保留 2 位小数]\n   p 值 | [car_pvalue，保留 3 位小数]\n   统计显著性 | [根据 p 值自动显示：***/**/* 或「不显著」]\n4. 结论：一句话自动生成（根据系数正负和显著性判断）：\n   如「结果表明，政策公告后银行股出现显著正向超额收益（CAR=X%，p&lt;0.01）」",
     "crumbs": [
-      "📑**附录：常用 Python 提示词**",
+      "**附录：Python 提示词**",
       "A7. 结果呈现与表格美化"
     ]
   },
@@ -1473,7 +1473,7 @@
     "section": "",
     "text": "A8.1 管理 AI 的上下文记忆\n本章解决「代码跑通了但结果不对」「AI 忘记了之前说过什么」「循环跑了一晚上还没完」这三类最让人崩溃的问题。",
     "crumbs": [
-      "📑**附录：常用 Python 提示词**",
+      "**附录：Python 提示词**",
       "A8. 上下文管理与调试"
     ]
   },
@@ -1484,7 +1484,7 @@
     "section": "",
     "text": "A8.1.1 为什么上下文管理很重要？\n当你的对话变长，或者开启了新的对话窗口，AI 会「忘记」你的数据结构，重新生成的代码可能和之前的变量名对不上——这是提示词用户最常遇到、也最容易忽视的问题。\nA. 三种常见的上下文断裂场景\n\n\n\n场景\n现象\n解决方法\n\n\n\n\n新开对话窗口\nAI 不认识 df 是什么\n用「项目背景卡片」重新交代\n\n\n对话太长\nAI 忘记了 10 轮前的数据结构\n在关键节点重新粘贴数据信息\n\n\n换了 AI 工具\n从 ChatGPT 切换到 Claude\n重新提供完整背景\n\n\n\n\n\n\n\n\n\n提示词：项目背景卡片（每次新对话时使用）\n\n\n\n把这个卡片保存在 Notebook 的第一个 Markdown 单元格，每次开启新对话时粘贴给 AI。\n【项目背景】请记住以下信息，本次对话中所有代码都基于这个背景。\n\n项目：A 股上市公司并购事件研究\n运行环境：Python 3.11，Anaconda，Jupyter Notebook，Windows 11\n主要库：pandas 2.x，numpy，matplotlib，statsmodels，seaborn\n\n核心数据框：\n- `df`：股票日度面板数据，列为 date（datetime）、stock_code（str）、\n  close（float）、volume（int）、return（float）、industry（str）\n  行数约 500,000，时间范围 2018–2023，股票数量约 500 只\n- `df_events`：并购事件列表，列为 acquirer_code（str）、\n  event_date（datetime）、target_name（str）\n  行数约 300\n\n当前进度：已完成数据清洗，正在做事件研究的超额收益计算。\n变量命名规范：使用下划线分隔，如 df_clean、car_mean、result_ols。\n\n接下来请帮我：[在这里写本次的具体任务]\n\n\n\n\n\n\n\n\n提示词：在长对话中途重置上下文\n\n\n\n当对话已经很长，发现 AI 开始「犯迷糊」（用错变量名、忘记数据结构）时使用。\n我们的对话已经很长了，请忽略对话中的所有历史信息，\n重新从以下背景开始：\n\n当前状态：\n- 数据框 `df_clean` 已清洗完毕：[X] 只股票，[Y] 个交易日\n  列：date、stock_code、close、return、industry\n- 已完成：数据清洗、缺失值处理、Winsorize 异常值处理\n- 下一步目标：计算每只股票的年化收益率和夏普比率\n\n请基于以上状态，帮我完成「下一步目标」中的任务。",
     "crumbs": [
-      "📑**附录：常用 Python 提示词**",
+      "**附录：Python 提示词**",
       "A8. 上下文管理与调试"
     ]
   },
@@ -1495,7 +1495,7 @@
     "section": "A8.2 读懂报错：让 AI 帮你调试",
     "text": "A8.2 读懂报错：让 AI 帮你调试\n\nA8.2.1 报错信息的结构\nPython 报错信息看起来复杂，但结构很简单：\nTraceback (most recent call last):          ← 出错的调用链\n  File \"analysis.py\", line 35, in &lt;module&gt;\n    df_merged = pd.merge(df_price, df_fund, on=['stock_code', 'year'])\nKeyError: 'year'                            ← 最重要：错误类型 + 错误原因\n最重要的永远是最后一行：错误类型（KeyError）和错误信息（'year'）。\nA. 金融数据分析中最常见的报错类型\n\n\n\n\n\n\n\n\n报错类型\n最常见原因\n提示词关键词\n\n\n\n\nKeyError\n列名不存在或拼写错误\n「找不到列名」\n\n\nTypeError\n对字符串列做了数学运算\n「类型不匹配」\n\n\nValueError\n日期格式错误、merge 键类型不一致\n「值格式不合法」\n\n\nMemoryError\n数据量太大，内存不足\n「内存溢出」\n\n\nFileNotFoundError\n文件路径错误\n「找不到文件」\n\n\nAttributeError\n方法名拼写错误或对象类型不对\n「对象没有这个方法」\n\n\n\n\n\n\n\n\n\n提示词：让 AI 分析报错原因（万能调试模板）\n\n\n\n这是最常用的调试提示词。关键原则：把完整的报错信息和出错的代码都粘贴给 AI，不要只描述「出错了」。\n我的 Python 代码出现了报错，请帮我分析原因并给出修复方案。\n\n【完整报错信息】（直接复制终端输出）：\nTraceback (most recent call last): File “analysis.py”, line 35, in  df_merged = pd.merge(df_price, df_fund, on=[‘stock_code’, ‘year’]) KeyError: ‘year’\n\n【出错的代码片段】：\n```python\ndf_price = pd.read_csv('../data/raw/stock_price.csv')\ndf_fund = pd.read_csv('../data/raw/fundamental.csv')\ndf_merged = pd.merge(df_price, df_fund, on=['stock_code', 'year'])\n【两个数据框的列名】： - df_price 的列名：date, stock_code, close, return - df_fund 的列名：fiscal_year, stock_code, roe, leverage\n【我想实现的目标】： 将股票日度价格数据和年度财务数据，按股票代码和年份对齐合并。\n请： 1. 解释报错的原因 2. 给出修复后的完整代码 3. 如果有多种修复方案，说明各自的适用场景\n:::\n\n::: {.callout-tip}\n### 提示词：诊断「结果跑通了但数值不对」\n\n这比代码报错更难排查，需要系统地检查中间步骤。\n\n```md\n我的代码运行没有报错，但最终结果数值异常，请帮我排查原因。\n\n【异常现象】：\n计算了 500 只股票在 2018–2023 年间的年化收益率，\n发现有 30 只股票的年化收益率超过了 500%，\n还有 15 只股票是负无穷大（-inf）。\n\n【相关代码】：\n```python\ndf['log_return'] = np.log(df['close'] / df['close'].shift(1))\ndf_annual = df.groupby(['stock_code', df['date'].dt.year])['log_return'].sum()\ndf_annual = df_annual * 252  # 年化\n【数据说明】： - df 是面板数据，约 50 万行 - close 列已经过 Winsorize 处理 - date 列是 datetime 类型\n请帮我： 1. 指出最可能导致极端值的原因 （提示：shift(1) 在面板数据中跨股票计算的问题？close 列是否有 0 或负值？） 2. 打印出那 30 只极端收益率股票的代码和异常值，帮助定位 3. 修复代码，确保对数收益率只在每只股票内部按时间顺序计算 4. 增加一个验证步骤：检查修复后是否还有极端值\n:::\n\n\n## A8.3 代码效率优化\n\n### A8.3.1 什么时候需要优化？\n\n数据量小（10 万行以内）时，代码慢一些通常不是问题。但金融数据往往有几百万行（全市场日度数据），以下这些写法会让你等到天黑：\n\n| 低效写法 | 原因 | 向 AI 描述时说 |\n|---------|------|-------------|\n| `for i, row in df.iterrows()` | 逐行循环，不利用向量化 | 「把 iterrows 改为向量化操作」 |\n| 每次循环都读取一次文件 | 重复 I/O | 「把文件读取移到循环外面」 |\n| 对整个数据框做多次 groupby | 重复分组 | 「合并多个 groupby 操作」 |\n| 存储大量中间数据框 | 内存浪费 | 「减少中间变量，用链式操作」 |\n\n::: {.callout-tip}\n### 提示词：将低效循环改为向量化操作\n\n这是最常见的效率问题，影响最大，改造收益最高。\n\n```md\n我有以下 Python 代码，在数据框 `df`（约 300 万行）上运行非常慢，\n已经跑了超过 10 分钟还没结束：\n\n【当前代码（慢）】：\n```python\nresults = []\nfor i, row in df.iterrows():\n    if row['industry'] == '银行':\n        log_ret = np.log(row['close'] / row['prev_close'])\n        results.append({\n            'stock_code': row['stock_code'],\n            'date': row['date'],\n            'log_return': log_ret\n        })\ndf_result = pd.DataFrame(results)\n【数据框结构】： - 列：date, stock_code, close, prev_close, industry - 行数：约 300 万行\n请帮我： 1. 解释为什么 iterrows() 在大数据框上这么慢 2. 用 pandas 的向量化操作重写这段代码， 要求功能完全相同，但速度提升 100 倍以上 3. 在优化后的代码末尾加上运行时间测量（用 time 模块）， 让我能直接对比优化前后的速度\n:::\n\n::: {.callout-tip}\n### 提示词：处理内存不足问题（大数据集）\n\n当数据量很大（如全市场 5 年日度数据），一次性读入可能导致内存溢出。\n\n```md\n我需要处理一个很大的 CSV 文件（约 2GB，包含 A 股全市场 5 年日度数据），\n用 pandas 一次性读入时出现 MemoryError。\n\n我的电脑内存为 16GB，操作系统为 Windows 11。\n\n请帮我：\n1. 用 pandas 的 chunksize 参数分块读取：\n   每次读取 100,000 行，对每块数据只保留「银行」行业的股票，\n   最后将所有块合并为一个数据框\n2. 在读取时只加载需要的列：date、stock_code、close、return、industry，\n   跳过其他列（减少内存占用）\n3. 将 date 列存为 datetime 类型，stock_code 存为 category 类型\n   （category 类型在有大量重复值时比 str 节省约 70% 内存）\n4. 读取完成后，打印最终数据框的内存占用，\n   对比直接读取全部列时的内存占用差异\n\n用 tqdm 显示分块读取的进度。",
     "crumbs": [
-      "📑**附录：常用 Python 提示词**",
+      "**附录：Python 提示词**",
       "A8. 上下文管理与调试"
     ]
   },
@@ -1506,7 +1506,7 @@
     "section": "A8.4 与 AI 高效对话的实用技巧",
     "text": "A8.4 与 AI 高效对话的实用技巧\nA. 让每一轮追问都有效的三个原则\n\n\n\n原则\n错误示范\n正确示范\n\n\n\n\n贴具体信息，不要描述\n「代码有问题」\n直接粘贴报错信息和代码\n\n\n说明期望结果\n「结果不对」\n「应该输出 X，但实际输出了 Y」\n\n\n指定修改范围\n「帮我改一下」\n「只修改第 3 步，其余不变」\n\n\n\n\n\n\n\n\n\n提示词：让 AI 解释你不理解的代码\n\n\n\nAI 生成的代码不一定第一次就能完全看懂。理解代码是比「能用」更重要的能力。\n请逐行解释以下 Python 代码，用我能理解的语言（我是金融专业背景，\nPython 基础较弱）。对每一行说明：\n① 这行代码做了什么操作；\n② 为什么要这样写，而不是用更直观的方法；\n③ 如果去掉这行，会有什么影响。\n\n【需要解释的代码】：\n```python\ndf['log_return'] = df.groupby('stock_code')['close'].transform(\n    lambda x: np.log(x / x.shift(1))\n)\n\ndf_annual = df.groupby(['stock_code', df['date'].dt.year]).agg(\n    annual_return=('log_return', lambda x: np.expm1(x.sum())),\n    volatility=('log_return', lambda x: x.std() * np.sqrt(252)),\n    sharpe=('log_return', lambda x: x.mean() / x.std() * np.sqrt(252))\n).reset_index()\n特别解释： - transform 和 apply 有什么区别？ - np.expm1(x.sum()) 为什么用 expm1 而不是 exp？ - reset_index() 的作用是什么？\n:::\n\n::: {.callout-tip}\n### 提示词：让 AI 审查你自己写的代码\n\n当你已经能自己写一些代码时，让 AI 扮演「代码审查员」，找出潜在问题。\n\n```md\n请帮我审查以下 Python 代码，找出潜在的错误、低效写法和可能产生错误结果的地方。\n我是 Python 初学者，请用清晰的语言说明每个问题和改进方法。\n\n【需要审查的代码】：\n```python\n[将你写的代码粘贴在这里]\n重点检查： 1. 是否存在会产生错误结果但不报错的逻辑问题 （如跨股票计算收益率、merge 后行数异常） 2. 是否有内存或效率问题（如在大循环中用 iterrows） 3. 是否有潜在的除以零、log(负数) 等数值错误 4. 变量命名是否清晰，代码是否需要添加注释\n请用以下格式输出： - 问题 [序号]：[问题描述] - 影响：[会导致什么后果] - 修改建议：[具体如何改] ```",
     "crumbs": [
-      "📑**附录：常用 Python 提示词**",
+      "**附录：Python 提示词**",
       "A8. 上下文管理与调试"
     ]
   }
