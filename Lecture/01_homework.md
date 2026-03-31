@@ -10,4 +10,4 @@
 
 ## 作业展示
 
-- [2026 小组作业展示](../homework/HW-pre-2026.md)
+- [2026 小组作业展示](https://github.com/lianxhcn/dsfin/blob/main/homework/HW-pre-2026.md)
