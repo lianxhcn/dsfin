@@ -1,0 +1,2096 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.6.39">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>13&nbsp; 文本数据处理基础 – 金融数据分析与建模</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../Lecture/text_analysis/lecture_text_analysis_02_claude.html" rel="next">
+<link href="../../Lecture/text_analysis/lecture_text_02_ailn.html" rel="prev">
+<link href="../../images/book-logo.png" rel="icon" type="image/png">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-e8fb9d25728d58bfeac61b497e4a6629.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark-57a92833092fd6dc0d7710b6bdfff9c5.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-7ef202e96c563d31d9e5226e4d6cabf9.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark-490ba4e843cb1303a232ed0c676384f2.min.css" rel="prefetch" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../Lecture/text_analysis/lecture_text_01_ailn.html"><strong>文本分析</strong></a></li><li class="breadcrumb-item"><a href="../../Lecture/text_analysis/lecture_text_analysis_01_claude.html"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">文本数据处理基础</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header sidebar-header-stacked">
+      <a href="https://lianxhcn.github.io/dsfin/" class="sidebar-logo-link">
+      <img src="../../images/book-logo.png" alt="" class="sidebar-logo py-0 d-lg-inline d-none">
+      </a>
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../../">DS Finance</a> 
+        <div class="sidebar-tools-main tools-wide">
+    <a href="https://github.com/lianxhcn/dsfin" title="" class="quarto-navigation-tool px-1" aria-label=""><i class="bi bi-github"></i></a>
+    <a href="https://www.lianxh.cn" title="" class="quarto-navigation-tool px-1" aria-label=""><i class="bi bi-house-fill"></i></a>
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">封面</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/00_intro.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">📚课程资料</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/01_homework.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">🚀作业</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text"><strong>环境配置</strong></span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/00-setup/01_00_coding_with_AI.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">借助 AI 写代码</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/00-setup/01_01_install_anaconda.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Python：安装和环境配置</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/00-setup/01_02_jupyter_notebook.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Jupyter Notebook 的使用</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/00-setup/01_03_install_FAQs.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Python 安装常见问题</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/00-setup/01_04_markdown.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Markdown</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
+ <span class="menu-text"><strong>数据分析</strong></span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/data_get_data/lecture_get_data.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">金融数据获取</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/data_clean/lecture_data_clean.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">数据清洗</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true">
+ <span class="menu-text"><strong>数据爬取</strong></span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/crawing/craw_01_introduction.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">网络爬虫简介</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/crawing/craw_02_sec01_lingnan_prompt.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">实例-提示词模式：爬取岭南学院教师名录</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/crawing/craw_02_sec02_lingnan_dialog.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">实例-对话模式：爬取岭南学院教师名录</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true">
+ <span class="menu-text"><strong>文本分析</strong></span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/text_analysis/lecture_text_01_ailn.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">金融文本分析（上）——从文本到结构化数据</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/text_analysis/lecture_text_02_ailn.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">金融文本分析（下）——情感分析与文本建模</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/text_analysis/lecture_text_analysis_01_claude.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">文本数据处理基础</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/text_analysis/lecture_text_analysis_02_claude.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">文本分析：情感分析与主题建模</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true">
+ <span class="menu-text"><strong>附录：Python 提示词</strong></span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../appendix_python/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">概览</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../appendix_python/a1_setup.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">A1. 环境配置</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../appendix_python/a2_project.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">A2. 项目规划与版本控制</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../appendix_python/a3_concepts.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">A3. 提示词核心词汇</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../appendix_python/a4_data.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">A4. 数据获取与清洗</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../appendix_python/a5_visualization.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">A5. 数据可视化</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../appendix_python/a6_modeling.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">A6. 统计建模</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../appendix_python/a7_results.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">A7. 结果呈现与表格美化</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../appendix_python/a8_workflow.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">A8. 上下文管理与调试</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#文本数据从哪里来怎么整理成表格" id="toc-文本数据从哪里来怎么整理成表格" class="nav-link active" data-scroll-target="#文本数据从哪里来怎么整理成表格"><span class="header-section-number">13.1</span> 文本数据从哪里来，怎么整理成表格</a>
+  <ul class="collapse">
+  <li><a href="#金融文本的常见来源" id="toc-金融文本的常见来源" class="nav-link" data-scroll-target="#金融文本的常见来源"><span class="header-section-number">13.1.1</span> 金融文本的常见来源</a></li>
+  <li><a href="#文本分析的第一步定义观测单位" id="toc-文本分析的第一步定义观测单位" class="nav-link" data-scroll-target="#文本分析的第一步定义观测单位"><span class="header-section-number">13.1.2</span> 文本分析的第一步：定义观测单位</a></li>
+  <li><a href="#最终都要整理成一张表" id="toc-最终都要整理成一张表" class="nav-link" data-scroll-target="#最终都要整理成一张表"><span class="header-section-number">13.1.3</span> 最终都要整理成一张表</a></li>
+  </ul></li>
+  <li><a href="#读取数据与初步检查" id="toc-读取数据与初步检查" class="nav-link" data-scroll-target="#读取数据与初步检查"><span class="header-section-number">13.2</span> 读取数据与初步检查</a>
+  <ul class="collapse">
+  <li><a href="#为什么读进来之后不能立刻分析" id="toc-为什么读进来之后不能立刻分析" class="nav-link" data-scroll-target="#为什么读进来之后不能立刻分析"><span class="header-section-number">13.2.1</span> 为什么读进来之后不能立刻分析</a></li>
+  <li><a href="#读取数据" id="toc-读取数据" class="nav-link" data-scroll-target="#读取数据"><span class="header-section-number">13.2.2</span> 读取数据</a></li>
+  <li><a href="#检查字段类型与缺失值" id="toc-检查字段类型与缺失值" class="nav-link" data-scroll-target="#检查字段类型与缺失值"><span class="header-section-number">13.2.3</span> 检查字段类型与缺失值</a></li>
+  <li><a href="#检查文本长度" id="toc-检查文本长度" class="nav-link" data-scroll-target="#检查文本长度"><span class="header-section-number">13.2.4</span> 检查文本长度</a></li>
+  <li><a href="#检查重复值和日期格式" id="toc-检查重复值和日期格式" class="nav-link" data-scroll-target="#检查重复值和日期格式"><span class="header-section-number">13.2.5</span> 检查重复值和日期格式</a></li>
+  </ul></li>
+  <li><a href="#文本清洗去噪标准化与去重" id="toc-文本清洗去噪标准化与去重" class="nav-link" data-scroll-target="#文本清洗去噪标准化与去重"><span class="header-section-number">13.3</span> 文本清洗：去噪、标准化与去重</a>
+  <ul class="collapse">
+  <li><a href="#清洗的目标是什么" id="toc-清洗的目标是什么" class="nav-link" data-scroll-target="#清洗的目标是什么"><span class="header-section-number">13.3.1</span> 清洗的目标是什么</a></li>
+  <li><a href="#一个基础清洗函数" id="toc-一个基础清洗函数" class="nav-link" data-scroll-target="#一个基础清洗函数"><span class="header-section-number">13.3.2</span> 一个基础清洗函数</a></li>
+  <li><a href="#去重" id="toc-去重" class="nav-link" data-scroll-target="#去重"><span class="header-section-number">13.3.3</span> 去重</a></li>
+  </ul></li>
+  <li><a href="#中文分词停用词与自定义词典" id="toc-中文分词停用词与自定义词典" class="nav-link" data-scroll-target="#中文分词停用词与自定义词典"><span class="header-section-number">13.4</span> 中文分词、停用词与自定义词典</a>
+  <ul class="collapse">
+  <li><a href="#为什么中文需要分词" id="toc-为什么中文需要分词" class="nav-link" data-scroll-target="#为什么中文需要分词"><span class="header-section-number">13.4.1</span> 为什么中文需要分词</a></li>
+  <li><a href="#停用词要过滤掉的高频废词" id="toc-停用词要过滤掉的高频废词" class="nav-link" data-scroll-target="#停用词要过滤掉的高频废词"><span class="header-section-number">13.4.2</span> 停用词：要过滤掉的高频废词</a></li>
+  <li><a href="#自定义词典金融专业术语的保障" id="toc-自定义词典金融专业术语的保障" class="nav-link" data-scroll-target="#自定义词典金融专业术语的保障"><span class="header-section-number">13.4.3</span> 自定义词典：金融专业术语的保障</a></li>
+  <li><a href="#完整分词流程" id="toc-完整分词流程" class="nav-link" data-scroll-target="#完整分词流程"><span class="header-section-number">13.4.4</span> 完整分词流程</a></li>
+  <li><a href="#jieba-的三种分词模式" id="toc-jieba-的三种分词模式" class="nav-link" data-scroll-target="#jieba-的三种分词模式"><span class="header-section-number">13.4.5</span> jieba 的三种分词模式</a></li>
+  <li><a href="#验证自定义词典是否生效" id="toc-验证自定义词典是否生效" class="nav-link" data-scroll-target="#验证自定义词典是否生效"><span class="header-section-number">13.4.6</span> 验证自定义词典是否生效</a></li>
+  </ul></li>
+  <li><a href="#高频词统计与可视化" id="toc-高频词统计与可视化" class="nav-link" data-scroll-target="#高频词统计与可视化"><span class="header-section-number">13.5</span> 高频词统计与可视化</a>
+  <ul class="collapse">
+  <li><a href="#为什么先看高频词" id="toc-为什么先看高频词" class="nav-link" data-scroll-target="#为什么先看高频词"><span class="header-section-number">13.5.1</span> 为什么先看高频词</a></li>
+  <li><a href="#全样本高频词统计" id="toc-全样本高频词统计" class="nav-link" data-scroll-target="#全样本高频词统计"><span class="header-section-number">13.5.2</span> 全样本高频词统计</a></li>
+  <li><a href="#词频柱状图" id="toc-词频柱状图" class="nav-link" data-scroll-target="#词频柱状图"><span class="header-section-number">13.5.3</span> 词频柱状图</a></li>
+  <li><a href="#词云图" id="toc-词云图" class="nav-link" data-scroll-target="#词云图"><span class="header-section-number">13.5.4</span> 词云图</a></li>
+  <li><a href="#按时间段对比词频变化" id="toc-按时间段对比词频变化" class="nav-link" data-scroll-target="#按时间段对比词频变化"><span class="header-section-number">13.5.5</span> 按时间段对比词频变化</a></li>
+  </ul></li>
+  <li><a href="#tf-idf找出真正有区分度的词" id="toc-tf-idf找出真正有区分度的词" class="nav-link" data-scroll-target="#tf-idf找出真正有区分度的词"><span class="header-section-number">13.6</span> TF-IDF：找出真正有区分度的词</a>
+  <ul class="collapse">
+  <li><a href="#高频词的局限" id="toc-高频词的局限" class="nav-link" data-scroll-target="#高频词的局限"><span class="header-section-number">13.6.1</span> 高频词的局限</a></li>
+  <li><a href="#tf-idf-的直觉" id="toc-tf-idf-的直觉" class="nav-link" data-scroll-target="#tf-idf-的直觉"><span class="header-section-number">13.6.2</span> TF-IDF 的直觉</a></li>
+  <li><a href="#用-scikit-learn-计算-tf-idf" id="toc-用-scikit-learn-计算-tf-idf" class="nav-link" data-scroll-target="#用-scikit-learn-计算-tf-idf"><span class="header-section-number">13.6.3</span> 用 scikit-learn 计算 TF-IDF</a></li>
+  <li><a href="#提取单篇文章的关键词" id="toc-提取单篇文章的关键词" class="nav-link" data-scroll-target="#提取单篇文章的关键词"><span class="header-section-number">13.6.4</span> 提取单篇文章的关键词</a></li>
+  <li><a href="#对比不同类型文章的-tf-idf-关键词" id="toc-对比不同类型文章的-tf-idf-关键词" class="nav-link" data-scroll-target="#对比不同类型文章的-tf-idf-关键词"><span class="header-section-number">13.6.5</span> 对比不同类型文章的 TF-IDF 关键词</a></li>
+  </ul></li>
+  <li><a href="#本章小结与练习" id="toc-本章小结与练习" class="nav-link" data-scroll-target="#本章小结与练习"><span class="header-section-number">13.7</span> 本章小结与练习</a>
+  <ul class="collapse">
+  <li><a href="#本章技能清单" id="toc-本章技能清单" class="nav-link" data-scroll-target="#本章技能清单"><span class="header-section-number">13.7.1</span> 本章技能清单</a></li>
+  <li><a href="#本章的工作流" id="toc-本章的工作流" class="nav-link" data-scroll-target="#本章的工作流"><span class="header-section-number">13.7.2</span> 本章的工作流</a></li>
+  <li><a href="#下一章预告" id="toc-下一章预告" class="nav-link" data-scroll-target="#下一章预告"><span class="header-section-number">13.7.3</span> 下一章预告</a></li>
+  <li><a href="#课后练习" id="toc-课后练习" class="nav-link" data-scroll-target="#课后练习"><span class="header-section-number">13.7.4</span> 课后练习</a></li>
+  </ul></li>
+  <li><a href="#参考文献" id="toc-参考文献" class="nav-link" data-scroll-target="#参考文献"><span class="header-section-number">13.8</span> 参考文献</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../Lecture/text_analysis/lecture_text_01_ailn.html"><strong>文本分析</strong></a></li><li class="breadcrumb-item"><a href="../../Lecture/text_analysis/lecture_text_analysis_01_claude.html"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">文本数据处理基础</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">文本数据处理基础</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>金融市场有一个有趣的特点：很多重要信息，是先以文字的形式出现，再转化为价格变动的。央行一句措辞的变化、一份公告的标题、一篇年报里某个段落的语气——这些文本信号，往往比数字数据更早、也更直接地反映了市场参与者的预期和情绪。</p>
+<p>以人民银行为例。2021年底，货币政策执行报告中将「流动性合理充裕」改为「流动性保持合理充裕」，一字之差，市场解读为政策边际宽松；2023年底，「稳健的货币政策要灵活适度、精准有效」中「灵活适度」的措辞出现，债市随即上涨。这些变化，如果只盯着利率数据是看不到的——它们首先藏在文字里。</p>
+<p>本章要做的事情，就是教会你把这些文字变成可以分析的数据。主线流程如下：</p>
+<p><span class="math display">\[
+\text{读取文本} \rightarrow \text{检查问题} \rightarrow \text{清洗文本} \rightarrow \text{分词} \rightarrow \text{词频统计} \rightarrow \text{TF-IDF}
+\]</span></p>
+<p>这一章只处理「文本变成数据」这件事，不涉及情感分析、主题模型等更进一步的应用——那些内容留到下一章。</p>
+<p>学完本章，你应该能够：</p>
+<ul>
+<li>把原始文本整理成规则表格</li>
+<li>对文本做基本检查和清洗</li>
+<li>使用 jieba 对中文文本分词，并加载自定义词典</li>
+<li>统计高频词，生成词云和柱状图</li>
+<li>理解 TF-IDF 的直觉，并用 scikit-learn 实现</li>
+</ul>
+<p>与前两章的衔接：在「数据清洗」章，我们已经初步接触了非结构化文本——从贷款公告中提取金额、利率等结构化字段，那是「从文本中抽取事实」。本章要做的事更进一步：量化文本本身的特征，让文本也成为可分析的变量。</p>
+<p>与下一章的衔接：本章使用的数据，是已经整理好的人民银行新闻和问答文本。如果你想自己去采集更多文本，下一章「网络爬虫」会教你怎么做。</p>
+<hr>
+<p><strong>本章各节概览</strong></p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>节</th>
+<th>内容</th>
+<th>核心工具</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td></td>
+<td>文本数据从哪里来，怎么整理成表格</td>
+<td>pandas</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>读取数据后怎么做初步检查</td>
+<td>pandas</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>文本清洗：去噪、标准化与去重</td>
+<td>re, pandas</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>中文分词与停用词处理</td>
+<td>jieba</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>高频词统计与可视化</td>
+<td>collections, wordcloud, matplotlib</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>TF-IDF：找出真正有区分度的词</td>
+<td>scikit-learn</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>本章小结与练习</td>
+<td>—</td>
+</tr>
+</tbody>
+</table>
+<section id="文本数据从哪里来怎么整理成表格" class="level2" data-number="13.1">
+<h2 data-number="13.1" class="anchored" data-anchor-id="文本数据从哪里来怎么整理成表格"><span class="header-section-number">13.1</span> 文本数据从哪里来，怎么整理成表格</h2>
+<section id="金融文本的常见来源" class="level3" data-number="13.1.1">
+<h3 data-number="13.1.1" class="anchored" data-anchor-id="金融文本的常见来源"><span class="header-section-number">13.1.1</span> 金融文本的常见来源</h3>
+<p>在实际工作中，金融文本数据大致来自以下几类来源：</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>类型</th>
+<th>典型来源</th>
+<th>适合做什么</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>政策文件与问答</td>
+<td>人民银行官网、国务院新闻办</td>
+<td>政策语气分析、关键词追踪</td>
+</tr>
+<tr class="even">
+<td>上市公司公告</td>
+<td>巨潮资讯、深交所、上交所</td>
+<td>公告分类、事件识别</td>
+</tr>
+<tr class="odd">
+<td>年报与招股说明书</td>
+<td>巨潮资讯、证监会</td>
+<td>风险词频、MD&amp;A 分析</td>
+</tr>
+<tr class="even">
+<td>财经新闻</td>
+<td>新华财经、中证网、Wind</td>
+<td>情绪分析、事件检测</td>
+</tr>
+<tr class="odd">
+<td>投资者问答</td>
+<td>深交所互动易、上证 e 互动</td>
+<td>投资者关注点分析</td>
+</tr>
+</tbody>
+</table>
+<p>本章使用的数据来自<strong>人民银行官网</strong>，包含两类文本：</p>
+<ul>
+<li><code>pbc_news_raw.csv</code>：人民银行新闻（2025 年 11 月至 2026 年 3 月，共 120 条）</li>
+<li><code>pbc_qa_raw.csv</code>：人民银行答记者问（共 185 条，包含完整问答正文）</li>
+</ul>
+<p>这两类文本是很好的教学素材：它们格式规整、来源权威、内容金融属性强，而且问答类文本篇幅适中，方便学生阅读原文后与分析结果对比。</p>
+</section>
+<section id="文本分析的第一步定义观测单位" class="level3" data-number="13.1.2">
+<h3 data-number="13.1.2" class="anchored" data-anchor-id="文本分析的第一步定义观测单位"><span class="header-section-number">13.1.2</span> 文本分析的第一步：定义观测单位</h3>
+<p>开始写代码之前，先要回答一个问题：<strong>每一行代表什么？</strong></p>
+<p>这听起来像废话，但它实际上决定了后续所有分析的逻辑。如果你的数据里一行是一篇完整年报，和一行是年报里的一个段落，做出来的词频统计含义完全不同。</p>
+<p>对本章的数据而言：</p>
+<ul>
+<li><code>pbc_news_raw.csv</code>：每一行是<strong>一条新闻</strong>（一个观测单位）</li>
+<li><code>pbc_qa_raw.csv</code>：每一行是<strong>一篇答记者问</strong>（一个观测单位）</li>
+</ul>
+</section>
+<section id="最终都要整理成一张表" class="level3" data-number="13.1.3">
+<h3 data-number="13.1.3" class="anchored" data-anchor-id="最终都要整理成一张表"><span class="header-section-number">13.1.3</span> 最终都要整理成一张表</h3>
+<p>无论原始数据从哪里来——网页、PDF、API 还是手工整理——进入分析之前，都应该先整理成规则表格。一个标准的文本数据表结构如下：</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>字段</th>
+<th>含义</th>
+<th>示例</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>title</code></td>
+<td>标题</td>
+<td>中国人民银行召开 2026 年金融稳定工作会议</td>
+</tr>
+<tr class="even">
+<td><code>date</code></td>
+<td>日期</td>
+<td>2026/3/27</td>
+</tr>
+<tr class="odd">
+<td><code>url</code></td>
+<td>原文链接</td>
+<td>https://www.pbc.gov.cn/…</td>
+</tr>
+<tr class="even">
+<td><code>text</code></td>
+<td>正文</td>
+<td>会议听取了…</td>
+</tr>
+<tr class="odd">
+<td><code>section</code></td>
+<td>栏目/类别</td>
+<td>pbc_news</td>
+</tr>
+<tr class="even">
+<td><code>crawl_time</code></td>
+<td>抓取时间</td>
+<td>2026/3/29</td>
+</tr>
+</tbody>
+</table>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Important
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>原则：先整理成表格，再做分析。</strong></p>
+<p>很多初学者习惯把原始文本直接扔给模型，让模型直接给结论。这种方式在演示层面看起来省事，但结果难以复现，也无法大规模处理。更稳妥的顺序是：定义观测单位 → 整理为表格 → 检查与清洗 → 分词与分析。</p>
+</div>
+</div>
+</section>
+</section>
+<section id="读取数据与初步检查" class="level2" data-number="13.2">
+<h2 data-number="13.2" class="anchored" data-anchor-id="读取数据与初步检查"><span class="header-section-number">13.2</span> 读取数据与初步检查</h2>
+<section id="为什么读进来之后不能立刻分析" class="level3" data-number="13.2.1">
+<h3 data-number="13.2.1" class="anchored" data-anchor-id="为什么读进来之后不能立刻分析"><span class="header-section-number">13.2.1</span> 为什么读进来之后不能立刻分析</h3>
+<p>「文件能读进来」不等于「数据已经可用」。文本数据里常见的问题包括：</p>
+<ul>
+<li>正文列抓到的是导航菜单而不是真正的内容</li>
+<li>同一条新闻被抓了两次</li>
+<li>日期格式不统一，无法做时间序列分析</li>
+<li>部分记录的正文极短，可能是抓取失败</li>
+</ul>
+<p>这些问题如果不在早期发现，等到分词之后再排查会麻烦很多。建议养成习惯：<strong>读入数据后，先花 5 分钟做初步检查，再进入分析。</strong></p>
+</section>
+<section id="读取数据" class="level3" data-number="13.2.2">
+<h3 data-number="13.2.2" class="anchored" data-anchor-id="读取数据"><span class="header-section-number">13.2.2</span> 读取数据</h3>
+<div id="cell-3" class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co"># 读取人民银行新闻数据</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co"># 注意：该文件编码为 GBK（Windows 中文系统常见编码），不是 UTF-8</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_csv(<span class="st">"data_raw/pbc_news_raw.csv"</span>, encoding<span class="op">=</span><span class="st">"gbk"</span>)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"数据维度：</span><span class="sc">{</span>df<span class="sc">.</span>shape[<span class="dv">0</span>]<span class="sc">}</span><span class="ss"> 行 × </span><span class="sc">{</span>df<span class="sc">.</span>shape[<span class="dv">1</span>]<span class="sc">}</span><span class="ss"> 列"</span>)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"字段名称：</span><span class="sc">{</span>df<span class="sc">.</span>columns<span class="sc">.</span>tolist()<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+关于文件编码
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>本章数据文件使用 <strong>GBK</strong> 编码（Windows 中文系统的默认编码）。如果你在 macOS 或 Linux 上运行， 遇到 <code>UnicodeDecodeError</code>，可以尝试以下备选方案：</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 方案 1：改用 utf-8-sig（带 BOM 的 UTF-8）</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_csv(<span class="st">"data_raw/pbc_news_raw.csv"</span>, encoding<span class="op">=</span><span class="st">"utf-8-sig"</span>)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co"># 方案 2：让 pandas 自动检测编码（需要安装 chardet）</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> chardet</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> <span class="bu">open</span>(<span class="st">"data_raw/pbc_news_raw.csv"</span>, <span class="st">"rb"</span>) <span class="im">as</span> f:</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>    enc <span class="op">=</span> chardet.detect(f.read(<span class="dv">10000</span>))[<span class="st">"encoding"</span>]</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_csv(<span class="st">"data_raw/pbc_news_raw.csv"</span>, encoding<span class="op">=</span>enc)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+<p>先看前几行，对数据内容建立基本印象。</p>
+<div id="cell-6" class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 查看前 3 行，重点看 title、date、text 三列</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>df[[<span class="st">"title"</span>, <span class="st">"date"</span>, <span class="st">"text"</span>, <span class="st">"section"</span>]].head(<span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="检查字段类型与缺失值" class="level3" data-number="13.2.3">
+<h3 data-number="13.2.3" class="anchored" data-anchor-id="检查字段类型与缺失值"><span class="header-section-number">13.2.3</span> 检查字段类型与缺失值</h3>
+<div id="cell-8" class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 查看各字段的数据类型和非空数量</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>df.info()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cell-9" class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 重点检查关键字段的缺失情况</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>missing <span class="op">=</span> df[[<span class="st">"title"</span>, <span class="st">"date"</span>, <span class="st">"text"</span>]].isna().<span class="bu">sum</span>()</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"关键字段缺失值统计："</span>)</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(missing)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="检查文本长度" class="level3" data-number="13.2.4">
+<h3 data-number="13.2.4" class="anchored" data-anchor-id="检查文本长度"><span class="header-section-number">13.2.4</span> 检查文本长度</h3>
+<p>文本长度是排查异常的好抓手。正文过短往往意味着抓取失败，或者抓到的是导航文字而不是真正的内容。</p>
+<div id="cell-11" class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="co"># 计算正文字符长度</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>df[<span class="st">"text_len"</span>] <span class="op">=</span> df[<span class="st">"text"</span>].fillna(<span class="st">""</span>).<span class="bu">str</span>.<span class="bu">len</span>()</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"正文长度描述统计："</span>)</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df[<span class="st">"text_len"</span>].describe().<span class="bu">round</span>(<span class="dv">0</span>))</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="co"># 绘制长度分布直方图，快速发现异常</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>plt.rcParams[<span class="st">"font.family"</span>] <span class="op">=</span> <span class="st">"SimHei"</span>   <span class="co"># Windows 用 SimHei</span></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a><span class="co"># plt.rcParams["font.family"] = "PingFang SC"  # macOS 用户可改这行</span></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>plt.rcParams[<span class="st">"axes.unicode_minus"</span>] <span class="op">=</span> <span class="va">False</span></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">4</span>))</span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>plt.hist(df[<span class="st">"text_len"</span>], bins<span class="op">=</span><span class="dv">30</span>, edgecolor<span class="op">=</span><span class="st">"white"</span>)</span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"正文字符数"</span>)</span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">"文章数量"</span>)</span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"人民银行新闻正文长度分布"</span>)</span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>plt.savefig(<span class="st">"Fig/text_len_dist.png"</span>, dpi<span class="op">=</span><span class="dv">150</span>, bbox_inches<span class="op">=</span><span class="st">"tight"</span>)</span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cell-12" class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 查看正文最短的 5 条，判断是否是抓取异常</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>df.sort_values(<span class="st">"text_len"</span>)[[<span class="st">"title"</span>, <span class="st">"date"</span>, <span class="st">"text_len"</span>, <span class="st">"text"</span>]].head(<span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="检查重复值和日期格式" class="level3" data-number="13.2.5">
+<h3 data-number="13.2.5" class="anchored" data-anchor-id="检查重复值和日期格式"><span class="header-section-number">13.2.5</span> 检查重复值和日期格式</h3>
+<div id="cell-14" class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 检查 URL 重复（URL 重复通常意味着同一条新闻被抓了多次）</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>dup_count <span class="op">=</span> df[<span class="st">"url"</span>].duplicated().<span class="bu">sum</span>()</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"重复 URL 数量：</span><span class="sc">{</span>dup_count<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="co"># 将日期转为标准格式，顺便找出格式异常的记录</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>df[<span class="st">"date_std"</span>] <span class="op">=</span> pd.to_datetime(df[<span class="st">"date"</span>], errors<span class="op">=</span><span class="st">"coerce"</span>)</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>bad_dates <span class="op">=</span> df[df[<span class="st">"date_std"</span>].isna()][[<span class="st">"date"</span>, <span class="st">"title"</span>]]</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"日期解析失败数量：</span><span class="sc">{</span><span class="bu">len</span>(bad_dates)<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="bu">len</span>(bad_dates) <span class="op">&gt;</span> <span class="dv">0</span>:</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(bad_dates)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>检查完毕，对数据的基本质量有了判断之后，再进入清洗环节。</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+AI 提示词：生成可复用的文本数据检查函数
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>我有一个中文文本 DataFrame，字段包括 <code>title</code>、<code>date</code>、<code>url</code>、<code>text</code>、<code>section</code>。请用 Python 编写一个可复用的检查函数 <code>audit_text_df(df)</code>，要求输出以下信息：</p>
+<ol type="1">
+<li>行数、列数、字段名与数据类型</li>
+<li><code>title</code>、<code>date</code>、<code>text</code> 三列的缺失值统计</li>
+<li><code>text</code> 列的字符长度分布（min、均值、中位数、max）</li>
+<li>正文最短的 5 条记录</li>
+<li>URL 重复数量</li>
+<li><code>date</code> 字段能否成功转为标准日期格式</li>
+<li>最后给出一句「是否建议直接进入下一步」的结论</li>
+</ol>
+<p>要求：所有代码加详细中文注释，函数写法清晰，适合日后复用到其他文本数据集。</p>
+</div>
+</div>
+</section>
+</section>
+<section id="文本清洗去噪标准化与去重" class="level2" data-number="13.3">
+<h2 data-number="13.3" class="anchored" data-anchor-id="文本清洗去噪标准化与去重"><span class="header-section-number">13.3</span> 文本清洗：去噪、标准化与去重</h2>
+<section id="清洗的目标是什么" class="level3" data-number="13.3.1">
+<h3 data-number="13.3.1" class="anchored" data-anchor-id="清洗的目标是什么"><span class="header-section-number">13.3.1</span> 清洗的目标是什么</h3>
+<p>原始文本里常见的「脏东西」大致有这几类：</p>
+<ul>
+<li><strong>多余空格和换行</strong>：爬虫抓取时保留了原网页的排版符号</li>
+<li><strong>URL 地址</strong>：正文里夹杂了超链接地址</li>
+<li><strong>噪声短语</strong>：「责任编辑」「打印本页」「来源：新华社」等页脚/页眉信息</li>
+<li><strong>重复记录</strong>：同一条新闻被抓了两次</li>
+</ul>
+<p>如果不先清洗，这些噪声会直接影响后面的分词和词频统计——「打印」「责任」这类词会莫名其妙地出现在高频词里。</p>
+<p>有一点要强调：<strong>不要直接覆盖原始文本列</strong>，而是新建一列 <code>text_clean</code>。这样原始数据还在，清洗逻辑可以随时修改。</p>
+</section>
+<section id="一个基础清洗函数" class="level3" data-number="13.3.2">
+<h3 data-number="13.3.2" class="anchored" data-anchor-id="一个基础清洗函数"><span class="header-section-number">13.3.2</span> 一个基础清洗函数</h3>
+<div id="cell-17" class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> re</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> clean_text(text):</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""对单条中文文本做基础清洗，返回清洗后的字符串。"""</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="kw">not</span> <span class="bu">isinstance</span>(text, <span class="bu">str</span>):</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="st">""</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 去除 URL（http:// 或 www. 开头的链接）</span></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>    text <span class="op">=</span> re.sub(<span class="vs">r"http[s]?://\S+|www\.\S+"</span>, <span class="st">""</span>, text)</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 去除 HTML 标签（如 &lt;p&gt;、&lt;br/&gt; 等）</span></span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>    text <span class="op">=</span> re.sub(<span class="vs">r"&lt;[^&gt;]+&gt;"</span>, <span class="st">""</span>, text)</span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 去除常见页脚噪声词</span></span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>    noise_patterns <span class="op">=</span> [<span class="st">"责任编辑"</span>, <span class="st">"打印本页"</span>, <span class="st">"关闭窗口"</span>, <span class="st">"来源："</span>, <span class="st">"编辑："</span>]</span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> pattern <span class="kw">in</span> noise_patterns:</span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a>        text <span class="op">=</span> text.replace(pattern, <span class="st">""</span>)</span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 把换行符和制表符替换为空格，然后合并连续空格</span></span>
+<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a>    text <span class="op">=</span> text.replace(<span class="st">"</span><span class="ch">\n</span><span class="st">"</span>, <span class="st">" "</span>).replace(<span class="st">"</span><span class="ch">\t</span><span class="st">"</span>, <span class="st">" "</span>)</span>
+<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a>    text <span class="op">=</span> re.sub(<span class="vs">r"\s+"</span>, <span class="st">" "</span>, text)</span>
+<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> text.strip()</span>
+<span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-26"><a href="#cb9-26" aria-hidden="true" tabindex="-1"></a><span class="co"># 生成清洗后的新列，保留原始 text 列不动</span></span>
+<span id="cb9-27"><a href="#cb9-27" aria-hidden="true" tabindex="-1"></a>df[<span class="st">"text_clean"</span>] <span class="op">=</span> df[<span class="st">"text"</span>].<span class="bu">apply</span>(clean_text)</span>
+<span id="cb9-28"><a href="#cb9-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-29"><a href="#cb9-29" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"清洗完成，新增 text_clean 列"</span>)</span>
+<span id="cb9-30"><a href="#cb9-30" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"清洗前平均长度：</span><span class="sc">{</span>df[<span class="st">'text'</span>]<span class="sc">.</span><span class="bu">str</span><span class="sc">.</span><span class="bu">len</span>()<span class="sc">.</span>mean()<span class="sc">:.0f}</span><span class="ss"> 字符"</span>)</span>
+<span id="cb9-31"><a href="#cb9-31" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"清洗后平均长度：</span><span class="sc">{</span>df[<span class="st">'text_clean'</span>]<span class="sc">.</span><span class="bu">str</span><span class="sc">.</span><span class="bu">len</span>()<span class="sc">.</span>mean()<span class="sc">:.0f}</span><span class="ss"> 字符"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>清洗完之后，随机抽几条对比一下，确认没有误删有用内容。</p>
+<div id="cell-19" class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 随机抽取 3 条，对比清洗前后</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>sample <span class="op">=</span> df.sample(<span class="dv">3</span>, random_state<span class="op">=</span><span class="dv">42</span>)[[<span class="st">"title"</span>, <span class="st">"text"</span>, <span class="st">"text_clean"</span>]]</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> _, row <span class="kw">in</span> sample.iterrows():</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"【标题】</span><span class="sc">{</span>row[<span class="st">'title'</span>]<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"【清洗前】</span><span class="sc">{</span><span class="bu">str</span>(row[<span class="st">'text'</span>])[:<span class="dv">100</span>]<span class="sc">}</span><span class="ss">..."</span>)</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"【清洗后】</span><span class="sc">{</span><span class="bu">str</span>(row[<span class="st">'text_clean'</span>])[:<span class="dv">100</span>]<span class="sc">}</span><span class="ss">..."</span>)</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"-"</span> <span class="op">*</span> <span class="dv">60</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="去重" class="level3" data-number="13.3.3">
+<h3 data-number="13.3.3" class="anchored" data-anchor-id="去重"><span class="header-section-number">13.3.3</span> 去重</h3>
+<div id="cell-21" class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 优先用 URL 去重（最准确），URL 缺失时用 title+date 作为备选</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>df_clean <span class="op">=</span> df.drop_duplicates(subset<span class="op">=</span>[<span class="st">"url"</span>]).copy()</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="co"># 把检查阶段生成的标准化日期列一并带过来，后续时序分析会用到</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>df_clean[<span class="st">"date_std"</span>] <span class="op">=</span> df_clean[<span class="st">"date"</span>].pipe(pd.to_datetime, errors<span class="op">=</span><span class="st">"coerce"</span>)</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"去重前：</span><span class="sc">{</span><span class="bu">len</span>(df)<span class="sc">}</span><span class="ss"> 条，去重后：</span><span class="sc">{</span><span class="bu">len</span>(df_clean)<span class="sc">}</span><span class="ss"> 条"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Warning
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>清洗不是越多越好。</strong></p>
+<p>有些初学者会把正则表达式写得很激进，把数字、标点、括号全部去掉。对于词频统计来说，这样做可能反而有损信息——比如，「降准 0.5 个百分点」中的数字是有意义的，不应该被去掉。</p>
+<p>清洗后一定要<strong>抽样对比</strong>，确认有用内容没有被误删。</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+AI 提示词：清洗中文金融文本
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>我有一个 DataFrame，其中 <code>text</code> 列包含从人民银行官网爬取的中文新闻正文，可能混有 URL、换行符、页脚信息（如「责任编辑」「打印本页」）。请你用 Python 编写清洗函数，要求：</p>
+<ol type="1">
+<li>去除 URL、HTML 标签、换行符</li>
+<li>去除「责任编辑」「打印本页」「来源：」等常见页脚噪声</li>
+<li>合并连续空格</li>
+<li>保留原始 <code>text</code> 列，新建 <code>text_clean</code> 列</li>
+<li>随机抽取 5 条，打印清洗前后对比</li>
+<li>所有代码加中文注释</li>
+</ol>
+</div>
+</div>
+</section>
+</section>
+<section id="中文分词停用词与自定义词典" class="level2" data-number="13.4">
+<h2 data-number="13.4" class="anchored" data-anchor-id="中文分词停用词与自定义词典"><span class="header-section-number">13.4</span> 中文分词、停用词与自定义词典</h2>
+<section id="为什么中文需要分词" class="level3" data-number="13.4.1">
+<h3 data-number="13.4.1" class="anchored" data-anchor-id="为什么中文需要分词"><span class="header-section-number">13.4.1</span> 为什么中文需要分词</h3>
+<p>英文文本天然由空格分隔，可以直接统计单词频率。中文没有空格，「中国人民银行宣布降准」这一句话，如果不做处理，计算机只能一个字一个字地读，无法识别「人民银行」「降准」是完整的词。</p>
+<p>分词的作用，就是把连续的汉字切成有意义的词序列：</p>
+<pre><code>原文：中国人民银行宣布降准
+分词：中国 / 人民银行 / 宣布 / 降准</code></pre>
+<p>分词结果的质量直接决定后续分析的质量。如果「人民银行」被切成「人民 / 银行」，或者「逆回购」被切成「逆 / 回购」，那么后续的词频统计和关键词提取就都建立在错误的基础上了。</p>
+</section>
+<section id="停用词要过滤掉的高频废词" class="level3" data-number="13.4.2">
+<h3 data-number="13.4.2" class="anchored" data-anchor-id="停用词要过滤掉的高频废词"><span class="header-section-number">13.4.2</span> 停用词：要过滤掉的高频废词</h3>
+<p>分词之后，通常会出现大量高频但没有分析价值的词，比如「的」「了」「是」「在」，以及金融文本中常见的套话：「相关」「工作」「进一步」「有关」。这类词叫做<strong>停用词</strong>，需要用停用词表过滤掉。</p>
+<p>停用词表不是一次性配置好就完事的。每完成一轮分词，看看高频词里有没有新的废词，就往停用词表里补一补——这是个小型迭代过程。</p>
+</section>
+<section id="自定义词典金融专业术语的保障" class="level3" data-number="13.4.3">
+<h3 data-number="13.4.3" class="anchored" data-anchor-id="自定义词典金融专业术语的保障"><span class="header-section-number">13.4.3</span> 自定义词典：金融专业术语的保障</h3>
+<p>jieba 的默认词典是通用词典，对金融专业术语的支持有限。如果不加自定义词典：</p>
+<ul>
+<li>「中期借贷便利」→ 被切成「中期 / 借贷 / 便利」</li>
+<li>「结构性货币政策工具」→ 被切成「结构性 / 货币政策 / 工具」</li>
+<li>「宏观审慎管理」→ 被切成「宏观 / 审慎 / 管理」</li>
+</ul>
+<p>词典文件格式很简单，每行一个词（可以加词频和词性，也可以只写词）：</p>
+<pre><code>中期借贷便利 5 n
+结构性货币政策工具 5 n
+宏观审慎管理 5 n</code></pre>
+</section>
+<section id="完整分词流程" class="level3" data-number="13.4.4">
+<h3 data-number="13.4.4" class="anchored" data-anchor-id="完整分词流程"><span class="header-section-number">13.4.4</span> 完整分词流程</h3>
+</section>
+<section id="jieba-的三种分词模式" class="level3" data-number="13.4.5">
+<h3 data-number="13.4.5" class="anchored" data-anchor-id="jieba-的三种分词模式"><span class="header-section-number">13.4.5</span> jieba 的三种分词模式</h3>
+<p>jieba 提供三种分词模式，理解它们的区别有助于选择合适的模式：</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>模式</th>
+<th>特点</th>
+<th>适合场景</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>精确模式（<code>lcut</code>）</td>
+<td>切分精准，不重叠</td>
+<td>词频统计、TF-IDF（<strong>本章用这个</strong>）</td>
+</tr>
+<tr class="even">
+<td>全模式（<code>lcut(..., cut_all=True)</code>）</td>
+<td>穷举所有可能的词，有重叠</td>
+<td>快速浏览语料，不用于统计</td>
+</tr>
+<tr class="odd">
+<td>搜索引擎模式（<code>lcut_for_search</code>）</td>
+<td>在精确模式基础上对长词再细切</td>
+<td>搜索索引构建</td>
+</tr>
+</tbody>
+</table>
+<p>用同一句话对比三种模式的输出：</p>
+<div id="cell-25" class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> jieba</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>sent <span class="op">=</span> <span class="st">"中国人民银行开展中期借贷便利操作，维护银行体系流动性合理充裕"</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"【精确模式】（词频统计的标准选择）"</span>)</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">" / "</span>.join(jieba.lcut(sent)))</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">【全模式】（穷举所有可能词，有重叠，不适合统计）"</span>)</span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">" / "</span>.join(jieba.lcut(sent, cut_all<span class="op">=</span><span class="va">True</span>)))</span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">【搜索引擎模式】（长词会被进一步细切）"</span>)</span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">" / "</span>.join(jieba.lcut_for_search(sent)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cell-26" class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># !pip install jieba   # 第一次使用时取消注释安装</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> jieba</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="co"># ---------- 词典路径（按你的实际目录调整）----------</span></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>DICT_DIR      <span class="op">=</span> <span class="st">"dicts"</span></span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>STOPWORDS_FILE <span class="op">=</span> os.path.join(DICT_DIR, <span class="st">"stopwords_cn_finance.txt"</span>)</span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>USER_DICT_FILE <span class="op">=</span> os.path.join(DICT_DIR, <span class="st">"user_dict_finance.txt"</span>)</span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a><span class="co"># 加载自定义金融词典（优先识别词典里的专业术语，避免被切错）</span></span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> os.path.exists(USER_DICT_FILE):</span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a>    jieba.load_userdict(USER_DICT_FILE)</span>
+<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"已加载用户词典：</span><span class="sc">{</span>USER_DICT_FILE<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a><span class="cf">else</span>:</span>
+<span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"未找到用户词典，继续使用默认词典"</span>)</span>
+<span id="cb15-16"><a href="#cb15-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-17"><a href="#cb15-17" aria-hidden="true" tabindex="-1"></a><span class="co"># 读取停用词表</span></span>
+<span id="cb15-18"><a href="#cb15-18" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> <span class="bu">open</span>(STOPWORDS_FILE, <span class="st">"r"</span>, encoding<span class="op">=</span><span class="st">"utf-8"</span>) <span class="im">as</span> f:</span>
+<span id="cb15-19"><a href="#cb15-19" aria-hidden="true" tabindex="-1"></a>    stopwords <span class="op">=</span> <span class="bu">set</span>(line.strip() <span class="cf">for</span> line <span class="kw">in</span> f <span class="cf">if</span> line.strip())</span>
+<span id="cb15-20"><a href="#cb15-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-21"><a href="#cb15-21" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"停用词表加载完成，共 </span><span class="sc">{</span><span class="bu">len</span>(stopwords)<span class="sc">}</span><span class="ss"> 个停用词"</span>)</span>
+<span id="cb15-22"><a href="#cb15-22" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"示例停用词：</span><span class="sc">{</span><span class="bu">list</span>(stopwords)[:<span class="dv">8</span>]<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cell-27" class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> tokenize(text):</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""对单条中文文本分词，并过滤停用词和过短词项。"""</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="kw">not</span> <span class="bu">isinstance</span>(text, <span class="bu">str</span>) <span class="kw">or</span> <span class="kw">not</span> text.strip():</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> []</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>    words <span class="op">=</span> jieba.lcut(text)  <span class="co"># 精确模式分词</span></span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 过滤停用词、长度小于 2 的词、纯数字</span></span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>    words <span class="op">=</span> [</span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>        w <span class="cf">for</span> w <span class="kw">in</span> words</span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> w.strip()                  <span class="co"># 排除空字符</span></span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a>        <span class="kw">and</span> w <span class="kw">not</span> <span class="kw">in</span> stopwords        <span class="co"># 排除停用词</span></span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a>        <span class="kw">and</span> <span class="bu">len</span>(w) <span class="op">&gt;=</span> <span class="dv">2</span>               <span class="co"># 排除单字（信息量通常较低）</span></span>
+<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a>        <span class="kw">and</span> <span class="kw">not</span> w.strip().isdigit()   <span class="co"># 排除纯数字</span></span>
+<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a>    ]</span>
+<span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> words</span>
+<span id="cb16-17"><a href="#cb16-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-18"><a href="#cb16-18" aria-hidden="true" tabindex="-1"></a><span class="co"># 对清洗后的正文做分词，结果保存为列表</span></span>
+<span id="cb16-19"><a href="#cb16-19" aria-hidden="true" tabindex="-1"></a>df_clean[<span class="st">"tokens"</span>] <span class="op">=</span> df_clean[<span class="st">"text_clean"</span>].<span class="bu">apply</span>(tokenize)</span>
+<span id="cb16-20"><a href="#cb16-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-21"><a href="#cb16-21" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"分词完成，查看前 2 条结果："</span>)</span>
+<span id="cb16-22"><a href="#cb16-22" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> _, row <span class="kw">in</span> df_clean.head(<span class="dv">2</span>).iterrows():</span>
+<span id="cb16-23"><a href="#cb16-23" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"标题：</span><span class="sc">{</span>row[<span class="st">'title'</span>]<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb16-24"><a href="#cb16-24" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"分词：</span><span class="sc">{</span>row[<span class="st">'tokens'</span>][:<span class="dv">15</span>]<span class="sc">}</span><span class="ss">..."</span>)</span>
+<span id="cb16-25"><a href="#cb16-25" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="验证自定义词典是否生效" class="level3" data-number="13.4.6">
+<h3 data-number="13.4.6" class="anchored" data-anchor-id="验证自定义词典是否生效"><span class="header-section-number">13.4.6</span> 验证自定义词典是否生效</h3>
+<p>加载词典之后，用几个典型术语验证一下效果，这一步不能省。</p>
+<div id="cell-29" class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 用几个典型金融术语测试分词效果</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>test_sentences <span class="op">=</span> [</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"中国人民银行开展中期借贷便利操作"</span>,</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">"加强宏观审慎管理，防范系统性金融风险"</span>,</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"结构性货币政策工具精准滴灌实体经济"</span>,</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>]</span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> sent <span class="kw">in</span> test_sentences:</span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>    tokens <span class="op">=</span> jieba.lcut(sent)</span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"原文：</span><span class="sc">{</span>sent<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"分词：</span><span class="sc">{</span><span class="st">' / '</span><span class="sc">.</span>join(tokens)<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Warning
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>分词结果不好时，应该怎么排查？</strong></p>
+<p>不要只在分词这一步反复调参，而应顺着流程向前回溯：</p>
+<ul>
+<li>关键术语被拆开 → 补充自定义词典，或用 <code>jieba.add_word()</code> 临时添加</li>
+<li>虚词仍大量出现 → 扩充停用词表</li>
+<li>URL 或页脚噪声残留 → 回到清洗环节增加规则</li>
+<li>单字词过多 → 适当提高 <code>len(w) &gt;= 2</code> 的过滤门槛</li>
+</ul>
+<p>分词是一个小型迭代过程：做完第一轮，抽样看结果，发现问题，修改词典或停用词表，再做第二轮。</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+AI 提示词：诊断中文金融文本的分词问题
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>我已经对中文金融文本完成了分词，结果保存在 <code>tokens</code> 列（列表格式）。请帮我诊断分词质量：</p>
+<ul>
+<li>数据背景：人民银行官网新闻，字段包括 <code>title</code>、<code>text_clean</code>、<code>tokens</code></li>
+<li>问题描述：我怀疑分词结果不够准确</li>
+<li>请完成：① 随机抽取 10 条显示分词结果；② 统计全样本 Top 30 高频词；③ 判断是否存在术语被拆开、虚词过多、噪声残留等问题；④ 给出「问题 → 修正建议」清单</li>
+<li>要求：所有代码加中文注释，最后总结应优先修改哪些内容</li>
+</ul>
+</div>
+</div>
+</section>
+</section>
+<section id="高频词统计与可视化" class="level2" data-number="13.5">
+<h2 data-number="13.5" class="anchored" data-anchor-id="高频词统计与可视化"><span class="header-section-number">13.5</span> 高频词统计与可视化</h2>
+<section id="为什么先看高频词" class="level3" data-number="13.5.1">
+<h3 data-number="13.5.1" class="anchored" data-anchor-id="为什么先看高频词"><span class="header-section-number">13.5.1</span> 为什么先看高频词</h3>
+<p>完成分词之后，最先能做的就是统计词频。这一步的主要用途有两个：一是对语料的整体内容建立直觉；二是诊断前面的清洗和分词是否到位——如果高频词里还有很多废词，就说明停用词表或分词规则还需要调整。</p>
+</section>
+<section id="全样本高频词统计" class="level3" data-number="13.5.2">
+<h3 data-number="13.5.2" class="anchored" data-anchor-id="全样本高频词统计"><span class="header-section-number">13.5.2</span> 全样本高频词统计</h3>
+<div id="cell-32" class="cell">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> collections <span class="im">import</span> Counter</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>plt.rcParams[<span class="st">"font.family"</span>] <span class="op">=</span> <span class="st">"SimHei"</span></span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a><span class="co"># plt.rcParams["font.family"] = "PingFang SC"  # macOS 用户改这行</span></span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>plt.rcParams[<span class="st">"axes.unicode_minus"</span>] <span class="op">=</span> <span class="va">False</span></span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a><span class="co"># 合并所有文章的词项，统计全样本词频</span></span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>all_words <span class="op">=</span> []</span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> tokens <span class="kw">in</span> df_clean[<span class="st">"tokens"</span>]:</span>
+<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a>    all_words.extend(tokens)</span>
+<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a>word_freq <span class="op">=</span> Counter(all_words)</span>
+<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a>top20 <span class="op">=</span> word_freq.most_common(<span class="dv">20</span>)</span>
+<span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-17"><a href="#cb18-17" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"全样本 Top 20 高频词："</span>)</span>
+<span id="cb18-18"><a href="#cb18-18" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> word, freq <span class="kw">in</span> top20:</span>
+<span id="cb18-19"><a href="#cb18-19" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"  </span><span class="sc">{</span>word<span class="sc">}</span><span class="ss">：</span><span class="sc">{</span>freq<span class="sc">}</span><span class="ss"> 次"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="词频柱状图" class="level3" data-number="13.5.3">
+<h3 data-number="13.5.3" class="anchored" data-anchor-id="词频柱状图"><span class="header-section-number">13.5.3</span> 词频柱状图</h3>
+<div id="cell-34" class="cell">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>top20_df <span class="op">=</span> pd.DataFrame(top20, columns<span class="op">=</span>[<span class="st">"词语"</span>, <span class="st">"频次"</span>])</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">6</span>))</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a><span class="co"># 倒序排列，让频次最高的词显示在顶部</span></span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>plt.barh(top20_df[<span class="st">"词语"</span>][::<span class="op">-</span><span class="dv">1</span>], top20_df[<span class="st">"频次"</span>][::<span class="op">-</span><span class="dv">1</span>], color<span class="op">=</span><span class="st">"steelblue"</span>)</span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"出现次数"</span>)</span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"人民银行新闻 Top 20 高频词（2025.11–2026.03）"</span>)</span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>plt.savefig(<span class="st">"Fig/top20_words_bar.png"</span>, dpi<span class="op">=</span><span class="dv">150</span>, bbox_inches<span class="op">=</span><span class="st">"tight"</span>)</span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="词云图" class="level3" data-number="13.5.4">
+<h3 data-number="13.5.4" class="anchored" data-anchor-id="词云图"><span class="header-section-number">13.5.4</span> 词云图</h3>
+<div id="cell-36" class="cell">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># !pip install wordcloud   # 第一次使用时取消注释</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> wordcloud <span class="im">import</span> WordCloud</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a><span class="co"># 中文词云必须指定字体路径，否则会显示方块</span></span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>font_path <span class="op">=</span> <span class="st">"C:/Windows/Fonts/simhei.ttf"</span>          <span class="co"># Windows</span></span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a><span class="co"># font_path = "/System/Library/Fonts/PingFang.ttc"  # macOS</span></span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a><span class="co"># 将词频字典传入 WordCloud，generate_from_frequencies 直接用统计好的词频</span></span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a>wc <span class="op">=</span> WordCloud(</span>
+<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a>    font_path<span class="op">=</span>font_path,</span>
+<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a>    width<span class="op">=</span><span class="dv">800</span>,</span>
+<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a>    height<span class="op">=</span><span class="dv">400</span>,</span>
+<span id="cb20-14"><a href="#cb20-14" aria-hidden="true" tabindex="-1"></a>    background_color<span class="op">=</span><span class="st">"white"</span>,</span>
+<span id="cb20-15"><a href="#cb20-15" aria-hidden="true" tabindex="-1"></a>    max_words<span class="op">=</span><span class="dv">80</span>,</span>
+<span id="cb20-16"><a href="#cb20-16" aria-hidden="true" tabindex="-1"></a>    colormap<span class="op">=</span><span class="st">"Blues"</span>,</span>
+<span id="cb20-17"><a href="#cb20-17" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb20-18"><a href="#cb20-18" aria-hidden="true" tabindex="-1"></a>wc.generate_from_frequencies(word_freq)</span>
+<span id="cb20-19"><a href="#cb20-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-20"><a href="#cb20-20" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">5</span>))</span>
+<span id="cb20-21"><a href="#cb20-21" aria-hidden="true" tabindex="-1"></a>plt.imshow(wc, interpolation<span class="op">=</span><span class="st">"bilinear"</span>)</span>
+<span id="cb20-22"><a href="#cb20-22" aria-hidden="true" tabindex="-1"></a>plt.axis(<span class="st">"off"</span>)</span>
+<span id="cb20-23"><a href="#cb20-23" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"人民银行新闻词云（2025.11–2026.03）"</span>)</span>
+<span id="cb20-24"><a href="#cb20-24" aria-hidden="true" tabindex="-1"></a>plt.savefig(<span class="st">"Fig/wordcloud_pbc_news.png"</span>, dpi<span class="op">=</span><span class="dv">150</span>, bbox_inches<span class="op">=</span><span class="st">"tight"</span>)</span>
+<span id="cb20-25"><a href="#cb20-25" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>词云在展示上直观好看，但在正式分析中，柱状图更有用——它能精确显示频次，方便比较。两者配合使用是常见做法。</p>
+</section>
+<section id="按时间段对比词频变化" class="level3" data-number="13.5.5">
+<h3 data-number="13.5.5" class="anchored" data-anchor-id="按时间段对比词频变化"><span class="header-section-number">13.5.5</span> 按时间段对比词频变化</h3>
+<p>如果数据跨越了多个时间段，比较不同时期的高频词往往比看全样本更有价值。人民银行的政策语言会随经济形势演变，这种对比能直观呈现这种变化。</p>
+<div id="cell-38" class="cell">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> collections <span class="im">import</span> Counter</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a><span class="co"># 按季度划分，对比不同时期的高频词</span></span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>df_clean[<span class="st">"quarter"</span>] <span class="op">=</span> df_clean[<span class="st">"date_std"</span>].dt.to_period(<span class="st">"Q"</span>)</span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">14</span>, <span class="dv">5</span>))</span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a><span class="co"># 取数据中最早和最晚两个季度进行对比</span></span>
+<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a>quarters <span class="op">=</span> <span class="bu">sorted</span>(df_clean[<span class="st">"quarter"</span>].dropna().unique())</span>
+<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a>selected <span class="op">=</span> [quarters[<span class="dv">0</span>], quarters[<span class="op">-</span><span class="dv">1</span>]]  <span class="co"># 最早和最晚季度</span></span>
+<span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-14"><a href="#cb21-14" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> ax, q <span class="kw">in</span> <span class="bu">zip</span>(axes, selected):</span>
+<span id="cb21-15"><a href="#cb21-15" aria-hidden="true" tabindex="-1"></a>    subset <span class="op">=</span> df_clean[df_clean[<span class="st">"quarter"</span>] <span class="op">==</span> q]</span>
+<span id="cb21-16"><a href="#cb21-16" aria-hidden="true" tabindex="-1"></a>    words <span class="op">=</span> []</span>
+<span id="cb21-17"><a href="#cb21-17" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> tokens <span class="kw">in</span> subset[<span class="st">"tokens"</span>]:</span>
+<span id="cb21-18"><a href="#cb21-18" aria-hidden="true" tabindex="-1"></a>        words.extend(tokens)</span>
+<span id="cb21-19"><a href="#cb21-19" aria-hidden="true" tabindex="-1"></a>    top10 <span class="op">=</span> pd.DataFrame(Counter(words).most_common(<span class="dv">10</span>), columns<span class="op">=</span>[<span class="st">"词语"</span>, <span class="st">"频次"</span>])</span>
+<span id="cb21-20"><a href="#cb21-20" aria-hidden="true" tabindex="-1"></a>    ax.barh(top10[<span class="st">"词语"</span>][::<span class="op">-</span><span class="dv">1</span>], top10[<span class="st">"频次"</span>][::<span class="op">-</span><span class="dv">1</span>], color<span class="op">=</span><span class="st">"steelblue"</span>)</span>
+<span id="cb21-21"><a href="#cb21-21" aria-hidden="true" tabindex="-1"></a>    ax.set_title(<span class="ss">f"</span><span class="sc">{</span>q<span class="sc">}</span><span class="ss"> Top 10 高频词"</span>)</span>
+<span id="cb21-22"><a href="#cb21-22" aria-hidden="true" tabindex="-1"></a>    ax.set_xlabel(<span class="st">"频次"</span>)</span>
+<span id="cb21-23"><a href="#cb21-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-24"><a href="#cb21-24" aria-hidden="true" tabindex="-1"></a>plt.suptitle(<span class="st">"人民银行新闻不同时期高频词对比"</span>, fontsize<span class="op">=</span><span class="dv">13</span>)</span>
+<span id="cb21-25"><a href="#cb21-25" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb21-26"><a href="#cb21-26" aria-hidden="true" tabindex="-1"></a>plt.savefig(<span class="st">"Fig/top10_by_quarter.png"</span>, dpi<span class="op">=</span><span class="dv">150</span>, bbox_inches<span class="op">=</span><span class="st">"tight"</span>)</span>
+<span id="cb21-27"><a href="#cb21-27" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+AI 提示词：统计高频词并做时间段对比
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>我有一个 DataFrame，<code>tokens</code> 列保存了每条中文文本的分词列表，<code>date_std</code> 列是标准日期格式。请完成：</p>
+<ol type="1">
+<li>合并所有词项，统计全样本 Top 20 高频词，绘制横向柱状图</li>
+<li>用 <code>matplotlib</code> 生成词云图（需指定中文字体路径）</li>
+<li>按季度分组，对比最早和最晚季度各自的 Top 10 高频词，并排展示</li>
+<li>用 2-3 句话解读对比结果，说明哪些词的频次变化值得关注</li>
+</ol>
+<p>要求：所有代码加中文注释，图表标题和坐标轴标签用中文，图表保存到 <code>Fig/</code> 文件夹。</p>
+</div>
+</div>
+</section>
+</section>
+<section id="tf-idf找出真正有区分度的词" class="level2" data-number="13.6">
+<h2 data-number="13.6" class="anchored" data-anchor-id="tf-idf找出真正有区分度的词"><span class="header-section-number">13.6</span> TF-IDF：找出真正有区分度的词</h2>
+<section id="高频词的局限" class="level3" data-number="13.6.1">
+<h3 data-number="13.6.1" class="anchored" data-anchor-id="高频词的局限"><span class="header-section-number">13.6.1</span> 高频词的局限</h3>
+<p>去掉停用词之后，「金融」「发展」「稳定」「推进」这类词往往还是高频词。它们确实出现得多，但问题是：它们在每一篇文章里都出现得多，所以它们对区分「这篇文章在讲什么」没有太大帮助。</p>
+<p>换句话说，高频词回答的是「整个语料里什么词最常见」，而我们有时候更想知道的是「哪些词能最好地代表这篇文章」。这正是 TF-IDF 要解决的问题。</p>
+</section>
+<section id="tf-idf-的直觉" class="level3" data-number="13.6.2">
+<h3 data-number="13.6.2" class="anchored" data-anchor-id="tf-idf-的直觉"><span class="header-section-number">13.6.2</span> TF-IDF 的直觉</h3>
+<p>TF-IDF 的逻辑很简单：</p>
+<ul>
+<li><strong>TF（词频）</strong>：这个词在这篇文章里出现了多少次？</li>
+<li><strong>IDF（逆文档频率）</strong>：这个词在所有文章里有多常见？越常见，权重越低</li>
+<li><strong>TF-IDF = TF × IDF</strong>：只有「在本文高频、在全局不那么普遍」的词，才会得到高权重</li>
+</ul>
+<p><span class="math display">\[
+\text{TF-IDF}_{d,w} = tf_{d,w} \times \log\left(\frac{N}{df_w}\right)
+\]</span></p>
+<p>其中：<span class="math inline">\(tf_{d,w}\)</span> 是词 <span class="math inline">\(w\)</span> 在文档 <span class="math inline">\(d\)</span> 中的词频，<span class="math inline">\(N\)</span> 是文档总数，<span class="math inline">\(df_w\)</span> 是包含词 <span class="math inline">\(w\)</span> 的文档数。</p>
+<p>一个金融类比：假设你在分析 2025 年第四季度的人民银行新闻，发现「跨境支付」在某篇文章里反复出现，但在其他文章里很少提到——这篇文章的 TF-IDF 就会给「跨境支付」很高的权重，说明这是这篇文章的核心话题。而「金融」「发展」这类词，虽然词频高，但因为在所有文章里都高频，IDF 值很低，最终 TF-IDF 权重也低。</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>TF-IDF 的效果高度依赖前面的分词和停用词处理。</strong> 如果分词结果里有大量错误，或者停用词没有过滤干净，TF-IDF 提取出来的「关键词」也不会有什么解释力。这是一条流水线，每一步都影响下一步。</p>
+</div>
+</div>
+</section>
+<section id="用-scikit-learn-计算-tf-idf" class="level3" data-number="13.6.3">
+<h3 data-number="13.6.3" class="anchored" data-anchor-id="用-scikit-learn-计算-tf-idf"><span class="header-section-number">13.6.3</span> 用 scikit-learn 计算 TF-IDF</h3>
+<div id="cell-41" class="cell">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.feature_extraction.text <span class="im">import</span> TfidfVectorizer</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a><span class="co"># TfidfVectorizer 输入的是字符串，所以先把 tokens 列表拼成空格分隔的字符串</span></span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a><span class="co"># （jieba 分词后以空格连接，让 TfidfVectorizer 按空格切词）</span></span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>df_clean[<span class="st">"text_for_tfidf"</span>] <span class="op">=</span> df_clean[<span class="st">"tokens"</span>].<span class="bu">apply</span>(<span class="kw">lambda</span> x: <span class="st">" "</span>.join(x))</span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a><span class="co"># 构建 TF-IDF 矩阵</span></span>
+<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a><span class="co"># analyzer='word'：按词计算（我们已经完成了中文分词）</span></span>
+<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a><span class="co"># token_pattern=r'(?u)\b\w+\b'：匹配任意长度的词，避免单字母被过滤</span></span>
+<span id="cb22-11"><a href="#cb22-11" aria-hidden="true" tabindex="-1"></a>vectorizer <span class="op">=</span> TfidfVectorizer(analyzer<span class="op">=</span><span class="st">"word"</span>, token_pattern<span class="op">=</span><span class="vs">r"(?u)\b\w+\b"</span>)</span>
+<span id="cb22-12"><a href="#cb22-12" aria-hidden="true" tabindex="-1"></a>X_tfidf <span class="op">=</span> vectorizer.fit_transform(df_clean[<span class="st">"text_for_tfidf"</span>])</span>
+<span id="cb22-13"><a href="#cb22-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-14"><a href="#cb22-14" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"TF-IDF 矩阵维度：</span><span class="sc">{</span>X_tfidf<span class="sc">.</span>shape<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb22-15"><a href="#cb22-15" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"即：</span><span class="sc">{</span>X_tfidf<span class="sc">.</span>shape[<span class="dv">0</span>]<span class="sc">}</span><span class="ss"> 篇文章 × </span><span class="sc">{</span>X_tfidf<span class="sc">.</span>shape[<span class="dv">1</span>]<span class="sc">}</span><span class="ss"> 个词项"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="提取单篇文章的关键词" class="level3" data-number="13.6.4">
+<h3 data-number="13.6.4" class="anchored" data-anchor-id="提取单篇文章的关键词"><span class="header-section-number">13.6.4</span> 提取单篇文章的关键词</h3>
+<div id="cell-43" class="cell">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>feature_names <span class="op">=</span> vectorizer.get_feature_names_out()</span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> get_top_keywords(doc_index, top_n<span class="op">=</span><span class="dv">10</span>):</span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""提取指定文章的 TF-IDF 关键词。"""</span></span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>    row <span class="op">=</span> X_tfidf[doc_index].toarray().flatten()</span>
+<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a>    top_idx <span class="op">=</span> np.argsort(row)[::<span class="op">-</span><span class="dv">1</span>][:top_n]</span>
+<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a>    keywords <span class="op">=</span> [(feature_names[i], <span class="bu">round</span>(row[i], <span class="dv">4</span>)) <span class="cf">for</span> i <span class="kw">in</span> top_idx <span class="cf">if</span> row[i] <span class="op">&gt;</span> <span class="dv">0</span>]</span>
+<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> keywords</span>
+<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-12"><a href="#cb23-12" aria-hidden="true" tabindex="-1"></a><span class="co"># 展示前 3 篇文章的关键词</span></span>
+<span id="cb23-13"><a href="#cb23-13" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">3</span>):</span>
+<span id="cb23-14"><a href="#cb23-14" aria-hidden="true" tabindex="-1"></a>    title <span class="op">=</span> df_clean.iloc[i][<span class="st">"title"</span>]</span>
+<span id="cb23-15"><a href="#cb23-15" aria-hidden="true" tabindex="-1"></a>    keywords <span class="op">=</span> get_top_keywords(i)</span>
+<span id="cb23-16"><a href="#cb23-16" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"【文章 </span><span class="sc">{</span>i<span class="op">+</span><span class="dv">1</span><span class="sc">}</span><span class="ss">】</span><span class="sc">{</span>title<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb23-17"><a href="#cb23-17" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"  TF-IDF 关键词：</span><span class="sc">{</span>[kw <span class="cf">for</span> kw, _ <span class="kw">in</span> keywords]<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb23-18"><a href="#cb23-18" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="对比不同类型文章的-tf-idf-关键词" class="level3" data-number="13.6.5">
+<h3 data-number="13.6.5" class="anchored" data-anchor-id="对比不同类型文章的-tf-idf-关键词"><span class="header-section-number">13.6.5</span> 对比不同类型文章的 TF-IDF 关键词</h3>
+<p>TF-IDF 的更大价值在于<strong>多文档对比</strong>。我们把人民银行新闻（<code>pbc_news</code>）和答记者问（<code>pbc_qa</code>）合并，看看两类文本的关键词有什么差异。</p>
+<div id="cell-45" class="cell">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.feature_extraction.text <span class="im">import</span> TfidfVectorizer</span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a><span class="co"># 读取答记者问数据（编码同样是 GBK）</span></span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a><span class="co"># 答记者问数据同样是 GBK 编码</span></span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>df_qa <span class="op">=</span> pd.read_csv(<span class="st">"data_raw/pbc_qa_raw.csv"</span>, encoding<span class="op">=</span><span class="st">"gbk"</span>)</span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a>df_qa[<span class="st">"text_clean"</span>] <span class="op">=</span> df_qa[<span class="st">"text"</span>].<span class="bu">apply</span>(clean_text)</span>
+<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a>df_qa[<span class="st">"tokens"</span>] <span class="op">=</span> df_qa[<span class="st">"text_clean"</span>].<span class="bu">apply</span>(tokenize)</span>
+<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a>df_qa[<span class="st">"text_for_tfidf"</span>] <span class="op">=</span> df_qa[<span class="st">"tokens"</span>].<span class="bu">apply</span>(<span class="kw">lambda</span> x: <span class="st">" "</span>.join(x))</span>
+<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-12"><a href="#cb24-12" aria-hidden="true" tabindex="-1"></a><span class="co"># 把两类文本拼在一起</span></span>
+<span id="cb24-13"><a href="#cb24-13" aria-hidden="true" tabindex="-1"></a>df_news_sub <span class="op">=</span> df_clean[[<span class="st">"title"</span>, <span class="st">"section"</span>, <span class="st">"text_for_tfidf"</span>]].copy()</span>
+<span id="cb24-14"><a href="#cb24-14" aria-hidden="true" tabindex="-1"></a>df_qa_sub   <span class="op">=</span> df_qa[[<span class="st">"title"</span>, <span class="st">"section"</span>, <span class="st">"text_for_tfidf"</span>]].copy()</span>
+<span id="cb24-15"><a href="#cb24-15" aria-hidden="true" tabindex="-1"></a>df_all <span class="op">=</span> pd.concat([df_news_sub, df_qa_sub], ignore_index<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb24-16"><a href="#cb24-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-17"><a href="#cb24-17" aria-hidden="true" tabindex="-1"></a><span class="co"># 确认两类文本都有记录，避免 section 列有 NaN 导致静默丢数据</span></span>
+<span id="cb24-18"><a href="#cb24-18" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df_all[<span class="st">"section"</span>].value_counts())</span>
+<span id="cb24-19"><a href="#cb24-19" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> df_all[<span class="st">"section"</span>].isna().<span class="bu">sum</span>() <span class="op">==</span> <span class="dv">0</span>, <span class="st">"section 列存在缺失值，请检查数据"</span></span>
+<span id="cb24-20"><a href="#cb24-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-21"><a href="#cb24-21" aria-hidden="true" tabindex="-1"></a><span class="co"># 对合并后的数据重新计算 TF-IDF</span></span>
+<span id="cb24-22"><a href="#cb24-22" aria-hidden="true" tabindex="-1"></a>vec2 <span class="op">=</span> TfidfVectorizer(analyzer<span class="op">=</span><span class="st">"word"</span>, token_pattern<span class="op">=</span><span class="vs">r"(?u)\b\w+\b"</span>)</span>
+<span id="cb24-23"><a href="#cb24-23" aria-hidden="true" tabindex="-1"></a>X2 <span class="op">=</span> vec2.fit_transform(df_all[<span class="st">"text_for_tfidf"</span>])</span>
+<span id="cb24-24"><a href="#cb24-24" aria-hidden="true" tabindex="-1"></a>feat2 <span class="op">=</span> vec2.get_feature_names_out()</span>
+<span id="cb24-25"><a href="#cb24-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-26"><a href="#cb24-26" aria-hidden="true" tabindex="-1"></a><span class="co"># 分别计算两类文本的平均 TF-IDF，找出各自最有代表性的词</span></span>
+<span id="cb24-27"><a href="#cb24-27" aria-hidden="true" tabindex="-1"></a>news_mask <span class="op">=</span> df_all[<span class="st">"section"</span>] <span class="op">==</span> <span class="st">"pbc_news"</span></span>
+<span id="cb24-28"><a href="#cb24-28" aria-hidden="true" tabindex="-1"></a>qa_mask   <span class="op">=</span> df_all[<span class="st">"section"</span>] <span class="op">==</span> <span class="st">"pbc_qa"</span></span>
+<span id="cb24-29"><a href="#cb24-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-30"><a href="#cb24-30" aria-hidden="true" tabindex="-1"></a>news_mean <span class="op">=</span> X2[news_mask.values].mean(axis<span class="op">=</span><span class="dv">0</span>).A1</span>
+<span id="cb24-31"><a href="#cb24-31" aria-hidden="true" tabindex="-1"></a>qa_mean   <span class="op">=</span> X2[qa_mask.values].mean(axis<span class="op">=</span><span class="dv">0</span>).A1</span>
+<span id="cb24-32"><a href="#cb24-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-33"><a href="#cb24-33" aria-hidden="true" tabindex="-1"></a>top_news <span class="op">=</span> [(feat2[i], <span class="bu">round</span>(news_mean[i], <span class="dv">4</span>)) <span class="cf">for</span> i <span class="kw">in</span> np.argsort(news_mean)[::<span class="op">-</span><span class="dv">1</span>][:<span class="dv">10</span>]]</span>
+<span id="cb24-34"><a href="#cb24-34" aria-hidden="true" tabindex="-1"></a>top_qa   <span class="op">=</span> [(feat2[i], <span class="bu">round</span>(qa_mean[i], <span class="dv">4</span>))   <span class="cf">for</span> i <span class="kw">in</span> np.argsort(qa_mean)[::<span class="op">-</span><span class="dv">1</span>][:<span class="dv">10</span>]]</span>
+<span id="cb24-35"><a href="#cb24-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-36"><a href="#cb24-36" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"【pbc_news】最具代表性的词："</span>)</span>
+<span id="cb24-37"><a href="#cb24-37" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>([w <span class="cf">for</span> w, _ <span class="kw">in</span> top_news])</span>
+<span id="cb24-38"><a href="#cb24-38" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>()</span>
+<span id="cb24-39"><a href="#cb24-39" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"【pbc_qa】最具代表性的词："</span>)</span>
+<span id="cb24-40"><a href="#cb24-40" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>([w <span class="cf">for</span> w, _ <span class="kw">in</span> top_qa])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>这个结果很直观：新闻类文本的高权重词往往是会议名称、人物职位、活动类型；而答记者问的高权重词更多是政策术语和分析性词汇。这正是 TF-IDF 的价值所在——它帮你找到两类文本「各自更像自己」的词。</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>TF-IDF 同样适用于纵向对比。</strong> 除了横向对比不同类型文本，TF-IDF 也很适合对比<strong>同一来源在不同时间段的用词变化</strong>——比如，人民银行 2023 年和 2025 年新闻的关键词差异，往往能直接反映货币政策基调的转变。这比只看高频词更灵敏。</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+AI 提示词：构造 TF-IDF 并对比不同类型文本的关键词
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>我有一个 DataFrame，<code>tokens</code> 列是每条文本的分词列表，<code>section</code> 列标注了文本类别（<code>pbc_news</code> 和 <code>pbc_qa</code>）。请完成：</p>
+<ol type="1">
+<li>把 <code>tokens</code> 拼成空格分隔的字符串，用 <code>TfidfVectorizer</code> 构建 TF-IDF 矩阵</li>
+<li>分别计算两类文本的平均 TF-IDF 权重，提取各自 Top 10 关键词</li>
+<li>用并排柱状图展示两类文本的关键词差异</li>
+<li>用 2-3 句话解读：两类文本的用词侧重有什么不同？</li>
+</ol>
+<p>要求：所有代码加中文注释，图表保存到 <code>Fig/</code> 文件夹。</p>
+</div>
+</div>
+</section>
+</section>
+<section id="本章小结与练习" class="level2" data-number="13.7">
+<h2 data-number="13.7" class="anchored" data-anchor-id="本章小结与练习"><span class="header-section-number">13.7</span> 本章小结与练习</h2>
+<section id="本章技能清单" class="level3" data-number="13.7.1">
+<h3 data-number="13.7.1" class="anchored" data-anchor-id="本章技能清单"><span class="header-section-number">13.7.1</span> 本章技能清单</h3>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>任务</th>
+<th>工具</th>
+<th>关键注意点</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>读取文本数据</td>
+<td><code>pandas</code></td>
+<td>注意编码（GBK / UTF-8）</td>
+</tr>
+<tr class="even">
+<td>初步检查</td>
+<td><code>pandas</code></td>
+<td>看长度分布、缺失值、重复 URL</td>
+</tr>
+<tr class="odd">
+<td>文本清洗</td>
+<td><code>re</code>, <code>pandas</code></td>
+<td>保留原列，新建 <code>text_clean</code></td>
+</tr>
+<tr class="even">
+<td>中文分词</td>
+<td><code>jieba</code></td>
+<td>必须加载自定义词典</td>
+</tr>
+<tr class="odd">
+<td>停用词过滤</td>
+<td>自定义词表</td>
+<td>迭代更新，不是一次性配置</td>
+</tr>
+<tr class="even">
+<td>词频统计</td>
+<td><code>collections.Counter</code></td>
+<td>同时用柱状图和词云</td>
+</tr>
+<tr class="odd">
+<td>关键词提取</td>
+<td><code>scikit-learn TfidfVectorizer</code></td>
+<td>先用 jieba 分词，再传入</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="本章的工作流" class="level3" data-number="13.7.2">
+<h3 data-number="13.7.2" class="anchored" data-anchor-id="本章的工作流"><span class="header-section-number">13.7.2</span> 本章的工作流</h3>
+<p><span class="math display">\[
+\text{原始文本} \xrightarrow{\text{读取+检查}} \text{text\_clean} \xrightarrow{\text{分词+停用词}} \text{tokens} \xrightarrow{\text{词频/TF-IDF}} \text{可分析指标}
+\]</span></p>
+<p>有两点值得反复强调：</p>
+<p>第一，这是一个带反馈的迭代过程，不是单向的流水线。如果 TF-IDF 的关键词不对，可能是分词的问题；如果分词不对，可能是清洗不够彻底；如果清洗有问题，可能是观测单位定义就不清楚。<strong>发现问题时，顺着流程往前回溯，而不是只在当前步骤打补丁。</strong></p>
+<p>第二，文本分析中很多问题不是「模型问题」，而是「数据结构和预处理问题」。在真实工作中，70% 的时间往往花在读取、检查和清洗上，而不是在建模上。</p>
+</section>
+<section id="下一章预告" class="level3" data-number="13.7.3">
+<h3 data-number="13.7.3" class="anchored" data-anchor-id="下一章预告"><span class="header-section-number">13.7.3</span> 下一章预告</h3>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>本章我们完成了「文本变成数据」这件事。下一章将在此基础上继续：如何用词典法和大语言模型对文本做情感分析，如何用情感指数追踪政策语气的变化，以及主题模型的基本思路。</p>
+<p>另外，本章使用的 120 条新闻和 185 条问答，是由爬虫脚本自动采集的。如果你想自己去采集更多文本——比如某一行业所有上市公司的年报、或者某个时间段内的所有政策文件——下下章「网络爬虫」会教你怎么做，那也是本章这套分析方法真正发挥规模效应的前提。</p>
+</div>
+</div>
+</section>
+<section id="课后练习" class="level3" data-number="13.7.4">
+<h3 data-number="13.7.4" class="anchored" data-anchor-id="课后练习"><span class="header-section-number">13.7.4</span> 课后练习</h3>
+<ol type="1">
+<li><p>使用 <code>pbc_qa_raw.csv</code>，完成完整的「读取 → 检查 → 清洗 → 分词 → 词频统计」流程，观察答记者问数据与新闻数据的高频词有什么不同。</p></li>
+<li><p>修改停用词表，加入你认为在人民银行文本中没有分析价值的词（比如「我国」「有关」「方面」），重新统计高频词，对比修改前后的 Top 20 变化。</p></li>
+<li><p>随机抽取 10 条文本，仔细阅读原文，然后查看它们的 TF-IDF 关键词——你觉得关键词能准确反映文章的核心内容吗？如果不能，可能是哪个环节的问题？</p></li>
+<li><p>把 <code>pbc_news_raw.csv</code> 和 <code>pbc_qa_raw.csv</code> 合并，构建 TF-IDF 矩阵，对比两类文本各自 Top 10 关键词的差异，并用 2-3 句话解读这种差异背后的含义。</p></li>
+<li><p><strong>进阶练习</strong>：在 <code>finance_dict.txt</code> 里补充至少 10 个你认为重要的金融术语，重新分词，对比前后关键词的变化。</p></li>
+</ol>
+<hr>
+</section>
+</section>
+<section id="参考文献" class="level2" data-number="13.8">
+<h2 data-number="13.8" class="anchored" data-anchor-id="参考文献"><span class="header-section-number">13.8</span> 参考文献</h2>
+<ul>
+<li>Loughran, T., &amp; McDonald, B. (2011). When is a liability not a liability? Textual analysis, dictionaries, and 10-Ks. <em>The Journal of Finance</em>, 66(1), 35–65.</li>
+<li>结巴中文分词：https://github.com/fxsjy/jieba</li>
+<li>清华大学开放中文词库（THUOCL）：https://github.com/thunlp/THUOCL</li>
+</ul>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const disableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'prefetch';
+    }
+  }
+  const enableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'stylesheet';
+    }
+  }
+  const manageTransitions = (selector, allowTransitions) => {
+    const els = window.document.querySelectorAll(selector);
+    for (let i=0; i < els.length; i++) {
+      const el = els[i];
+      if (allowTransitions) {
+        el.classList.remove('notransition');
+      } else {
+        el.classList.add('notransition');
+      }
+    }
+  }
+  const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+    const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+    const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+    let newTheme = '';
+    if(darkModeDefault) {
+      newTheme = isAlternate ? baseTheme : alternateTheme;
+    } else {
+      newTheme = isAlternate ? alternateTheme : baseTheme;
+    }
+    const changeGiscusTheme = () => {
+      // From: https://github.com/giscus/giscus/issues/336
+      const sendMessage = (message) => {
+        const iframe = document.querySelector('iframe.giscus-frame');
+        if (!iframe) return;
+        iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+      }
+      sendMessage({
+        setConfig: {
+          theme: newTheme
+        }
+      });
+    }
+    const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+    if (isGiscussLoaded) {
+      changeGiscusTheme();
+    }
+  }
+  const toggleColorMode = (alternate) => {
+    // Switch the stylesheets
+    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+    manageTransitions('#quarto-margin-sidebar .nav-link', false);
+    if (alternate) {
+      enableStylesheet(alternateStylesheets);
+      for (const sheetNode of alternateStylesheets) {
+        if (sheetNode.id === "quarto-bootstrap") {
+          toggleBodyColorMode(sheetNode);
+        }
+      }
+    } else {
+      disableStylesheet(alternateStylesheets);
+      toggleBodyColorPrimary();
+    }
+    manageTransitions('#quarto-margin-sidebar .nav-link', true);
+    // Switch the toggles
+    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+    for (let i=0; i < toggles.length; i++) {
+      const toggle = toggles[i];
+      if (toggle) {
+        if (alternate) {
+          toggle.classList.add("alternate");     
+        } else {
+          toggle.classList.remove("alternate");
+        }
+      }
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455)
+    if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+      manageTransitions("body", false);
+      window.scrollTo(0, 1);
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        manageTransitions("body", true);
+      }, 40);  
+    }
+  }
+  const isFileUrl = () => { 
+    return window.location.protocol === 'file:';
+  }
+  const hasAlternateSentinel = () => {  
+    let styleSentinel = getColorSchemeSentinel();
+    if (styleSentinel !== null) {
+      return styleSentinel === "alternate";
+    } else {
+      return false;
+    }
+  }
+  const setStyleSentinel = (alternate) => {
+    const value = alternate ? "alternate" : "default";
+    if (!isFileUrl()) {
+      window.localStorage.setItem("quarto-color-scheme", value);
+    } else {
+      localAlternateSentinel = value;
+    }
+  }
+  const getColorSchemeSentinel = () => {
+    if (!isFileUrl()) {
+      const storageValue = window.localStorage.getItem("quarto-color-scheme");
+      return storageValue != null ? storageValue : localAlternateSentinel;
+    } else {
+      return localAlternateSentinel;
+    }
+  }
+  const darkModeDefault = false;
+  let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+  // Dark / light mode switch
+  window.quartoToggleColorScheme = () => {
+    // Read the current dark / light value 
+    let toAlternate = !hasAlternateSentinel();
+    toggleColorMode(toAlternate);
+    setStyleSentinel(toAlternate);
+    toggleGiscusIfUsed(toAlternate, darkModeDefault);
+  };
+  // Ensure there is a toggle, if there isn't float one in the top right
+  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+    const a = window.document.createElement('a');
+    a.classList.add('top-right');
+    a.classList.add('quarto-color-scheme-toggle');
+    a.href = "";
+    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+    const i = window.document.createElement("i");
+    i.classList.add('bi');
+    a.appendChild(i);
+    window.document.body.appendChild(a);
+  }
+  // Switch to dark mode if need be
+  if (hasAlternateSentinel()) {
+    toggleColorMode(true);
+  } else {
+    toggleColorMode(false);
+  }
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp("https:\/\/lianxhcn\.github\.io\/dsfin\/");
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+          // target, if specified
+          link.setAttribute("target", "_blank");
+          if (link.getAttribute("rel") === null) {
+            link.setAttribute("rel", "noopener");
+          }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../../Lecture/text_analysis/lecture_text_02_ailn.html" class="pagination-link" aria-label="金融文本分析（下）——情感分析与文本建模">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">金融文本分析（下）——情感分析与文本建模</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../../Lecture/text_analysis/lecture_text_analysis_02_claude.html" class="pagination-link" aria-label="文本分析：情感分析与主题建模">
+        <span class="nav-page-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">文本分析：情感分析与主题建模</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+      &nbsp;
+    </div>   
+    <div class="nav-footer-center">
+<p><a href="https://www.lianxh.cn">lianxh.cn</a></p>
+</div>
+    <div class="nav-footer-right">
+<p>Support: <a href="https://lianxhcn.github.io/quarto_book/">Quarto</a></p>
+</div>
+  </div>
+</footer>
+
+
+
+
+</body></html>

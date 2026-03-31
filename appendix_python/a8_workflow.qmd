@@ -1,6 +1,10 @@
 # A8. 上下文管理与调试 {.unnumbered}
 
-本章解决「代码跑通了但结果不对」「AI 忘记了之前说过什么」「循环跑了一晚上还没完」这三类最让人崩溃的问题。
+本章解决如下三类最让人崩溃的问题：
+
+- 代码跑通了但结果不对
+- AI 忘记了之前说过什么
+- 循环跑了一晚上还没完
 
 ## A8.1 管理 AI 的上下文记忆
 
@@ -19,28 +23,29 @@
 ::: {.callout-tip}
 ### 提示词：项目背景卡片（每次新对话时使用）
 
-把这个卡片保存在 Notebook 的第一个 Markdown 单元格，每次开启新对话时粘贴给 AI。
+>把这个卡片保存在 Notebook 的第一个 Markdown 单元格，每次开启新对话时粘贴给 AI。
 
-```md
 【项目背景】请记住以下信息，本次对话中所有代码都基于这个背景。
 
-项目：A 股上市公司并购事件研究
-运行环境：Python 3.11，Anaconda，Jupyter Notebook，Windows 11
-主要库：pandas 2.x，numpy，matplotlib，statsmodels，seaborn
+- 项目：A 股上市公司并购事件研究
+- 运行环境：Python 3.11，Anaconda，Jupyter Notebook，Windows 11
+- 主要库：pandas 2.x，numpy，matplotlib，statsmodels，seaborn
 
-核心数据框：
-- `df`：股票日度面板数据，列为 date（datetime）、stock_code（str）、
-  close（float）、volume（int）、return（float）、industry（str）
-  行数约 500,000，时间范围 2018–2023，股票数量约 500 只
+**核心数据框：**
+
+- `df`：股票日度面板数据，列为 date (datetime), stock_code (str), close (float), volume (int), return (float), industry (str)
+  - 行数约 500,000，时间范围 2018–2023，股票数量约 500 只
 - `df_events`：并购事件列表，列为 acquirer_code（str）、
   event_date（datetime）、target_name（str）
-  行数约 300
+  - 行数约 300
 
 当前进度：已完成数据清洗，正在做事件研究的超额收益计算。
 变量命名规范：使用下划线分隔，如 df_clean、car_mean、result_ols。
 
-接下来请帮我：[在这里写本次的具体任务]
-```
+接下来请帮我：
+
+> …… [在这里写本次的具体任务] ……
+
 :::
 
 ::: {.callout-tip}

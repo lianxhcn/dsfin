@@ -266,12 +266,47 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true">
- <span class="menu-text"><strong>附录：Python 提示词</strong></span></a>
+ <span class="menu-text"><strong>文本分析</strong></span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
       <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/text_analysis/lecture_text_01_ailn.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">金融文本分析（上）——从文本到结构化数据</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/text_analysis/lecture_text_02_ailn.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">金融文本分析（下）——情感分析与文本建模</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/text_analysis/lecture_text_analysis_01_claude.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">文本数据处理基础</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/text_analysis/lecture_text_analysis_02_claude.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">文本分析：情感分析与主题建模</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true">
+ <span class="menu-text"><strong>附录：Python 提示词</strong></span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../appendix_python/index.html" class="sidebar-item-text sidebar-link">
@@ -354,7 +389,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </ul></li>
   <li><a href="#通过-api-获取数据" id="toc-通过-api-获取数据" class="nav-link" data-scroll-target="#通过-api-获取数据"><span class="header-section-number">6.3</span> 通过 API 获取数据</a>
   <ul class="collapse">
-  <li><a href="#什么是-api" id="toc-什么是-api" class="nav-link" data-scroll-target="#什么是-api"><span class="header-section-number">6.3.1</span> 什么是 API？</a></li>
+  <li><a href="#为何要通过-api-获取数据" id="toc-为何要通过-api-获取数据" class="nav-link" data-scroll-target="#为何要通过-api-获取数据"><span class="header-section-number">6.3.1</span> 为何要通过 API 获取数据？</a></li>
   <li><a href="#金融数据-api-的通用调用流程" id="toc-金融数据-api-的通用调用流程" class="nav-link" data-scroll-target="#金融数据-api-的通用调用流程"><span class="header-section-number">6.3.2</span> 金融数据 API 的通用调用流程</a></li>
   </ul></li>
   <li><a href="#国内金融数据akshare" id="toc-国内金融数据akshare" class="nav-link" data-scroll-target="#国内金融数据akshare"><span class="header-section-number">6.4</span> 国内金融数据：akshare</a>
@@ -488,7 +523,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h3 data-number="6.1.2" class="anchored" data-anchor-id="四类数据来源"><span class="header-section-number">6.1.2</span> 四类数据来源</h3>
 <p>把金融数据的来源归纳一下，大致有四类：</p>
 <p><strong>第一类：商业数据库。</strong> Wind、Bloomberg、CSMAR、Refinitiv 等。数据质量最高，覆盖最全，自动更新，是业界标准。缺点是需要机构账号，个人使用成本很高。在学期间最好充分利用学校提供的访问权限。</p>
-<p><strong>第二类：开源 Python 数据接口。</strong> 以 <code>akshare</code> 为代表，另有 <code>yfinance</code>、<code>baostock</code> 等。这类工具将各大财经网站（东方财富、新浪财经等）的公开数据封装成统一的 Python 接口，免费使用，涵盖 A 股、期货、债券、宏观、加密货币等主要品种。<strong>本章的核心内容。</strong></p>
+<p><strong>第二类：开源 Python 数据接口。</strong> 以 <code>akshare</code> 为代表，另有 <code>yfinance</code>、<code>tushare</code>、<code>baostock</code> 等。这类工具将各大财经网站（东方财富、新浪财经等）的公开数据封装成统一的 Python 接口，免费使用，涵盖 A 股、期货、债券、宏观、加密货币等主要品种。虽然数据质量不如商业数据库，但对于学习和大多数研究来说已经足够了。<strong>本章重点介绍 <code>akshare</code>，它是目前最全面、更新最及时的免费金融数据接口</strong>。</p>
 <p><strong>第三类：国际官方机构 API。</strong> 世界银行、IMF、美联储 FRED、OECD 等机构都提供了官方的数据接口，免费开放，数据权威，特别适合做跨国宏观研究。世界银行覆盖 200 多个国家的经济发展指标，FRED 则是研究美国经济和金融市场绕不开的数据来源。</p>
 <p><strong>第四类：数据平台与学术数据库。</strong> Kaggle 是机器学习竞赛平台，上面有大量整理好的金融数据集，非常适合课程作业选题。如果你在做论文，Harvard Dataverse、ICPSR 等学术数据库中存有大量顶刊论文使用过的数据，可以直接下载复现。</p>
 </section>
@@ -516,7 +551,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td><a href="https://akshare.akfamily.xyz/">akshare</a></td>
 <td>A股/期货/债券/宏观</td>
 <td>Python API</td>
-<td>开源免费，<strong>本章重点</strong></td>
+<td>开源免费</td>
+</tr>
+<tr class="odd">
+<td><a href="https://tushare.pro/">tushare</a></td>
+<td>A股/宏观/财务</td>
+<td>Python API</td>
+<td>开源免费，需注册</td>
+</tr>
+<tr class="even">
+<td><a href="http://baostock.com/">baostock</a></td>
+<td>A股/财务</td>
+<td>Python API</td>
+<td>开源免费，数据较全</td>
 </tr>
 <tr class="odd">
 <td><a href="https://data.stats.gov.cn/">国家统计局</a></td>
@@ -525,7 +572,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td>官方数据，格式需整理</td>
 </tr>
 <tr class="even">
-<td><a href="http://www.pbc.gov.cn/diaochatongjisi/">中国人民银行</a></td>
+<td><a href="http://www.pbc.gov.cn/">中国人民银行</a></td>
 <td>货币金融数据</td>
 <td>手动下载</td>
 <td>M2、利率、汇率等</td>
@@ -547,19 +594,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td><a href="https://data.worldbank.org/">World Bank</a></td>
 <td>跨国宏观经济</td>
 <td>Python API</td>
-<td>覆盖 200+ 国家，<strong>2.6 节</strong></td>
+<td>覆盖 200+ 国家</td>
 </tr>
 <tr class="even">
 <td><a href="https://fred.stlouisfed.org/">FRED</a></td>
 <td>美国宏观/金融</td>
 <td>Python API</td>
-<td>需免费申请 API Key，<strong>2.7 节</strong></td>
+<td>需免费申请 API Key</td>
 </tr>
 <tr class="odd">
 <td><a href="https://www.globalmacrodata.com/">GMD</a></td>
 <td>全球宏观（历史深度）</td>
 <td>CSV 下载</td>
-<td>覆盖 1086 年至今，<strong>2.5 节</strong></td>
+<td>覆盖 1086 年至今</td>
 </tr>
 <tr class="even">
 <td><a href="https://github.com/ranaroussi/yfinance">yfinance</a></td>
@@ -591,10 +638,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td>密歇根大学社会科学数据档案库</td>
 </tr>
 <tr class="even">
-<td><a href="https://ejd.econ.mathematik.uni-ulm.de/">EJD</a></td>
-<td>13000+ 篇经济金融论文的复现数据和代码</td>
+<td><a href="http://replication.uni-goettingen.de/wiki/index.php/Main_Page">Replication WIKI</a></td>
+<td>经济学论文复现项目列表，包含数据链接</td>
 </tr>
 <tr class="odd">
+<td><a href="https://ejd.econ.mathematik.uni-ulm.de/">EJD, Sebastian Kranz</a></td>
+<td>13000+ 篇经济金融论文的复现数据和代码</td>
+</tr>
+<tr class="even">
 <td><a href="https://archive.ics.uci.edu/">UCI ML Repository</a></td>
 <td>经典机器学习数据集仓库</td>
 </tr>
@@ -638,15 +689,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co"># 读取 CSV 文件——最常用的格式</span></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_csv(<span class="st">'data/stock_data.csv'</span>)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_csv(<span class="st">'./data/irm_QA_byd.csv'</span>)</span>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="co"># 读取 Excel 文件</span></span>
 <span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co"># sheet_name 可以是 sheet 名称（字符串）或序号（整数，从 0 开始）</span></span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_excel(<span class="st">'data/financial_report.xlsx'</span>, sheet_name<span class="op">=</span><span class="st">'Sheet1'</span>)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_excel(<span class="st">'./data/China_province_GDP-1952-2024.xls'</span>, sheet_name<span class="op">=</span><span class="st">'Sheet1'</span>)</span>
 <span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="co"># 读取 Stata 数据文件（.dta 格式）</span></span>
 <span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="co"># 做经济学研究时常见，许多学术数据集都是 .dta 格式</span></span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_stata(<span class="st">'data/panel_data.dta'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_stata(<span class="st">'./data/mroz.dta'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>路径问题是初学者最常见的报错来源。上面的代码假设你的工作目录下有一个 <code>data</code> 文件夹，文件放在里面。如果出现「文件找不到」的报错，先用下面的代码确认当前工作目录在哪：</p>
 <div id="cell-5" class="cell">
@@ -763,12 +814,92 @@ AI 提示词：数据读取与探查
 </section>
 <section id="通过-api-获取数据" class="level2" data-number="6.3">
 <h2 data-number="6.3" class="anchored" data-anchor-id="通过-api-获取数据"><span class="header-section-number">6.3</span> 通过 API 获取数据</h2>
-<section id="什么是-api" class="level3" data-number="6.3.1">
-<h3 data-number="6.3.1" class="anchored" data-anchor-id="什么是-api"><span class="header-section-number">6.3.1</span> 什么是 API？</h3>
-<p>前面介绍的方式——从网站手动下载文件——虽然简单，但有明显的局限：数据是静态的，下载之后就不再更新；如果需要不同时间段、不同股票的数据，就要反复操作，效率很低。</p>
+<section id="为何要通过-api-获取数据" class="level3" data-number="6.3.1">
+<h3 data-number="6.3.1" class="anchored" data-anchor-id="为何要通过-api-获取数据"><span class="header-section-number">6.3.1</span> 为何要通过 API 获取数据？</h3>
+<p>从网站手动下载文件，虽然简单，但有明显的局限：数据是静态的，下载之后就不再更新；如果需要不同时间段、不同股票的数据，就要反复操作，效率很低。</p>
 <p>更好的方式是通过 <strong>API（Application Programming Interface，应用程序编程接口）</strong> 直接从数据源实时获取数据。</p>
-<p>API 可以理解为数据提供方开放的一个”数据窗口”：你在代码里说清楚自己想要什么（比如”给我平安银行 2020 年以来的日度收盘价”），API 就把对应的数据打包返回给你。整个过程不需要打开浏览器、不需要手动操作，可以写进代码自动完成。</p>
-<p>用一个比喻来说：如果手动下载数据是去超市自己选货，那 API 就是外卖——你下单（发请求），平台配货（处理查询），送货到家（返回数据）。</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+API 的工作原理：像“扫码点餐”一样简单
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>API</strong> 是数据提供方开放的一个 <strong>“数据窗口”</strong> 或 <strong>“点餐系统”</strong>。它定义了一套标准规则，让你的程序能够方便、安全地从远程获取所需的数据或服务，而无需了解对方复杂的内部系统。</p>
+<p>一个完整的 API 调用过程，就像一次餐厅扫码点餐：</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">步骤</th>
+<th style="text-align: left;">扫码点餐场景</th>
+<th style="text-align: left;">API 对应概念</th>
+<th style="text-align: left;">说明与参数示例</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><strong>1. 找到入口</strong></td>
+<td style="text-align: left;">扫描<strong>5号桌</strong>的二维码，进入点餐页面。</td>
+<td style="text-align: left;"><strong>Endpoint (端点)</strong></td>
+<td style="text-align: left;">API的特定网址（URL），即数据的“获取地址”。</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>2. 表明身份</strong></td>
+<td style="text-align: left;">出示会员卡（或登录账户）。</td>
+<td style="text-align: left;"><strong>API Key (密钥)</strong></td>
+<td style="text-align: left;">一串用于身份验证的唯一字符串，证明你有权访问数据。</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><strong>3. 提出请求</strong></td>
+<td style="text-align: left;">勾选菜品、选择口味、点击<strong>提交</strong>。</td>
+<td style="text-align: left;"><strong>Request (请求)</strong></td>
+<td style="text-align: left;">你的程序向服务器发出的“我要数据”的指令。</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>4. 说明要求</strong></td>
+<td style="text-align: left;">菜品：<strong>酸菜鱼</strong>，口味：<strong>微辣</strong>，<strong>不要香菜</strong>。</td>
+<td style="text-align: left;"><strong>Parameters (参数)</strong></td>
+<td style="text-align: left;">附加在请求中的具体条件，用于精确筛选数据。</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><strong>5. 接收结果</strong></td>
+<td style="text-align: left;">厨师做好菜，服务员将<strong>酸菜鱼</strong>端到你桌上。</td>
+<td style="text-align: left;"><strong>Response (响应)</strong></td>
+<td style="text-align: left;">服务器处理请求后，返回给你的结构化数据包（通常是JSON格式）。</td>
+</tr>
+</tbody>
+</table>
+<p>用代码表示这个“点餐请求”可能如下：</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 这是一个类比，并非真实API代码</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>api_request <span class="op">=</span> {</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"endpoint"</span>: <span class="st">"https://api.restaurant.com/order"</span>,</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">"api_key"</span>: <span class="st">"your_secret_key_12345"</span>,</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"parameters"</span>: {</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>        <span class="st">"table_number"</span>: <span class="dv">5</span>,</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>        <span class="st">"dish"</span>: <span class="st">"酸菜鱼"</span>,</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>        <span class="st">"spiciness"</span>: <span class="st">"微辣"</span>,</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>        <span class="st">"no_coriander"</span>: <span class="va">True</span></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a><span class="co"># 发送这个请求后，你将收到一份做好的“酸菜鱼”（数据）。</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+<p>通过上面的例子，我们可以理解为何要用 API 获取数据：</p>
+<ul>
+<li><strong>实时动态</strong>：数据直接来自源头，是最新状态。</li>
+<li><strong>高效自动</strong>：无需手动重复下载，可集成到代码中自动运行。</li>
+<li><strong>精准灵活</strong>：通过参数自由定制所需数据的内容、范围和时间频率。</li>
+</ul>
+<p>简言之，API 将复杂的后台数据服务，封装成一个简单的、菜单式的接口。你只需要发送一个格式规范的「订单」(请求)，就能坐等接收打包好的「菜品」(数据)。</p>
 </section>
 <section id="金融数据-api-的通用调用流程" class="level3" data-number="6.3.2">
 <h3 data-number="6.3.2" class="anchored" data-anchor-id="金融数据-api-的通用调用流程"><span class="header-section-number">6.3.2</span> 金融数据 API 的通用调用流程</h3>
@@ -819,26 +950,26 @@ AI 提示词：数据读取与探查
 </section>
 <section id="安装与导入" class="level3" data-number="6.4.2">
 <h3 data-number="6.4.2" class="anchored" data-anchor-id="安装与导入"><span class="header-section-number">6.4.2</span> 安装与导入</h3>
-<div id="cell-20" class="cell">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 在终端或 Jupyter 中运行安装命令（只需安装一次）</span></span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="co"># !pip install akshare</span></span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> akshare <span class="im">as</span> ak</span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(ak.__version__)   <span class="co"># 确认安装成功，查看版本号</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="cell-21" class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 在终端或 Jupyter 中运行安装命令（只需安装一次）</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="co"># !pip install akshare</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> akshare <span class="im">as</span> ak</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(ak.__version__)   <span class="co"># 确认安装成功，查看版本号</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>安装完成后，后续所有接口都通过 <code>ak.函数名()</code> 的方式调用。函数名本身有一定规律：<code>stock_zh_a_</code> 开头的是 A 股数据，<code>macro_china_</code> 开头的是国内宏观数据，<code>futures_zh_</code> 开头的是国内期货数据，以此类推。不需要死记，用到哪类数据时查一下官方文档或让 AI 帮你找函数名就行。</p>
 </section>
 <section id="a-股实时行情" class="level3" data-number="6.4.3">
 <h3 data-number="6.4.3" class="anchored" data-anchor-id="a-股实时行情"><span class="header-section-number">6.4.3</span> A 股实时行情</h3>
 <p><code>ak.stock_zh_a_spot_em()</code> 可以一次性获取沪深京全部 A 股的实时行情快照，返回的 DataFrame 包含最新价、涨跌幅、成交量、市盈率、市净率、总市值等常用字段，是做股票筛选和市场概览的便捷工具。</p>
-<div id="cell-22" class="cell">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> akshare <span class="im">as</span> ak</span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="co"># 获取全部 A 股实时行情（约 5000 只股票）</span></span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>df_spot <span class="op">=</span> ak.stock_zh_a_spot_em()</span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'共获取 </span><span class="sc">{</span><span class="bu">len</span>(df_spot)<span class="sc">}</span><span class="ss"> 只股票的行情数据'</span>)</span>
-<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>df_spot.head(<span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="cell-23" class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> akshare <span class="im">as</span> ak</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="co"># 获取全部 A 股实时行情（约 5000 只股票）</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>df_spot <span class="op">=</span> ak.stock_zh_a_spot_em()</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'共获取 </span><span class="sc">{</span><span class="bu">len</span>(df_spot)<span class="sc">}</span><span class="ss"> 只股票的行情数据'</span>)</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>df_spot.head(<span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>返回的 DataFrame 字段较多，下表列出最常用的几列：</p>
 <table class="caption-top table">
@@ -944,76 +1075,76 @@ Note
 </tbody>
 </table>
 <p><strong>做收益率分析和量化研究时，请务必使用后复权（<code>hfq</code>）数据。</strong></p>
-<div id="cell-24" class="cell">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> akshare <span class="im">as</span> ak</span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="co"># 获取平安银行（000001）后复权日 K 线数据</span></span>
-<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>df_stock <span class="op">=</span> ak.stock_zh_a_hist(</span>
-<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>    symbol     <span class="op">=</span> <span class="st">"000001"</span>,   <span class="co"># 股票代码，6 位数字字符串</span></span>
-<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>    period     <span class="op">=</span> <span class="st">"daily"</span>,    <span class="co"># 周期：daily / weekly / monthly</span></span>
-<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>    start_date <span class="op">=</span> <span class="st">"20200101"</span>, <span class="co"># 开始日期，格式 YYYYMMDD</span></span>
-<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>    end_date   <span class="op">=</span> <span class="st">"20241231"</span>, <span class="co"># 结束日期</span></span>
-<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>    adjust     <span class="op">=</span> <span class="st">"hfq"</span>       <span class="co"># 复权方式：'' / 'qfq' / 'hfq'</span></span>
-<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'数据规模：</span><span class="sc">{</span>df_stock<span class="sc">.</span>shape<span class="sc">}</span><span class="ss">'</span>)</span>
-<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a>df_stock.tail(<span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="cell-25" class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> akshare <span class="im">as</span> ak</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="co"># 获取平安银行（000001）后复权日 K 线数据</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>df_stock <span class="op">=</span> ak.stock_zh_a_hist(</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>    symbol     <span class="op">=</span> <span class="st">"000001"</span>,   <span class="co"># 股票代码，6 位数字字符串</span></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>    period     <span class="op">=</span> <span class="st">"daily"</span>,    <span class="co"># 周期：daily / weekly / monthly</span></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>    start_date <span class="op">=</span> <span class="st">"20200101"</span>, <span class="co"># 开始日期，格式 YYYYMMDD</span></span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>    end_date   <span class="op">=</span> <span class="st">"20241231"</span>, <span class="co"># 结束日期</span></span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>    adjust     <span class="op">=</span> <span class="st">"hfq"</span>       <span class="co"># 复权方式：'' / 'qfq' / 'hfq'</span></span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'数据规模：</span><span class="sc">{</span>df_stock<span class="sc">.</span>shape<span class="sc">}</span><span class="ss">'</span>)</span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a>df_stock.tail(<span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="简单可视化收盘价走势" class="level3" data-number="6.4.5">
 <h3 data-number="6.4.5" class="anchored" data-anchor-id="简单可视化收盘价走势"><span class="header-section-number">6.4.5</span> 简单可视化：收盘价走势</h3>
 <p>数据拿到手后，先画一张图看看走势，是一个好习惯。</p>
-<div id="cell-26" class="cell">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.dates <span class="im">as</span> mdates</span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="co"># 日期列转为 datetime 类型，方便绘图</span></span>
-<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>df_stock[<span class="st">'日期'</span>] <span class="op">=</span> pd.to_datetime(df_stock[<span class="st">'日期'</span>])</span>
-<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>df_stock <span class="op">=</span> df_stock.set_index(<span class="st">'日期'</span>)</span>
-<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">4</span>))</span>
-<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>ax.plot(df_stock.index, df_stock[<span class="st">'收盘'</span>], color<span class="op">=</span><span class="st">'steelblue'</span>, linewidth<span class="op">=</span><span class="dv">1</span>)</span>
-<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">'平安银行（000001）后复权收盘价'</span>, fontsize<span class="op">=</span><span class="dv">13</span>)</span>
-<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">'日期'</span>)</span>
-<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="st">'后复权价格（元）'</span>)</span>
-<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a>ax.xaxis.set_major_formatter(mdates.DateFormatter(<span class="st">'%Y-%m'</span>))</span>
-<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a>ax.grid(<span class="va">True</span>, alpha<span class="op">=</span><span class="fl">0.3</span>)</span>
-<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a>fig.autofmt_xdate()</span>
-<span id="cb14-18"><a href="#cb14-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-19"><a href="#cb14-19" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
-<span id="cb14-20"><a href="#cb14-20" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="cell-27" class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.dates <span class="im">as</span> mdates</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="co"># 日期列转为 datetime 类型，方便绘图</span></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>df_stock[<span class="st">'日期'</span>] <span class="op">=</span> pd.to_datetime(df_stock[<span class="st">'日期'</span>])</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>df_stock <span class="op">=</span> df_stock.set_index(<span class="st">'日期'</span>)</span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">4</span>))</span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>ax.plot(df_stock.index, df_stock[<span class="st">'收盘'</span>], color<span class="op">=</span><span class="st">'steelblue'</span>, linewidth<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">'平安银行（000001）后复权收盘价'</span>, fontsize<span class="op">=</span><span class="dv">13</span>)</span>
+<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">'日期'</span>)</span>
+<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="st">'后复权价格（元）'</span>)</span>
+<span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a>ax.xaxis.set_major_formatter(mdates.DateFormatter(<span class="st">'%Y-%m'</span>))</span>
+<span id="cb15-16"><a href="#cb15-16" aria-hidden="true" tabindex="-1"></a>ax.grid(<span class="va">True</span>, alpha<span class="op">=</span><span class="fl">0.3</span>)</span>
+<span id="cb15-17"><a href="#cb15-17" aria-hidden="true" tabindex="-1"></a>fig.autofmt_xdate()</span>
+<span id="cb15-18"><a href="#cb15-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-19"><a href="#cb15-19" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb15-20"><a href="#cb15-20" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="国内宏观经济数据" class="level3" data-number="6.4.6">
 <h3 data-number="6.4.6" class="anchored" data-anchor-id="国内宏观经济数据"><span class="header-section-number">6.4.6</span> 国内宏观经济数据</h3>
 <p>除股票数据外，<code>akshare</code> 也提供了丰富的国内宏观经济指标接口。这里以两个常用指标为例：季度 GDP 和银行间同业拆借利率（Shibor）。</p>
 <p><strong>中国季度 GDP</strong></p>
-<div id="cell-28" class="cell">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> akshare <span class="im">as</span> ak</span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="co"># 获取中国季度 GDP 数据</span></span>
-<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>df_gdp <span class="op">=</span> ak.macro_china_gdp()</span>
-<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'数据规模：</span><span class="sc">{</span>df_gdp<span class="sc">.</span>shape<span class="sc">}</span><span class="ss">'</span>)</span>
-<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>df_gdp.head(<span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="cell-29" class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> akshare <span class="im">as</span> ak</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="co"># 获取中国季度 GDP 数据</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>df_gdp <span class="op">=</span> ak.macro_china_gdp()</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'数据规模：</span><span class="sc">{</span>df_gdp<span class="sc">.</span>shape<span class="sc">}</span><span class="ss">'</span>)</span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>df_gdp.head(<span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p><strong>银行间同业拆借利率（Shibor）</strong></p>
 <p>Shibor（上海银行间同业拆放利率）是中国货币市场的基准利率，类似于美国的 LIBOR。<code>rate_interbank</code> 接口支持获取不同期限（隔夜、1 周、1 个月、3 个月、1 年等）的历史数据。</p>
-<div id="cell-30" class="cell">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> akshare <span class="im">as</span> ak</span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="co"># 获取 3 个月期 Shibor 历史数据</span></span>
-<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>df_shibor <span class="op">=</span> ak.rate_interbank(</span>
-<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>    market    <span class="op">=</span> <span class="st">"上海银行同业拆借市场"</span>,</span>
-<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>    symbol    <span class="op">=</span> <span class="st">"Shibor人民币"</span>,</span>
-<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>    indicator <span class="op">=</span> <span class="st">"3月"</span>       <span class="co"># 可选：隔夜、1周、1月、3月、6月、1年</span></span>
-<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'数据规模：</span><span class="sc">{</span>df_shibor<span class="sc">.</span>shape<span class="sc">}</span><span class="ss">，时间范围：</span><span class="sc">{</span>df_shibor[<span class="st">"报告日"</span>]<span class="sc">.</span>iloc[<span class="dv">0</span>]<span class="sc">}</span><span class="ss"> 至 </span><span class="sc">{</span>df_shibor[<span class="st">"报告日"</span>]<span class="sc">.</span>iloc[<span class="op">-</span><span class="dv">1</span>]<span class="sc">}</span><span class="ss">'</span>)</span>
-<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>df_shibor.tail(<span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="cell-31" class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> akshare <span class="im">as</span> ak</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="co"># 获取 3 个月期 Shibor 历史数据</span></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>df_shibor <span class="op">=</span> ak.rate_interbank(</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>    market    <span class="op">=</span> <span class="st">"上海银行同业拆借市场"</span>,</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>    symbol    <span class="op">=</span> <span class="st">"Shibor人民币"</span>,</span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>    indicator <span class="op">=</span> <span class="st">"3月"</span>       <span class="co"># 可选：隔夜、1周、1月、3月、6月、1年</span></span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'数据规模：</span><span class="sc">{</span>df_shibor<span class="sc">.</span>shape<span class="sc">}</span><span class="ss">，时间范围：</span><span class="sc">{</span>df_shibor[<span class="st">"报告日"</span>]<span class="sc">.</span>iloc[<span class="dv">0</span>]<span class="sc">}</span><span class="ss"> 至 </span><span class="sc">{</span>df_shibor[<span class="st">"报告日"</span>]<span class="sc">.</span>iloc[<span class="op">-</span><span class="dv">1</span>]<span class="sc">}</span><span class="ss">'</span>)</span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a>df_shibor.tail(<span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center">
@@ -1122,112 +1253,112 @@ AI 提示词：用 akshare 获取指定数据
 <section id="获取数据" class="level3" data-number="6.5.3">
 <h3 data-number="6.5.3" class="anchored" data-anchor-id="获取数据"><span class="header-section-number">6.5.3</span> 获取数据</h3>
 <p>GMD 的获取方式很简单：直接从官网下载一个 CSV 文件，一次性拿到全部数据，之后从本地读取即可。文件约 9MB，下载需要十几秒钟。</p>
-<div id="cell-33" class="cell">
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
-<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a><span class="co"># ── 第一次运行：从官网下载数据并保存到本地 ──────────────</span></span>
-<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a><span class="co"># 文件约 9MB，下载需要 10-15 秒，请耐心等待</span></span>
-<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a><span class="co"># 下载完成后，后续运行只需从本地读取，无需重复下载</span></span>
-<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>url <span class="op">=</span> <span class="st">"https://www.globalmacrodata.com/GMD.csv"</span></span>
-<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a><span class="co"># 如果本地还没有这个文件，就下载并保存</span></span>
-<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="kw">not</span> os.path.exists(<span class="st">"data/GMD.csv"</span>):</span>
-<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a>    os.makedirs(<span class="st">"data"</span>, exist_ok<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"正在从官网下载 GMD 数据，请稍候..."</span>)</span>
-<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a>    data <span class="op">=</span> pd.read_csv(url)</span>
-<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a>    data.to_csv(<span class="st">"data/GMD.csv"</span>, index<span class="op">=</span><span class="va">False</span>)</span>
-<span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"下载完成，已保存到 data/GMD.csv"</span>)</span>
-<span id="cb17-17"><a href="#cb17-17" aria-hidden="true" tabindex="-1"></a><span class="cf">else</span>:</span>
-<span id="cb17-18"><a href="#cb17-18" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"本地文件已存在，直接读取"</span>)</span>
-<span id="cb17-19"><a href="#cb17-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-20"><a href="#cb17-20" aria-hidden="true" tabindex="-1"></a><span class="co"># ── 从本地读取 ───────────────────────────────────────────</span></span>
-<span id="cb17-21"><a href="#cb17-21" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span> pd.read_csv(<span class="st">"data/GMD.csv"</span>)</span>
-<span id="cb17-22"><a href="#cb17-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-23"><a href="#cb17-23" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"数据规模：</span><span class="sc">{</span>data<span class="sc">.</span>shape[<span class="dv">0</span>]<span class="sc">}</span><span class="ss"> 行 × </span><span class="sc">{</span>data<span class="sc">.</span>shape[<span class="dv">1</span>]<span class="sc">}</span><span class="ss"> 列"</span>)</span>
-<span id="cb17-24"><a href="#cb17-24" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"国家数量：</span><span class="sc">{</span>data[<span class="st">'ISO3'</span>]<span class="sc">.</span>nunique()<span class="sc">}</span><span class="ss"> 个"</span>)</span>
-<span id="cb17-25"><a href="#cb17-25" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"年份范围：</span><span class="sc">{</span>data[<span class="st">'year'</span>]<span class="sc">.</span><span class="bu">min</span>()<span class="sc">}</span><span class="ss"> - </span><span class="sc">{</span>data[<span class="st">'year'</span>]<span class="sc">.</span><span class="bu">max</span>()<span class="sc">}</span><span class="ss">"</span>)</span>
-<span id="cb17-26"><a href="#cb17-26" aria-hidden="true" tabindex="-1"></a>data.head(<span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="cell-34" class="cell">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a><span class="co"># ── 第一次运行：从官网下载数据并保存到本地 ──────────────</span></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a><span class="co"># 文件约 9MB，下载需要 10-15 秒，请耐心等待</span></span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a><span class="co"># 下载完成后，后续运行只需从本地读取，无需重复下载</span></span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>url <span class="op">=</span> <span class="st">"https://www.globalmacrodata.com/GMD.csv"</span></span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a><span class="co"># 如果本地还没有这个文件，就下载并保存</span></span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="kw">not</span> os.path.exists(<span class="st">"data/GMD.csv"</span>):</span>
+<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a>    os.makedirs(<span class="st">"data"</span>, exist_ok<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"正在从官网下载 GMD 数据，请稍候..."</span>)</span>
+<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a>    data <span class="op">=</span> pd.read_csv(url)</span>
+<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a>    data.to_csv(<span class="st">"data/GMD.csv"</span>, index<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"下载完成，已保存到 data/GMD.csv"</span>)</span>
+<span id="cb18-17"><a href="#cb18-17" aria-hidden="true" tabindex="-1"></a><span class="cf">else</span>:</span>
+<span id="cb18-18"><a href="#cb18-18" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"本地文件已存在，直接读取"</span>)</span>
+<span id="cb18-19"><a href="#cb18-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-20"><a href="#cb18-20" aria-hidden="true" tabindex="-1"></a><span class="co"># ── 从本地读取 ───────────────────────────────────────────</span></span>
+<span id="cb18-21"><a href="#cb18-21" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span> pd.read_csv(<span class="st">"data/GMD.csv"</span>)</span>
+<span id="cb18-22"><a href="#cb18-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-23"><a href="#cb18-23" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"数据规模：</span><span class="sc">{</span>data<span class="sc">.</span>shape[<span class="dv">0</span>]<span class="sc">}</span><span class="ss"> 行 × </span><span class="sc">{</span>data<span class="sc">.</span>shape[<span class="dv">1</span>]<span class="sc">}</span><span class="ss"> 列"</span>)</span>
+<span id="cb18-24"><a href="#cb18-24" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"国家数量：</span><span class="sc">{</span>data[<span class="st">'ISO3'</span>]<span class="sc">.</span>nunique()<span class="sc">}</span><span class="ss"> 个"</span>)</span>
+<span id="cb18-25"><a href="#cb18-25" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"年份范围：</span><span class="sc">{</span>data[<span class="st">'year'</span>]<span class="sc">.</span><span class="bu">min</span>()<span class="sc">}</span><span class="ss"> - </span><span class="sc">{</span>data[<span class="st">'year'</span>]<span class="sc">.</span><span class="bu">max</span>()<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb18-26"><a href="#cb18-26" aria-hidden="true" tabindex="-1"></a>data.head(<span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>数据的基本结构是<strong>长面板格式</strong>（long panel）：每一行代表某个国家在某一年的观测值，国家用 ISO3 代码标识（如 <code>CHN</code> 代表中国，<code>USA</code> 代表美国），年份存放在 <code>year</code> 列，其余列是各宏观变量的值。</p>
 </section>
 <section id="示例一中国经济结构变化1978-2024" class="level3" data-number="6.5.4">
 <h3 data-number="6.5.4" class="anchored" data-anchor-id="示例一中国经济结构变化1978-2024"><span class="header-section-number">6.5.4</span> 示例一：中国经济结构变化（1978-2024）</h3>
 <p>改革开放以来，中国经济结构发生了深刻变化。投资驱动、出口导向是过去几十年的显著特征，近年来则逐渐转向消费和内需。我们用 GMD 数据来直观展示这一演变过程。</p>
-<div id="cell-35" class="cell">
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="co"># 筛选中国数据，截取改革开放以来的样本</span></span>
-<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>china <span class="op">=</span> data[data[<span class="st">"ISO3"</span>] <span class="op">==</span> <span class="st">"CHN"</span>].copy()</span>
-<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>china <span class="op">=</span> china[(china[<span class="st">"year"</span>] <span class="op">&gt;=</span> <span class="dv">1978</span>) <span class="op">&amp;</span> (china[<span class="st">"year"</span>] <span class="op">&lt;=</span> <span class="dv">2024</span>)]</span>
-<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a><span class="co"># 关注四个结构性指标</span></span>
-<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>vlist  <span class="op">=</span> [<span class="st">"inv_GDP"</span>, <span class="st">"exports_GDP"</span>, <span class="st">"imports_GDP"</span>, <span class="st">"govexp_GDP"</span>]</span>
-<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>labels <span class="op">=</span> [<span class="st">"投资/GDP"</span>, <span class="st">"出口/GDP"</span>, <span class="st">"进口/GDP"</span>, <span class="st">"政府支出/GDP"</span>]</span>
-<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>colors <span class="op">=</span> [<span class="st">"steelblue"</span>, <span class="st">"tomato"</span>, <span class="st">"orange"</span>, <span class="st">"seagreen"</span>]</span>
-<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">4</span>))</span>
-<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> var, label, color <span class="kw">in</span> <span class="bu">zip</span>(vlist, labels, colors):</span>
-<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a>    ax.plot(china[<span class="st">"year"</span>], china[var], label<span class="op">=</span>label, color<span class="op">=</span>color, linewidth<span class="op">=</span><span class="fl">1.8</span>)</span>
-<span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-17"><a href="#cb18-17" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">"中国经济结构变化（1978-2024）"</span>, fontsize<span class="op">=</span><span class="dv">13</span>)</span>
-<span id="cb18-18"><a href="#cb18-18" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">"年份"</span>)</span>
-<span id="cb18-19"><a href="#cb18-19" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="st">"占 GDP 比重（%）"</span>)</span>
-<span id="cb18-20"><a href="#cb18-20" aria-hidden="true" tabindex="-1"></a>ax.set_xticks(<span class="bu">range</span>(<span class="dv">1978</span>, <span class="dv">2025</span>, <span class="dv">5</span>))</span>
-<span id="cb18-21"><a href="#cb18-21" aria-hidden="true" tabindex="-1"></a>ax.tick_params(axis<span class="op">=</span><span class="st">'x'</span>, rotation<span class="op">=</span><span class="dv">45</span>)</span>
-<span id="cb18-22"><a href="#cb18-22" aria-hidden="true" tabindex="-1"></a>ax.legend(loc<span class="op">=</span><span class="st">"upper left"</span>, fontsize<span class="op">=</span><span class="dv">9</span>)</span>
-<span id="cb18-23"><a href="#cb18-23" aria-hidden="true" tabindex="-1"></a>ax.grid(<span class="va">True</span>, alpha<span class="op">=</span><span class="fl">0.3</span>)</span>
-<span id="cb18-24"><a href="#cb18-24" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-25"><a href="#cb18-25" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
-<span id="cb18-26"><a href="#cb18-26" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="cell-36" class="cell">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="co"># 筛选中国数据，截取改革开放以来的样本</span></span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>china <span class="op">=</span> data[data[<span class="st">"ISO3"</span>] <span class="op">==</span> <span class="st">"CHN"</span>].copy()</span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>china <span class="op">=</span> china[(china[<span class="st">"year"</span>] <span class="op">&gt;=</span> <span class="dv">1978</span>) <span class="op">&amp;</span> (china[<span class="st">"year"</span>] <span class="op">&lt;=</span> <span class="dv">2024</span>)]</span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a><span class="co"># 关注四个结构性指标</span></span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>vlist  <span class="op">=</span> [<span class="st">"inv_GDP"</span>, <span class="st">"exports_GDP"</span>, <span class="st">"imports_GDP"</span>, <span class="st">"govexp_GDP"</span>]</span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>labels <span class="op">=</span> [<span class="st">"投资/GDP"</span>, <span class="st">"出口/GDP"</span>, <span class="st">"进口/GDP"</span>, <span class="st">"政府支出/GDP"</span>]</span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a>colors <span class="op">=</span> [<span class="st">"steelblue"</span>, <span class="st">"tomato"</span>, <span class="st">"orange"</span>, <span class="st">"seagreen"</span>]</span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">4</span>))</span>
+<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> var, label, color <span class="kw">in</span> <span class="bu">zip</span>(vlist, labels, colors):</span>
+<span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a>    ax.plot(china[<span class="st">"year"</span>], china[var], label<span class="op">=</span>label, color<span class="op">=</span>color, linewidth<span class="op">=</span><span class="fl">1.8</span>)</span>
+<span id="cb19-16"><a href="#cb19-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-17"><a href="#cb19-17" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">"中国经济结构变化（1978-2024）"</span>, fontsize<span class="op">=</span><span class="dv">13</span>)</span>
+<span id="cb19-18"><a href="#cb19-18" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">"年份"</span>)</span>
+<span id="cb19-19"><a href="#cb19-19" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="st">"占 GDP 比重（%）"</span>)</span>
+<span id="cb19-20"><a href="#cb19-20" aria-hidden="true" tabindex="-1"></a>ax.set_xticks(<span class="bu">range</span>(<span class="dv">1978</span>, <span class="dv">2025</span>, <span class="dv">5</span>))</span>
+<span id="cb19-21"><a href="#cb19-21" aria-hidden="true" tabindex="-1"></a>ax.tick_params(axis<span class="op">=</span><span class="st">'x'</span>, rotation<span class="op">=</span><span class="dv">45</span>)</span>
+<span id="cb19-22"><a href="#cb19-22" aria-hidden="true" tabindex="-1"></a>ax.legend(loc<span class="op">=</span><span class="st">"upper left"</span>, fontsize<span class="op">=</span><span class="dv">9</span>)</span>
+<span id="cb19-23"><a href="#cb19-23" aria-hidden="true" tabindex="-1"></a>ax.grid(<span class="va">True</span>, alpha<span class="op">=</span><span class="fl">0.3</span>)</span>
+<span id="cb19-24"><a href="#cb19-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-25"><a href="#cb19-25" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb19-26"><a href="#cb19-26" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="示例二主要经济体出口份额变化1980-2024" class="level3" data-number="6.5.5">
 <h3 data-number="6.5.5" class="anchored" data-anchor-id="示例二主要经济体出口份额变化1980-2024"><span class="header-section-number">6.5.5</span> 示例二：主要经济体出口份额变化（1980-2024）</h3>
 <p>这个例子展示了一个稍复杂一点的数据处理流程：先构造新变量（各国出口额的全球占比），再做多国对比图。这是宏观经济研究中很常见的分析思路。</p>
-<div id="cell-37" class="cell">
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib <span class="im">as</span> mpl</span>
-<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a><span class="co"># 将出口转换为美元计价（原始数据是本币）</span></span>
-<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>data_ex <span class="op">=</span> data.copy()</span>
-<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>data_ex[<span class="st">"exports_USD"</span>] <span class="op">=</span> data_ex[<span class="st">"exports"</span>] <span class="op">/</span> data_ex[<span class="st">"USDfx"</span>]</span>
-<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a><span class="co"># 剔除部分数据质量存疑的国家</span></span>
-<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>bad_countries <span class="op">=</span> [<span class="st">"MMR"</span>, <span class="st">"SLE"</span>, <span class="st">"ROU"</span>, <span class="st">"ZWE"</span>, <span class="st">"POL"</span>, <span class="st">"YUG"</span>]</span>
-<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a>data_ex <span class="op">=</span> data_ex[<span class="op">~</span>data_ex[<span class="st">"ISO3"</span>].isin(bad_countries)]</span>
-<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a><span class="co"># 计算每年各国出口占全球总出口的份额</span></span>
-<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a>data_ex <span class="op">=</span> data_ex[[<span class="st">"ISO3"</span>, <span class="st">"year"</span>, <span class="st">"exports_USD"</span>]].dropna()</span>
-<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a>data_ex <span class="op">=</span> data_ex.query(<span class="st">"1980 &lt;= year &lt;= 2024"</span>)</span>
-<span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a>data_ex[<span class="st">"total_exports"</span>] <span class="op">=</span> data_ex.groupby(<span class="st">"year"</span>)[<span class="st">"exports_USD"</span>].transform(<span class="st">"sum"</span>)</span>
-<span id="cb19-16"><a href="#cb19-16" aria-hidden="true" tabindex="-1"></a>data_ex[<span class="st">"export_share"</span>]  <span class="op">=</span> data_ex[<span class="st">"exports_USD"</span>] <span class="op">/</span> data_ex[<span class="st">"total_exports"</span>] <span class="op">*</span> <span class="dv">100</span></span>
-<span id="cb19-17"><a href="#cb19-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-18"><a href="#cb19-18" aria-hidden="true" tabindex="-1"></a><span class="co"># 选取主要经济体</span></span>
-<span id="cb19-19"><a href="#cb19-19" aria-hidden="true" tabindex="-1"></a>focus <span class="op">=</span> [<span class="st">"USA"</span>, <span class="st">"CHN"</span>, <span class="st">"DEU"</span>, <span class="st">"JPN"</span>, <span class="st">"GBR"</span>, <span class="st">"FRA"</span>]</span>
-<span id="cb19-20"><a href="#cb19-20" aria-hidden="true" tabindex="-1"></a>label_map <span class="op">=</span> {<span class="st">"USA"</span>: <span class="st">"美国"</span>, <span class="st">"CHN"</span>: <span class="st">"中国"</span>, <span class="st">"DEU"</span>: <span class="st">"德国"</span>,</span>
-<span id="cb19-21"><a href="#cb19-21" aria-hidden="true" tabindex="-1"></a>             <span class="st">"JPN"</span>: <span class="st">"日本"</span>, <span class="st">"GBR"</span>: <span class="st">"英国"</span>, <span class="st">"FRA"</span>: <span class="st">"法国"</span>}</span>
-<span id="cb19-22"><a href="#cb19-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-23"><a href="#cb19-23" aria-hidden="true" tabindex="-1"></a>df_plot <span class="op">=</span> data_ex[data_ex[<span class="st">"ISO3"</span>].isin(focus)].copy()</span>
-<span id="cb19-24"><a href="#cb19-24" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-25"><a href="#cb19-25" aria-hidden="true" tabindex="-1"></a><span class="co"># 绘图</span></span>
-<span id="cb19-26"><a href="#cb19-26" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">4</span>))</span>
-<span id="cb19-27"><a href="#cb19-27" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-28"><a href="#cb19-28" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> country <span class="kw">in</span> focus:</span>
-<span id="cb19-29"><a href="#cb19-29" aria-hidden="true" tabindex="-1"></a>    sub <span class="op">=</span> df_plot[df_plot[<span class="st">"ISO3"</span>] <span class="op">==</span> country].sort_values(<span class="st">"year"</span>)</span>
-<span id="cb19-30"><a href="#cb19-30" aria-hidden="true" tabindex="-1"></a>    ax.plot(sub[<span class="st">"year"</span>], sub[<span class="st">"export_share"</span>],</span>
-<span id="cb19-31"><a href="#cb19-31" aria-hidden="true" tabindex="-1"></a>            label<span class="op">=</span>label_map[country], linewidth<span class="op">=</span><span class="fl">1.8</span>)</span>
-<span id="cb19-32"><a href="#cb19-32" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-33"><a href="#cb19-33" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">"主要经济体全球出口份额（1980-2024）"</span>, fontsize<span class="op">=</span><span class="dv">13</span>)</span>
-<span id="cb19-34"><a href="#cb19-34" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">"年份"</span>)</span>
-<span id="cb19-35"><a href="#cb19-35" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="st">"出口份额（%）"</span>)</span>
-<span id="cb19-36"><a href="#cb19-36" aria-hidden="true" tabindex="-1"></a>ax.legend(fontsize<span class="op">=</span><span class="dv">9</span>)</span>
-<span id="cb19-37"><a href="#cb19-37" aria-hidden="true" tabindex="-1"></a>ax.grid(<span class="va">True</span>, alpha<span class="op">=</span><span class="fl">0.3</span>)</span>
-<span id="cb19-38"><a href="#cb19-38" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-39"><a href="#cb19-39" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
-<span id="cb19-40"><a href="#cb19-40" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="cell-38" class="cell">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib <span class="im">as</span> mpl</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a><span class="co"># 将出口转换为美元计价（原始数据是本币）</span></span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>data_ex <span class="op">=</span> data.copy()</span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>data_ex[<span class="st">"exports_USD"</span>] <span class="op">=</span> data_ex[<span class="st">"exports"</span>] <span class="op">/</span> data_ex[<span class="st">"USDfx"</span>]</span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a><span class="co"># 剔除部分数据质量存疑的国家</span></span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>bad_countries <span class="op">=</span> [<span class="st">"MMR"</span>, <span class="st">"SLE"</span>, <span class="st">"ROU"</span>, <span class="st">"ZWE"</span>, <span class="st">"POL"</span>, <span class="st">"YUG"</span>]</span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a>data_ex <span class="op">=</span> data_ex[<span class="op">~</span>data_ex[<span class="st">"ISO3"</span>].isin(bad_countries)]</span>
+<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a><span class="co"># 计算每年各国出口占全球总出口的份额</span></span>
+<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a>data_ex <span class="op">=</span> data_ex[[<span class="st">"ISO3"</span>, <span class="st">"year"</span>, <span class="st">"exports_USD"</span>]].dropna()</span>
+<span id="cb20-14"><a href="#cb20-14" aria-hidden="true" tabindex="-1"></a>data_ex <span class="op">=</span> data_ex.query(<span class="st">"1980 &lt;= year &lt;= 2024"</span>)</span>
+<span id="cb20-15"><a href="#cb20-15" aria-hidden="true" tabindex="-1"></a>data_ex[<span class="st">"total_exports"</span>] <span class="op">=</span> data_ex.groupby(<span class="st">"year"</span>)[<span class="st">"exports_USD"</span>].transform(<span class="st">"sum"</span>)</span>
+<span id="cb20-16"><a href="#cb20-16" aria-hidden="true" tabindex="-1"></a>data_ex[<span class="st">"export_share"</span>]  <span class="op">=</span> data_ex[<span class="st">"exports_USD"</span>] <span class="op">/</span> data_ex[<span class="st">"total_exports"</span>] <span class="op">*</span> <span class="dv">100</span></span>
+<span id="cb20-17"><a href="#cb20-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-18"><a href="#cb20-18" aria-hidden="true" tabindex="-1"></a><span class="co"># 选取主要经济体</span></span>
+<span id="cb20-19"><a href="#cb20-19" aria-hidden="true" tabindex="-1"></a>focus <span class="op">=</span> [<span class="st">"USA"</span>, <span class="st">"CHN"</span>, <span class="st">"DEU"</span>, <span class="st">"JPN"</span>, <span class="st">"GBR"</span>, <span class="st">"FRA"</span>]</span>
+<span id="cb20-20"><a href="#cb20-20" aria-hidden="true" tabindex="-1"></a>label_map <span class="op">=</span> {<span class="st">"USA"</span>: <span class="st">"美国"</span>, <span class="st">"CHN"</span>: <span class="st">"中国"</span>, <span class="st">"DEU"</span>: <span class="st">"德国"</span>,</span>
+<span id="cb20-21"><a href="#cb20-21" aria-hidden="true" tabindex="-1"></a>             <span class="st">"JPN"</span>: <span class="st">"日本"</span>, <span class="st">"GBR"</span>: <span class="st">"英国"</span>, <span class="st">"FRA"</span>: <span class="st">"法国"</span>}</span>
+<span id="cb20-22"><a href="#cb20-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-23"><a href="#cb20-23" aria-hidden="true" tabindex="-1"></a>df_plot <span class="op">=</span> data_ex[data_ex[<span class="st">"ISO3"</span>].isin(focus)].copy()</span>
+<span id="cb20-24"><a href="#cb20-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-25"><a href="#cb20-25" aria-hidden="true" tabindex="-1"></a><span class="co"># 绘图</span></span>
+<span id="cb20-26"><a href="#cb20-26" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">4</span>))</span>
+<span id="cb20-27"><a href="#cb20-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-28"><a href="#cb20-28" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> country <span class="kw">in</span> focus:</span>
+<span id="cb20-29"><a href="#cb20-29" aria-hidden="true" tabindex="-1"></a>    sub <span class="op">=</span> df_plot[df_plot[<span class="st">"ISO3"</span>] <span class="op">==</span> country].sort_values(<span class="st">"year"</span>)</span>
+<span id="cb20-30"><a href="#cb20-30" aria-hidden="true" tabindex="-1"></a>    ax.plot(sub[<span class="st">"year"</span>], sub[<span class="st">"export_share"</span>],</span>
+<span id="cb20-31"><a href="#cb20-31" aria-hidden="true" tabindex="-1"></a>            label<span class="op">=</span>label_map[country], linewidth<span class="op">=</span><span class="fl">1.8</span>)</span>
+<span id="cb20-32"><a href="#cb20-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-33"><a href="#cb20-33" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">"主要经济体全球出口份额（1980-2024）"</span>, fontsize<span class="op">=</span><span class="dv">13</span>)</span>
+<span id="cb20-34"><a href="#cb20-34" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">"年份"</span>)</span>
+<span id="cb20-35"><a href="#cb20-35" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="st">"出口份额（%）"</span>)</span>
+<span id="cb20-36"><a href="#cb20-36" aria-hidden="true" tabindex="-1"></a>ax.legend(fontsize<span class="op">=</span><span class="dv">9</span>)</span>
+<span id="cb20-37"><a href="#cb20-37" aria-hidden="true" tabindex="-1"></a>ax.grid(<span class="va">True</span>, alpha<span class="op">=</span><span class="fl">0.3</span>)</span>
+<span id="cb20-38"><a href="#cb20-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-39"><a href="#cb20-39" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb20-40"><a href="#cb20-40" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center">
@@ -1261,12 +1392,12 @@ AI 提示词：GMD 数据分析模板
 <p>找指标代码有两个方法：</p>
 <p><strong>方法一</strong>：去世界银行官网 <a href="https://data.worldbank.org">data.worldbank.org</a> 搜索你想要的指标，打开数据页面后，URL 里就包含了指标代码。</p>
 <p><strong>方法二</strong>：用 Python 直接搜索。</p>
-<div id="cell-40" class="cell">
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> world_bank_data <span class="im">as</span> wb</span>
-<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a><span class="co"># 搜索包含 "GDP per capita" 的指标</span></span>
-<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>results <span class="op">=</span> wb.get_indicators(query<span class="op">=</span><span class="st">"GDP per capita"</span>)</span>
-<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(results[[<span class="st">"name"</span>, <span class="st">"unit"</span>]].head(<span class="dv">10</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="cell-41" class="cell">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> world_bank_data <span class="im">as</span> wb</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a><span class="co"># 搜索包含 "GDP per capita" 的指标</span></span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>results <span class="op">=</span> wb.get_indicators(query<span class="op">=</span><span class="st">"GDP per capita"</span>)</span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(results[[<span class="st">"name"</span>, <span class="st">"unit"</span>]].head(<span class="dv">10</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>下表列出了一些常用的世界银行指标代码，供参考：</p>
 <table class="caption-top table">
@@ -1311,84 +1442,84 @@ AI 提示词：GMD 数据分析模板
 <section id="获取数据以人均-gdp-为例" class="level3" data-number="6.6.3">
 <h3 data-number="6.6.3" class="anchored" data-anchor-id="获取数据以人均-gdp-为例"><span class="header-section-number">6.6.3</span> 获取数据：以人均 GDP 为例</h3>
 <p>下面以获取中美德日四国 1990 年以来的人均 GDP 为例，演示完整的调用流程。</p>
-<div id="cell-42" class="cell">
-<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> world_bank_data <span class="im">as</span> wb</span>
-<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
-<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a><span class="co"># 指定国家（ISO2 代码）和指标代码</span></span>
-<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>countries  <span class="op">=</span> [<span class="st">"CN"</span>, <span class="st">"US"</span>, <span class="st">"DE"</span>, <span class="st">"JP"</span>]        <span class="co"># 中国、美国、德国、日本</span></span>
-<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>indicator  <span class="op">=</span> <span class="st">"NY.GDP.PCAP.CD"</span>                 <span class="co"># 人均 GDP（现价美元）</span></span>
-<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a>date_range <span class="op">=</span> <span class="st">"1990:2023"</span>                      <span class="co"># 时间范围</span></span>
-<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a><span class="co"># 调用 API 获取数据</span></span>
-<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a>df_raw <span class="op">=</span> wb.get_series(</span>
-<span id="cb22-11"><a href="#cb22-11" aria-hidden="true" tabindex="-1"></a>    indicator,</span>
-<span id="cb22-12"><a href="#cb22-12" aria-hidden="true" tabindex="-1"></a>    country <span class="op">=</span> countries,</span>
-<span id="cb22-13"><a href="#cb22-13" aria-hidden="true" tabindex="-1"></a>    date    <span class="op">=</span> date_range,</span>
-<span id="cb22-14"><a href="#cb22-14" aria-hidden="true" tabindex="-1"></a>    mrv     <span class="op">=</span> <span class="va">None</span>        <span class="co"># mrv=None 表示获取全部年份，否则只取最近 N 年</span></span>
-<span id="cb22-15"><a href="#cb22-15" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb22-16"><a href="#cb22-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-17"><a href="#cb22-17" aria-hidden="true" tabindex="-1"></a><span class="co"># 原始返回是 MultiIndex Series，转换为普通 DataFrame</span></span>
-<span id="cb22-18"><a href="#cb22-18" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> df_raw.reset_index()</span>
-<span id="cb22-19"><a href="#cb22-19" aria-hidden="true" tabindex="-1"></a>df.columns <span class="op">=</span> [<span class="st">"country"</span>, <span class="st">"year"</span>, <span class="st">"gdppc"</span>]</span>
-<span id="cb22-20"><a href="#cb22-20" aria-hidden="true" tabindex="-1"></a>df[<span class="st">"year"</span>] <span class="op">=</span> df[<span class="st">"year"</span>].astype(<span class="bu">int</span>)</span>
-<span id="cb22-21"><a href="#cb22-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-22"><a href="#cb22-22" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"数据规模：</span><span class="sc">{</span>df<span class="sc">.</span>shape<span class="sc">}</span><span class="ss">"</span>)</span>
-<span id="cb22-23"><a href="#cb22-23" aria-hidden="true" tabindex="-1"></a>df.head(<span class="dv">8</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="cell-43" class="cell">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> world_bank_data <span class="im">as</span> wb</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a><span class="co"># 指定国家（ISO2 代码）和指标代码</span></span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>countries  <span class="op">=</span> [<span class="st">"CN"</span>, <span class="st">"US"</span>, <span class="st">"DE"</span>, <span class="st">"JP"</span>]        <span class="co"># 中国、美国、德国、日本</span></span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>indicator  <span class="op">=</span> <span class="st">"NY.GDP.PCAP.CD"</span>                 <span class="co"># 人均 GDP（现价美元）</span></span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>date_range <span class="op">=</span> <span class="st">"1990:2023"</span>                      <span class="co"># 时间范围</span></span>
+<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a><span class="co"># 调用 API 获取数据</span></span>
+<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a>df_raw <span class="op">=</span> wb.get_series(</span>
+<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a>    indicator,</span>
+<span id="cb23-12"><a href="#cb23-12" aria-hidden="true" tabindex="-1"></a>    country <span class="op">=</span> countries,</span>
+<span id="cb23-13"><a href="#cb23-13" aria-hidden="true" tabindex="-1"></a>    date    <span class="op">=</span> date_range,</span>
+<span id="cb23-14"><a href="#cb23-14" aria-hidden="true" tabindex="-1"></a>    mrv     <span class="op">=</span> <span class="va">None</span>        <span class="co"># mrv=None 表示获取全部年份，否则只取最近 N 年</span></span>
+<span id="cb23-15"><a href="#cb23-15" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb23-16"><a href="#cb23-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-17"><a href="#cb23-17" aria-hidden="true" tabindex="-1"></a><span class="co"># 原始返回是 MultiIndex Series，转换为普通 DataFrame</span></span>
+<span id="cb23-18"><a href="#cb23-18" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> df_raw.reset_index()</span>
+<span id="cb23-19"><a href="#cb23-19" aria-hidden="true" tabindex="-1"></a>df.columns <span class="op">=</span> [<span class="st">"country"</span>, <span class="st">"year"</span>, <span class="st">"gdppc"</span>]</span>
+<span id="cb23-20"><a href="#cb23-20" aria-hidden="true" tabindex="-1"></a>df[<span class="st">"year"</span>] <span class="op">=</span> df[<span class="st">"year"</span>].astype(<span class="bu">int</span>)</span>
+<span id="cb23-21"><a href="#cb23-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-22"><a href="#cb23-22" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"数据规模：</span><span class="sc">{</span>df<span class="sc">.</span>shape<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb23-23"><a href="#cb23-23" aria-hidden="true" tabindex="-1"></a>df.head(<span class="dv">8</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="可视化四国人均-gdp-对比" class="level3" data-number="6.6.4">
 <h3 data-number="6.6.4" class="anchored" data-anchor-id="可视化四国人均-gdp-对比"><span class="header-section-number">6.6.4</span> 可视化：四国人均 GDP 对比</h3>
-<div id="cell-44" class="cell">
-<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
-<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>country_labels <span class="op">=</span> {<span class="st">"China"</span>: <span class="st">"中国"</span>, <span class="st">"United States"</span>: <span class="st">"美国"</span>,</span>
-<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>                  <span class="st">"Germany"</span>: <span class="st">"德国"</span>, <span class="st">"Japan"</span>: <span class="st">"日本"</span>}</span>
-<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">4</span>))</span>
-<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> country, sub <span class="kw">in</span> df.groupby(<span class="st">"country"</span>):</span>
-<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a>    sub <span class="op">=</span> sub.sort_values(<span class="st">"year"</span>).dropna(subset<span class="op">=</span>[<span class="st">"gdppc"</span>])</span>
-<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a>    label <span class="op">=</span> country_labels.get(country, country)</span>
-<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a>    ax.plot(sub[<span class="st">"year"</span>], sub[<span class="st">"gdppc"</span>], label<span class="op">=</span>label, linewidth<span class="op">=</span><span class="fl">1.8</span>)</span>
-<span id="cb23-12"><a href="#cb23-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-13"><a href="#cb23-13" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">"中美德日人均 GDP 比较（1990-2023）"</span>, fontsize<span class="op">=</span><span class="dv">13</span>)</span>
-<span id="cb23-14"><a href="#cb23-14" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">"年份"</span>)</span>
-<span id="cb23-15"><a href="#cb23-15" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="st">"人均 GDP（现价美元）"</span>)</span>
-<span id="cb23-16"><a href="#cb23-16" aria-hidden="true" tabindex="-1"></a>ax.legend(fontsize<span class="op">=</span><span class="dv">9</span>)</span>
-<span id="cb23-17"><a href="#cb23-17" aria-hidden="true" tabindex="-1"></a>ax.grid(<span class="va">True</span>, alpha<span class="op">=</span><span class="fl">0.3</span>)</span>
-<span id="cb23-18"><a href="#cb23-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-19"><a href="#cb23-19" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
-<span id="cb23-20"><a href="#cb23-20" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="cell-45" class="cell">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>country_labels <span class="op">=</span> {<span class="st">"China"</span>: <span class="st">"中国"</span>, <span class="st">"United States"</span>: <span class="st">"美国"</span>,</span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>                  <span class="st">"Germany"</span>: <span class="st">"德国"</span>, <span class="st">"Japan"</span>: <span class="st">"日本"</span>}</span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">4</span>))</span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> country, sub <span class="kw">in</span> df.groupby(<span class="st">"country"</span>):</span>
+<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a>    sub <span class="op">=</span> sub.sort_values(<span class="st">"year"</span>).dropna(subset<span class="op">=</span>[<span class="st">"gdppc"</span>])</span>
+<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a>    label <span class="op">=</span> country_labels.get(country, country)</span>
+<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a>    ax.plot(sub[<span class="st">"year"</span>], sub[<span class="st">"gdppc"</span>], label<span class="op">=</span>label, linewidth<span class="op">=</span><span class="fl">1.8</span>)</span>
+<span id="cb24-12"><a href="#cb24-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-13"><a href="#cb24-13" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">"中美德日人均 GDP 比较（1990-2023）"</span>, fontsize<span class="op">=</span><span class="dv">13</span>)</span>
+<span id="cb24-14"><a href="#cb24-14" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">"年份"</span>)</span>
+<span id="cb24-15"><a href="#cb24-15" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="st">"人均 GDP（现价美元）"</span>)</span>
+<span id="cb24-16"><a href="#cb24-16" aria-hidden="true" tabindex="-1"></a>ax.legend(fontsize<span class="op">=</span><span class="dv">9</span>)</span>
+<span id="cb24-17"><a href="#cb24-17" aria-hidden="true" tabindex="-1"></a>ax.grid(<span class="va">True</span>, alpha<span class="op">=</span><span class="fl">0.3</span>)</span>
+<span id="cb24-18"><a href="#cb24-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-19"><a href="#cb24-19" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb24-20"><a href="#cb24-20" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="拓展同时获取多个指标" class="level3" data-number="6.6.5">
 <h3 data-number="6.6.5" class="anchored" data-anchor-id="拓展同时获取多个指标"><span class="header-section-number">6.6.5</span> 拓展：同时获取多个指标</h3>
 <p>如果需要同时获取多个指标，可以循环调用，或者直接使用 <code>wb.get_dataframe()</code> 方法，它支持一次传入多个指标代码，返回宽格式 DataFrame，方便后续合并分析。</p>
-<div id="cell-46" class="cell">
-<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> world_bank_data <span class="im">as</span> wb</span>
-<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
-<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a><span class="co"># 一次获取多个指标</span></span>
-<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>indicators <span class="op">=</span> {</span>
-<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">"NY.GDP.MKTP.KD.ZG"</span> : <span class="st">"gdp_growth"</span>,   <span class="co"># GDP 增长率</span></span>
-<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">"FP.CPI.TOTL.ZG"</span>    : <span class="st">"inflation"</span>,     <span class="co"># CPI 通胀率</span></span>
-<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">"SL.UEM.TOTL.ZS"</span>    : <span class="st">"unemployment"</span>,  <span class="co"># 失业率</span></span>
-<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a>frames <span class="op">=</span> []</span>
-<span id="cb24-12"><a href="#cb24-12" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> code, name <span class="kw">in</span> indicators.items():</span>
-<span id="cb24-13"><a href="#cb24-13" aria-hidden="true" tabindex="-1"></a>    s <span class="op">=</span> wb.get_series(code, country<span class="op">=</span>[<span class="st">"CN"</span>, <span class="st">"US"</span>], date<span class="op">=</span><span class="st">"2000:2023"</span>).reset_index()</span>
-<span id="cb24-14"><a href="#cb24-14" aria-hidden="true" tabindex="-1"></a>    s.columns <span class="op">=</span> [<span class="st">"country"</span>, <span class="st">"year"</span>, name]</span>
-<span id="cb24-15"><a href="#cb24-15" aria-hidden="true" tabindex="-1"></a>    s[<span class="st">"year"</span>] <span class="op">=</span> s[<span class="st">"year"</span>].astype(<span class="bu">int</span>)</span>
-<span id="cb24-16"><a href="#cb24-16" aria-hidden="true" tabindex="-1"></a>    frames.append(s)</span>
-<span id="cb24-17"><a href="#cb24-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-18"><a href="#cb24-18" aria-hidden="true" tabindex="-1"></a><span class="co"># 合并所有指标到一张宽表</span></span>
-<span id="cb24-19"><a href="#cb24-19" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> functools <span class="im">import</span> <span class="bu">reduce</span></span>
-<span id="cb24-20"><a href="#cb24-20" aria-hidden="true" tabindex="-1"></a>df_wide <span class="op">=</span> <span class="bu">reduce</span>(<span class="kw">lambda</span> a, b: pd.merge(a, b, on<span class="op">=</span>[<span class="st">"country"</span>, <span class="st">"year"</span>]), frames)</span>
-<span id="cb24-21"><a href="#cb24-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-22"><a href="#cb24-22" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df_wide.shape)</span>
-<span id="cb24-23"><a href="#cb24-23" aria-hidden="true" tabindex="-1"></a>df_wide[df_wide[<span class="st">"country"</span>] <span class="op">==</span> <span class="st">"China"</span>].tail(<span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="cell-47" class="cell">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> world_bank_data <span class="im">as</span> wb</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a><span class="co"># 一次获取多个指标</span></span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>indicators <span class="op">=</span> {</span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">"NY.GDP.MKTP.KD.ZG"</span> : <span class="st">"gdp_growth"</span>,   <span class="co"># GDP 增长率</span></span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">"FP.CPI.TOTL.ZG"</span>    : <span class="st">"inflation"</span>,     <span class="co"># CPI 通胀率</span></span>
+<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">"SL.UEM.TOTL.ZS"</span>    : <span class="st">"unemployment"</span>,  <span class="co"># 失业率</span></span>
+<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-11"><a href="#cb25-11" aria-hidden="true" tabindex="-1"></a>frames <span class="op">=</span> []</span>
+<span id="cb25-12"><a href="#cb25-12" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> code, name <span class="kw">in</span> indicators.items():</span>
+<span id="cb25-13"><a href="#cb25-13" aria-hidden="true" tabindex="-1"></a>    s <span class="op">=</span> wb.get_series(code, country<span class="op">=</span>[<span class="st">"CN"</span>, <span class="st">"US"</span>], date<span class="op">=</span><span class="st">"2000:2023"</span>).reset_index()</span>
+<span id="cb25-14"><a href="#cb25-14" aria-hidden="true" tabindex="-1"></a>    s.columns <span class="op">=</span> [<span class="st">"country"</span>, <span class="st">"year"</span>, name]</span>
+<span id="cb25-15"><a href="#cb25-15" aria-hidden="true" tabindex="-1"></a>    s[<span class="st">"year"</span>] <span class="op">=</span> s[<span class="st">"year"</span>].astype(<span class="bu">int</span>)</span>
+<span id="cb25-16"><a href="#cb25-16" aria-hidden="true" tabindex="-1"></a>    frames.append(s)</span>
+<span id="cb25-17"><a href="#cb25-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-18"><a href="#cb25-18" aria-hidden="true" tabindex="-1"></a><span class="co"># 合并所有指标到一张宽表</span></span>
+<span id="cb25-19"><a href="#cb25-19" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> functools <span class="im">import</span> <span class="bu">reduce</span></span>
+<span id="cb25-20"><a href="#cb25-20" aria-hidden="true" tabindex="-1"></a>df_wide <span class="op">=</span> <span class="bu">reduce</span>(<span class="kw">lambda</span> a, b: pd.merge(a, b, on<span class="op">=</span>[<span class="st">"country"</span>, <span class="st">"year"</span>]), frames)</span>
+<span id="cb25-21"><a href="#cb25-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-22"><a href="#cb25-22" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df_wide.shape)</span>
+<span id="cb25-23"><a href="#cb25-23" aria-hidden="true" tabindex="-1"></a>df_wide[df_wide[<span class="st">"country"</span>] <span class="op">==</span> <span class="st">"China"</span>].tail(<span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center">

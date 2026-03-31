@@ -1,0 +1,2195 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.6.39">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>14&nbsp; 文本分析：情感分析与主题建模 – 金融数据分析与建模</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../appendix_python/index.html" rel="next">
+<link href="../../Lecture/text_analysis/lecture_text_analysis_01_claude.html" rel="prev">
+<link href="../../images/book-logo.png" rel="icon" type="image/png">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-e8fb9d25728d58bfeac61b497e4a6629.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark-57a92833092fd6dc0d7710b6bdfff9c5.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-7ef202e96c563d31d9e5226e4d6cabf9.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark-490ba4e843cb1303a232ed0c676384f2.min.css" rel="prefetch" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../Lecture/text_analysis/lecture_text_01_ailn.html"><strong>文本分析</strong></a></li><li class="breadcrumb-item"><a href="../../Lecture/text_analysis/lecture_text_analysis_02_claude.html"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">文本分析：情感分析与主题建模</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header sidebar-header-stacked">
+      <a href="https://lianxhcn.github.io/dsfin/" class="sidebar-logo-link">
+      <img src="../../images/book-logo.png" alt="" class="sidebar-logo py-0 d-lg-inline d-none">
+      </a>
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../../">DS Finance</a> 
+        <div class="sidebar-tools-main tools-wide">
+    <a href="https://github.com/lianxhcn/dsfin" title="" class="quarto-navigation-tool px-1" aria-label=""><i class="bi bi-github"></i></a>
+    <a href="https://www.lianxh.cn" title="" class="quarto-navigation-tool px-1" aria-label=""><i class="bi bi-house-fill"></i></a>
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">封面</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/00_intro.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">📚课程资料</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/01_homework.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">🚀作业</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text"><strong>环境配置</strong></span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/00-setup/01_00_coding_with_AI.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">借助 AI 写代码</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/00-setup/01_01_install_anaconda.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Python：安装和环境配置</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/00-setup/01_02_jupyter_notebook.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Jupyter Notebook 的使用</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/00-setup/01_03_install_FAQs.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Python 安装常见问题</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/00-setup/01_04_markdown.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Markdown</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
+ <span class="menu-text"><strong>数据分析</strong></span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/data_get_data/lecture_get_data.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">金融数据获取</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/data_clean/lecture_data_clean.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">数据清洗</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true">
+ <span class="menu-text"><strong>数据爬取</strong></span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/crawing/craw_01_introduction.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">网络爬虫简介</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/crawing/craw_02_sec01_lingnan_prompt.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">实例-提示词模式：爬取岭南学院教师名录</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/crawing/craw_02_sec02_lingnan_dialog.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">实例-对话模式：爬取岭南学院教师名录</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true">
+ <span class="menu-text"><strong>文本分析</strong></span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/text_analysis/lecture_text_01_ailn.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">金融文本分析（上）——从文本到结构化数据</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/text_analysis/lecture_text_02_ailn.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">金融文本分析（下）——情感分析与文本建模</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/text_analysis/lecture_text_analysis_01_claude.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">文本数据处理基础</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/text_analysis/lecture_text_analysis_02_claude.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">文本分析：情感分析与主题建模</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true">
+ <span class="menu-text"><strong>附录：Python 提示词</strong></span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../appendix_python/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">概览</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../appendix_python/a1_setup.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">A1. 环境配置</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../appendix_python/a2_project.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">A2. 项目规划与版本控制</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../appendix_python/a3_concepts.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">A3. 提示词核心词汇</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../appendix_python/a4_data.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">A4. 数据获取与清洗</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../appendix_python/a5_visualization.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">A5. 数据可视化</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../appendix_python/a6_modeling.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">A6. 统计建模</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../appendix_python/a7_results.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">A7. 结果呈现与表格美化</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../appendix_python/a8_workflow.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">A8. 上下文管理与调试</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#金融文本分析应用" id="toc-金融文本分析应用" class="nav-link active" data-scroll-target="#金融文本分析应用"><span class="header-section-number">15</span> 金融文本分析应用</a>
+  <ul class="collapse">
+  <li><a href="#准备模拟数据" id="toc-准备模拟数据" class="nav-link" data-scroll-target="#准备模拟数据"><span class="header-section-number">15.1</span> 准备模拟数据</a></li>
+  <li><a href="#情感分析词典法" id="toc-情感分析词典法" class="nav-link" data-scroll-target="#情感分析词典法"><span class="header-section-number">15.2</span> 情感分析：词典法</a>
+  <ul class="collapse">
+  <li><a href="#什么是情感分析金融场景里用来做什么" id="toc-什么是情感分析金融场景里用来做什么" class="nav-link" data-scroll-target="#什么是情感分析金融场景里用来做什么"><span class="header-section-number">15.2.1</span> 什么是情感分析，金融场景里用来做什么</a></li>
+  <li><a href="#词典法的原理" id="toc-词典法的原理" class="nav-link" data-scroll-target="#词典法的原理"><span class="header-section-number">15.2.2</span> 词典法的原理</a></li>
+  <li><a href="#加载词典与数据" id="toc-加载词典与数据" class="nav-link" data-scroll-target="#加载词典与数据"><span class="header-section-number">15.2.3</span> 加载词典与数据</a></li>
+  <li><a href="#计算情感得分" id="toc-计算情感得分" class="nav-link" data-scroll-target="#计算情感得分"><span class="header-section-number">15.2.4</span> 计算情感得分</a></li>
+  <li><a href="#验证准确率与可视化" id="toc-验证准确率与可视化" class="nav-link" data-scroll-target="#验证准确率与可视化"><span class="header-section-number">15.2.5</span> 验证准确率与可视化</a></li>
+  <li><a href="#词典法的局限否定词问题" id="toc-词典法的局限否定词问题" class="nav-link" data-scroll-target="#词典法的局限否定词问题"><span class="header-section-number">15.2.6</span> 词典法的局限：否定词问题</a></li>
+  </ul></li>
+  <li><a href="#情感分析ai-方法" id="toc-情感分析ai-方法" class="nav-link" data-scroll-target="#情感分析ai-方法"><span class="header-section-number">15.3</span> 情感分析：AI 方法</a>
+  <ul class="collapse">
+  <li><a href="#为什么要用-ai-方法" id="toc-为什么要用-ai-方法" class="nav-link" data-scroll-target="#为什么要用-ai-方法"><span class="header-section-number">15.3.1</span> 为什么要用 AI 方法</a></li>
+  <li><a href="#调用-anthropic-api-做情感分析" id="toc-调用-anthropic-api-做情感分析" class="nav-link" data-scroll-target="#调用-anthropic-api-做情感分析"><span class="header-section-number">15.3.2</span> 调用 Anthropic API 做情感分析</a></li>
+  </ul></li>
+  <li><a href="#两种方法对比与讨论" id="toc-两种方法对比与讨论" class="nav-link" data-scroll-target="#两种方法对比与讨论"><span class="header-section-number">15.4</span> 两种方法对比与讨论</a>
+  <ul class="collapse">
+  <li><a href="#准确率对比" id="toc-准确率对比" class="nav-link" data-scroll-target="#准确率对比"><span class="header-section-number">15.4.1</span> 准确率对比</a></li>
+  <li><a href="#两种方法的系统性对比" id="toc-两种方法的系统性对比" class="nav-link" data-scroll-target="#两种方法的系统性对比"><span class="header-section-number">15.4.2</span> 两种方法的系统性对比</a></li>
+  <li><a href="#将情感结果保存" id="toc-将情感结果保存" class="nav-link" data-scroll-target="#将情感结果保存"><span class="header-section-number">15.4.3</span> 将情感结果保存</a></li>
+  </ul></li>
+  <li><a href="#主题模型lda-与-llm-方法" id="toc-主题模型lda-与-llm-方法" class="nav-link" data-scroll-target="#主题模型lda-与-llm-方法"><span class="header-section-number">15.5</span> 主题模型：LDA 与 LLM 方法</a>
+  <ul class="collapse">
+  <li><a href="#主题模型要解决什么问题" id="toc-主题模型要解决什么问题" class="nav-link" data-scroll-target="#主题模型要解决什么问题"><span class="header-section-number">15.5.1</span> 主题模型要解决什么问题</a></li>
+  <li><a href="#lda-的直觉" id="toc-lda-的直觉" class="nav-link" data-scroll-target="#lda-的直觉"><span class="header-section-number">15.5.2</span> LDA 的直觉</a></li>
+  <li><a href="#用-gensim-实现-lda快速演示" id="toc-用-gensim-实现-lda快速演示" class="nav-link" data-scroll-target="#用-gensim-实现-lda快速演示"><span class="header-section-number">15.5.3</span> 用 gensim 实现 LDA（快速演示）</a></li>
+  <li><a href="#把主题权重纳入回归分析" id="toc-把主题权重纳入回归分析" class="nav-link" data-scroll-target="#把主题权重纳入回归分析"><span class="header-section-number">15.5.4</span> 把主题权重纳入回归分析</a></li>
+  <li><a href="#lda-的局限与-llm-方法的兴起" id="toc-lda-的局限与-llm-方法的兴起" class="nav-link" data-scroll-target="#lda-的局限与-llm-方法的兴起"><span class="header-section-number">15.5.5</span> LDA 的局限与 LLM 方法的兴起</a></li>
+  <li><a href="#llm-主题分析面临的主要挑战" id="toc-llm-主题分析面临的主要挑战" class="nav-link" data-scroll-target="#llm-主题分析面临的主要挑战"><span class="header-section-number">15.5.6</span> LLM 主题分析面临的主要挑战</a></li>
+  </ul></li>
+  <li><a href="#综合实战构建政策语气情感指数" id="toc-综合实战构建政策语气情感指数" class="nav-link" data-scroll-target="#综合实战构建政策语气情感指数"><span class="header-section-number">15.6</span> 综合实战：构建政策语气情感指数</a>
+  <ul class="collapse">
+  <li><a href="#任务说明" id="toc-任务说明" class="nav-link" data-scroll-target="#任务说明"><span class="header-section-number">15.6.1</span> 任务说明</a></li>
+  <li><a href="#结果解读与延伸思考" id="toc-结果解读与延伸思考" class="nav-link" data-scroll-target="#结果解读与延伸思考"><span class="header-section-number">15.6.2</span> 结果解读与延伸思考</a></li>
+  </ul></li>
+  <li><a href="#本章小结与练习" id="toc-本章小结与练习" class="nav-link" data-scroll-target="#本章小结与练习"><span class="header-section-number">15.7</span> 本章小结与练习</a>
+  <ul class="collapse">
+  <li><a href="#本章技能清单" id="toc-本章技能清单" class="nav-link" data-scroll-target="#本章技能清单"><span class="header-section-number">15.7.1</span> 本章技能清单</a></li>
+  <li><a href="#两章合在一起的完整工作流" id="toc-两章合在一起的完整工作流" class="nav-link" data-scroll-target="#两章合在一起的完整工作流"><span class="header-section-number">15.7.2</span> 两章合在一起的完整工作流</a></li>
+  <li><a href="#下一章预告" id="toc-下一章预告" class="nav-link" data-scroll-target="#下一章预告"><span class="header-section-number">15.7.3</span> 下一章预告</a></li>
+  <li><a href="#课后练习" id="toc-课后练习" class="nav-link" data-scroll-target="#课后练习"><span class="header-section-number">15.7.4</span> 课后练习</a></li>
+  </ul></li>
+  <li><a href="#参考文献" id="toc-参考文献" class="nav-link" data-scroll-target="#参考文献"><span class="header-section-number">15.8</span> 参考文献</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../Lecture/text_analysis/lecture_text_01_ailn.html"><strong>文本分析</strong></a></li><li class="breadcrumb-item"><a href="../../Lecture/text_analysis/lecture_text_analysis_02_claude.html"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">文本分析：情感分析与主题建模</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">文本分析：情感分析与主题建模</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="金融文本分析应用" class="level1" data-number="15">
+<h1 data-number="15"><span class="header-section-number">15</span> 金融文本分析应用</h1>
+<p>上一章我们完成了「文本变成数据」这件事：读取、清洗、分词、词频统计、TF-IDF。这些都是在问同一个问题——<strong>这份文本里有什么词？</strong></p>
+<p>这一章要问更进一步的问题：<strong>这份文本在表达什么态度？在讨论什么主题？</strong></p>
+<p>这两个问题对应两类核心方法：</p>
+<ul>
+<li><strong>情感分析</strong>：判断文本的情感倾向——正面、负面还是中性。在金融场景里，这意味着：研报在看多还是看空？央行报告的语气在收紧还是放松？新闻报道是利好还是利空？</li>
+<li><strong>主题分析</strong>：从大量文档中自动发现隐藏的主题结构。在金融场景里，这意味着：这批年报主要在讨论哪几类议题？某个主题的热度随时间怎么变化？主题权重能不能作为回归分析的变量？</li>
+</ul>
+<p>本章的数据安排：</p>
+<ul>
+<li><strong>情感分析</strong>：使用模拟的券商研报摘要（情感标签已知，便于验证方法效果）</li>
+<li><strong>综合实战</strong>：用上一章处理好的人民银行新闻，构建政策语气的月度情感指数</li>
+<li><strong>主题分析</strong>：用人民银行问答文本（篇幅较长，适合主题提取）</li>
+</ul>
+<p><strong>本章各节概览</strong></p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>节</th>
+<th>内容</th>
+<th>核心工具</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td></td>
+<td>情感分析：词典法</td>
+<td>自定义词典、pandas</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>情感分析：AI 方法</td>
+<td>Anthropic API</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>两种方法对比与讨论</td>
+<td>—</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>主题模型：LDA 与 LLM 方法</td>
+<td>gensim、API</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>综合实战：政策语气情感指数</td>
+<td>pandas、matplotlib</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>本章小结与练习</td>
+<td>—</td>
+</tr>
+</tbody>
+</table>
+<section id="准备模拟数据" class="level2" data-number="15.1">
+<h2 data-number="15.1" class="anchored" data-anchor-id="准备模拟数据"><span class="header-section-number">15.1</span> 准备模拟数据</h2>
+<p>本节生成情感分析所需的模拟券商研报摘要数据。这些数据会保存到 <code>data_raw/analyst_reports.csv</code>，后续各节直接读取使用。</p>
+<p>研报数据共 15 条，分为三类： - 5 条<strong>明确看多</strong>：用词积极，包含「上调目标价」「买入」「强烈推荐」等 - 5 条<strong>明确看空</strong>：用词消极，包含「下调评级」「减持」「盈利压力」等 - 5 条<strong>中性</strong>：措辞审慎，包含「维持中性」「符合预期」「观望」等</p>
+<p>这种设计的好处是：情感标签已知，可以直接验证两种分析方法（词典法、AI 法）的准确率。</p>
+<div id="cell-3" class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>os.makedirs(<span class="st">"data_raw"</span>, exist_ok<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>os.makedirs(<span class="st">"Fig"</span>, exist_ok<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>os.makedirs(<span class="st">"output"</span>, exist_ok<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="co"># ── 模拟券商研报摘要数据 ──────────────────────────────────────────</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="co"># 每条摘要约 80-150 字，覆盖不同行业，情感倾向明确</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>reports <span class="op">=</span> [</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>    <span class="co"># ── 看多（bullish）× 5 ──</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>    {<span class="st">"report_id"</span>: <span class="st">"R01"</span>, <span class="st">"firm"</span>: <span class="st">"宁德时代"</span>, <span class="st">"industry"</span>: <span class="st">"新能源"</span>, <span class="st">"label"</span>: <span class="st">"bullish"</span>,</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>     <span class="st">"title"</span>: <span class="st">"宁德时代：储能业务超预期，上调目标价至380元"</span>,</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>     <span class="st">"summary"</span>: <span class="st">"公司三季度业绩大幅超出市场预期，储能业务收入同比增长87%，海外市场加速拓展。动力电池市占率持续提升，成本管控能力行业领先。我们上调2025年盈利预测15%，目标价从320元上调至380元，维持强烈推荐评级。当前估值具有较高吸引力，建议积极配置。"</span>},</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>    {<span class="st">"report_id"</span>: <span class="st">"R02"</span>, <span class="st">"firm"</span>: <span class="st">"招商银行"</span>, <span class="st">"industry"</span>: <span class="st">"银行"</span>, <span class="st">"label"</span>: <span class="st">"bullish"</span>,</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>     <span class="st">"title"</span>: <span class="st">"招商银行：零售业务韧性突出，资产质量优于同业"</span>,</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>     <span class="st">"summary"</span>: <span class="st">"公司零售客户数量持续增长，AUM规模再创历史新高。净息差虽有所收窄但优于行业均值，不良贷款率同比下降0.08个百分点，拨备覆盖率充裕。在行业整体承压背景下，公司基本面明显优于可比同业。我们给予买入评级，目标价42元，较当前股价有25%上涨空间。"</span>},</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>    {<span class="st">"report_id"</span>: <span class="st">"R03"</span>, <span class="st">"firm"</span>: <span class="st">"贵州茅台"</span>, <span class="st">"industry"</span>: <span class="st">"白酒"</span>, <span class="st">"label"</span>: <span class="st">"bullish"</span>,</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>     <span class="st">"title"</span>: <span class="st">"贵州茅台：直销渠道占比提升，盈利质量持续改善"</span>,</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>     <span class="st">"summary"</span>: <span class="st">"公司直销渠道收入占比提升至45%，毛利率同比提高2.1个百分点，现金流状况极为健康。高端白酒消费需求保持稳定，茅台酒出厂价上调预期持续强化品牌溢价。我们认为公司长期竞争优势无可撼动，上调目标价至2200元，重申买入评级，是消费板块的压舱石标的。"</span>},</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>    {<span class="st">"report_id"</span>: <span class="st">"R04"</span>, <span class="st">"firm"</span>: <span class="st">"中芯国际"</span>, <span class="st">"industry"</span>: <span class="st">"半导体"</span>, <span class="st">"label"</span>: <span class="st">"bullish"</span>,</span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>     <span class="st">"title"</span>: <span class="st">"中芯国际：产能利用率回升，国产替代进程加速"</span>,</span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>     <span class="st">"summary"</span>: <span class="st">"公司产能利用率已回升至85%以上，成熟制程需求旺盛，28nm及以上制程订单排期充足。国产替代需求持续释放，功率器件、MCU等领域客户粘性增强。我们预计公司将进入新一轮盈利上行周期，给予增持评级，目标价68港元，建议逢低布局。"</span>},</span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>    {<span class="st">"report_id"</span>: <span class="st">"R05"</span>, <span class="st">"firm"</span>: <span class="st">"中国海油"</span>, <span class="st">"industry"</span>: <span class="st">"能源"</span>, <span class="st">"label"</span>: <span class="st">"bullish"</span>,</span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>     <span class="st">"title"</span>: <span class="st">"中国海油：储量替代率超预期，高分红持续验证价值"</span>,</span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>     <span class="st">"summary"</span>: <span class="st">"公司年度储量替代率达到182%，远超行业平均水平，油气储量持续扩大夯实长期成长基础。公司承诺维持40%以上分红比例，当前股息率超过5%，具备显著配置价值。在油价中枢维持高位的背景下，公司自由现金流充裕，我们给予买入评级，目标价28港元。"</span>},</span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>    <span class="co"># ── 看空（bearish）× 5 ──</span></span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>    {<span class="st">"report_id"</span>: <span class="st">"R06"</span>, <span class="st">"firm"</span>: <span class="st">"恒大汽车"</span>, <span class="st">"industry"</span>: <span class="st">"汽车"</span>, <span class="st">"label"</span>: <span class="st">"bearish"</span>,</span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>     <span class="st">"title"</span>: <span class="st">"恒大汽车：流动性危机加剧，下调至减持"</span>,</span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>     <span class="st">"summary"</span>: <span class="st">"公司流动性压力持续恶化，多条生产线停工，供应商账款逾期金额大幅上升。核心管理团队出现变动，战略方向不明朗。我们大幅下调盈利预测，预计未来两年持续亏损，资产减值风险不可忽视。将评级从中性下调至减持，目标价下调至0.8港元，建议规避。"</span>},</span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>    {<span class="st">"report_id"</span>: <span class="st">"R07"</span>, <span class="st">"firm"</span>: <span class="st">"碧桂园"</span>, <span class="st">"industry"</span>: <span class="st">"地产"</span>, <span class="st">"label"</span>: <span class="st">"bearish"</span>,</span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>     <span class="st">"title"</span>: <span class="st">"碧桂园：销售持续低迷，债务重组前景不明"</span>,</span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>     <span class="st">"summary"</span>: <span class="st">"公司合同销售额同比下滑超过60%，去化压力严峻。境外债务重组谈判进展迟缓，市场信心脆弱。在行业整体下行、政策托底效果不及预期的背景下，公司经营改善路径不清晰。我们认为当前风险未能充分计价，维持减持评级，投资者应保持谨慎，等待债务重组方案明朗后再做评估。"</span>},</span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>    {<span class="st">"report_id"</span>: <span class="st">"R08"</span>, <span class="st">"firm"</span>: <span class="st">"东方财富"</span>, <span class="st">"industry"</span>: <span class="st">"券商"</span>, <span class="st">"label"</span>: <span class="st">"bearish"</span>,</span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a>     <span class="st">"title"</span>: <span class="st">"东方财富：交易量萎缩拖累业绩，估值仍有压缩空间"</span>,</span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a>     <span class="st">"summary"</span>: <span class="st">"市场成交量持续低迷，公司经纪业务收入同比下滑28%，基金代销规模亦明显萎缩。互联网证券赛道竞争加剧，费率持续下行压力难以缓解。当前估值相对历史均值仍偏高，我们下调盈利预测，将评级从中性调整为卖出，目标价15元，较当前股价有20%下行空间。"</span>},</span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a>    {<span class="st">"report_id"</span>: <span class="st">"R09"</span>, <span class="st">"firm"</span>: <span class="st">"爱尔眼科"</span>, <span class="st">"industry"</span>: <span class="st">"医疗"</span>, <span class="st">"label"</span>: <span class="st">"bearish"</span>,</span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a>     <span class="st">"title"</span>: <span class="st">"爱尔眼科：并购商誉减值风险上升，增速预期下修"</span>,</span>
+<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a>     <span class="st">"summary"</span>: <span class="st">"公司历年并购积累的商誉规模庞大，在部分区域门店盈利不达预期的背景下，商誉减值风险显著上升。医疗服务消费边际走弱，客单价提升空间收窄。我们下调2025年净利润预测18%，认为市场对公司增速预期仍偏乐观，将评级从增持下调至中性，目标价18元。"</span>},</span>
+<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a>    {<span class="st">"report_id"</span>: <span class="st">"R10"</span>, <span class="st">"firm"</span>: <span class="st">"新城控股"</span>, <span class="st">"industry"</span>: <span class="st">"地产"</span>, <span class="st">"label"</span>: <span class="st">"bearish"</span>,</span>
+<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a>     <span class="st">"title"</span>: <span class="st">"新城控股：商业运营承压，流动性风险不容忽视"</span>,</span>
+<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a>     <span class="st">"summary"</span>: <span class="st">"公司吾悦广场出租率同比下降，租金收入增速放缓，而住宅销售回款不及预期导致现金流持续紧张。短期债务偿还压力较大，再融资渠道受限。在市场信心尚未恢复的背景下，公司估值修复缺乏催化剂，我们给予减持评级，建议等待行业政策进一步明确后再考虑介入。"</span>},</span>
+<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a>    <span class="co"># ── 中性（neutral）× 5 ──</span></span>
+<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a>    {<span class="st">"report_id"</span>: <span class="st">"R11"</span>, <span class="st">"firm"</span>: <span class="st">"美的集团"</span>, <span class="st">"industry"</span>: <span class="st">"家电"</span>, <span class="st">"label"</span>: <span class="st">"neutral"</span>,</span>
+<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a>     <span class="st">"title"</span>: <span class="st">"美的集团：业绩符合预期，海外扩张值得关注"</span>,</span>
+<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a>     <span class="st">"summary"</span>: <span class="st">"公司三季度收入和净利润基本符合我们此前预期，国内家电需求稳中有升，出口业务受汇率波动影响有所承压。海外自有品牌建设进展值得持续跟踪，但短期贡献尚不显著。我们维持盈利预测不变，维持中性评级和目标价62元，建议关注四季度旺季销售数据。"</span>},</span>
+<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a>    {<span class="st">"report_id"</span>: <span class="st">"R12"</span>, <span class="st">"firm"</span>: <span class="st">"万科A"</span>, <span class="st">"industry"</span>: <span class="st">"地产"</span>, <span class="st">"label"</span>: <span class="st">"neutral"</span>,</span>
+<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a>     <span class="st">"title"</span>: <span class="st">"万科A：经营稳健但行业拖累难以回避"</span>,</span>
+<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a>     <span class="st">"summary"</span>: <span class="st">"公司在行业整体下行中保持相对稳健，去化率优于同业，融资渠道畅通。但在市场需求整体偏弱的背景下，公司难以独善其身，销售回款速度有所放缓。我们认为公司基本面相对扎实，但行业系统性风险仍是主要压制因素，维持持有评级，目标价9元，等待行业政策进一步落地。"</span>},</span>
+<span id="cb1-52"><a href="#cb1-52" aria-hidden="true" tabindex="-1"></a>    {<span class="st">"report_id"</span>: <span class="st">"R13"</span>, <span class="st">"firm"</span>: <span class="st">"海螺水泥"</span>, <span class="st">"industry"</span>: <span class="st">"建材"</span>, <span class="st">"label"</span>: <span class="st">"neutral"</span>,</span>
+<span id="cb1-53"><a href="#cb1-53" aria-hidden="true" tabindex="-1"></a>     <span class="st">"title"</span>: <span class="st">"海螺水泥：价格磨底阶段，静待需求回暖"</span>,</span>
+<span id="cb1-54"><a href="#cb1-54" aria-hidden="true" tabindex="-1"></a>     <span class="st">"summary"</span>: <span class="st">"水泥行业价格仍处于底部磨底阶段，公司吨毛利同比有所收窄，但成本管控能力支撑盈利底线。基建投资节奏将是决定后续价格修复的关键变量。公司财务状况健康，账上现金充裕，具备穿越周期的能力。我们维持中性评级，目标价25元，等待价格拐点信号出现。"</span>},</span>
+<span id="cb1-55"><a href="#cb1-55" aria-hidden="true" tabindex="-1"></a>    {<span class="st">"report_id"</span>: <span class="st">"R14"</span>, <span class="st">"firm"</span>: <span class="st">"平安银行"</span>, <span class="st">"industry"</span>: <span class="st">"银行"</span>, <span class="st">"label"</span>: <span class="st">"neutral"</span>,</span>
+<span id="cb1-56"><a href="#cb1-56" aria-hidden="true" tabindex="-1"></a>     <span class="st">"title"</span>: <span class="st">"平安银行：零售转型效果显现，但资产质量仍需观察"</span>,</span>
+<span id="cb1-57"><a href="#cb1-57" aria-hidden="true" tabindex="-1"></a>     <span class="st">"summary"</span>: <span class="st">"公司零售贷款不良率有所上升，部分消费贷和信用卡资产质量承压，需持续跟踪。另一方面，对公业务表现稳健，净息差降幅好于预期。整体来看，公司转型方向正确但效果显现需要时间，当前股价已反映较多悲观预期。我们维持中性评级，目标价12元，建议观望。"</span>},</span>
+<span id="cb1-58"><a href="#cb1-58" aria-hidden="true" tabindex="-1"></a>    {<span class="st">"report_id"</span>: <span class="st">"R15"</span>, <span class="st">"firm"</span>: <span class="st">"比亚迪"</span>, <span class="st">"industry"</span>: <span class="st">"新能源汽车"</span>, <span class="st">"label"</span>: <span class="st">"neutral"</span>,</span>
+<span id="cb1-59"><a href="#cb1-59" aria-hidden="true" tabindex="-1"></a>     <span class="st">"title"</span>: <span class="st">"比亚迪：销量高增但价格战加剧盈利压力"</span>,</span>
+<span id="cb1-60"><a href="#cb1-60" aria-hidden="true" tabindex="-1"></a>     <span class="st">"summary"</span>: <span class="st">"公司销量持续创历史新高，市占率进一步提升，品牌影响力显著增强。但行业价格战持续，单车盈利空间受到压缩，高端化进程面临一定阻力。海外市场扩张速度超出预期，但贸易政策不确定性构成潜在风险。综合来看，我们认为当前估值基本合理，维持中性评级，目标价270元。"</span>}</span>
+<span id="cb1-61"><a href="#cb1-61" aria-hidden="true" tabindex="-1"></a>]</span>
+<span id="cb1-62"><a href="#cb1-62" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-63"><a href="#cb1-63" aria-hidden="true" tabindex="-1"></a>df_reports <span class="op">=</span> pd.DataFrame(reports)</span>
+<span id="cb1-64"><a href="#cb1-64" aria-hidden="true" tabindex="-1"></a>df_reports.to_csv(<span class="st">"data_raw/analyst_reports.csv"</span>, index<span class="op">=</span><span class="va">False</span>, encoding<span class="op">=</span><span class="st">"utf-8-sig"</span>)</span>
+<span id="cb1-65"><a href="#cb1-65" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-66"><a href="#cb1-66" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"已生成 </span><span class="sc">{</span><span class="bu">len</span>(df_reports)<span class="sc">}</span><span class="ss"> 条模拟研报数据"</span>)</span>
+<span id="cb1-67"><a href="#cb1-67" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df_reports.groupby(<span class="st">"label"</span>).size().to_string())</span>
+<span id="cb1-68"><a href="#cb1-68" aria-hidden="true" tabindex="-1"></a>df_reports[[<span class="st">"report_id"</span>, <span class="st">"firm"</span>, <span class="st">"industry"</span>, <span class="st">"label"</span>, <span class="st">"title"</span>]].head(<span class="dv">6</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="情感分析词典法" class="level2" data-number="15.2">
+<h2 data-number="15.2" class="anchored" data-anchor-id="情感分析词典法"><span class="header-section-number">15.2</span> 情感分析：词典法</h2>
+<section id="什么是情感分析金融场景里用来做什么" class="level3" data-number="15.2.1">
+<h3 data-number="15.2.1" class="anchored" data-anchor-id="什么是情感分析金融场景里用来做什么"><span class="header-section-number">15.2.1</span> 什么是情感分析，金融场景里用来做什么</h3>
+<p>情感分析（Sentiment Analysis）的核心任务是判断一段文本的情感倾向——正面、负面还是中性。这在金融分析里有非常直接的应用：</p>
+<ul>
+<li><strong>研报分析</strong>：这篇研报在看多还是看空？目标价上调还是下调？</li>
+<li><strong>新闻监控</strong>：这条新闻对某家公司是利好还是利空？</li>
+<li><strong>政策解读</strong>：央行报告的整体语气是偏鸽还是偏鹰？相比上一期有没有变化？</li>
+<li><strong>年报分析</strong>：管理层对未来的表述是乐观的还是保守的？</li>
+</ul>
+<p>在学术研究里，情感分析通常用于构造「文本情感指标」，作为自变量或控制变量纳入回归模型。比如，用年报 MD&amp;A 的情感得分预测未来股票收益，或者用央行声明的情感变化研究货币政策传导。</p>
+</section>
+<section id="词典法的原理" class="level3" data-number="15.2.2">
+<h3 data-number="15.2.2" class="anchored" data-anchor-id="词典法的原理"><span class="header-section-number">15.2.2</span> 词典法的原理</h3>
+<p>词典法（Dictionary-based Method）是情感分析中最直接、也最透明的方法。原理很简单：</p>
+<ol type="1">
+<li>准备一份<strong>正面词表</strong>和一份<strong>负面词表</strong></li>
+<li>对文本分词，统计正面词和负面词各出现了多少次</li>
+<li>计算情感得分</li>
+</ol>
+<p><span class="math display">\[
+\text{Sentiment}_d = \frac{P_d - N_d}{P_d + N_d + 1}
+\]</span></p>
+<p>其中 <span class="math inline">\(P_d\)</span> 是正面词数，<span class="math inline">\(N_d\)</span> 是负面词数，分母加 1 是为了避免除以零。得分范围在 <span class="math inline">\((-1, +1)\)</span> 之间，越接近 +1 越正面，越接近 -1 越负面。</p>
+<p>词典法的最大优势是<strong>透明可解释</strong>——你可以清楚地看到是哪几个词触发了正面或负面判断，这在需要向监管机构或客户解释分析逻辑的场景里非常重要。</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>学术背景：Loughran-McDonald 词典</strong></p>
+<p>在金融文本分析领域，最权威的词典是 Loughran &amp; McDonald（2011）专门为金融文本构建的英文情感词典。他们发现，通用情感词典（如 Harvard General Inquirer）在金融场景下表现很差——因为很多在日常语境里是负面的词（如「liability」「risk」「volatile」），在金融报告里是中性的专业术语。</p>
+<p>这个教训对中文金融文本同样适用：<strong>通用情感词典直接用于金融文本，准确率会明显下降，需要使用领域专属词典。</strong></p>
+<p>本章使用的词典已针对金融场景做了初步筛选，存放在 <code>dicts/</code> 目录下。</p>
+</div>
+</div>
+</section>
+<section id="加载词典与数据" class="level3" data-number="15.2.3">
+<h3 data-number="15.2.3" class="anchored" data-anchor-id="加载词典与数据"><span class="header-section-number">15.2.3</span> 加载词典与数据</h3>
+<div id="cell-6" class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> jieba</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="co"># 加载情感词典</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> load_wordlist(filepath):</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""读取词表文件，每行一个词，返回集合。"""</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">with</span> <span class="bu">open</span>(filepath, <span class="st">"r"</span>, encoding<span class="op">=</span><span class="st">"utf-8"</span>) <span class="im">as</span> f:</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="bu">set</span>(line.strip() <span class="cf">for</span> line <span class="kw">in</span> f <span class="cf">if</span> line.strip())</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>positive_words <span class="op">=</span> load_wordlist(<span class="st">"dicts/positive_words.txt"</span>)</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>negative_words <span class="op">=</span> load_wordlist(<span class="st">"dicts/negative_words.txt"</span>)</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"正面词：</span><span class="sc">{</span><span class="bu">len</span>(positive_words)<span class="sc">}</span><span class="ss"> 个，示例：</span><span class="sc">{</span><span class="bu">list</span>(positive_words)[:<span class="dv">6</span>]<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"负面词：</span><span class="sc">{</span><span class="bu">len</span>(negative_words)<span class="sc">}</span><span class="ss"> 个，示例：</span><span class="sc">{</span><span class="bu">list</span>(negative_words)[:<span class="dv">6</span>]<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a><span class="co"># 读取研报数据</span></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>df_r <span class="op">=</span> pd.read_csv(<span class="st">"data_raw/analyst_reports.csv"</span>, encoding<span class="op">=</span><span class="st">"utf-8-sig"</span>)</span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">已读取研报数据：</span><span class="sc">{</span><span class="bu">len</span>(df_r)<span class="sc">}</span><span class="ss"> 条"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="计算情感得分" class="level3" data-number="15.2.4">
+<h3 data-number="15.2.4" class="anchored" data-anchor-id="计算情感得分"><span class="header-section-number">15.2.4</span> 计算情感得分</h3>
+<div id="cell-8" class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> sentiment_score(text, pos_words, neg_words):</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co">    词典法情感得分。</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="co">    返回：(得分, 正面词列表, 负面词列表)</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="co">    保留触发词是为了方便后续排查和解释。</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="kw">not</span> <span class="bu">isinstance</span>(text, <span class="bu">str</span>):</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="fl">0.0</span>, [], []</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>    tokens <span class="op">=</span> jieba.lcut(text)</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>    pos_hits <span class="op">=</span> [w <span class="cf">for</span> w <span class="kw">in</span> tokens <span class="cf">if</span> w <span class="kw">in</span> pos_words]</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>    neg_hits <span class="op">=</span> [w <span class="cf">for</span> w <span class="kw">in</span> tokens <span class="cf">if</span> w <span class="kw">in</span> neg_words]</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>    p, n <span class="op">=</span> <span class="bu">len</span>(pos_hits), <span class="bu">len</span>(neg_hits)</span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>    score <span class="op">=</span> (p <span class="op">-</span> n) <span class="op">/</span> (p <span class="op">+</span> n <span class="op">+</span> <span class="dv">1</span>)   <span class="co"># +1 避免除以零</span></span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="bu">round</span>(score, <span class="dv">4</span>), pos_hits, neg_hits</span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a><span class="co"># 对每条研报摘要计算情感得分</span></span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>results <span class="op">=</span> df_r[<span class="st">"summary"</span>].<span class="bu">apply</span>(</span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>    <span class="kw">lambda</span> t: sentiment_score(t, positive_words, negative_words)</span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a>df_r[<span class="st">"dict_score"</span>]    <span class="op">=</span> results.<span class="bu">apply</span>(<span class="kw">lambda</span> x: x[<span class="dv">0</span>])</span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a>df_r[<span class="st">"dict_pos_hits"</span>] <span class="op">=</span> results.<span class="bu">apply</span>(<span class="kw">lambda</span> x: x[<span class="dv">1</span>])</span>
+<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a>df_r[<span class="st">"dict_neg_hits"</span>] <span class="op">=</span> results.<span class="bu">apply</span>(<span class="kw">lambda</span> x: x[<span class="dv">2</span>])</span>
+<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a><span class="co"># 查看结果</span></span>
+<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a>df_r[[<span class="st">"report_id"</span>, <span class="st">"firm"</span>, <span class="st">"label"</span>, <span class="st">"dict_score"</span>, <span class="st">"dict_pos_hits"</span>, <span class="st">"dict_neg_hits"</span>]]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="验证准确率与可视化" class="level3" data-number="15.2.5">
+<h3 data-number="15.2.5" class="anchored" data-anchor-id="验证准确率与可视化"><span class="header-section-number">15.2.5</span> 验证准确率与可视化</h3>
+<div id="cell-10" class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>plt.rcParams[<span class="st">"font.family"</span>] <span class="op">=</span> <span class="st">"SimHei"</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="co"># plt.rcParams["font.family"] = "PingFang SC"  # macOS</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>plt.rcParams[<span class="st">"axes.unicode_minus"</span>] <span class="op">=</span> <span class="va">False</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="co"># 按人工标注分组，看词典法得分分布</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>label_order  <span class="op">=</span> [<span class="st">"bullish"</span>, <span class="st">"neutral"</span>, <span class="st">"bearish"</span>]</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>label_names  <span class="op">=</span> {<span class="st">"bullish"</span>: <span class="st">"看多"</span>, <span class="st">"neutral"</span>: <span class="st">"中性"</span>, <span class="st">"bearish"</span>: <span class="st">"看空"</span>}</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>colors       <span class="op">=</span> {<span class="st">"bullish"</span>: <span class="st">"#2196F3"</span>, <span class="st">"neutral"</span>: <span class="st">"#9E9E9E"</span>, <span class="st">"bearish"</span>: <span class="st">"#F44336"</span>}</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">5</span>))</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a><span class="co"># 左图：各组得分散点</span></span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>ax <span class="op">=</span> axes[<span class="dv">0</span>]</span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> label <span class="kw">in</span> label_order:</span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>    subset <span class="op">=</span> df_r[df_r[<span class="st">"label"</span>] <span class="op">==</span> label]</span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>    ax.scatter(</span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>        [label_names[label]] <span class="op">*</span> <span class="bu">len</span>(subset),</span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>        subset[<span class="st">"dict_score"</span>],</span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>        color<span class="op">=</span>colors[label], s<span class="op">=</span><span class="dv">80</span>, zorder<span class="op">=</span><span class="dv">3</span></span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>ax.axhline(<span class="dv">0</span>, color<span class="op">=</span><span class="st">"black"</span>, linewidth<span class="op">=</span><span class="fl">0.8</span>, linestyle<span class="op">=</span><span class="st">"--"</span>)</span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="st">"词典法情感得分"</span>)</span>
+<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">"各类研报的词典法得分分布"</span>)</span>
+<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a>ax.set_ylim(<span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>)</span>
+<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a><span class="co"># 右图：各组平均得分柱状图</span></span>
+<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a>ax2 <span class="op">=</span> axes[<span class="dv">1</span>]</span>
+<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a>means <span class="op">=</span> df_r.groupby(<span class="st">"label"</span>)[<span class="st">"dict_score"</span>].mean().reindex(label_order)</span>
+<span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a>bars <span class="op">=</span> ax2.bar(</span>
+<span id="cb4-33"><a href="#cb4-33" aria-hidden="true" tabindex="-1"></a>    [label_names[l] <span class="cf">for</span> l <span class="kw">in</span> label_order],</span>
+<span id="cb4-34"><a href="#cb4-34" aria-hidden="true" tabindex="-1"></a>    means.values,</span>
+<span id="cb4-35"><a href="#cb4-35" aria-hidden="true" tabindex="-1"></a>    color<span class="op">=</span>[colors[l] <span class="cf">for</span> l <span class="kw">in</span> label_order]</span>
+<span id="cb4-36"><a href="#cb4-36" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb4-37"><a href="#cb4-37" aria-hidden="true" tabindex="-1"></a>ax2.axhline(<span class="dv">0</span>, color<span class="op">=</span><span class="st">"black"</span>, linewidth<span class="op">=</span><span class="fl">0.8</span>, linestyle<span class="op">=</span><span class="st">"--"</span>)</span>
+<span id="cb4-38"><a href="#cb4-38" aria-hidden="true" tabindex="-1"></a>ax2.set_ylabel(<span class="st">"平均情感得分"</span>)</span>
+<span id="cb4-39"><a href="#cb4-39" aria-hidden="true" tabindex="-1"></a>ax2.set_title(<span class="st">"词典法平均得分：各类研报"</span>)</span>
+<span id="cb4-40"><a href="#cb4-40" aria-hidden="true" tabindex="-1"></a>ax2.set_ylim(<span class="op">-</span><span class="fl">0.5</span>, <span class="fl">0.5</span>)</span>
+<span id="cb4-41"><a href="#cb4-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-42"><a href="#cb4-42" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb4-43"><a href="#cb4-43" aria-hidden="true" tabindex="-1"></a>plt.savefig(<span class="st">"Fig/sentiment_dict_results.png"</span>, dpi<span class="op">=</span><span class="dv">150</span>, bbox_inches<span class="op">=</span><span class="st">"tight"</span>)</span>
+<span id="cb4-44"><a href="#cb4-44" aria-hidden="true" tabindex="-1"></a>plt.show()</span>
+<span id="cb4-45"><a href="#cb4-45" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-46"><a href="#cb4-46" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">各组平均情感得分："</span>)</span>
+<span id="cb4-47"><a href="#cb4-47" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(means.<span class="bu">round</span>(<span class="dv">3</span>).to_string())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="词典法的局限否定词问题" class="level3" data-number="15.2.6">
+<h3 data-number="15.2.6" class="anchored" data-anchor-id="词典法的局限否定词问题"><span class="header-section-number">15.2.6</span> 词典法的局限：否定词问题</h3>
+<p>词典法最常见的失误，来自<strong>否定词 + 正面词</strong>的组合：</p>
+<ul>
+<li>「<strong>不</strong>稳健」→ 词典法把「稳健」计为正面词 ✗</li>
+<li>「<strong>未</strong>改善」→ 词典法把「改善」计为正面词 ✗</li>
+<li>「<strong>难以</strong>回避」→ 词典法可能把「回避」或其他词误判 ✗</li>
+</ul>
+<p>这在金融文本里尤其常见，因为研报和公告措辞往往很谨慎，大量使用否定句式。</p>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Warning
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>否定词修正：一个实用的简单方案</strong></p>
+<p>完整处理否定词需要句法分析，但一个实用的近似方法是：在统计词频之前，先检测否定词（「不」「无」「未」「非」「没有」）之后紧接的正面词，将其情感极性翻转。</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> re</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co"># 检测「否定词 + 正面词」模式，临时替换为「[NEG]」标记</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>negation_prefix <span class="op">=</span> <span class="vs">r"(不|无|未|非|没有?)"</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> pos_word <span class="kw">in</span> positive_words:</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    pattern <span class="op">=</span> negation_prefix <span class="op">+</span> pos_word</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    text <span class="op">=</span> re.sub(pattern, <span class="st">"[NEG]"</span>, text)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>这个方法不完美，但在大规模批量处理时，能显著减少误判率。</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+AI 提示词：实现带否定词修正的词典法情感分析
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>我有一个中文金融文本 DataFrame，<code>summary</code> 列是研报摘要，已准备好正面词表（<code>positive_words</code>）和负面词表（<code>negative_words</code>）。请编写一个改进版的情感分析函数，要求：</p>
+<ol type="1">
+<li>在分词前，先用正则表达式检测「不/无/未/非/没有」等否定前缀后紧跟正面词的情况，将其标记为负面</li>
+<li>计算情感得分：<code>(正面词数 - 负面词数) / (正面词数 + 负面词数 + 1)</code></li>
+<li>返回：得分、触发的正面词列表、触发的负面词列表（含被翻转的词）</li>
+<li>对比加入否定词修正前后，结果有哪些变化</li>
+<li>所有代码加详细中文注释</li>
+</ol>
+</div>
+</div>
+</section>
+</section>
+<section id="情感分析ai-方法" class="level2" data-number="15.3">
+<h2 data-number="15.3" class="anchored" data-anchor-id="情感分析ai-方法"><span class="header-section-number">15.3</span> 情感分析：AI 方法</h2>
+<section id="为什么要用-ai-方法" class="level3" data-number="15.3.1">
+<h3 data-number="15.3.1" class="anchored" data-anchor-id="为什么要用-ai-方法"><span class="header-section-number">15.3.1</span> 为什么要用 AI 方法</h3>
+<p>词典法的核心局限，不只是否定词。更根本的问题是：它<strong>不理解语境</strong>。</p>
+<p>考虑这句话：「公司盈利能力有所改善，但仍低于行业平均水平。」</p>
+<p>词典法会抓到「改善」（正面），但可能忽略整句话的真实含义——这其实是一个偏负面的判断（低于均值）。大语言模型能理解完整语境，判断这句话整体上是保守的。</p>
+<p><strong>AI 方法的适用场景</strong>：文本数量几十到几千条、需要理解语境、可以承受一定的 API 费用。</p>
+<p><strong>词典法的适用场景</strong>：文本数量几万条以上、需要完全可复现、对计算成本敏感、需要向他人解释每个判断的依据。</p>
+</section>
+<section id="调用-anthropic-api-做情感分析" class="level3" data-number="15.3.2">
+<h3 data-number="15.3.2" class="anchored" data-anchor-id="调用-anthropic-api-做情感分析"><span class="header-section-number">15.3.2</span> 调用 Anthropic API 做情感分析</h3>
+<p>下面演示如何用 Claude API 对研报摘要做情感分析，并要求模型返回结构化的 JSON 输出，方便后续直接进入 DataFrame。</p>
+<div id="cell-13" class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># !pip install anthropic   # 第一次使用时取消注释</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> anthropic</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> json</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> time</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="co"># API Key 建议存放在环境变量里，不要硬编码在代码中</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="co"># 在终端运行：set ANTHROPIC_API_KEY=your_key_here (Windows)</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="co"># 或：export ANTHROPIC_API_KEY=your_key_here (macOS/Linux)</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>client <span class="op">=</span> anthropic.Anthropic()  <span class="co"># 自动读取环境变量 ANTHROPIC_API_KEY</span></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>SYSTEM_PROMPT <span class="op">=</span> <span class="st">"""你是一位专业的金融分析师，专门分析券商研报的情感倾向。</span></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a><span class="st">你的任务是判断研报摘要的整体情感倾向，并给出结构化的 JSON 输出。</span></span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a><span class="st">输出格式（只输出 JSON，不要有任何其他文字）：</span></span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a><span class="st">{"sentiment": "bullish/neutral/bearish", "score": 数字(-1到1之间), "reason": "简短理由（20字以内）"}</span></span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a><span class="st">判断标准：</span></span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a><span class="st">- bullish（看多）：维持/上调目标价、买入/增持/强烈推荐评级、盈利超预期</span></span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a><span class="st">- bearish（看空）：下调目标价/评级、减持/卖出、盈利不达预期、流动性风险</span></span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a><span class="st">- neutral（中性）：维持中性/持有评级、符合预期、观望"""</span></span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> analyze_sentiment_ai(text, client, max_retries<span class="op">=</span><span class="dv">3</span>):</span>
+<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
+<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a><span class="co">    用 Claude API 分析单条文本的情感。</span></span>
+<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a><span class="co">    包含重试逻辑，避免网络波动导致批量任务中断。</span></span>
+<span id="cb6-27"><a href="#cb6-27" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb6-28"><a href="#cb6-28" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> attempt <span class="kw">in</span> <span class="bu">range</span>(max_retries):</span>
+<span id="cb6-29"><a href="#cb6-29" aria-hidden="true" tabindex="-1"></a>        <span class="cf">try</span>:</span>
+<span id="cb6-30"><a href="#cb6-30" aria-hidden="true" tabindex="-1"></a>            response <span class="op">=</span> client.messages.create(</span>
+<span id="cb6-31"><a href="#cb6-31" aria-hidden="true" tabindex="-1"></a>                model<span class="op">=</span><span class="st">"claude-sonnet-4-6"</span>,</span>
+<span id="cb6-32"><a href="#cb6-32" aria-hidden="true" tabindex="-1"></a>                max_tokens<span class="op">=</span><span class="dv">100</span>,</span>
+<span id="cb6-33"><a href="#cb6-33" aria-hidden="true" tabindex="-1"></a>                system<span class="op">=</span>SYSTEM_PROMPT,</span>
+<span id="cb6-34"><a href="#cb6-34" aria-hidden="true" tabindex="-1"></a>                messages<span class="op">=</span>[{<span class="st">"role"</span>: <span class="st">"user"</span>, <span class="st">"content"</span>: text}]</span>
+<span id="cb6-35"><a href="#cb6-35" aria-hidden="true" tabindex="-1"></a>            )</span>
+<span id="cb6-36"><a href="#cb6-36" aria-hidden="true" tabindex="-1"></a>            raw <span class="op">=</span> response.content[<span class="dv">0</span>].text.strip()</span>
+<span id="cb6-37"><a href="#cb6-37" aria-hidden="true" tabindex="-1"></a>            result <span class="op">=</span> json.loads(raw)    <span class="co"># 解析 JSON</span></span>
+<span id="cb6-38"><a href="#cb6-38" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> result</span>
+<span id="cb6-39"><a href="#cb6-39" aria-hidden="true" tabindex="-1"></a>        <span class="cf">except</span> json.JSONDecodeError:</span>
+<span id="cb6-40"><a href="#cb6-40" aria-hidden="true" tabindex="-1"></a>            <span class="co"># 模型偶尔会输出格式不符合 JSON 的文本，重试</span></span>
+<span id="cb6-41"><a href="#cb6-41" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> attempt <span class="op">==</span> max_retries <span class="op">-</span> <span class="dv">1</span>:</span>
+<span id="cb6-42"><a href="#cb6-42" aria-hidden="true" tabindex="-1"></a>                <span class="cf">return</span> {<span class="st">"sentiment"</span>: <span class="st">"error"</span>, <span class="st">"score"</span>: <span class="dv">0</span>, <span class="st">"reason"</span>: <span class="st">"解析失败"</span>}</span>
+<span id="cb6-43"><a href="#cb6-43" aria-hidden="true" tabindex="-1"></a>        <span class="cf">except</span> <span class="pp">Exception</span> <span class="im">as</span> e:</span>
+<span id="cb6-44"><a href="#cb6-44" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> attempt <span class="op">==</span> max_retries <span class="op">-</span> <span class="dv">1</span>:</span>
+<span id="cb6-45"><a href="#cb6-45" aria-hidden="true" tabindex="-1"></a>                <span class="cf">return</span> {<span class="st">"sentiment"</span>: <span class="st">"error"</span>, <span class="st">"score"</span>: <span class="dv">0</span>, <span class="st">"reason"</span>: <span class="bu">str</span>(e)[:<span class="dv">30</span>]}</span>
+<span id="cb6-46"><a href="#cb6-46" aria-hidden="true" tabindex="-1"></a>            time.sleep(<span class="dv">2</span> <span class="op">**</span> attempt)   <span class="co"># 指数退避重试</span></span>
+<span id="cb6-47"><a href="#cb6-47" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-48"><a href="#cb6-48" aria-hidden="true" tabindex="-1"></a><span class="co"># 批量分析（加间隔避免触发速率限制）</span></span>
+<span id="cb6-49"><a href="#cb6-49" aria-hidden="true" tabindex="-1"></a>ai_results <span class="op">=</span> []</span>
+<span id="cb6-50"><a href="#cb6-50" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> _, row <span class="kw">in</span> df_r.iterrows():</span>
+<span id="cb6-51"><a href="#cb6-51" aria-hidden="true" tabindex="-1"></a>    result <span class="op">=</span> analyze_sentiment_ai(row[<span class="st">"summary"</span>], client)</span>
+<span id="cb6-52"><a href="#cb6-52" aria-hidden="true" tabindex="-1"></a>    ai_results.append(result)</span>
+<span id="cb6-53"><a href="#cb6-53" aria-hidden="true" tabindex="-1"></a>    time.sleep(<span class="fl">0.5</span>)   <span class="co"># 每条间隔 0.5 秒</span></span>
+<span id="cb6-54"><a href="#cb6-54" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-55"><a href="#cb6-55" aria-hidden="true" tabindex="-1"></a>df_r[<span class="st">"ai_sentiment"</span>] <span class="op">=</span> [r[<span class="st">"sentiment"</span>] <span class="cf">for</span> r <span class="kw">in</span> ai_results]</span>
+<span id="cb6-56"><a href="#cb6-56" aria-hidden="true" tabindex="-1"></a>df_r[<span class="st">"ai_score"</span>]     <span class="op">=</span> [r[<span class="st">"score"</span>]     <span class="cf">for</span> r <span class="kw">in</span> ai_results]</span>
+<span id="cb6-57"><a href="#cb6-57" aria-hidden="true" tabindex="-1"></a>df_r[<span class="st">"ai_reason"</span>]    <span class="op">=</span> [r[<span class="st">"reason"</span>]    <span class="cf">for</span> r <span class="kw">in</span> ai_results]</span>
+<span id="cb6-58"><a href="#cb6-58" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-59"><a href="#cb6-59" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"AI 分析完成"</span>)</span>
+<span id="cb6-60"><a href="#cb6-60" aria-hidden="true" tabindex="-1"></a>df_r[[<span class="st">"report_id"</span>, <span class="st">"firm"</span>, <span class="st">"label"</span>, <span class="st">"ai_sentiment"</span>, <span class="st">"ai_score"</span>, <span class="st">"ai_reason"</span>]]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+AI 提示词：批量情感分析（结构化输出版）
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>我有一批券商研报摘要，需要判断每条的情感倾向。请按以下要求设计提示词和代码：</p>
+<ul>
+<li>数据背景：中文券商研报摘要，每条约 100-150 字，涵盖不同行业</li>
+<li>任务：判断每条研报的情感倾向（bullish/neutral/bearish），给出 -1 到 1 的得分，并说明判断依据（20 字以内）</li>
+<li>输出格式：严格 JSON，字段为 <code>sentiment</code>、<code>score</code>、<code>reason</code>，不要有任何额外文字</li>
+<li>工程要求：① 包含重试逻辑（最多 3 次）；② 每条请求间隔 0.5 秒；③ 解析失败时记录错误而不是中断整个循环；④ 最终结果合并回原始 DataFrame</li>
+<li>请同时说明如何估算这批数据的 API 费用</li>
+</ul>
+<p>所有代码加详细中文注释。</p>
+</div>
+</div>
+</section>
+</section>
+<section id="两种方法对比与讨论" class="level2" data-number="15.4">
+<h2 data-number="15.4" class="anchored" data-anchor-id="两种方法对比与讨论"><span class="header-section-number">15.4</span> 两种方法对比与讨论</h2>
+<section id="准确率对比" class="level3" data-number="15.4.1">
+<h3 data-number="15.4.1" class="anchored" data-anchor-id="准确率对比"><span class="header-section-number">15.4.1</span> 准确率对比</h3>
+<div id="cell-16" class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="co"># 把词典法得分也转换为三分类标签，方便比较</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> score_to_label(score, threshold<span class="op">=</span><span class="fl">0.05</span>):</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""将连续得分转为三分类标签，threshold 控制中性区间宽度。"""</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> score <span class="op">&gt;</span> threshold:  <span class="cf">return</span> <span class="st">"bullish"</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> score <span class="op">&lt;</span> <span class="op">-</span>threshold: <span class="cf">return</span> <span class="st">"bearish"</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="st">"neutral"</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>df_r[<span class="st">"dict_label"</span>] <span class="op">=</span> df_r[<span class="st">"dict_score"</span>].<span class="bu">apply</span>(score_to_label)</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a><span class="co"># 计算两种方法的准确率</span></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>dict_acc <span class="op">=</span> (df_r[<span class="st">"dict_label"</span>] <span class="op">==</span> df_r[<span class="st">"label"</span>]).mean()</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>ai_acc   <span class="op">=</span> (df_r[<span class="st">"ai_sentiment"</span>] <span class="op">==</span> df_r[<span class="st">"label"</span>]).mean()</span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"词典法准确率：</span><span class="sc">{</span>dict_acc<span class="sc">:.1%}</span><span class="ss">"</span>)</span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"AI 方法准确率：</span><span class="sc">{</span>ai_acc<span class="sc">:.1%}</span><span class="ss">"</span>)</span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a><span class="co"># 完整对比表</span></span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>comparison <span class="op">=</span> df_r[[<span class="st">"report_id"</span>, <span class="st">"firm"</span>, <span class="st">"label"</span>,</span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>                    <span class="st">"dict_score"</span>, <span class="st">"dict_label"</span>,</span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>                    <span class="st">"ai_score"</span>, <span class="st">"ai_sentiment"</span>, <span class="st">"ai_reason"</span>]].copy()</span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a>comparison[<span class="st">"dict_correct"</span>] <span class="op">=</span> comparison[<span class="st">"dict_label"</span>]    <span class="op">==</span> comparison[<span class="st">"label"</span>]</span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a>comparison[<span class="st">"ai_correct"</span>]   <span class="op">=</span> comparison[<span class="st">"ai_sentiment"</span>]  <span class="op">==</span> comparison[<span class="st">"label"</span>]</span>
+<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a>comparison</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cell-17" class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="co"># 两种方法的得分散点对比</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">6</span>))</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>colors_map <span class="op">=</span> {<span class="st">"bullish"</span>: <span class="st">"#2196F3"</span>, <span class="st">"neutral"</span>: <span class="st">"#9E9E9E"</span>, <span class="st">"bearish"</span>: <span class="st">"#F44336"</span>}</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>label_cn   <span class="op">=</span> {<span class="st">"bullish"</span>: <span class="st">"看多"</span>, <span class="st">"neutral"</span>: <span class="st">"中性"</span>, <span class="st">"bearish"</span>: <span class="st">"看空"</span>}</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> label, group <span class="kw">in</span> df_r.groupby(<span class="st">"label"</span>):</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>    ax.scatter(</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>        group[<span class="st">"dict_score"</span>], group[<span class="st">"ai_score"</span>],</span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>        color<span class="op">=</span>colors_map[label], label<span class="op">=</span>label_cn[label],</span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>        s<span class="op">=</span><span class="dv">80</span>, zorder<span class="op">=</span><span class="dv">3</span></span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>ax.axhline(<span class="dv">0</span>, color<span class="op">=</span><span class="st">"grey"</span>, linewidth<span class="op">=</span><span class="fl">0.8</span>, linestyle<span class="op">=</span><span class="st">"--"</span>)</span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>ax.axvline(<span class="dv">0</span>, color<span class="op">=</span><span class="st">"grey"</span>, linewidth<span class="op">=</span><span class="fl">0.8</span>, linestyle<span class="op">=</span><span class="st">"--"</span>)</span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">"词典法得分"</span>)</span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="st">"AI 方法得分"</span>)</span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">"词典法 vs AI 方法：情感得分对比"</span>)</span>
+<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a>ax.legend(title<span class="op">=</span><span class="st">"真实标签"</span>)</span>
+<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a>ax.set_xlim(<span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>)</span>
+<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a>ax.set_ylim(<span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>)</span>
+<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a>plt.savefig(<span class="st">"Fig/sentiment_comparison.png"</span>, dpi<span class="op">=</span><span class="dv">150</span>, bbox_inches<span class="op">=</span><span class="st">"tight"</span>)</span>
+<span id="cb8-27"><a href="#cb8-27" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="两种方法的系统性对比" class="level3" data-number="15.4.2">
+<h3 data-number="15.4.2" class="anchored" data-anchor-id="两种方法的系统性对比"><span class="header-section-number">15.4.2</span> 两种方法的系统性对比</h3>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>维度</th>
+<th>词典法</th>
+<th>AI 方法</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>准确率</td>
+<td>中等，受否定词影响</td>
+<td>高，能理解语境</td>
+</tr>
+<tr class="even">
+<td>可解释性</td>
+<td>强，可追溯到具体词</td>
+<td>弱，模型内部不透明</td>
+</tr>
+<tr class="odd">
+<td>可复现性</td>
+<td>完全可复现</td>
+<td>受模型更新影响</td>
+</tr>
+<tr class="even">
+<td>处理规模</td>
+<td>百万条级别</td>
+<td>受 API 速率和成本限制</td>
+</tr>
+<tr class="odd">
+<td>成本</td>
+<td>几乎为零</td>
+<td>按 token 计费</td>
+</tr>
+<tr class="even">
+<td>适合场景</td>
+<td>大规模批量、学术研究</td>
+<td>小批量、语境复杂的文本</td>
+</tr>
+</tbody>
+</table>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Important
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>在实际工作中，两种方法往往配合使用：</strong></p>
+<p>先用词典法跑全量数据（快、便宜），再用 AI 方法抽查 10%-20% 的样本做验证。如果两种方法高度一致（相关系数 &gt; 0.7），可以对词典法结果有较高信心；如果分歧较大，说明该语料的情感信号比较复杂，需要更多人工核查。</p>
+</div>
+</div>
+</section>
+<section id="将情感结果保存" class="level3" data-number="15.4.3">
+<h3 data-number="15.4.3" class="anchored" data-anchor-id="将情感结果保存"><span class="header-section-number">15.4.3</span> 将情感结果保存</h3>
+<div id="cell-19" class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 保存完整分析结果，供后续综合实战使用</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>df_r.to_csv(<span class="st">"output/analyst_reports_sentiment.csv"</span>, index<span class="op">=</span><span class="va">False</span>, encoding<span class="op">=</span><span class="st">"utf-8-sig"</span>)</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"已保存到 output/analyst_reports_sentiment.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+</section>
+<section id="主题模型lda-与-llm-方法" class="level2" data-number="15.5">
+<h2 data-number="15.5" class="anchored" data-anchor-id="主题模型lda-与-llm-方法"><span class="header-section-number">15.5</span> 主题模型：LDA 与 LLM 方法</h2>
+<section id="主题模型要解决什么问题" class="level3" data-number="15.5.1">
+<h3 data-number="15.5.1" class="anchored" data-anchor-id="主题模型要解决什么问题"><span class="header-section-number">15.5.1</span> 主题模型要解决什么问题</h3>
+<p>词频和 TF-IDF 告诉你「哪些词重要」，情感分析告诉你「文本的态度是什么」，但还有一类问题它们都回答不了：<strong>这批文档在讨论哪几个核心议题？</strong></p>
+<p>想象你拿到了过去五年中国所有上市公司年报的 MD&amp;A 章节，共 20000 份文档。你想知道：</p>
+<ul>
+<li>这些文档自动可以归纳成几个主题？</li>
+<li>哪些公司更多讨论「数字化转型」，哪些更多讨论「成本控制」？</li>
+<li>某个主题的热度是否与宏观周期相关？</li>
+<li>主题权重能不能作为变量，预测公司未来的盈利表现？</li>
+</ul>
+<p>这正是<strong>主题模型（Topic Model）</strong> 的应用场景。</p>
+</section>
+<section id="lda-的直觉" class="level3" data-number="15.5.2">
+<h3 data-number="15.5.2" class="anchored" data-anchor-id="lda-的直觉"><span class="header-section-number">15.5.2</span> LDA 的直觉</h3>
+<p>LDA（Latent Dirichlet Allocation，潜在狄利克雷分配）是最经典的主题模型，由 Blei、Ng 和 Jordan 于 2003 年提出。它的核心假设非常直觉：</p>
+<p><strong>每篇文档是多个主题的混合，每个主题是一组词的分布。</strong></p>
+<p>举个例子，假设我们对年报做 LDA，设定 3 个主题，模型可能发现：</p>
+<ul>
+<li><strong>主题 1</strong>（词：风险、不确定性、下行、压力、挑战）→ 你命名为「风险披露」</li>
+<li><strong>主题 2</strong>（词：研发、创新、专利、技术、数字化）→ 你命名为「技术战略」<br>
+</li>
+<li><strong>主题 3</strong>（词：收入、增长、利润、市场、客户）→ 你命名为「业绩展望」</li>
+</ul>
+<p>同时，每篇文档会得到一个主题分布向量，比如：</p>
+<p><span class="math display">\[
+\theta_i = (0.6,\ 0.3,\ 0.1) \quad \text{（风险披露 60\%，技术战略 30\%，业绩展望 10\%）}
+\]</span></p>
+<p>这个向量就是文档 <span class="math inline">\(i\)</span> 的「主题特征」，可以直接作为变量使用。</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>LDA 在金融研究中的典型应用</strong></p>
+<ul>
+<li>Hansen, McMahon &amp; Prat（2018）：对美联储 FOMC 会议记录做 LDA，构造政策不确定性指标，发现主题变化能预测市场波动（<em>Econometrica</em>）</li>
+<li>Hoberg &amp; Phillips（2016）：用年报文本相似度和主题分布重新定义行业边界，发现比 SIC 行业分类更能解释企业竞争行为（<em>Journal of Political Economy</em>）</li>
+<li>国内研究：对上市公司年报 MD&amp;A 做 LDA，提取「风险话语」主题权重，研究其与未来股价崩盘风险的关系</li>
+</ul>
+</div>
+</div>
+</section>
+<section id="用-gensim-实现-lda快速演示" class="level3" data-number="15.5.3">
+<h3 data-number="15.5.3" class="anchored" data-anchor-id="用-gensim-实现-lda快速演示"><span class="header-section-number">15.5.3</span> 用 gensim 实现 LDA（快速演示）</h3>
+<div id="cell-21" class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># !pip install gensim   # 第一次使用时取消注释</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> jieba</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> gensim <span class="im">import</span> corpora, models</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="co"># 读取人民银行问答数据（篇幅较长，适合主题提取）</span></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>df_qa <span class="op">=</span> pd.read_csv(<span class="st">"data_raw/pbc_qa_raw.csv"</span>, encoding<span class="op">=</span><span class="st">"gbk"</span>)</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a><span class="co"># 加载停用词</span></span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> <span class="bu">open</span>(<span class="st">"dicts/stopwords_cn_finance.txt"</span>, <span class="st">"r"</span>, encoding<span class="op">=</span><span class="st">"utf-8"</span>) <span class="im">as</span> f:</span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>    stopwords <span class="op">=</span> <span class="bu">set</span>(line.strip() <span class="cf">for</span> line <span class="kw">in</span> f <span class="cf">if</span> line.strip())</span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a><span class="co"># 分词（复用上一章的 tokenize 逻辑）</span></span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> tokenize_for_lda(text):</span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="kw">not</span> <span class="bu">isinstance</span>(text, <span class="bu">str</span>):</span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> []</span>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a>    words <span class="op">=</span> jieba.lcut(text)</span>
+<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> [w <span class="cf">for</span> w <span class="kw">in</span> words</span>
+<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> <span class="bu">len</span>(w) <span class="op">&gt;=</span> <span class="dv">2</span> <span class="kw">and</span> w <span class="kw">not</span> <span class="kw">in</span> stopwords <span class="kw">and</span> <span class="kw">not</span> w.isdigit()]</span>
+<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-22"><a href="#cb10-22" aria-hidden="true" tabindex="-1"></a>df_qa[<span class="st">"tokens"</span>] <span class="op">=</span> df_qa[<span class="st">"text"</span>].<span class="bu">apply</span>(tokenize_for_lda)</span>
+<span id="cb10-23"><a href="#cb10-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-24"><a href="#cb10-24" aria-hidden="true" tabindex="-1"></a><span class="co"># 过滤掉 token 数量过少的文档（LDA 对极短文本效果差）</span></span>
+<span id="cb10-25"><a href="#cb10-25" aria-hidden="true" tabindex="-1"></a>df_qa <span class="op">=</span> df_qa[df_qa[<span class="st">"tokens"</span>].<span class="bu">apply</span>(<span class="bu">len</span>) <span class="op">&gt;=</span> <span class="dv">20</span>].copy()</span>
+<span id="cb10-26"><a href="#cb10-26" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"有效文档数：</span><span class="sc">{</span><span class="bu">len</span>(df_qa)<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cell-22" class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 构建词典和语料库</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>dictionary <span class="op">=</span> corpora.Dictionary(df_qa[<span class="st">"tokens"</span>])</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="co"># 过滤极高频词和极低频词：出现次数少于 3 次、或出现在超过 50% 文档中的词去掉</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>dictionary.filter_extremes(no_below<span class="op">=</span><span class="dv">3</span>, no_above<span class="op">=</span><span class="fl">0.5</span>)</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="co"># 将每篇文档转为词袋（BoW）格式：[(词id, 词频), ...]</span></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>corpus <span class="op">=</span> [dictionary.doc2bow(tokens) <span class="cf">for</span> tokens <span class="kw">in</span> df_qa[<span class="st">"tokens"</span>]]</span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"词典大小：</span><span class="sc">{</span><span class="bu">len</span>(dictionary)<span class="sc">}</span><span class="ss"> 个词项"</span>)</span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"语料规模：</span><span class="sc">{</span><span class="bu">len</span>(corpus)<span class="sc">}</span><span class="ss"> 篇文档"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cell-23" class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 训练 LDA 模型</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="co"># num_topics：主题数，这是 LDA 最重要的超参数，需要根据语料规模和业务理解来设定</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="co"># passes：训练轮数，越大结果越稳定，但耗时更长</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="co"># random_state：固定随机种子，保证结果可复现</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>NUM_TOPICS <span class="op">=</span> <span class="dv">5</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>lda_model <span class="op">=</span> models.LdaModel(</span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>    corpus<span class="op">=</span>corpus,</span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>    id2word<span class="op">=</span>dictionary,</span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>    num_topics<span class="op">=</span>NUM_TOPICS,</span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>    passes<span class="op">=</span><span class="dv">20</span>,</span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>    random_state<span class="op">=</span><span class="dv">42</span></span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a><span class="co"># 查看每个主题的 Top 10 词</span></span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"各主题 Top 10 词（需要人工命名）：</span><span class="ch">\n</span><span class="st">"</span>)</span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> topic_id <span class="kw">in</span> <span class="bu">range</span>(NUM_TOPICS):</span>
+<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a>    top_words <span class="op">=</span> lda_model.show_topic(topic_id, topn<span class="op">=</span><span class="dv">10</span>)</span>
+<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a>    words_str <span class="op">=</span> <span class="st">" | "</span>.join([<span class="ss">f"</span><span class="sc">{</span>w<span class="sc">}</span><span class="ss">(</span><span class="sc">{</span>p<span class="sc">:.3f}</span><span class="ss">)"</span> <span class="cf">for</span> w, p <span class="kw">in</span> top_words])</span>
+<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"主题 </span><span class="sc">{</span>topic_id<span class="sc">}</span><span class="ss">：</span><span class="sc">{</span>words_str<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cell-24" class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="co"># 提取每篇文档的主题分布向量——这是 LDA 真正可用于后续分析的产出</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> get_topic_vector(bow, model, num_topics):</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""将单篇文档的 BoW 表示转为主题分布向量，长度 = num_topics。"""</span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>    topic_dist <span class="op">=</span> <span class="bu">dict</span>(model.get_document_topics(bow, minimum_probability<span class="op">=</span><span class="dv">0</span>))</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> [topic_dist.get(i, <span class="fl">0.0</span>) <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(num_topics)]</span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>topic_vectors <span class="op">=</span> [get_topic_vector(bow, lda_model, NUM_TOPICS) <span class="cf">for</span> bow <span class="kw">in</span> corpus]</span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>topic_df <span class="op">=</span> pd.DataFrame(</span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>    topic_vectors,</span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>    columns<span class="op">=</span>[<span class="ss">f"topic_</span><span class="sc">{</span>i<span class="sc">}</span><span class="ss">"</span> <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(NUM_TOPICS)]</span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a><span class="co"># 合并回原始 DataFrame</span></span>
+<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a>df_qa_with_topics <span class="op">=</span> pd.concat(</span>
+<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a>    [df_qa[[<span class="st">"title"</span>, <span class="st">"date"</span>]].reset_index(drop<span class="op">=</span><span class="va">True</span>), topic_df],</span>
+<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a>    axis<span class="op">=</span><span class="dv">1</span></span>
+<span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb13-20"><a href="#cb13-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-21"><a href="#cb13-21" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"主题分布向量（前 3 条）："</span>)</span>
+<span id="cb13-22"><a href="#cb13-22" aria-hidden="true" tabindex="-1"></a>df_qa_with_topics.head(<span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="把主题权重纳入回归分析" class="level3" data-number="15.5.4">
+<h3 data-number="15.5.4" class="anchored" data-anchor-id="把主题权重纳入回归分析"><span class="header-section-number">15.5.4</span> 把主题权重纳入回归分析</h3>
+<p>上面得到的 <code>topic_df</code> 每行是一篇文档、每列是该文档在各主题上的权重。这个矩阵<strong>可以直接作为变量纳入后续分析</strong>。</p>
+<p>典型的使用方式：</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> statsmodels.formula.api <span class="im">as</span> smf</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="co"># 假设你有一个包含收益率数据的 DataFrame df_stock</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="co"># 先把主题向量和股票数据按日期合并</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>df_merged <span class="op">=</span> df_stock.merge(df_qa_with_topics[[<span class="st">"date"</span>, <span class="st">"topic_0"</span>, <span class="st">"topic_1"</span>]],</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>                            on<span class="op">=</span><span class="st">"date"</span>, how<span class="op">=</span><span class="st">"left"</span>)</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a><span class="co"># 以主题权重为自变量，股票超额收益为因变量，做 OLS 回归</span></span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> smf.ols(<span class="st">"excess_return ~ topic_0 + topic_1 + controls"</span>, data<span class="op">=</span>df_merged).fit()</span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(model.summary())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>这里有几个实践中的要点需要注意：</p>
+<ul>
+<li><p><strong>主题数的选择没有唯一答案。</strong> 常见做法是：从较小的主题数（3-5）开始，逐步增加，同时用 Coherence Score（主题连贯性得分）评估模型质量，选择连贯性最高且主题仍然可解释的那个数量。对于本章的 185 条问答，5 个主题是合理的起点。</p></li>
+<li><p><strong>主题必须人工命名。</strong> LDA 只输出词的组合，「主题 2」是什么含义，需要你根据 Top 词来判断。这个命名过程是主观的，不同研究者可能给同一组词起不同的名字。在论文里，通常需要详细说明命名依据，并请同行评审确认。</p></li>
+<li><p><strong>注意主题分布的加总约束。</strong> 每篇文档的主题权重之和为 1（<span class="math inline">\(\sum_k \theta_{ik} = 1\)</span>），如果把所有主题权重都放进回归，会产生完全多重共线性。实践中通常省略一个主题（作为基准组），或者用主成分分析（PCA）降维后再进入回归。</p></li>
+</ul>
+</section>
+<section id="lda-的局限与-llm-方法的兴起" class="level3" data-number="15.5.5">
+<h3 data-number="15.5.5" class="anchored" data-anchor-id="lda-的局限与-llm-方法的兴起"><span class="header-section-number">15.5.5</span> LDA 的局限与 LLM 方法的兴起</h3>
+<p>LDA 有几个在实际使用中很难绕开的问题：</p>
+<ul>
+<li><strong>主题数需要预先指定</strong>：你必须告诉模型「有几个主题」，但这个数字往往不清楚</li>
+<li><strong>主题需要人工命名</strong>：模型只给词，含义靠你猜，不同研究者的解读可能不一致</li>
+<li><strong>短文本效果差</strong>：新闻标题、公告标题这类短文本，LDA 往往无法收敛到有意义的主题</li>
+<li><strong>结果不稳定</strong>：不同随机种子、不同训练轮数，可能得到差异较大的结果</li>
+</ul>
+<p>2023 年以来，越来越多的金融文本分析研究开始用 <strong>LLM 替代 LDA</strong> 做主题提取。基本流程是：</p>
+<ol type="1">
+<li>预先定义一个主题列表（基于业务理解或文献）</li>
+<li>把每篇文档发给 LLM，让它从预设列表中选择最匹配的主题（单选或多选）</li>
+<li>汇总统计，得到每个主题的文档占比或每篇文档的主题标签</li>
+</ol>
+<p>这种方法的优势是结果直接可解释、不需要调参、对短文本也有效。代价是 API 费用和可复现性问题。</p>
+<p>下面是一个用 LLM 做主题分类的完整演示：</p>
+<div id="cell-27" class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> anthropic, json, time, pandas <span class="im">as</span> pd</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="co"># 预定义主题列表（基于对人民银行问答内容的业务判断）</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>TOPIC_LIST <span class="op">=</span> [</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"货币政策操作"</span>,      <span class="co"># MLF、逆回购、降准等具体操作</span></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">"汇率与跨境资本"</span>,    <span class="co"># 人民币汇率、外汇管理、跨境支付</span></span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">"金融稳定与风险"</span>,    <span class="co"># 系统性风险、银行业监管、房地产金融</span></span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">"信贷与实体经济"</span>,    <span class="co"># 贷款投放、小微企业、绿色金融</span></span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">"国际金融合作"</span>,      <span class="co"># 双边货币合作、SWIFT、数字货币国际化</span></span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>]</span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a>TOPIC_PROMPT <span class="op">=</span> <span class="ss">f"""你是一位中央银行研究专家。请判断以下人民银行答记者问的主要议题。</span></span>
+<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a><span class="ss">从下面的主题列表中选择 1-2 个最匹配的主题（如果只有一个主题明显匹配，只选一个）：</span></span>
+<span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a><span class="sc">{</span><span class="bu">chr</span>(<span class="dv">10</span>)<span class="sc">.</span>join(<span class="ss">f'- </span><span class="sc">{</span>t<span class="sc">}</span><span class="ss">'</span> <span class="cf">for</span> t <span class="kw">in</span> TOPIC_LIST)<span class="sc">}</span></span>
+<span id="cb15-16"><a href="#cb15-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-17"><a href="#cb15-17" aria-hidden="true" tabindex="-1"></a><span class="ss">严格按以下 JSON 格式输出，不要有其他文字：</span></span>
+<span id="cb15-18"><a href="#cb15-18" aria-hidden="true" tabindex="-1"></a><span class="ch">{{</span><span class="ss">"topics": ["主题名称"], "confidence": 0.0到1.0之间的数字</span><span class="ch">}}</span><span class="ss">"""</span></span>
+<span id="cb15-19"><a href="#cb15-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-20"><a href="#cb15-20" aria-hidden="true" tabindex="-1"></a>client <span class="op">=</span> anthropic.Anthropic()</span>
+<span id="cb15-21"><a href="#cb15-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-22"><a href="#cb15-22" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> classify_topic(text, client):</span>
+<span id="cb15-23"><a href="#cb15-23" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""用 LLM 对单篇文档做主题分类，返回主题列表和置信度。"""</span></span>
+<span id="cb15-24"><a href="#cb15-24" aria-hidden="true" tabindex="-1"></a>    <span class="cf">try</span>:</span>
+<span id="cb15-25"><a href="#cb15-25" aria-hidden="true" tabindex="-1"></a>        <span class="co"># 只取前 500 字，节省 token（通常开头已经包含核心议题）</span></span>
+<span id="cb15-26"><a href="#cb15-26" aria-hidden="true" tabindex="-1"></a>        snippet <span class="op">=</span> <span class="bu">str</span>(text)[:<span class="dv">500</span>]</span>
+<span id="cb15-27"><a href="#cb15-27" aria-hidden="true" tabindex="-1"></a>        response <span class="op">=</span> client.messages.create(</span>
+<span id="cb15-28"><a href="#cb15-28" aria-hidden="true" tabindex="-1"></a>            model<span class="op">=</span><span class="st">"claude-sonnet-4-6"</span>,</span>
+<span id="cb15-29"><a href="#cb15-29" aria-hidden="true" tabindex="-1"></a>            max_tokens<span class="op">=</span><span class="dv">80</span>,</span>
+<span id="cb15-30"><a href="#cb15-30" aria-hidden="true" tabindex="-1"></a>            system<span class="op">=</span>TOPIC_PROMPT,</span>
+<span id="cb15-31"><a href="#cb15-31" aria-hidden="true" tabindex="-1"></a>            messages<span class="op">=</span>[{<span class="st">"role"</span>: <span class="st">"user"</span>, <span class="st">"content"</span>: snippet}]</span>
+<span id="cb15-32"><a href="#cb15-32" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb15-33"><a href="#cb15-33" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> json.loads(response.content[<span class="dv">0</span>].text.strip())</span>
+<span id="cb15-34"><a href="#cb15-34" aria-hidden="true" tabindex="-1"></a>    <span class="cf">except</span> <span class="pp">Exception</span> <span class="im">as</span> e:</span>
+<span id="cb15-35"><a href="#cb15-35" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> {<span class="st">"topics"</span>: [<span class="st">"解析失败"</span>], <span class="st">"confidence"</span>: <span class="fl">0.0</span>}</span>
+<span id="cb15-36"><a href="#cb15-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-37"><a href="#cb15-37" aria-hidden="true" tabindex="-1"></a><span class="co"># 演示：只跑前 10 条（避免耗费过多 API 费用）</span></span>
+<span id="cb15-38"><a href="#cb15-38" aria-hidden="true" tabindex="-1"></a>sample <span class="op">=</span> df_qa.head(<span class="dv">10</span>).copy()</span>
+<span id="cb15-39"><a href="#cb15-39" aria-hidden="true" tabindex="-1"></a>topic_results <span class="op">=</span> []</span>
+<span id="cb15-40"><a href="#cb15-40" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> _, row <span class="kw">in</span> sample.iterrows():</span>
+<span id="cb15-41"><a href="#cb15-41" aria-hidden="true" tabindex="-1"></a>    result <span class="op">=</span> classify_topic(row[<span class="st">"text"</span>], client)</span>
+<span id="cb15-42"><a href="#cb15-42" aria-hidden="true" tabindex="-1"></a>    topic_results.append(result)</span>
+<span id="cb15-43"><a href="#cb15-43" aria-hidden="true" tabindex="-1"></a>    time.sleep(<span class="fl">0.5</span>)</span>
+<span id="cb15-44"><a href="#cb15-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-45"><a href="#cb15-45" aria-hidden="true" tabindex="-1"></a>sample[<span class="st">"llm_topics"</span>]     <span class="op">=</span> [r[<span class="st">"topics"</span>]     <span class="cf">for</span> r <span class="kw">in</span> topic_results]</span>
+<span id="cb15-46"><a href="#cb15-46" aria-hidden="true" tabindex="-1"></a>sample[<span class="st">"llm_confidence"</span>] <span class="op">=</span> [r[<span class="st">"confidence"</span>] <span class="cf">for</span> r <span class="kw">in</span> topic_results]</span>
+<span id="cb15-47"><a href="#cb15-47" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-48"><a href="#cb15-48" aria-hidden="true" tabindex="-1"></a>sample[[<span class="st">"title"</span>, <span class="st">"llm_topics"</span>, <span class="st">"llm_confidence"</span>]]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="llm-主题分析面临的主要挑战" class="level3" data-number="15.5.6">
+<h3 data-number="15.5.6" class="anchored" data-anchor-id="llm-主题分析面临的主要挑战"><span class="header-section-number">15.5.6</span> LLM 主题分析面临的主要挑战</h3>
+<p>在把 LLM 方法用于正式研究之前，有几个问题需要认真考虑：</p>
+<p><strong>① 用哪个模型？</strong></p>
+<p>目前学术研究中常用的有 GPT-4（OpenAI）、Claude（Anthropic）、以及开源模型（Llama、Qwen）。开源模型的优势是可以本地部署，完全可控、成本可预期；但在中文金融文本的理解质量上，目前仍弱于 GPT-4 和 Claude。国内研究还需考虑数据合规问题——把上市公司未公开信息发给境外 API，存在一定的合规风险。</p>
+<p><strong>② 成本和效率</strong></p>
+<p>以 Claude Sonnet 为例，每 1000 个输入 token 约 $0.003。一篇年报 MD&amp;A 约 3000-5000 字，对应约 2000-3500 token。如果要处理 5000 份年报，成本大约在 30-50 美元之间——对学术研究来说可以接受，但如果处理全 A 股 20 年的年报（约 10 万份），成本将达到数百至上千美元。</p>
+<p>实践中的节省策略：只取每篇文档的前 500-800 字（通常包含核心信息）；对相似文档做去重；先用词典法筛选出关键文档，再用 LLM 精分析。</p>
+<p><strong>③ 如何应对可复现性质疑</strong></p>
+<p>这是目前学术界争议最大的问题。同一段文本，用同一个模型，在不同时间调用可能得到不同的结果（即使温度参数设为 0，模型更新也会改变输出）。审稿人和编辑越来越关注这个问题。</p>
+<p>目前学界的常见做法：</p>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Important
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>可复现性的实践建议</strong></p>
+<ol type="1">
+<li><strong>记录模型版本</strong>：在论文中明确写出使用的模型和版本号（如 <code>claude-sonnet-4-6</code>），不要只写「Claude」或「GPT-4」</li>
+<li><strong>固定温度参数</strong>：<code>temperature=0</code> 会让输出更确定，虽然不能完全保证跨时间一致，但减少随机性</li>
+<li><strong>保存原始输出</strong>：把模型的每一条原始输出保存到文件，作为研究数据的一部分留存，以便审稿人核查</li>
+<li><strong>人工抽查验证</strong>：随机抽取 5%-10% 的样本，人工逐条核对模型输出是否准确，在论文附录中报告抽查准确率</li>
+<li><strong>使用开源模型</strong>：如果可复现性是核心要求，考虑使用固定版本的开源模型（如 Llama-3.1-8B）本地部署，完全控制模型版本</li>
+<li><strong>与传统方法对比</strong>：同时报告 LDA 或词典法的结果，说明两种方法的结论一致，增强结果的稳健性</li>
+</ol>
+</div>
+</div>
+<p><strong>④ LDA vs LLM：如何选择</strong></p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>场景</th>
+<th>推荐方法</th>
+<th>原因</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>探索性分析，不知道有几个主题</td>
+<td>LDA</td>
+<td>无监督，自动发现主题结构</td>
+</tr>
+<tr class="even">
+<td>已有预设主题框架，需要大规模分类</td>
+<td>LLM</td>
+<td>结果直接可解释，短文本也有效</td>
+</tr>
+<tr class="odd">
+<td>数据量极大（&gt;10万篇），成本敏感</td>
+<td>LDA</td>
+<td>几乎零边际成本</td>
+</tr>
+<tr class="even">
+<td>顶刊投稿，可复现性要求严格</td>
+<td>LDA 为主 + LLM 验证</td>
+<td>两种方法互相印证</td>
+</tr>
+<tr class="odd">
+<td>企业内部分析，时效性优先</td>
+<td>LLM</td>
+<td>无需调参，结果即时可解读</td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="综合实战构建政策语气情感指数" class="level2" data-number="15.6">
+<h2 data-number="15.6" class="anchored" data-anchor-id="综合实战构建政策语气情感指数"><span class="header-section-number">15.6</span> 综合实战：构建政策语气情感指数</h2>
+<section id="任务说明" class="level3" data-number="15.6.1">
+<h3 data-number="15.6.1" class="anchored" data-anchor-id="任务说明"><span class="header-section-number">15.6.1</span> 任务说明</h3>
+<p>这一节把前面所有方法串联起来，用人民银行新闻数据完成一个完整的分析任务：</p>
+<p><strong>构建月度政策语气情感指数（2025 年 11 月 — 2026 年 3 月），观察央行对外传递的信息基调是否在这段时间内发生变化。</strong></p>
+<p>这个任务在学术研究中有真实对应：用央行沟通文本的情感变化预测货币政策操作方向，是货币经济学领域的成熟研究范式（参见 Schmeling &amp; Wagner, 2019; Hansen et al., 2018）。</p>
+<p>工作流：</p>
+<p><span class="math display">\[
+\text{读取新闻} \xrightarrow{\text{复用第 3 章}} \text{分词+停用词} \rightarrow \text{词典法情感} \rightarrow \text{月度聚合} \rightarrow \text{时序图}
+\]</span></p>
+<div id="cell-30" class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> jieba</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> re</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a><span class="co"># 读取新闻数据（复用第 3 章的清洗和分词逻辑）</span></span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>df_news <span class="op">=</span> pd.read_csv(<span class="st">"data_raw/pbc_news_raw.csv"</span>, encoding<span class="op">=</span><span class="st">"gbk"</span>)</span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>df_news[<span class="st">"date_std"</span>] <span class="op">=</span> pd.to_datetime(df_news[<span class="st">"date"</span>], errors<span class="op">=</span><span class="st">"coerce"</span>)</span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>df_news <span class="op">=</span> df_news.dropna(subset<span class="op">=</span>[<span class="st">"date_std"</span>, <span class="st">"text"</span>]).copy()</span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a><span class="co"># 加载停用词和情感词典</span></span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> <span class="bu">open</span>(<span class="st">"dicts/stopwords_cn_finance.txt"</span>, <span class="st">"r"</span>, encoding<span class="op">=</span><span class="st">"utf-8"</span>) <span class="im">as</span> f:</span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a>    stopwords <span class="op">=</span> <span class="bu">set</span>(line.strip() <span class="cf">for</span> line <span class="kw">in</span> f <span class="cf">if</span> line.strip())</span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a>positive_words <span class="op">=</span> load_wordlist(<span class="st">"dicts/positive_words.txt"</span>)</span>
+<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a>negative_words <span class="op">=</span> load_wordlist(<span class="st">"dicts/negative_words.txt"</span>)</span>
+<span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-17"><a href="#cb16-17" aria-hidden="true" tabindex="-1"></a><span class="co"># 基础文本清洗</span></span>
+<span id="cb16-18"><a href="#cb16-18" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> clean_text(text):</span>
+<span id="cb16-19"><a href="#cb16-19" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="kw">not</span> <span class="bu">isinstance</span>(text, <span class="bu">str</span>): <span class="cf">return</span> <span class="st">""</span></span>
+<span id="cb16-20"><a href="#cb16-20" aria-hidden="true" tabindex="-1"></a>    text <span class="op">=</span> re.sub(<span class="vs">r"http[s]?://\S+|www\.\S+"</span>, <span class="st">""</span>, text)</span>
+<span id="cb16-21"><a href="#cb16-21" aria-hidden="true" tabindex="-1"></a>    text <span class="op">=</span> re.sub(<span class="vs">r"&lt;[^&gt;]+&gt;"</span>, <span class="st">""</span>, text)</span>
+<span id="cb16-22"><a href="#cb16-22" aria-hidden="true" tabindex="-1"></a>    text <span class="op">=</span> re.sub(<span class="vs">r"\s+"</span>, <span class="st">" "</span>, text.replace(<span class="st">"</span><span class="ch">\n</span><span class="st">"</span>, <span class="st">" "</span>))</span>
+<span id="cb16-23"><a href="#cb16-23" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> text.strip()</span>
+<span id="cb16-24"><a href="#cb16-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-25"><a href="#cb16-25" aria-hidden="true" tabindex="-1"></a>df_news[<span class="st">"text_clean"</span>] <span class="op">=</span> df_news[<span class="st">"text"</span>].<span class="bu">apply</span>(clean_text)</span>
+<span id="cb16-26"><a href="#cb16-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-27"><a href="#cb16-27" aria-hidden="true" tabindex="-1"></a><span class="co"># 计算每条新闻的情感得分（直接复用 4.1 节的函数）</span></span>
+<span id="cb16-28"><a href="#cb16-28" aria-hidden="true" tabindex="-1"></a>results <span class="op">=</span> df_news[<span class="st">"text_clean"</span>].<span class="bu">apply</span>(</span>
+<span id="cb16-29"><a href="#cb16-29" aria-hidden="true" tabindex="-1"></a>    <span class="kw">lambda</span> t: sentiment_score(t, positive_words, negative_words)</span>
+<span id="cb16-30"><a href="#cb16-30" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb16-31"><a href="#cb16-31" aria-hidden="true" tabindex="-1"></a>df_news[<span class="st">"sentiment"</span>] <span class="op">=</span> results.<span class="bu">apply</span>(<span class="kw">lambda</span> x: x[<span class="dv">0</span>])</span>
+<span id="cb16-32"><a href="#cb16-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-33"><a href="#cb16-33" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"情感得分计算完成，共 </span><span class="sc">{</span><span class="bu">len</span>(df_news)<span class="sc">}</span><span class="ss"> 条"</span>)</span>
+<span id="cb16-34"><a href="#cb16-34" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"得分分布：mean=</span><span class="sc">{</span>df_news[<span class="st">'sentiment'</span>]<span class="sc">.</span>mean()<span class="sc">:.3f}</span><span class="ss">, "</span></span>
+<span id="cb16-35"><a href="#cb16-35" aria-hidden="true" tabindex="-1"></a>      <span class="ss">f"min=</span><span class="sc">{</span>df_news[<span class="st">'sentiment'</span>]<span class="sc">.</span><span class="bu">min</span>()<span class="sc">:.3f}</span><span class="ss">, max=</span><span class="sc">{</span>df_news[<span class="st">'sentiment'</span>]<span class="sc">.</span><span class="bu">max</span>()<span class="sc">:.3f}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cell-31" class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.dates <span class="im">as</span> mdates</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>plt.rcParams[<span class="st">"font.family"</span>] <span class="op">=</span> <span class="st">"SimHei"</span></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>plt.rcParams[<span class="st">"axes.unicode_minus"</span>] <span class="op">=</span> <span class="va">False</span></span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a><span class="co"># 按月聚合情感指数：取均值，并统计当月新闻条数（条数越少，指数可信度越低）</span></span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>df_news[<span class="st">"month"</span>] <span class="op">=</span> df_news[<span class="st">"date_std"</span>].dt.to_period(<span class="st">"M"</span>)</span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>monthly <span class="op">=</span> df_news.groupby(<span class="st">"month"</span>).agg(</span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>    sentiment_mean<span class="op">=</span>(<span class="st">"sentiment"</span>, <span class="st">"mean"</span>),</span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a>    sentiment_std<span class="op">=</span>(<span class="st">"sentiment"</span>, <span class="st">"std"</span>),</span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a>    news_count<span class="op">=</span>(<span class="st">"sentiment"</span>, <span class="st">"count"</span>)</span>
+<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a>).reset_index()</span>
+<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a>monthly[<span class="st">"month_dt"</span>] <span class="op">=</span> monthly[<span class="st">"month"</span>].dt.to_timestamp()</span>
+<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a><span class="co"># 绘制情感指数时序图</span></span>
+<span id="cb17-17"><a href="#cb17-17" aria-hidden="true" tabindex="-1"></a>fig, ax1 <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">5</span>))</span>
+<span id="cb17-18"><a href="#cb17-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-19"><a href="#cb17-19" aria-hidden="true" tabindex="-1"></a><span class="co"># 主轴：情感指数折线</span></span>
+<span id="cb17-20"><a href="#cb17-20" aria-hidden="true" tabindex="-1"></a>ax1.plot(monthly[<span class="st">"month_dt"</span>], monthly[<span class="st">"sentiment_mean"</span>],</span>
+<span id="cb17-21"><a href="#cb17-21" aria-hidden="true" tabindex="-1"></a>         marker<span class="op">=</span><span class="st">"o"</span>, color<span class="op">=</span><span class="st">"steelblue"</span>, linewidth<span class="op">=</span><span class="dv">2</span>, label<span class="op">=</span><span class="st">"月均情感得分"</span>)</span>
+<span id="cb17-22"><a href="#cb17-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-23"><a href="#cb17-23" aria-hidden="true" tabindex="-1"></a><span class="co"># 误差带（±1 std）</span></span>
+<span id="cb17-24"><a href="#cb17-24" aria-hidden="true" tabindex="-1"></a>ax1.fill_between(</span>
+<span id="cb17-25"><a href="#cb17-25" aria-hidden="true" tabindex="-1"></a>    monthly[<span class="st">"month_dt"</span>],</span>
+<span id="cb17-26"><a href="#cb17-26" aria-hidden="true" tabindex="-1"></a>    monthly[<span class="st">"sentiment_mean"</span>] <span class="op">-</span> monthly[<span class="st">"sentiment_std"</span>],</span>
+<span id="cb17-27"><a href="#cb17-27" aria-hidden="true" tabindex="-1"></a>    monthly[<span class="st">"sentiment_mean"</span>] <span class="op">+</span> monthly[<span class="st">"sentiment_std"</span>],</span>
+<span id="cb17-28"><a href="#cb17-28" aria-hidden="true" tabindex="-1"></a>    alpha<span class="op">=</span><span class="fl">0.15</span>, color<span class="op">=</span><span class="st">"steelblue"</span>, label<span class="op">=</span><span class="st">"±1 标准差"</span></span>
+<span id="cb17-29"><a href="#cb17-29" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb17-30"><a href="#cb17-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-31"><a href="#cb17-31" aria-hidden="true" tabindex="-1"></a>ax1.axhline(<span class="dv">0</span>, color<span class="op">=</span><span class="st">"black"</span>, linewidth<span class="op">=</span><span class="fl">0.8</span>, linestyle<span class="op">=</span><span class="st">"--"</span>)</span>
+<span id="cb17-32"><a href="#cb17-32" aria-hidden="true" tabindex="-1"></a>ax1.set_ylabel(<span class="st">"情感得分（正=偏正面，负=偏负面）"</span>)</span>
+<span id="cb17-33"><a href="#cb17-33" aria-hidden="true" tabindex="-1"></a>ax1.set_xlabel(<span class="st">"月份"</span>)</span>
+<span id="cb17-34"><a href="#cb17-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-35"><a href="#cb17-35" aria-hidden="true" tabindex="-1"></a><span class="co"># 次轴：新闻条数柱状图</span></span>
+<span id="cb17-36"><a href="#cb17-36" aria-hidden="true" tabindex="-1"></a>ax2 <span class="op">=</span> ax1.twinx()</span>
+<span id="cb17-37"><a href="#cb17-37" aria-hidden="true" tabindex="-1"></a>ax2.bar(monthly[<span class="st">"month_dt"</span>], monthly[<span class="st">"news_count"</span>],</span>
+<span id="cb17-38"><a href="#cb17-38" aria-hidden="true" tabindex="-1"></a>        alpha<span class="op">=</span><span class="fl">0.2</span>, color<span class="op">=</span><span class="st">"grey"</span>, width<span class="op">=</span><span class="dv">20</span>, label<span class="op">=</span><span class="st">"当月新闻数"</span>)</span>
+<span id="cb17-39"><a href="#cb17-39" aria-hidden="true" tabindex="-1"></a>ax2.set_ylabel(<span class="st">"新闻条数"</span>)</span>
+<span id="cb17-40"><a href="#cb17-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-41"><a href="#cb17-41" aria-hidden="true" tabindex="-1"></a><span class="co"># 合并图例</span></span>
+<span id="cb17-42"><a href="#cb17-42" aria-hidden="true" tabindex="-1"></a>lines1, labels1 <span class="op">=</span> ax1.get_legend_handles_labels()</span>
+<span id="cb17-43"><a href="#cb17-43" aria-hidden="true" tabindex="-1"></a>lines2, labels2 <span class="op">=</span> ax2.get_legend_handles_labels()</span>
+<span id="cb17-44"><a href="#cb17-44" aria-hidden="true" tabindex="-1"></a>ax1.legend(lines1 <span class="op">+</span> lines2, labels1 <span class="op">+</span> labels2, loc<span class="op">=</span><span class="st">"upper left"</span>)</span>
+<span id="cb17-45"><a href="#cb17-45" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-46"><a href="#cb17-46" aria-hidden="true" tabindex="-1"></a>ax1.xaxis.set_major_formatter(mdates.DateFormatter(<span class="st">"%Y-%m"</span>))</span>
+<span id="cb17-47"><a href="#cb17-47" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"人民银行新闻月度情感指数（2025.11—2026.03）"</span>)</span>
+<span id="cb17-48"><a href="#cb17-48" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb17-49"><a href="#cb17-49" aria-hidden="true" tabindex="-1"></a>plt.savefig(<span class="st">"Fig/pbc_sentiment_index.png"</span>, dpi<span class="op">=</span><span class="dv">150</span>, bbox_inches<span class="op">=</span><span class="st">"tight"</span>)</span>
+<span id="cb17-50"><a href="#cb17-50" aria-hidden="true" tabindex="-1"></a>plt.show()</span>
+<span id="cb17-51"><a href="#cb17-51" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-52"><a href="#cb17-52" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">月度情感指数汇总："</span>)</span>
+<span id="cb17-53"><a href="#cb17-53" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(monthly[[<span class="st">"month"</span>, <span class="st">"sentiment_mean"</span>, <span class="st">"news_count"</span>]].to_string(index<span class="op">=</span><span class="va">False</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="结果解读与延伸思考" class="level3" data-number="15.6.2">
+<h3 data-number="15.6.2" class="anchored" data-anchor-id="结果解读与延伸思考"><span class="header-section-number">15.6.2</span> 结果解读与延伸思考</h3>
+<p>运行完上面的代码，你会看到一条月度情感指数的时序曲线。有几个问题值得带着数据去思考：</p>
+<ul>
+<li>哪个月的情感指数最高/最低？这与当时的宏观经济背景是否吻合？</li>
+<li>情感指数的变动，是否在央行随后的政策操作（降准、降息等）中得到了印证？</li>
+<li>新闻条数较少的月份（误差带会更宽），情感指数的可信度如何？</li>
+</ul>
+<p>这个分析框架在学术研究中可以直接扩展：</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 扩展思路（不需要当场运行，了解方向即可）</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="co"># 1. 把情感指数与利率数据合并，看领先-滞后关系</span></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a><span class="co"># df_merged = monthly.merge(df_rates, on='month', how='left')</span></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a><span class="co"># df_merged['sentiment_lag1'] = df_merged['sentiment_mean'].shift(1)</span></span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a><span class="co"># 2. Granger 因果检验：情感指数是否 Granger 导致利率变化</span></span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a><span class="co"># from statsmodels.tsa.stattools import grangercausalitytests</span></span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a><span class="co"># grangercausalitytests(df_merged[['rate_change', 'sentiment_mean']], maxlag=3)</span></span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a><span class="co"># 3. 把情感指数作为控制变量纳入资产定价模型</span></span>
+<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a><span class="co"># model = smf.ols('stock_return ~ mkt_rf + smb + hml + sentiment_lag1', data=df).fit()</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+AI 提示词：构建并可视化文本情感时序指数
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>我有一个带日期的中文新闻 DataFrame（<code>date_std</code> 列为标准日期，<code>text_clean</code> 列为清洗后正文），以及正面词表和负面词表。请完成：</p>
+<ol type="1">
+<li>用词典法计算每条新闻的情感得分：<code>(正面词数 - 负面词数) / (正面词数 + 负面词数 + 1)</code></li>
+<li>按月聚合：计算月均情感得分、标准差、当月新闻条数</li>
+<li>绘制时序图：主轴是情感得分折线（含 ±1std 误差带），次轴是当月新闻条数柱状图</li>
+<li>在图上标注情感得分最高和最低的月份</li>
+<li>输出月度汇总表，并用 3-5 句话解读趋势</li>
+</ol>
+<p>要求：图表保存到 <code>Fig/</code> 文件夹，所有代码加中文注释。</p>
+</div>
+</div>
+</section>
+</section>
+<section id="本章小结与练习" class="level2" data-number="15.7">
+<h2 data-number="15.7" class="anchored" data-anchor-id="本章小结与练习"><span class="header-section-number">15.7</span> 本章小结与练习</h2>
+<section id="本章技能清单" class="level3" data-number="15.7.1">
+<h3 data-number="15.7.1" class="anchored" data-anchor-id="本章技能清单"><span class="header-section-number">15.7.1</span> 本章技能清单</h3>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>任务</th>
+<th>工具/方法</th>
+<th>关键注意点</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>词典法情感分析</td>
+<td>自定义词表 + jieba</td>
+<td>处理否定词；词典要针对金融场景</td>
+</tr>
+<tr class="even">
+<td>AI 情感分析</td>
+<td>Anthropic API</td>
+<td>设计好提示词；包含重试逻辑；保存原始输出</td>
+</tr>
+<tr class="odd">
+<td>两种方法对比</td>
+<td>pandas</td>
+<td>先词典法跑全量，再 AI 方法抽查验证</td>
+</tr>
+<tr class="even">
+<td>LDA 主题模型</td>
+<td>gensim</td>
+<td>主题数需要试验；主题必须人工命名</td>
+</tr>
+<tr class="odd">
+<td>LLM 主题分类</td>
+<td>API + 预设主题列表</td>
+<td>记录模型版本；保存原始输出；人工抽查</td>
+</tr>
+<tr class="even">
+<td>情感时序指数</td>
+<td>pandas + matplotlib</td>
+<td>注意样本量少的月份，误差带会变宽</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="两章合在一起的完整工作流" class="level3" data-number="15.7.2">
+<h3 data-number="15.7.2" class="anchored" data-anchor-id="两章合在一起的完整工作流"><span class="header-section-number">15.7.2</span> 两章合在一起的完整工作流</h3>
+<p><span class="math display">\[
+\underbrace{\text{读取} \to \text{清洗} \to \text{分词} \to \text{词频/TF-IDF}}_{\text{第 3 章：文本变成数据}}
+\quad\longrightarrow\quad
+\underbrace{\text{情感分析} \to \text{主题提取} \to \text{指标构造} \to \text{纳入分析}}_{\text{第 4 章：数据变成洞察}}
+\]</span></p>
+<p>这两章合在一起，构成了一套完整的中文金融文本分析流水线。学完之后，你应该能够独立完成从「一批原始文本」到「可以进入回归分析的文本指标」的全过程。</p>
+</section>
+<section id="下一章预告" class="level3" data-number="15.7.3">
+<h3 data-number="15.7.3" class="anchored" data-anchor-id="下一章预告"><span class="header-section-number">15.7.3</span> 下一章预告</h3>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>下一章：网络爬虫</strong></p>
+<p>本章和上一章使用的数据，是已经整理好的 120 条新闻和 185 条问答。但如果你想分析过去 5 年所有的人民银行沟通文本，或者某行业所有上市公司的年报，这些数据需要自动化地从网页上采集。</p>
+<p>下一章将介绍网络爬虫的基本原理和实现，采集目标正是本章和上一章的数据来源——人民银行官网和巨潮资讯网。你会看到这两章的分析方法，在有了更大规模的数据之后，能发现哪些更有价值的规律。</p>
+</div>
+</div>
+</section>
+<section id="课后练习" class="level3" data-number="15.7.4">
+<h3 data-number="15.7.4" class="anchored" data-anchor-id="课后练习"><span class="header-section-number">15.7.4</span> 课后练习</h3>
+<ol type="1">
+<li><p>用本章的词典法，对 <code>pbc_qa_raw.csv</code> 里的答记者问计算情感得分。按年份分组，观察人民银行问答语气的年度变化趋势，并结合当年的货币政策背景（降准/加息时期）解读结果。</p></li>
+<li><p>修改情感词典：在 <code>positive_words.txt</code> 和 <code>negative_words.txt</code> 中各补充 5 个你认为在金融语境中重要的词，重新计算研报情感得分，对比修改前后准确率的变化。</p></li>
+<li><p>对 15 条模拟研报，用 AI 方法进行主题分类（从「公司基本面」「行业前景」「估值分析」「评级变化」中选择），统计各主题的分布，并与你自己阅读后的判断对比。</p></li>
+<li><p>用 gensim 对 <code>pbc_qa_raw.csv</code> 做 LDA，分别试验 3、5、7 个主题，比较各个主题数下的 Top 词，判断哪个数量的主题分割最合理，并为每个主题命名。</p></li>
+<li><p><strong>进阶练习</strong>：把月度情感指数与同期的 10 年期国债收益率（或 DR007 利率）数据合并，画散点图观察两者的关系。尝试用滞后一期的情感指数解释当期利率变化，讨论这个关系在经济上是否有意义。</p></li>
+</ol>
+<hr>
+</section>
+</section>
+<section id="参考文献" class="level2" data-number="15.8">
+<h2 data-number="15.8" class="anchored" data-anchor-id="参考文献"><span class="header-section-number">15.8</span> 参考文献</h2>
+<ul>
+<li>Loughran, T., &amp; McDonald, B. (2011). When is a liability not a liability? Textual analysis, dictionaries, and 10-Ks. <em>The Journal of Finance</em>, 66(1), 35–65.</li>
+<li>Blei, D. M., Ng, A. Y., &amp; Jordan, M. I. (2003). Latent Dirichlet allocation. <em>Journal of Machine Learning Research</em>, 3, 993–1022.</li>
+<li>Hansen, S., McMahon, M., &amp; Prat, A. (2018). Transparency and deliberation within the FOMC: A computational linguistics approach. <em>Quarterly Journal of Economics</em>, 133(2), 801–870.</li>
+<li>Hoberg, G., &amp; Phillips, G. (2016). Text-based network industries and endogenous product differentiation. <em>Journal of Political Economy</em>, 124(5), 1423–1465.</li>
+<li>Schmeling, M., &amp; Wagner, C. (2019). Does central bank tone move asset prices? <em>SSRN Working Paper</em>.</li>
+</ul>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const disableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'prefetch';
+    }
+  }
+  const enableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'stylesheet';
+    }
+  }
+  const manageTransitions = (selector, allowTransitions) => {
+    const els = window.document.querySelectorAll(selector);
+    for (let i=0; i < els.length; i++) {
+      const el = els[i];
+      if (allowTransitions) {
+        el.classList.remove('notransition');
+      } else {
+        el.classList.add('notransition');
+      }
+    }
+  }
+  const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+    const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+    const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+    let newTheme = '';
+    if(darkModeDefault) {
+      newTheme = isAlternate ? baseTheme : alternateTheme;
+    } else {
+      newTheme = isAlternate ? alternateTheme : baseTheme;
+    }
+    const changeGiscusTheme = () => {
+      // From: https://github.com/giscus/giscus/issues/336
+      const sendMessage = (message) => {
+        const iframe = document.querySelector('iframe.giscus-frame');
+        if (!iframe) return;
+        iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+      }
+      sendMessage({
+        setConfig: {
+          theme: newTheme
+        }
+      });
+    }
+    const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+    if (isGiscussLoaded) {
+      changeGiscusTheme();
+    }
+  }
+  const toggleColorMode = (alternate) => {
+    // Switch the stylesheets
+    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+    manageTransitions('#quarto-margin-sidebar .nav-link', false);
+    if (alternate) {
+      enableStylesheet(alternateStylesheets);
+      for (const sheetNode of alternateStylesheets) {
+        if (sheetNode.id === "quarto-bootstrap") {
+          toggleBodyColorMode(sheetNode);
+        }
+      }
+    } else {
+      disableStylesheet(alternateStylesheets);
+      toggleBodyColorPrimary();
+    }
+    manageTransitions('#quarto-margin-sidebar .nav-link', true);
+    // Switch the toggles
+    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+    for (let i=0; i < toggles.length; i++) {
+      const toggle = toggles[i];
+      if (toggle) {
+        if (alternate) {
+          toggle.classList.add("alternate");     
+        } else {
+          toggle.classList.remove("alternate");
+        }
+      }
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455)
+    if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+      manageTransitions("body", false);
+      window.scrollTo(0, 1);
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        manageTransitions("body", true);
+      }, 40);  
+    }
+  }
+  const isFileUrl = () => { 
+    return window.location.protocol === 'file:';
+  }
+  const hasAlternateSentinel = () => {  
+    let styleSentinel = getColorSchemeSentinel();
+    if (styleSentinel !== null) {
+      return styleSentinel === "alternate";
+    } else {
+      return false;
+    }
+  }
+  const setStyleSentinel = (alternate) => {
+    const value = alternate ? "alternate" : "default";
+    if (!isFileUrl()) {
+      window.localStorage.setItem("quarto-color-scheme", value);
+    } else {
+      localAlternateSentinel = value;
+    }
+  }
+  const getColorSchemeSentinel = () => {
+    if (!isFileUrl()) {
+      const storageValue = window.localStorage.getItem("quarto-color-scheme");
+      return storageValue != null ? storageValue : localAlternateSentinel;
+    } else {
+      return localAlternateSentinel;
+    }
+  }
+  const darkModeDefault = false;
+  let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+  // Dark / light mode switch
+  window.quartoToggleColorScheme = () => {
+    // Read the current dark / light value 
+    let toAlternate = !hasAlternateSentinel();
+    toggleColorMode(toAlternate);
+    setStyleSentinel(toAlternate);
+    toggleGiscusIfUsed(toAlternate, darkModeDefault);
+  };
+  // Ensure there is a toggle, if there isn't float one in the top right
+  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+    const a = window.document.createElement('a');
+    a.classList.add('top-right');
+    a.classList.add('quarto-color-scheme-toggle');
+    a.href = "";
+    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+    const i = window.document.createElement("i");
+    i.classList.add('bi');
+    a.appendChild(i);
+    window.document.body.appendChild(a);
+  }
+  // Switch to dark mode if need be
+  if (hasAlternateSentinel()) {
+    toggleColorMode(true);
+  } else {
+    toggleColorMode(false);
+  }
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp("https:\/\/lianxhcn\.github\.io\/dsfin\/");
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+          // target, if specified
+          link.setAttribute("target", "_blank");
+          if (link.getAttribute("rel") === null) {
+            link.setAttribute("rel", "noopener");
+          }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../../Lecture/text_analysis/lecture_text_analysis_01_claude.html" class="pagination-link" aria-label="文本数据处理基础">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">文本数据处理基础</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../../appendix_python/index.html" class="pagination-link" aria-label="概览">
+        <span class="nav-page-text">概览</span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+      &nbsp;
+    </div>   
+    <div class="nav-footer-center">
+<p><a href="https://www.lianxh.cn">lianxh.cn</a></p>
+</div>
+    <div class="nav-footer-right">
+<p>Support: <a href="https://lianxhcn.github.io/quarto_book/">Quarto</a></p>
+</div>
+  </div>
+</footer>
+
+
+
+
+</body></html>

@@ -1,0 +1,2277 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.6.39">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>11&nbsp; 金融文本分析（上）——从文本到结构化数据 – 金融数据分析与建模</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../Lecture/text_analysis/lecture_text_02_ailn.html" rel="next">
+<link href="../../Lecture/crawing/craw_02_sec02_lingnan_dialog.html" rel="prev">
+<link href="../../images/book-logo.png" rel="icon" type="image/png">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-e8fb9d25728d58bfeac61b497e4a6629.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark-57a92833092fd6dc0d7710b6bdfff9c5.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-7ef202e96c563d31d9e5226e4d6cabf9.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark-490ba4e843cb1303a232ed0c676384f2.min.css" rel="prefetch" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../Lecture/text_analysis/lecture_text_01_ailn.html"><strong>文本分析</strong></a></li><li class="breadcrumb-item"><a href="../../Lecture/text_analysis/lecture_text_01_ailn.html"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">金融文本分析（上）——从文本到结构化数据</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header sidebar-header-stacked">
+      <a href="https://lianxhcn.github.io/dsfin/" class="sidebar-logo-link">
+      <img src="../../images/book-logo.png" alt="" class="sidebar-logo py-0 d-lg-inline d-none">
+      </a>
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../../">DS Finance</a> 
+        <div class="sidebar-tools-main tools-wide">
+    <a href="https://github.com/lianxhcn/dsfin" title="" class="quarto-navigation-tool px-1" aria-label=""><i class="bi bi-github"></i></a>
+    <a href="https://www.lianxh.cn" title="" class="quarto-navigation-tool px-1" aria-label=""><i class="bi bi-house-fill"></i></a>
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">封面</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/00_intro.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">📚课程资料</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/01_homework.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">🚀作业</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text"><strong>环境配置</strong></span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/00-setup/01_00_coding_with_AI.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">借助 AI 写代码</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/00-setup/01_01_install_anaconda.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Python：安装和环境配置</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/00-setup/01_02_jupyter_notebook.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Jupyter Notebook 的使用</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/00-setup/01_03_install_FAQs.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Python 安装常见问题</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/00-setup/01_04_markdown.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Markdown</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
+ <span class="menu-text"><strong>数据分析</strong></span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/data_get_data/lecture_get_data.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">金融数据获取</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/data_clean/lecture_data_clean.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">数据清洗</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true">
+ <span class="menu-text"><strong>数据爬取</strong></span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/crawing/craw_01_introduction.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">网络爬虫简介</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/crawing/craw_02_sec01_lingnan_prompt.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">实例-提示词模式：爬取岭南学院教师名录</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/crawing/craw_02_sec02_lingnan_dialog.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">实例-对话模式：爬取岭南学院教师名录</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true">
+ <span class="menu-text"><strong>文本分析</strong></span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/text_analysis/lecture_text_01_ailn.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">金融文本分析（上）——从文本到结构化数据</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/text_analysis/lecture_text_02_ailn.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">金融文本分析（下）——情感分析与文本建模</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/text_analysis/lecture_text_analysis_01_claude.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">文本数据处理基础</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/text_analysis/lecture_text_analysis_02_claude.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">文本分析：情感分析与主题建模</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true">
+ <span class="menu-text"><strong>附录：Python 提示词</strong></span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../appendix_python/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">概览</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../appendix_python/a1_setup.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">A1. 环境配置</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../appendix_python/a2_project.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">A2. 项目规划与版本控制</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../appendix_python/a3_concepts.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">A3. 提示词核心词汇</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../appendix_python/a4_data.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">A4. 数据获取与清洗</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../appendix_python/a5_visualization.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">A5. 数据可视化</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../appendix_python/a6_modeling.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">A6. 统计建模</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../appendix_python/a7_results.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">A7. 结果呈现与表格美化</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../appendix_python/a8_workflow.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">A8. 上下文管理与调试</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#为什么金融分析师需要文本分析" id="toc-为什么金融分析师需要文本分析" class="nav-link active" data-scroll-target="#为什么金融分析师需要文本分析"><span class="header-section-number">11.1</span> 为什么金融分析师需要文本分析？</a>
+  <ul class="collapse">
+  <li><a href="#案例一一词之差债市震动" id="toc-案例一一词之差债市震动" class="nav-link" data-scroll-target="#案例一一词之差债市震动"><span class="header-section-number">11.1.1</span> 案例一：一词之差，债市震动</a></li>
+  <li><a href="#案例二公告语气与股价异动" id="toc-案例二公告语气与股价异动" class="nav-link" data-scroll-target="#案例二公告语气与股价异动"><span class="header-section-number">11.1.2</span> 案例二：公告语气与股价异动</a></li>
+  <li><a href="#本章与前后章节的关系" id="toc-本章与前后章节的关系" class="nav-link" data-scroll-target="#本章与前后章节的关系"><span class="header-section-number">11.1.3</span> 本章与前后章节的关系</a></li>
+  </ul></li>
+  <li><a href="#金融文本数据概览" id="toc-金融文本数据概览" class="nav-link" data-scroll-target="#金融文本数据概览"><span class="header-section-number">11.2</span> 金融文本数据概览</a>
+  <ul class="collapse">
+  <li><a href="#金融领域的常见文本数据源" id="toc-金融领域的常见文本数据源" class="nav-link" data-scroll-target="#金融领域的常见文本数据源"><span class="header-section-number">11.2.1</span> 金融领域的常见文本数据源</a></li>
+  <li><a href="#本章使用的文本素材" id="toc-本章使用的文本素材" class="nav-link" data-scroll-target="#本章使用的文本素材"><span class="header-section-number">11.2.2</span> 本章使用的文本素材</a></li>
+  <li><a href="#从一条到一万条思维的升级" id="toc-从一条到一万条思维的升级" class="nav-link" data-scroll-target="#从一条到一万条思维的升级"><span class="header-section-number">11.2.3</span> 从一条到一万条：思维的升级</a></li>
+  </ul></li>
+  <li><a href="#中文文本预处理" id="toc-中文文本预处理" class="nav-link" data-scroll-target="#中文文本预处理"><span class="header-section-number">11.3</span> 中文文本预处理</a>
+  <ul class="collapse">
+  <li><a href="#为什么中文文本需要特殊处理" id="toc-为什么中文文本需要特殊处理" class="nav-link" data-scroll-target="#为什么中文文本需要特殊处理"><span class="header-section-number">11.3.1</span> 为什么中文文本需要特殊处理？</a></li>
+  <li><a href="#分词jieba-库" id="toc-分词jieba-库" class="nav-link" data-scroll-target="#分词jieba-库"><span class="header-section-number">11.3.2</span> 分词：jieba 库</a></li>
+  <li><a href="#自定义词典让分词工具认识金融术语" id="toc-自定义词典让分词工具认识金融术语" class="nav-link" data-scroll-target="#自定义词典让分词工具认识金融术语"><span class="header-section-number">11.3.3</span> 自定义词典：让分词工具认识金融术语</a></li>
+  <li><a href="#停用词过滤" id="toc-停用词过滤" class="nav-link" data-scroll-target="#停用词过滤"><span class="header-section-number">11.3.4</span> 停用词过滤</a></li>
+  <li><a href="#文本清洗-pipeline" id="toc-文本清洗-pipeline" class="nav-link" data-scroll-target="#文本清洗-pipeline"><span class="header-section-number">11.3.5</span> 文本清洗 pipeline</a></li>
+  <li><a href="#封装完整的预处理函数" id="toc-封装完整的预处理函数" class="nav-link" data-scroll-target="#封装完整的预处理函数"><span class="header-section-number">11.3.6</span> 封装完整的预处理函数</a></li>
+  </ul></li>
+  <li><a href="#文本信息提取" id="toc-文本信息提取" class="nav-link" data-scroll-target="#文本信息提取"><span class="header-section-number">11.4</span> 文本信息提取</a>
+  <ul class="collapse">
+  <li><a href="#正则表达式规则明确时的首选" id="toc-正则表达式规则明确时的首选" class="nav-link" data-scroll-target="#正则表达式规则明确时的首选"><span class="header-section-number">11.4.1</span> 正则表达式：规则明确时的首选</a></li>
+  <li><a href="#大语言模型llm提取复杂文本的利器" id="toc-大语言模型llm提取复杂文本的利器" class="nav-link" data-scroll-target="#大语言模型llm提取复杂文本的利器"><span class="header-section-number">11.4.2</span> 大语言模型（LLM）提取：复杂文本的利器</a></li>
+  <li><a href="#正则-vs-llm什么时候用哪个" id="toc-正则-vs-llm什么时候用哪个" class="nav-link" data-scroll-target="#正则-vs-llm什么时候用哪个"><span class="header-section-number">11.4.3</span> 正则 vs LLM：什么时候用哪个？</a></li>
+  </ul></li>
+  <li><a href="#词频统计与关键词分析" id="toc-词频统计与关键词分析" class="nav-link" data-scroll-target="#词频统计与关键词分析"><span class="header-section-number">11.5</span> 词频统计与关键词分析</a>
+  <ul class="collapse">
+  <li><a href="#词频统计最直接的文本画像" id="toc-词频统计最直接的文本画像" class="nav-link" data-scroll-target="#词频统计最直接的文本画像"><span class="header-section-number">11.5.1</span> 词频统计：最直接的文本画像</a></li>
+  <li><a href="#tf-idf找到真正重要的词" id="toc-tf-idf找到真正重要的词" class="nav-link" data-scroll-target="#tf-idf找到真正重要的词"><span class="header-section-number">11.5.2</span> TF-IDF：找到”真正重要”的词</a></li>
+  </ul></li>
+  <li><a href="#综合案例从-50-条借贷公告到结构化贷款数据表" id="toc-综合案例从-50-条借贷公告到结构化贷款数据表" class="nav-link" data-scroll-target="#综合案例从-50-条借贷公告到结构化贷款数据表"><span class="header-section-number">11.6</span> 综合案例：从 50 条借贷公告到结构化贷款数据表</a>
+  <ul class="collapse">
+  <li><a href="#数据来源" id="toc-数据来源" class="nav-link" data-scroll-target="#数据来源"><span class="header-section-number">11.6.1</span> 数据来源</a></li>
+  <li><a href="#step-1批量读取与文本清洗" id="toc-step-1批量读取与文本清洗" class="nav-link" data-scroll-target="#step-1批量读取与文本清洗"><span class="header-section-number">11.6.2</span> Step 1：批量读取与文本清洗</a></li>
+  <li><a href="#step-2正则提取可直接匹配的字段" id="toc-step-2正则提取可直接匹配的字段" class="nav-link" data-scroll-target="#step-2正则提取可直接匹配的字段"><span class="header-section-number">11.6.3</span> Step 2：正则提取（可直接匹配的字段）</a></li>
+  <li><a href="#step-3llm-补充提取" id="toc-step-3llm-补充提取" class="nav-link" data-scroll-target="#step-3llm-补充提取"><span class="header-section-number">11.6.4</span> Step 3：LLM 补充提取</a></li>
+  <li><a href="#step-4结果验证与清洗" id="toc-step-4结果验证与清洗" class="nav-link" data-scroll-target="#step-4结果验证与清洗"><span class="header-section-number">11.6.5</span> Step 4：结果验证与清洗</a></li>
+  <li><a href="#step-5聚合为公司-年层面" id="toc-step-5聚合为公司-年层面" class="nav-link" data-scroll-target="#step-5聚合为公司-年层面"><span class="header-section-number">11.6.6</span> Step 5：聚合为公司-年层面</a></li>
+  <li><a href="#step-6输出" id="toc-step-6输出" class="nav-link" data-scroll-target="#step-6输出"><span class="header-section-number">11.6.7</span> Step 6：输出</a></li>
+  </ul></li>
+  <li><a href="#本章小结" id="toc-本章小结" class="nav-link" data-scroll-target="#本章小结"><span class="header-section-number">11.7</span> 本章小结</a>
+  <ul class="collapse">
+  <li><a href="#章末练习" id="toc-章末练习" class="nav-link" data-scroll-target="#章末练习"><span class="header-section-number">11.7.1</span> 章末练习</a></li>
+  <li><a href="#参考文献" id="toc-参考文献" class="nav-link" data-scroll-target="#参考文献"><span class="header-section-number">11.7.2</span> 参考文献</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../Lecture/text_analysis/lecture_text_01_ailn.html"><strong>文本分析</strong></a></li><li class="breadcrumb-item"><a href="../../Lecture/text_analysis/lecture_text_01_ailn.html"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">金融文本分析（上）——从文本到结构化数据</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">金融文本分析（上）——从文本到结构化数据</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<blockquote class="blockquote">
+<p>AI 对话：<a href="https://ailingnan.top/s/69a071b4-42f0-4b36-aaf9-50a5a29493b9">ailingnan.top</a></p>
+</blockquote>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+本章目标
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ol type="1">
+<li><strong>理解</strong>金融领域文本数据的来源、类型和分析价值</li>
+<li><strong>掌握</strong>中文文本预处理的完整流程：分词、停用词过滤、文本清洗</li>
+<li><strong>学会</strong>从金融文本中提取结构化信息：正则表达式和大语言模型两种路径</li>
+<li><strong>能够</strong>对金融文本进行词频统计和 TF-IDF 关键词分析</li>
+<li><strong>完成</strong>一个综合案例：从 50 条借贷公告批量提取结构化贷款数据</li>
+</ol>
+<p>本章的所有操作围绕一个核心任务：<strong>把非结构化的金融文本，转化为可以纳入量化分析框架的结构化数据。</strong></p>
+</div>
+</div>
+<hr>
+<section id="为什么金融分析师需要文本分析" class="level2" data-number="11.1">
+<h2 data-number="11.1" class="anchored" data-anchor-id="为什么金融分析师需要文本分析"><span class="header-section-number">11.1</span> 为什么金融分析师需要文本分析？</h2>
+<p>在数据清洗一章中，我们已经接触过非结构化数据：Announcement 表中的借贷公告文本，需要从中提取贷款金额、利率、银行名称等字段，才能纳入回归分析 [1]。当时我们只处理了一条公告，用一个提示词就解决了问题。</p>
+<p>但现实中的情况远比这复杂。一家上市公司一年可能发布上百条公告，A 股市场每天产生数千条公告和数万条财经新闻，央行每个季度发布一份长达数万字的货币政策执行报告。<strong>金融市场中超过 80% 的信息以文本形式存在</strong>——公告、研报、新闻、社交媒体、监管问询函、财报电话会议纪要——而这些文本信息的时效性远高于结构化的财务报表（公告当天发布 vs 季报滞后 1-4 个月）。</p>
+<p>这意味着，如果你只会处理结构化数据，就只能利用金融市场中不到 20% 的信息。</p>
+<section id="案例一一词之差债市震动" class="level3 callout-example" data-number="11.1.1">
+<h3 data-number="11.1.1" class="anchored" data-anchor-id="案例一一词之差债市震动"><span class="header-section-number">11.1.1</span> 案例一：一词之差，债市震动</h3>
+<p>央行每个季度发布的《货币政策执行报告》是债券市场最重要的政策信号之一。2016 年四季度报告中，央行将此前一直使用的”保持流动性<strong>合理充裕</strong>”改为”维护流动性<strong>基本稳定</strong>”——仅仅四个字的变化，债券市场当日大幅调整，十年期国债收益率上行超过 10 个基点。</p>
+<p>原因很简单：“合理充裕”意味着央行会主动投放流动性，而”基本稳定”则暗示央行可能减少投放甚至边际收紧。对于每天盯着央行措辞的债券交易员来说，这四个字传递的信息量，不亚于一次加息。</p>
+<p><strong>启示：</strong> 如果能用程序系统性地追踪央行报告的措辞变化，就有可能比手动阅读更快、更全面地捕捉政策信号。这正是文本分析的用武之地。</p>
+</section>
+<section id="案例二公告语气与股价异动" class="level3 callout-example" data-number="11.1.2">
+<h3 data-number="11.1.2" class="anchored" data-anchor-id="案例二公告语气与股价异动"><span class="header-section-number">11.1.2</span> 案例二：公告语气与股价异动</h3>
+<p>同一家上市公司的两份年报，一份写”公司经营稳健，业绩持续增长，市场前景广阔”，另一份写”公司面临较大挑战，行业竞争加剧，盈利能力承压”——即便两年的财务数据差距不大，市场对两份年报的反应也可能截然不同。</p>
+<p>学术研究早已证实这一点。Loughran and McDonald（2011）对美国上市公司 10-K 年报的文本分析发现，年报中负面词汇的比例能够显著预测未来的股票收益率和盈利波动，且这种预测力独立于传统的财务指标。换句话说，<strong>文本中包含的信息，是财务报表无法完全替代的</strong>。</p>
+<p><strong>启示：</strong> 如果能量化文本的”语气”或”情感”，并将其作为变量纳入分析模型，就能捕捉到传统财务分析遗漏的信息。</p>
+</section>
+<section id="本章与前后章节的关系" class="level3" data-number="11.1.3">
+<h3 data-number="11.1.3" class="anchored" data-anchor-id="本章与前后章节的关系"><span class="header-section-number">11.1.3</span> 本章与前后章节的关系</h3>
+<p>本章的内容衔接了数据清洗章和后续的文本建模章：</p>
+<ul>
+<li><strong>向前衔接数据清洗章 [1]</strong>：数据清洗章介绍了”非结构化数据的结构化转换”的基本思路——从一条公告中提取字段。本章将这个思路扩展到<strong>批量处理</strong>，并引入系统性的文本预处理方法。</li>
+<li><strong>向前衔接爬虫章</strong>：本章使用的文本数据（借贷公告、问询函等）来自爬虫章获取的原始文件。如果你跳过了爬虫章，可以直接从课程 GitHub 仓库下载预处理好的文本数据包。</li>
+<li><strong>向后衔接下一章（文本建模）</strong>：本章的输出——预处理后的分词文本和 TF-IDF 特征——将直接成为下一章情感分析和文本分类的输入。</li>
+</ul>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+数据来源说明
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>本章使用的文本数据来自爬虫章的网络爬虫实操。如果你跳过了爬虫章，可以直接从课程 GitHub 仓库下载：</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> urllib.request</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>url <span class="op">=</span> <span class="st">"https://raw.githubusercontent.com/lianxhcn/dsfin/main/data/text_samples.zip"</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>urllib.request.urlretrieve(url, <span class="st">"data_raw/text_samples.zip"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+<hr>
+</section>
+</section>
+<section id="金融文本数据概览" class="level2" data-number="11.2">
+<h2 data-number="11.2" class="anchored" data-anchor-id="金融文本数据概览"><span class="header-section-number">11.2</span> 金融文本数据概览</h2>
+<section id="金融领域的常见文本数据源" class="level3" data-number="11.2.1">
+<h3 data-number="11.2.1" class="anchored" data-anchor-id="金融领域的常见文本数据源"><span class="header-section-number">11.2.1</span> 金融领域的常见文本数据源</h3>
+<p>在动手处理之前，先要知道金融领域有哪些文本数据可用。下表按数据来源、更新频率和典型应用场景做了归纳：</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 23%">
+<col style="width: 26%">
+<col style="width: 16%">
+<col style="width: 32%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>文本类型</th>
+<th>典型来源</th>
+<th>更新频率</th>
+<th>典型应用场景</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>上市公司公告</td>
+<td>巨潮资讯、CSMAR</td>
+<td>事件驱动</td>
+<td>信息提取、事件研究</td>
+</tr>
+<tr class="even">
+<td>年报 MD&amp;A</td>
+<td>巨潮资讯、CSMAR</td>
+<td>年度</td>
+<td>语气分析、风险披露度量</td>
+</tr>
+<tr class="odd">
+<td>分析师研报</td>
+<td>Wind、东方财富</td>
+<td>不定期</td>
+<td>情感分析、一致预期</td>
+</tr>
+<tr class="even">
+<td>财经新闻</td>
+<td>新浪财经、东方财富</td>
+<td>日度/实时</td>
+<td>市场情绪指数</td>
+</tr>
+<tr class="odd">
+<td>央行/监管文件</td>
+<td>央行官网、交易所</td>
+<td>季度/不定期</td>
+<td>政策语气分析</td>
+</tr>
+<tr class="even">
+<td>交易所问询函</td>
+<td>沪深交易所官网</td>
+<td>事件驱动</td>
+<td>监管强度度量、信披质量</td>
+</tr>
+<tr class="odd">
+<td>社交媒体</td>
+<td>雪球、东方财富股吧</td>
+<td>实时</td>
+<td>散户情绪</td>
+</tr>
+<tr class="even">
+<td>财报电话会议纪要</td>
+<td>Wind</td>
+<td>季度</td>
+<td>管理层语气、信息含量</td>
+</tr>
+</tbody>
+</table>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+提示词：查找特定类型的金融文本数据
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>我正在做一个关于 <code>[研究主题，如：上市公司借贷成本]</code> 的分析项目。 请帮我梳理可以获取的相关文本数据类型，包括： 1. 可能包含有用信息的文本类型（如公告、研报、新闻等） 2. 每种文本的主要获取渠道（网站名称和 URL） 3. 是否可以通过 Python 批量获取（akshare 接口 / 爬虫 / 手动下载） 4. 每种文本的数据量级估计（每年大约多少条/份）</p>
+<p>请以表格形式输出。</p>
+</div>
+</div>
+</section>
+<section id="本章使用的文本素材" class="level3" data-number="11.2.2">
+<h3 data-number="11.2.2" class="anchored" data-anchor-id="本章使用的文本素材"><span class="header-section-number">11.2.2</span> 本章使用的文本素材</h3>
+<p>为了让后续各节的示例清晰可控，我们准备了以下几类文本素材。其中借贷公告和财经新闻是虚构的（与数据清洗章虚构 BasicInf、FinRatio 数据的逻辑一致 [1]——刻意植入特定问题，演示如何识别和解决），央行报告和年报 MD&amp;A 片段则基于真实文本的风格仿写。</p>
+<p><strong>素材①：上市公司借贷公告（8 条）</strong></p>
+<p>这 8 条公告延续了数据清洗章 Announcement 的场景 [1]，刻意设计了不同的变体——利率表述不同（“年化”“年息”“LPR 浮动”）、金额单位混用（亿元/万元）、银行名称有全称有简称、部分公告含 HTML 标签噪音、一条公告包含两笔贷款、以及一条精确重复。</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 8 条借贷公告文本</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>announcements <span class="op">=</span> [</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 公告1: 标准格式(基准样本, 与数据清洗章一致)</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">"本公司于2023年6月1日，与中国建设银行股份有限公司深圳市分行签署贷款协议，"</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"贷款金额为2亿元，期限3年，利率为年化4.20%。"</span>,</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 公告2: 利率表述变体 + 银行简称</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">"本公司于2023年8月15日与工行广东省分行签订借款合同，"</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">"借款金额15000万元，借款期限5年，年息4.50%。"</span>,</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 公告3: LPR浮动利率(正则无法直接提取)</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>    <span class="st">"2022年3月10日，本公司与中国银行总行签署流动资金贷款协议。"</span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>    <span class="st">"贷款金额人民币5亿元整，期限36个月，"</span></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>    <span class="st">"执行利率为一年期贷款市场报价利率（LPR）加80个基点。"</span>,</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 公告4: 含HTML标签和全角字符(脏文本)</span></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>    <span class="st">"&lt;p&gt;本公司于２０２３年１１月２０日与中国农业银行股份有限公司珠海分行签署"</span></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>    <span class="st">"贷款合同，贷款金额为人民币&lt;b&gt;8000万元&lt;/b&gt;，贷款期限为２年，"</span></span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>    <span class="st">"贷款年利率为４.６０%。&lt;/p&gt;"</span>,</span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 公告5: 期限用"月"表示</span></span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>    <span class="st">"中国石化于2023年9月5日与交通银行股份有限公司上海市分行"</span></span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>    <span class="st">"签订借款合同。本次借款金额为20000万元，借款期限18个月，"</span></span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>    <span class="st">"利率为年化3.85%。"</span>,</span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 公告6: 信息不完整(利率未确定)</span></span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>    <span class="st">"本公司于2022年12月8日与招商银行总行营业部签署综合授信协议，"</span></span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a>    <span class="st">"获得授信额度人民币10亿元，期限2年。"</span></span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a>    <span class="st">"具体贷款利率将根据届时市场情况另行确定。"</span>,</span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 公告7: 一条公告含两笔贷款</span></span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a>    <span class="st">"万科企业股份有限公司于2023年4月分别与两家银行签署贷款协议："</span></span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a>    <span class="st">"（1）与中国建设银行股份有限公司深圳市分行签署贷款协议，"</span></span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a>    <span class="st">"金额3亿元，期限5年，利率年化4.10%；"</span></span>
+<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a>    <span class="st">"（2）与中信银行股份有限公司深圳分行签署贷款协议，"</span></span>
+<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a>    <span class="st">"金额2亿元，期限3年，利率年化4.35%。"</span>,</span>
+<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 公告8: 与公告1完全重复(模拟爬虫重复抓取)</span></span>
+<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a>    <span class="st">"本公司于2023年6月1日，与中国建设银行股份有限公司深圳市分行签署贷款协议，"</span></span>
+<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a>    <span class="st">"贷款金额为2亿元，期限3年，利率为年化4.20%。"</span>,</span>
+<span id="cb2-41"><a href="#cb2-41" aria-hidden="true" tabindex="-1"></a>]</span>
+<span id="cb2-42"><a href="#cb2-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-43"><a href="#cb2-43" aria-hidden="true" tabindex="-1"></a><span class="co"># 对应的公司代码和年份</span></span>
+<span id="cb2-44"><a href="#cb2-44" aria-hidden="true" tabindex="-1"></a>ann_meta <span class="op">=</span> [</span>
+<span id="cb2-45"><a href="#cb2-45" aria-hidden="true" tabindex="-1"></a>    {<span class="st">"stkcd"</span>: <span class="st">"000001"</span>, <span class="st">"year"</span>: <span class="dv">2023</span>},</span>
+<span id="cb2-46"><a href="#cb2-46" aria-hidden="true" tabindex="-1"></a>    {<span class="st">"stkcd"</span>: <span class="st">"000001"</span>, <span class="st">"year"</span>: <span class="dv">2023</span>},</span>
+<span id="cb2-47"><a href="#cb2-47" aria-hidden="true" tabindex="-1"></a>    {<span class="st">"stkcd"</span>: <span class="st">"000002"</span>, <span class="st">"year"</span>: <span class="dv">2022</span>},</span>
+<span id="cb2-48"><a href="#cb2-48" aria-hidden="true" tabindex="-1"></a>    {<span class="st">"stkcd"</span>: <span class="st">"000063"</span>, <span class="st">"year"</span>: <span class="dv">2023</span>},</span>
+<span id="cb2-49"><a href="#cb2-49" aria-hidden="true" tabindex="-1"></a>    {<span class="st">"stkcd"</span>: <span class="st">"600028"</span>, <span class="st">"year"</span>: <span class="dv">2023</span>},</span>
+<span id="cb2-50"><a href="#cb2-50" aria-hidden="true" tabindex="-1"></a>    {<span class="st">"stkcd"</span>: <span class="st">"600036"</span>, <span class="st">"year"</span>: <span class="dv">2022</span>},</span>
+<span id="cb2-51"><a href="#cb2-51" aria-hidden="true" tabindex="-1"></a>    {<span class="st">"stkcd"</span>: <span class="st">"000002"</span>, <span class="st">"year"</span>: <span class="dv">2023</span>},</span>
+<span id="cb2-52"><a href="#cb2-52" aria-hidden="true" tabindex="-1"></a>    {<span class="st">"stkcd"</span>: <span class="st">"000001"</span>, <span class="st">"year"</span>: <span class="dv">2023</span>},  <span class="co"># 精确重复</span></span>
+<span id="cb2-53"><a href="#cb2-53" aria-hidden="true" tabindex="-1"></a>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><strong>素材④：财经新闻（6 条）</strong></p>
+<p>6 条新闻覆盖从明确正面到明确负面的完整情感光谱，其中第 3、4 条刻意包含了在金融语境下容易被误判的”歧义词”（如”不良率下降”中的”不良”和”下降”、“财务费用增长”中的”增长”），第 5 条则是正面政策信号与负面经济暗示并存的混合情感文本。这些素材将在下一章的情感分析中发挥核心作用。</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>news_list <span class="op">=</span> [</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    {</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>        <span class="st">"id"</span>: <span class="dv">1</span>,</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>        <span class="st">"title"</span>: <span class="st">"宁德时代一季度净利润同比增长35%，动力电池市占率稳居全球第一"</span>,</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>        <span class="st">"text"</span>: <span class="st">"宁德时代4月25日晚间发布2024年一季报，公司实现营业收入798亿元，"</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>                <span class="st">"同比增长12.3%；归母净利润105亿元，同比大幅增长35.4%。公司表示，"</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>                <span class="st">"受益于全球新能源汽车渗透率持续提升，动力电池出货量保持强劲增长，"</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>                <span class="st">"全球市场份额进一步扩大至37.5%。多家券商维持"</span>买入<span class="st">"评级，"</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>                <span class="st">"目标价上调至280元。"</span>,</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>        <span class="st">"label"</span>: <span class="st">"正面"</span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>    },</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>    {</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>        <span class="st">"id"</span>: <span class="dv">2</span>,</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>        <span class="st">"title"</span>: <span class="st">"某房企未能按期偿付美元债利息，标普下调评级至CC"</span>,</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>        <span class="st">"text"</span>: <span class="st">"受流动性持续恶化影响，某大型房地产企业未能按期偿付一笔到期美元债券利息，"</span></span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>                <span class="st">"构成实质性违约。标普全球评级随即将该公司长期信用评级由CCC-下调至CC，"</span></span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>                <span class="st">"展望维持"</span>负面<span class="st">"。受此消息冲击，该公司港股股价单日暴跌18.3%，"</span></span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>                <span class="st">"年内累计跌幅已超过70%。分析人士指出，公司短期内面临较大的再融资压力，"</span></span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>                <span class="st">"债务重组方案仍存在重大不确定性。"</span>,</span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>        <span class="st">"label"</span>: <span class="st">"负面"</span></span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>    },</span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>    {</span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>        <span class="st">"id"</span>: <span class="dv">3</span>,</span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>        <span class="st">"title"</span>: <span class="st">"招商银行不良贷款率连续三个季度下降，资产质量持续改善"</span>,</span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a>        <span class="st">"text"</span>: <span class="st">"招商银行2024年一季报显示，截至3月末，全行不良贷款率为0.95%，"</span></span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a>                <span class="st">"较上年末下降0.05个百分点，连续三个季度改善。拨备覆盖率维持在450%以上"</span></span>
+<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a>                <span class="st">"的较高水平。市场人士评价称，招行在房地产风险敞口可控的前提下，"</span></span>
+<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a>                <span class="st">"资产质量表现优于同业平均水平，风险管理能力得到进一步验证。"</span></span>
+<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a>                <span class="st">"该股当日上涨2.1%。"</span>,</span>
+<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a>        <span class="st">"label"</span>: <span class="st">"正面（含歧义词：不良、风险、下降）"</span></span>
+<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a>    },</span>
+<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a>    {</span>
+<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a>        <span class="st">"id"</span>: <span class="dv">4</span>,</span>
+<span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a>        <span class="st">"title"</span>: <span class="st">"某制造业上市公司负债率攀升至82%，财务费用同比大幅增长"</span>,</span>
+<span id="cb3-35"><a href="#cb3-35" aria-hidden="true" tabindex="-1"></a>        <span class="st">"text"</span>: <span class="st">"某制造业上市公司最新财报显示，截至报告期末，公司资产负债率已攀升至82.3%，"</span></span>
+<span id="cb3-36"><a href="#cb3-36" aria-hidden="true" tabindex="-1"></a>                <span class="st">"较年初上升6.2个百分点。其中短期借款同比增加30%，财务费用同比大幅增长"</span></span>
+<span id="cb3-37"><a href="#cb3-37" aria-hidden="true" tabindex="-1"></a>                <span class="st">"45.1%，对公司利润形成明显侵蚀。公司解释称负债率上升主要源于产能扩张"</span></span>
+<span id="cb3-38"><a href="#cb3-38" aria-hidden="true" tabindex="-1"></a>                <span class="st">"所需的资本开支。然而在当前市场需求放缓的背景下，高杠杆经营策略面临的"</span></span>
+<span id="cb3-39"><a href="#cb3-39" aria-hidden="true" tabindex="-1"></a>                <span class="st">"不确定性正在提升。"</span>,</span>
+<span id="cb3-40"><a href="#cb3-40" aria-hidden="true" tabindex="-1"></a>        <span class="st">"label"</span>: <span class="st">"负面（含歧义词：增长、提升、扩张）"</span></span>
+<span id="cb3-41"><a href="#cb3-41" aria-hidden="true" tabindex="-1"></a>    },</span>
+<span id="cb3-42"><a href="#cb3-42" aria-hidden="true" tabindex="-1"></a>    {</span>
+<span id="cb3-43"><a href="#cb3-43" aria-hidden="true" tabindex="-1"></a>        <span class="st">"id"</span>: <span class="dv">5</span>,</span>
+<span id="cb3-44"><a href="#cb3-44" aria-hidden="true" tabindex="-1"></a>        <span class="st">"title"</span>: <span class="st">"央行宣布降准0.5个百分点，释放长期资金约1万亿元"</span>,</span>
+<span id="cb3-45"><a href="#cb3-45" aria-hidden="true" tabindex="-1"></a>        <span class="st">"text"</span>: <span class="st">"中国人民银行宣布，自2024年2月5日起，下调金融机构存款准备金率0.5个百分点。"</span></span>
+<span id="cb3-46"><a href="#cb3-46" aria-hidden="true" tabindex="-1"></a>                <span class="st">"本次降准预计释放长期资金约1万亿元，有助于降低实体经济融资成本，"</span></span>
+<span id="cb3-47"><a href="#cb3-47" aria-hidden="true" tabindex="-1"></a>                <span class="st">"支持经济平稳运行。市场分析认为，此举表明当前经济下行压力仍然较大，"</span></span>
+<span id="cb3-48"><a href="#cb3-48" aria-hidden="true" tabindex="-1"></a>                <span class="st">"央行有必要通过货币政策工具进行逆周期调节。降准消息公布后，"</span></span>
+<span id="cb3-49"><a href="#cb3-49" aria-hidden="true" tabindex="-1"></a>                <span class="st">"A股市场反应平淡，沪指微涨0.3%，债券市场则出现小幅走强。"</span>,</span>
+<span id="cb3-50"><a href="#cb3-50" aria-hidden="true" tabindex="-1"></a>        <span class="st">"label"</span>: <span class="st">"混合"</span></span>
+<span id="cb3-51"><a href="#cb3-51" aria-hidden="true" tabindex="-1"></a>    },</span>
+<span id="cb3-52"><a href="#cb3-52" aria-hidden="true" tabindex="-1"></a>    {</span>
+<span id="cb3-53"><a href="#cb3-53" aria-hidden="true" tabindex="-1"></a>        <span class="st">"id"</span>: <span class="dv">6</span>,</span>
+<span id="cb3-54"><a href="#cb3-54" aria-hidden="true" tabindex="-1"></a>        <span class="st">"title"</span>: <span class="st">"沪深交易所发布退市新规，财务类退市营收门槛上调至3亿元"</span>,</span>
+<span id="cb3-55"><a href="#cb3-55" aria-hidden="true" tabindex="-1"></a>        <span class="st">"text"</span>: <span class="st">"沪深交易所4月30日同步发布《股票上市规则》修订稿，进一步完善退市标准体系。"</span></span>
+<span id="cb3-56"><a href="#cb3-56" aria-hidden="true" tabindex="-1"></a>                <span class="st">"主要修订内容包括：将财务类退市中的营业收入指标由1亿元调整为3亿元；"</span></span>
+<span id="cb3-57"><a href="#cb3-57" aria-hidden="true" tabindex="-1"></a>                <span class="st">"新增规范类退市中对控股股东资金占用的量化认定标准；交易类退市中的"</span></span>
+<span id="cb3-58"><a href="#cb3-58" aria-hidden="true" tabindex="-1"></a>                <span class="st">"市值指标维持5亿元不变。新规自2024年7月1日起施行，设置一年过渡期。"</span>,</span>
+<span id="cb3-59"><a href="#cb3-59" aria-hidden="true" tabindex="-1"></a>        <span class="st">"label"</span>: <span class="st">"中性"</span></span>
+<span id="cb3-60"><a href="#cb3-60" aria-hidden="true" tabindex="-1"></a>    },</span>
+<span id="cb3-61"><a href="#cb3-61" aria-hidden="true" tabindex="-1"></a>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="从一条到一万条思维的升级" class="level3" data-number="11.2.3">
+<h3 data-number="11.2.3" class="anchored" data-anchor-id="从一条到一万条思维的升级"><span class="header-section-number">11.2.3</span> 从一条到一万条：思维的升级</h3>
+<p>在数据清洗章中，我们用一个提示词从一条公告中提取了贷款信息 [1]。那个方法对单条文本完全够用，但如果面对的是几百条、几千条公告，逐条手动调用 LLM 既慢又贵。</p>
+<p>本章要解决的核心问题是：<strong>如何高效地、系统性地处理大量文本？</strong></p>
+<p>这需要一套完整的处理流程：</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>原始文本（HTML<span class="sc">/</span>PDF<span class="sc">/</span>TXT）</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  │</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  ▼</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>文本清洗（去噪音、统一编码）        ← 本章第 <span class="dv">2</span> 节</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  │</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  ▼</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>中文分词 <span class="sc">+</span> 停用词过滤              ← 本章第 <span class="dv">2</span> 节</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>  │</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>  ▼</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>信息提取（正则 <span class="sc">+</span> LLM）            ← 本章第 <span class="dv">3</span> 节</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>  │</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>  ▼</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>词频统计 <span class="sc">/</span> TF<span class="sc">-</span>IDF 关键词分析       ← 本章第 <span class="dv">4</span> 节</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>  │</span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>  ▼</span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>结构化数据（可纳入回归<span class="sc">/</span>建模）      ← 本章第 <span class="dv">5</span> 节（综合案例）</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>下面我们从流程的第一步——中文文本预处理——开始。</p>
+<hr>
+</section>
+</section>
+<section id="中文文本预处理" class="level2" data-number="11.3">
+<h2 data-number="11.3" class="anchored" data-anchor-id="中文文本预处理"><span class="header-section-number">11.3</span> 中文文本预处理</h2>
+<section id="为什么中文文本需要特殊处理" class="level3" data-number="11.3.1">
+<h3 data-number="11.3.1" class="anchored" data-anchor-id="为什么中文文本需要特殊处理"><span class="header-section-number">11.3.1</span> 为什么中文文本需要特殊处理？</h3>
+<p>英文文本有天然的空格分隔单词——<code>The central bank cut interest rates</code> 中每个词都被空格隔开，计算机可以直接识别。但中文不是这样。看这句话：</p>
+<blockquote class="blockquote">
+<p>中国人民银行决定下调金融机构存款准备金率0.5个百分点</p>
+</blockquote>
+<p>哪里是词与词的边界？“中国人民银行”是一个词还是五个字？“存款准备金率”应该拆成”存款”+“准备金率”还是保持整体？计算机无法像读英文一样自动判断。</p>
+<p>这就是为什么中文文本分析的第一步必须是<strong>分词</strong>——把连续的汉字序列切分成有意义的词语。分词的质量直接决定了后续所有分析（词频统计、情感分析、文本分类）的准确性。</p>
+</section>
+<section id="分词jieba-库" class="level3" data-number="11.3.2">
+<h3 data-number="11.3.2" class="anchored" data-anchor-id="分词jieba-库"><span class="header-section-number">11.3.2</span> 分词：jieba 库</h3>
+<p><code>jieba</code> 是目前 Python 生态中最成熟、使用最广泛的中文分词工具。它的名字来源于”结巴”——暗示中文分词就像在句子中”结巴”地停顿，找到词与词的边界。</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 安装（只需一次）</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="co"># !pip install jieba</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> jieba</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>text <span class="op">=</span> <span class="st">"中国人民银行决定下调金融机构存款准备金率0.5个百分点"</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>words <span class="op">=</span> jieba.lcut(text)</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(words)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre><code>['中国人民银行', '决定', '下调', '金融', '机构', '存款', '准备金', '率', '0.5', '个', '百分点']</code></pre>
+<p><code>jieba.lcut()</code> 返回一个列表，每个元素是一个词。大部分词切得不错，但注意两个问题：</p>
+<ul>
+<li>“金融机构”被拆成了”金融”和”机构”——这在一般语境下没问题，但如果你在分析央行文件，“金融机构”作为一个整体可能更合适</li>
+<li>“存款准备金率”被拆成了”存款”“准备金”“率”——对于金融分析来说，这个拆分破坏了术语的完整性</li>
+</ul>
+<p>这就引出了下一个关键步骤：<strong>自定义词典</strong>。</p>
+</section>
+<section id="自定义词典让分词工具认识金融术语" class="level3" data-number="11.3.3">
+<h3 data-number="11.3.3" class="anchored" data-anchor-id="自定义词典让分词工具认识金融术语"><span class="header-section-number">11.3.3</span> 自定义词典：让分词工具认识金融术语</h3>
+<p><code>jieba</code> 允许加载自定义词典，告诉它哪些词应该作为整体保留。词典是一个纯文本文件，每行一个词，格式为：<code>词语 词频 词性</code>（词频和词性可以省略）。</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 方法一：加载词典文件</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="co"># jieba.load_userdict('data_raw/finance_dict.txt')</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="co"># 方法二：逐个添加词语（适合少量词语）</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>finance_terms <span class="op">=</span> [</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">"中国人民银行"</span>, <span class="st">"存款准备金率"</span>, <span class="st">"贷款市场报价利率"</span>,</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">"中期借贷便利"</span>, <span class="st">"常备借贷便利"</span>, <span class="st">"逆回购"</span>,</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">"定向降准"</span>, <span class="st">"金融机构"</span>, <span class="st">"同业拆借"</span>,</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">"不良贷款率"</span>, <span class="st">"拨备覆盖率"</span>, <span class="st">"资产负债率"</span>,</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>]</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> term <span class="kw">in</span> finance_terms:</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>    jieba.add_word(term)</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a><span class="co"># 再次分词，对比效果</span></span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>words_v2 <span class="op">=</span> jieba.lcut(text)</span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(words_v2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre><code>['中国人民银行', '决定', '下调', '金融机构', '存款准备金率', '0.5', '个', '百分点']</code></pre>
+<p>加载自定义词典后，“金融机构”和”存款准备金率”都被正确识别为整体了。</p>
+<p>我们用素材②中的一段央行报告来进一步验证效果：</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>pboc_text <span class="op">=</span> (</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"2020年一季度，面对新冠肺炎疫情对经济社会发展带来的严峻冲击，"</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"中国人民银行坚决贯彻党中央、国务院决策部署，加大逆周期调节力度，"</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">"综合运用多种货币政策工具，保持流动性合理充裕。一季度累计开展"</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"中期借贷便利（MLF）操作11000亿元，下调MLF利率30个基点至2.95%，"</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">"引导贷款市场报价利率（LPR）相应下行。"</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a><span class="co"># 对比：不加词典 vs 加词典</span></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>words_before <span class="op">=</span> jieba.lcut(pboc_text)  <span class="co"># 已加载词典的状态</span></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"分词结果（已加载金融词典）："</span>)</span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(words_before)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+提示词：构建金融领域自定义分词词典
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>我需要对中国央行的货币政策执行报告进行文本分析，使用 jieba 分词。 请帮我整理一份金融领域的自定义分词词典，包含以下类别的专有名词：</p>
+<ol type="1">
+<li>货币政策工具名称（如逆回购、MLF、SLF、定向降准等）</li>
+<li>金融机构类型（如政策性银行、股份制商业银行等）</li>
+<li>金融市场术语（如银行间同业拆借、社会融资规模等）</li>
+<li>常见金融监管术语（如宏观审慎、系统性风险等）</li>
+<li>常见金融指标名称（如不良贷款率、拨备覆盖率、资本充足率等）</li>
+</ol>
+<p>每行格式为：词语 词频 词性 请至少列出 50 个词条，按类别分组排列。</p>
+</div>
+</div>
+</section>
+<section id="停用词过滤" class="level3" data-number="11.3.4">
+<h3 data-number="11.3.4" class="anchored" data-anchor-id="停用词过滤"><span class="header-section-number">11.3.4</span> 停用词过滤</h3>
+<p>分词之后，结果中会包含大量对分析没有帮助的”功能词”——“的”“了”“在”“是”“和”“为”等。这些词被称为<strong>停用词（stop words）</strong>，在做词频统计和文本建模之前需要过滤掉，否则它们会占据高频词的大部分位置，淹没真正有意义的内容词。</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 一个基础的中文停用词表（实际使用中会更长，通常包含上千个词）</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>basic_stopwords <span class="op">=</span> <span class="bu">set</span>([</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"的"</span>, <span class="st">"了"</span>, <span class="st">"在"</span>, <span class="st">"是"</span>, <span class="st">"和"</span>, <span class="st">"与"</span>, <span class="st">"为"</span>, <span class="st">"对"</span>, <span class="st">"以"</span>, <span class="st">"及"</span>,</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">"等"</span>, <span class="st">"中"</span>, <span class="st">"将"</span>, <span class="st">"把"</span>, <span class="st">"被"</span>, <span class="st">"由"</span>, <span class="st">"从"</span>, <span class="st">"到"</span>, <span class="st">"也"</span>, <span class="st">"都"</span>,</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"就"</span>, <span class="st">"又"</span>, <span class="st">"而"</span>, <span class="st">"但"</span>, <span class="st">"或"</span>, <span class="st">"个"</span>, <span class="st">"各"</span>, <span class="st">"这"</span>, <span class="st">"那"</span>, <span class="st">"之"</span>,</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">"其"</span>, <span class="st">"她"</span>, <span class="st">"他"</span>, <span class="st">"我"</span>, <span class="st">"你"</span>, <span class="st">"们"</span>, <span class="st">"着"</span>, <span class="st">"过"</span>, <span class="st">"不"</span>, <span class="st">"没"</span>,</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">"有"</span>, <span class="st">"要"</span>, <span class="st">"会"</span>, <span class="st">"能"</span>, <span class="st">"可"</span>, <span class="st">"所"</span>, <span class="st">"日"</span>, <span class="st">"月"</span>, <span class="st">"年"</span>,</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">"（"</span>, <span class="st">"）"</span>, <span class="st">"，"</span>, <span class="st">"。"</span>, <span class="st">"、"</span>, <span class="st">"；"</span>, <span class="st">"："</span>, <span class="st">""", """</span>,</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>])</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a><span class="co"># 过滤停用词</span></span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>text_sample <span class="op">=</span> <span class="st">"中国人民银行决定下调金融机构存款准备金率0.5个百分点"</span></span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>words <span class="op">=</span> jieba.lcut(text_sample)</span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>words_filtered <span class="op">=</span> [w <span class="cf">for</span> w <span class="kw">in</span> words <span class="cf">if</span> w <span class="kw">not</span> <span class="kw">in</span> basic_stopwords <span class="kw">and</span> <span class="bu">len</span>(w) <span class="op">&gt;</span> <span class="dv">1</span>]</span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"过滤前（</span><span class="sc">{</span><span class="bu">len</span>(words)<span class="sc">}</span><span class="ss"> 个词）：</span><span class="sc">{</span>words<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"过滤后（</span><span class="sc">{</span><span class="bu">len</span>(words_filtered)<span class="sc">}</span><span class="ss"> 个词）：</span><span class="sc">{</span>words_filtered<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre><code>过滤前（8 个词）：['中国人民银行', '决定', '下调', '金融机构', '存款准备金率', '0.5', '个', '百分点']
+过滤后（5 个词）：['中国人民银行', '决定', '下调', '金融机构', '存款准备金率']</code></pre>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+金融语境下的停用词需要谨慎处理
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>“增长”“下降”“提高”“降低”这些词，在通用的停用词表中通常不会被收录。但在特定的分析场景中，你需要思考是否要保留它们：</p>
+<ul>
+<li>如果你做的是<strong>情感分析</strong>（判断文本的正面/负面语气），这些词是重要的情感信号词，<strong>必须保留</strong></li>
+<li>如果你做的是<strong>主题分析</strong>（判断文本在讨论什么话题），这些词可能是噪音——因为几乎每篇央行报告都会提到”增长”，它不能帮助你区分不同话题</li>
+</ul>
+<p><strong>原则：停用词表不是一成不变的，需要根据分析目标调整。</strong></p>
+</div>
+</div>
+</section>
+<section id="文本清洗-pipeline" class="level3" data-number="11.3.5">
+<h3 data-number="11.3.5" class="anchored" data-anchor-id="文本清洗-pipeline"><span class="header-section-number">11.3.5</span> 文本清洗 pipeline</h3>
+<p>在实际获取的金融文本中，原始数据往往包含各种噪音：从网页爬取的文本可能带有 HTML 标签，数据库导出的文本可能混有全角字符和多余空格，港股公告可能是繁体字。这些噪音如果不清理，会严重影响分词和后续分析的效果。</p>
+<p>我们用素材①中的公告 4（脏文本）来演示：</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>dirty_text <span class="op">=</span> (</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"&lt;p&gt;本公司于２０２３年１１月２０日与中国农业银行股份有限公司珠海分行签署"</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"贷款合同，贷款金额为人民币&lt;b&gt;8000万元&lt;/b&gt;，贷款期限为２年，"</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">"贷款年利率为４.６０%。&lt;/p&gt;"</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"原始文本："</span>)</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(dirty_text)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>这段文本有三类噪音：HTML 标签（<code>&lt;p&gt;</code>、<code>&lt;b&gt;</code>）、全角数字（<code>２０２３</code>）、全角标点。我们逐步清洗：</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> re</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> unicodedata</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> clean_text(text):</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""金融文本清洗 pipeline"""</span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Step 1: 去除 HTML 标签</span></span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>    text <span class="op">=</span> re.sub(<span class="vs">r'&lt;[^&gt;]+&gt;'</span>, <span class="st">''</span>, text)</span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Step 2: 全角字符转半角</span></span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>    result <span class="op">=</span> []</span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> char <span class="kw">in</span> text:</span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a>        code <span class="op">=</span> <span class="bu">ord</span>(char)</span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="bn">0xFF01</span> <span class="op">&lt;=</span> code <span class="op">&lt;=</span> <span class="bn">0xFF5E</span>:       <span class="co"># 全角 ASCII 字符范围</span></span>
+<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a>            result.append(<span class="bu">chr</span>(code <span class="op">-</span> <span class="bn">0xFEE0</span>))</span>
+<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a>        <span class="cf">elif</span> code <span class="op">==</span> <span class="bn">0x3000</span>:                <span class="co"># 全角空格</span></span>
+<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a>            result.append(<span class="st">' '</span>)</span>
+<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a>        <span class="cf">else</span>:</span>
+<span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a>            result.append(char)</span>
+<span id="cb13-20"><a href="#cb13-20" aria-hidden="true" tabindex="-1"></a>    text <span class="op">=</span> <span class="st">''</span>.join(result)</span>
+<span id="cb13-21"><a href="#cb13-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-22"><a href="#cb13-22" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Step 3: 去除多余空白</span></span>
+<span id="cb13-23"><a href="#cb13-23" aria-hidden="true" tabindex="-1"></a>    text <span class="op">=</span> re.sub(<span class="vs">r'\s+'</span>, <span class="st">' '</span>, text).strip()</span>
+<span id="cb13-24"><a href="#cb13-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-25"><a href="#cb13-25" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> text</span>
+<span id="cb13-26"><a href="#cb13-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-27"><a href="#cb13-27" aria-hidden="true" tabindex="-1"></a>clean <span class="op">=</span> clean_text(dirty_text)</span>
+<span id="cb13-28"><a href="#cb13-28" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"清洗后："</span>)</span>
+<span id="cb13-29"><a href="#cb13-29" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(clean)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre><code>清洗后：
+本公司于2023年11月20日与中国农业银行股份有限公司珠海分行签署贷款合同,贷款金额为人民币8000万元,贷款期限为2年,贷款年利率为4.60%。</code></pre>
+<p>清洗后，全角数字 <code>２０２３</code> 变成了半角 <code>2023</code>，HTML 标签被去除，文本变得干净规整。现在可以对它做正则提取或分词了。</p>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+中文文本清洗的常见陷阱
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li><strong>数字的处理要谨慎：</strong> 在贷款公告中，“2亿元”“4.2%”这些数字是关键信息，不能盲目删除。只有在做词频统计、情感分析等”语义分析”任务时，才考虑去除数字。在做信息提取时，数字必须保留。</li>
+<li><strong>标点符号有时承载语义：</strong> 问号可能暗示不确定性（“能否实现盈利目标？”），感叹号可能暗示强调或惊讶。在情感分析中，这些信息值得保留。</li>
+<li><strong>先清洗，后分词：</strong> 全角字符和 HTML 标签会干扰 jieba 的分词效果。务必先做清洗，再做分词。</li>
+</ul>
+</div>
+</div>
+</section>
+<section id="封装完整的预处理函数" class="level3" data-number="11.3.6">
+<h3 data-number="11.3.6" class="anchored" data-anchor-id="封装完整的预处理函数"><span class="header-section-number">11.3.6</span> 封装完整的预处理函数</h3>
+<p>将上述所有步骤封装为一个可复用的函数：</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> jieba</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> re</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> preprocess_chinese_text(text, stopwords<span class="op">=</span><span class="va">None</span>, user_dict<span class="op">=</span><span class="va">None</span>, remove_numbers<span class="op">=</span><span class="va">False</span>):</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a><span class="co">    中文金融文本预处理完整 pipeline</span></span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a><span class="co">    参数:</span></span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a><span class="co">        text: 原始文本字符串</span></span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a><span class="co">        stopwords: 停用词集合(set), 默认为 None</span></span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a><span class="co">        user_dict: 自定义词典文件路径, 默认为 None</span></span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a><span class="co">        remove_numbers: 是否去除纯数字词, 默认 False</span></span>
+<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a><span class="co">    返回:</span></span>
+<span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a><span class="co">        words: 预处理后的词语列表</span></span>
+<span id="cb15-16"><a href="#cb15-16" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb15-17"><a href="#cb15-17" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Step 1: 去 HTML 标签</span></span>
+<span id="cb15-18"><a href="#cb15-18" aria-hidden="true" tabindex="-1"></a>    text <span class="op">=</span> re.sub(<span class="vs">r'&lt;[^&gt;]+&gt;'</span>, <span class="st">''</span>, text)</span>
+<span id="cb15-19"><a href="#cb15-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-20"><a href="#cb15-20" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Step 2: 全角转半角</span></span>
+<span id="cb15-21"><a href="#cb15-21" aria-hidden="true" tabindex="-1"></a>    result <span class="op">=</span> []</span>
+<span id="cb15-22"><a href="#cb15-22" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> char <span class="kw">in</span> text:</span>
+<span id="cb15-23"><a href="#cb15-23" aria-hidden="true" tabindex="-1"></a>        code <span class="op">=</span> <span class="bu">ord</span>(char)</span>
+<span id="cb15-24"><a href="#cb15-24" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="bn">0xFF01</span> <span class="op">&lt;=</span> code <span class="op">&lt;=</span> <span class="bn">0xFF5E</span>:</span>
+<span id="cb15-25"><a href="#cb15-25" aria-hidden="true" tabindex="-1"></a>            result.append(<span class="bu">chr</span>(code <span class="op">-</span> <span class="bn">0xFEE0</span>))</span>
+<span id="cb15-26"><a href="#cb15-26" aria-hidden="true" tabindex="-1"></a>        <span class="cf">elif</span> code <span class="op">==</span> <span class="bn">0x3000</span>:</span>
+<span id="cb15-27"><a href="#cb15-27" aria-hidden="true" tabindex="-1"></a>            result.append(<span class="st">' '</span>)</span>
+<span id="cb15-28"><a href="#cb15-28" aria-hidden="true" tabindex="-1"></a>        <span class="cf">else</span>:</span>
+<span id="cb15-29"><a href="#cb15-29" aria-hidden="true" tabindex="-1"></a>            result.append(char)</span>
+<span id="cb15-30"><a href="#cb15-30" aria-hidden="true" tabindex="-1"></a>    text <span class="op">=</span> <span class="st">''</span>.join(result)</span>
+<span id="cb15-31"><a href="#cb15-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-32"><a href="#cb15-32" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Step 3: 去多余空白</span></span>
+<span id="cb15-33"><a href="#cb15-33" aria-hidden="true" tabindex="-1"></a>    text <span class="op">=</span> re.sub(<span class="vs">r'\s+'</span>, <span class="st">' '</span>, text).strip()</span>
+<span id="cb15-34"><a href="#cb15-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-35"><a href="#cb15-35" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Step 4: 加载自定义词典</span></span>
+<span id="cb15-36"><a href="#cb15-36" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> user_dict:</span>
+<span id="cb15-37"><a href="#cb15-37" aria-hidden="true" tabindex="-1"></a>        jieba.load_userdict(user_dict)</span>
+<span id="cb15-38"><a href="#cb15-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-39"><a href="#cb15-39" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Step 5: 分词</span></span>
+<span id="cb15-40"><a href="#cb15-40" aria-hidden="true" tabindex="-1"></a>    words <span class="op">=</span> jieba.lcut(text)</span>
+<span id="cb15-41"><a href="#cb15-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-42"><a href="#cb15-42" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Step 6: 过滤停用词和短词</span></span>
+<span id="cb15-43"><a href="#cb15-43" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> stopwords:</span>
+<span id="cb15-44"><a href="#cb15-44" aria-hidden="true" tabindex="-1"></a>        words <span class="op">=</span> [w <span class="cf">for</span> w <span class="kw">in</span> words <span class="cf">if</span> w <span class="kw">not</span> <span class="kw">in</span> stopwords]</span>
+<span id="cb15-45"><a href="#cb15-45" aria-hidden="true" tabindex="-1"></a>    words <span class="op">=</span> [w <span class="cf">for</span> w <span class="kw">in</span> words <span class="cf">if</span> <span class="bu">len</span>(w) <span class="op">&gt;</span> <span class="dv">1</span>]</span>
+<span id="cb15-46"><a href="#cb15-46" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-47"><a href="#cb15-47" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Step 7: 可选-去除纯数字</span></span>
+<span id="cb15-48"><a href="#cb15-48" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> remove_numbers:</span>
+<span id="cb15-49"><a href="#cb15-49" aria-hidden="true" tabindex="-1"></a>        words <span class="op">=</span> [w <span class="cf">for</span> w <span class="kw">in</span> words <span class="cf">if</span> <span class="kw">not</span> re.match(<span class="vs">r'^[\d.]+$'</span>, w)]</span>
+<span id="cb15-50"><a href="#cb15-50" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-51"><a href="#cb15-51" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> words</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>验证效果：</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 对公告4（脏文本）做完整预处理</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>result <span class="op">=</span> preprocess_chinese_text(</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>    dirty_text,</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>    stopwords<span class="op">=</span>basic_stopwords,</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>    remove_numbers<span class="op">=</span><span class="va">False</span>  <span class="co"># 保留数字,因为后续要提取金额和利率</span></span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(result)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre><code>['本公司', '2023', '11', '20', '中国农业银行', '股份有限公司', '珠海', '分行',
+ '签署', '贷款', '合同', '贷款', '金额', '人民币', '8000', '万元', '贷款',
+ '期限', '贷款', '年利率', '4.60']</code></pre>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+提示词：批量预处理文本数据
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>我有一个 DataFrame <code>df</code>，其中 <code>text</code> 列包含上市公司公告的原始文本（可能含 HTML 标签和全角字符）。 请帮我：</p>
+<ol type="1">
+<li>对 <code>text</code> 列的每条文本做以下预处理：
+<ul>
+<li>去除 HTML 标签</li>
+<li>全角字符转半角</li>
+<li>使用 jieba 分词（需先加载金融自定义词典 <code>data_raw/finance_dict.txt</code>）</li>
+<li>过滤停用词（停用词表路径为 <code>data_raw/stopwords.txt</code>）</li>
+<li>去除长度为 1 的单字词</li>
+</ul></li>
+<li>将分词结果存储在新列 <code>text_tokenized</code> 中（词语列表格式）</li>
+<li>新增一列 <code>text_joined</code>，将词语列表用空格连接为字符串（供后续 TF-IDF 使用）</li>
+<li>输出预处理前后的前 3 行对比</li>
+</ol>
+<p>请使用 <code>tqdm</code> 显示处理进度条。</p>
+</div>
+</div>
+<hr>
+</section>
+</section>
+<section id="文本信息提取" class="level2" data-number="11.4">
+<h2 data-number="11.4" class="anchored" data-anchor-id="文本信息提取"><span class="header-section-number">11.4</span> 文本信息提取</h2>
+<p>预处理解决了”把文本变干净”的问题，但很多时候我们需要的不是干净的文本本身，而是从中提取出<strong>特定的结构化字段</strong>——金额、利率、日期、银行名称。这就是信息提取的任务。</p>
+<p>本节介绍两种互补的方法：<strong>正则表达式</strong>和<strong>大语言模型（LLM）</strong>。</p>
+<section id="正则表达式规则明确时的首选" class="level3" data-number="11.4.1">
+<h3 data-number="11.4.1" class="anchored" data-anchor-id="正则表达式规则明确时的首选"><span class="header-section-number">11.4.1</span> 正则表达式：规则明确时的首选</h3>
+<p>正则表达式（Regular Expression, regex）是一种用特定符号描述文本模式的工具。你可以把它理解为一种”模板匹配”——告诉计算机你要找的文本长什么样，它就帮你把符合模式的内容找出来。</p>
+<p>我们从素材①的公告 1（基准样本）开始：</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> re</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>text <span class="op">=</span> (<span class="st">"本公司于2023年6月1日，与中国建设银行股份有限公司深圳市分行"</span></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>        <span class="st">"签署贷款协议，贷款金额为2亿元，期限3年，利率为年化4.20%。"</span>)</span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a><span class="co"># 提取利率</span></span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>rate_match <span class="op">=</span> re.search(<span class="vs">r'[利率年息]+[为是]?年化?(\d+\.?\d*)%'</span>, text)</span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> rate_match:</span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"利率: </span><span class="sc">{</span>rate_match<span class="sc">.</span>group(<span class="dv">1</span>)<span class="sc">}</span><span class="ss">%"</span>)</span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a><span class="co"># 提取金额和单位</span></span>
+<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a>amount_match <span class="op">=</span> re.search(<span class="vs">r'金额[为是]?(?:人民币)?(\d+\.?\d*)(万元|亿元|元)'</span>, text)</span>
+<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> amount_match:</span>
+<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"金额: </span><span class="sc">{</span>amount_match<span class="sc">.</span>group(<span class="dv">1</span>)<span class="sc">}</span><span class="ss"> </span><span class="sc">{</span>amount_match<span class="sc">.</span>group(<span class="dv">2</span>)<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a><span class="co"># 提取期限</span></span>
+<span id="cb18-17"><a href="#cb18-17" aria-hidden="true" tabindex="-1"></a>term_match <span class="op">=</span> re.search(<span class="vs">r'期限[为是]?(\d+)(年|个月)'</span>, text)</span>
+<span id="cb18-18"><a href="#cb18-18" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> term_match:</span>
+<span id="cb18-19"><a href="#cb18-19" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"期限: </span><span class="sc">{</span>term_match<span class="sc">.</span>group(<span class="dv">1</span>)<span class="sc">}</span><span class="ss"> </span><span class="sc">{</span>term_match<span class="sc">.</span>group(<span class="dv">2</span>)<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre><code>利率: 4.20%
+金额: 2 亿元
+期限: 3 年</code></pre>
+<p>正则表达式的语法初看有些晦涩，但核心模式并不多。下表列出了上面用到的关键符号：</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 12%">
+<col style="width: 38%">
+<col style="width: 49%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>符号</th>
+<th>含义</th>
+<th>示例</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>\d</code></td>
+<td>匹配数字（0-9）</td>
+<td><code>\d+</code> 匹配 “2023”</td>
+</tr>
+<tr class="even">
+<td><code>+</code></td>
+<td>前面的字符出现 1 次或多次</td>
+<td><code>\d+</code> 匹配一个或多个数字</td>
+</tr>
+<tr class="odd">
+<td><code>?</code></td>
+<td>前面的字符出现 0 次或 1 次</td>
+<td><code>\.?</code> 匹配有或没有小数点</td>
+</tr>
+<tr class="even">
+<td><code>\.</code></td>
+<td>匹配字面上的句号/小数点</td>
+<td><code>\d+\.?\d*</code> 匹配 “4.20” 或 “4”</td>
+</tr>
+<tr class="odd">
+<td><code>*</code></td>
+<td>前面的字符出现 0 次或多次</td>
+<td><code>\d*</code> 匹配零个或多个数字</td>
+</tr>
+<tr class="even">
+<td><code>()</code></td>
+<td>捕获组——提取括号内匹配的内容</td>
+<td><code>(\d+)%</code> 从 “4.20%” 中提取 “4.20”</td>
+</tr>
+<tr class="odd">
+<td><code>[...]</code></td>
+<td>匹配方括号内的任意一个字符</td>
+<td><code>[为是]</code> 匹配 “为” 或 “是”</td>
+</tr>
+<tr class="even">
+<td><code>(?:...)</code></td>
+<td>非捕获组——匹配但不提取</td>
+<td><code>(?:人民币)?</code> 匹配可选的 “人民币”</td>
+</tr>
+<tr class="odd">
+<td><code>\|</code></td>
+<td>或（二选一）</td>
+<td><code>(万元\|亿元)</code> 匹配 “万元” 或 “亿元”</td>
+</tr>
+</tbody>
+</table>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+你不需要记住正则表达式的所有语法
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>正则表达式的完整语法非常复杂，专业程序员也经常需要查手册。在本课程中，你需要掌握的是：</p>
+<ol type="1">
+<li><strong>能看懂</strong>上面这些基本符号的含义</li>
+<li><strong>能向 AI 描述</strong>你想匹配的文本模式，让 AI 帮你生成正则表达式</li>
+<li><strong>能验证</strong> AI 生成的正则是否在你的数据上正确工作</li>
+</ol>
+<p>第 2 点是最重要的——精确地描述”你要找什么”，比自己写正则更有效率。</p>
+</div>
+</div>
+<p>现在我们测试正则表达式在不同表述变体上的表现。用素材①的公告 2（利率表述变体）：</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>text2 <span class="op">=</span> (<span class="st">"本公司于2023年8月15日与工行广东省分行签订借款合同，"</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>         <span class="st">"借款金额15000万元，借款期限5年，年息4.50%。"</span>)</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a><span class="co"># 使用更宽泛的正则</span></span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>rate_match <span class="op">=</span> re.search(<span class="vs">r'(?:利率|年息|年化)[为是]?年?化?(\d+\.?\d*)%'</span>, text2)</span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"利率: </span><span class="sc">{</span>rate_match<span class="sc">.</span>group(<span class="dv">1</span>)<span class="sc">}</span><span class="ss">%"</span> <span class="cf">if</span> rate_match <span class="cf">else</span> <span class="st">"利率: 未找到"</span>)</span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>amount_match <span class="op">=</span> re.search(<span class="vs">r'(?:贷款|借款)?金额[为是]?(?:人民币)?(\d+\.?\d*)(万元|亿元|元)'</span>, text2)</span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"金额: </span><span class="sc">{</span>amount_match<span class="sc">.</span>group(<span class="dv">1</span>)<span class="sc">}</span><span class="ss"> </span><span class="sc">{</span>amount_match<span class="sc">.</span>group(<span class="dv">2</span>)<span class="sc">}</span><span class="ss">"</span> <span class="cf">if</span> amount_match <span class="cf">else</span> <span class="st">"金额: 未找到"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre><code>利率: 4.50%
+金额: 15000 万元</code></pre>
+<p>正则表达式也有明显的局限。用公告 3（LPR 浮动利率）：</p>
+<div class="sourceCode" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>text3 <span class="op">=</span> (<span class="st">"2022年3月10日，本公司与中国银行总行签署流动资金贷款协议。"</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>         <span class="st">"贷款金额人民币5亿元整，期限36个月，"</span></span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>         <span class="st">"执行利率为一年期贷款市场报价利率（LPR）加80个基点。"</span>)</span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>rate_match <span class="op">=</span> re.search(<span class="vs">r'(?:利率|年息|年化)[为是]?年?化?(\d+\.?\d*)%'</span>, text3)</span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"利率: </span><span class="sc">{</span>rate_match<span class="sc">.</span>group(<span class="dv">1</span>)<span class="sc">}</span><span class="ss">%"</span> <span class="cf">if</span> rate_match <span class="cf">else</span> <span class="st">"利率: 未找到"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre><code>利率: 未找到</code></pre>
+<p>“LPR 加 80 个基点”——正则表达式找不到一个直接的百分比数字，因为利率被表述为一个浮动的公式。这正是需要 LLM 介入的场景。</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+提示词：生成金融文本信息提取的正则表达式
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>我有一批上市公司借贷公告文本。请帮我写 Python 正则表达式，从中提取以下字段：</p>
+<ol type="1">
+<li><strong>贷款金额和单位</strong>：可能的表述包括”X亿元”“X万元”“X元”“人民币X亿元整”</li>
+<li><strong>年化利率</strong>：可能的表述包括”年化X%““年息X%”“利率X%”“利率为X%”</li>
+<li><strong>贷款期限</strong>：可能的表述包括”X年”“X个月”“期限X年”“借款期限X个月”</li>
+<li><strong>贷款日期</strong>：格式可能是”YYYY年M月D日”或”YYYY年MM月DD日”</li>
+</ol>
+<p>对每个字段，请： - 考虑至少 3 种常见的表达变体 - 使用捕获组提取数值部分 - 提供 3 个测试用例，包括能匹配和不能匹配的情况 - 如果某种表述正则难以处理（如”LPR+80BP”），请明确说明并建议改用 LLM</p>
+</div>
+</div>
+</section>
+<section id="大语言模型llm提取复杂文本的利器" class="level3" data-number="11.4.2">
+<h3 data-number="11.4.2" class="anchored" data-anchor-id="大语言模型llm提取复杂文本的利器"><span class="header-section-number">11.4.2</span> 大语言模型（LLM）提取：复杂文本的利器</h3>
+<p>当文本的表述方式多变、信息散落在多个句子中、或者需要语义理解才能提取时，正则表达式就力不从心了。此时可以调用大语言模型来完成提取。</p>
+<p>这个方法在数据清洗章已经使用过——当时我们用一个提示词从公告文本中提取了贷款信息 [1]。现在我们把它扩展为一个可批量调用的函数：</p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 以下代码展示调用逻辑，实际运行需要配置 API</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="co"># 支持 OpenAI、智谱清言、DeepSeek 等 API</span></span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> extract_loan_info_llm(text, api_client):</span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a><span class="co">    使用 LLM 从借贷公告中提取结构化信息</span></span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a><span class="co">    参数:</span></span>
+<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a><span class="co">        text: 公告文本</span></span>
+<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a><span class="co">        api_client: 已配置的 API 客户端</span></span>
+<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-12"><a href="#cb24-12" aria-hidden="true" tabindex="-1"></a><span class="co">    返回:</span></span>
+<span id="cb24-13"><a href="#cb24-13" aria-hidden="true" tabindex="-1"></a><span class="co">        dict: 提取的结构化信息</span></span>
+<span id="cb24-14"><a href="#cb24-14" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb24-15"><a href="#cb24-15" aria-hidden="true" tabindex="-1"></a>    prompt <span class="op">=</span> <span class="ss">f"""</span></span>
+<span id="cb24-16"><a href="#cb24-16" aria-hidden="true" tabindex="-1"></a><span class="ss">    你是金融信息提取助手。请从以下上市公司借贷公告中提取结构化信息。</span></span>
+<span id="cb24-17"><a href="#cb24-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-18"><a href="#cb24-18" aria-hidden="true" tabindex="-1"></a><span class="ss">    输出为 JSON 格式，包含以下字段：</span></span>
+<span id="cb24-19"><a href="#cb24-19" aria-hidden="true" tabindex="-1"></a><span class="ss">    - loan_date: 贷款签署日期，格式 YYYY-MM-DD</span></span>
+<span id="cb24-20"><a href="#cb24-20" aria-hidden="true" tabindex="-1"></a><span class="ss">    - bank_name: 银行法人机构标准化名称（如"建设银行"而非"建行深圳分行"）</span></span>
+<span id="cb24-21"><a href="#cb24-21" aria-hidden="true" tabindex="-1"></a><span class="ss">    - bank_level: 银行层级，取值为"总行""省级分行""地级分行"之一</span></span>
+<span id="cb24-22"><a href="#cb24-22" aria-hidden="true" tabindex="-1"></a><span class="ss">    - loan_amount: 贷款金额原始数值（浮点数）</span></span>
+<span id="cb24-23"><a href="#cb24-23" aria-hidden="true" tabindex="-1"></a><span class="ss">    - loan_unit: 金额单位，取值为"元""万元""亿元"之一</span></span>
+<span id="cb24-24"><a href="#cb24-24" aria-hidden="true" tabindex="-1"></a><span class="ss">    - loan_rate: 年化利率（%），如为浮动利率请注明公式</span></span>
+<span id="cb24-25"><a href="#cb24-25" aria-hidden="true" tabindex="-1"></a><span class="ss">    - loan_rate_type: "固定"或"浮动"</span></span>
+<span id="cb24-26"><a href="#cb24-26" aria-hidden="true" tabindex="-1"></a><span class="ss">    - loan_term_year: 贷款期限（年），如原文为月则换算</span></span>
+<span id="cb24-27"><a href="#cb24-27" aria-hidden="true" tabindex="-1"></a><span class="ss">    - warnings: 列表，记录无法提取的字段及原因</span></span>
+<span id="cb24-28"><a href="#cb24-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-29"><a href="#cb24-29" aria-hidden="true" tabindex="-1"></a><span class="ss">    若一条公告包含多笔贷款，请返回一个 JSON 列表。</span></span>
+<span id="cb24-30"><a href="#cb24-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-31"><a href="#cb24-31" aria-hidden="true" tabindex="-1"></a><span class="ss">    公告文本：</span><span class="sc">{</span>text<span class="sc">}</span></span>
+<span id="cb24-32"><a href="#cb24-32" aria-hidden="true" tabindex="-1"></a><span class="ss">    """</span></span>
+<span id="cb24-33"><a href="#cb24-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-34"><a href="#cb24-34" aria-hidden="true" tabindex="-1"></a>    response <span class="op">=</span> api_client.chat(prompt)</span>
+<span id="cb24-35"><a href="#cb24-35" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> response</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>我们用公告 3（LPR 浮动利率）和公告 7（一文多笔）来说明 LLM 的优势：</p>
+<pre><code># 公告3的LLM提取结果（示例）
+{
+    "loan_date": "2022-03-10",
+    "bank_name": "中国银行",
+    "bank_level": "总行",
+    "loan_amount": 5.0,
+    "loan_unit": "亿元",
+    "loan_rate": "一年期LPR+80BP",
+    "loan_rate_type": "浮动",
+    "loan_term_year": 3,
+    "warnings": ["利率为浮动利率，具体数值取决于LPR当期报价"]
+}
+
+# 公告7的LLM提取结果（示例）——返回列表
+[
+    {
+        "loan_date": "2023-04-01",
+        "bank_name": "建设银行",
+        "bank_level": "地级分行",
+        "loan_amount": 3.0,
+        "loan_unit": "亿元",
+        "loan_rate": 4.10,
+        "loan_rate_type": "固定",
+        "loan_term_year": 5,
+        "warnings": ["日期仅精确到月份，默认取该月1日"]
+    },
+    {
+        "loan_date": "2023-04-01",
+        "bank_name": "中信银行",
+        "bank_level": "地级分行",
+        "loan_amount": 2.0,
+        "loan_unit": "亿元",
+        "loan_rate": 4.35,
+        "loan_rate_type": "固定",
+        "loan_term_year": 3,
+        "warnings": ["日期仅精确到月份，默认取该月1日"]
+    }
+]</code></pre>
+<p>公告 3 中正则无法提取的浮动利率，LLM 正确识别并标注了利率类型。公告 7 中两笔贷款被正确拆分为两条记录——而简单的正则很容易把两组数据混在一起。</p>
+</section>
+<section id="正则-vs-llm什么时候用哪个" class="level3" data-number="11.4.3">
+<h3 data-number="11.4.3" class="anchored" data-anchor-id="正则-vs-llm什么时候用哪个"><span class="header-section-number">11.4.3</span> 正则 vs LLM：什么时候用哪个？</h3>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+正则 vs LLM 的选择策略
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<table class="caption-top table">
+<colgroup>
+<col style="width: 43%">
+<col style="width: 33%">
+<col style="width: 22%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>场景</th>
+<th>推荐方法</th>
+<th>原因</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>格式固定的数字提取（利率、金额、日期）</td>
+<td>正则表达式</td>
+<td>速度快、确定性高、免费</td>
+</tr>
+<tr class="even">
+<td>银行名称标准化（“建行深圳分行”→“建设银行”）</td>
+<td>LLM</td>
+<td>需要语义理解和世界知识</td>
+</tr>
+<tr class="odd">
+<td>一条文本包含多笔贷款</td>
+<td>LLM</td>
+<td>需要理解文本结构</td>
+</tr>
+<tr class="even">
+<td>浮动利率、条件性表述</td>
+<td>LLM</td>
+<td>需要语义推理</td>
+</tr>
+<tr class="odd">
+<td>大批量处理（&gt;10000 条）</td>
+<td>正则为主 + LLM 抽样验证</td>
+<td>成本与效率的平衡</td>
+</tr>
+<tr class="even">
+<td>探索性分析（不确定文本有哪些模式）</td>
+<td>先用 LLM 看几条，总结模式后写正则</td>
+<td>效率最优的组合策略</td>
+</tr>
+</tbody>
+</table>
+<p><strong>实务中最常用的策略：先用正则处理能直接匹配的字段（通常能覆盖 80-90% 的样本），再用 LLM 处理正则失败的样本和需要语义理解的字段。</strong></p>
+</div>
+</div>
+<hr>
+</section>
+</section>
+<section id="词频统计与关键词分析" class="level2" data-number="11.5">
+<h2 data-number="11.5" class="anchored" data-anchor-id="词频统计与关键词分析"><span class="header-section-number">11.5</span> 词频统计与关键词分析</h2>
+<p>完成了预处理和信息提取之后，我们来看另一类常见的文本分析任务：<strong>从文本中发现”什么词最重要”</strong>。</p>
+<section id="词频统计最直接的文本画像" class="level3" data-number="11.5.1">
+<h3 data-number="11.5.1" class="anchored" data-anchor-id="词频统计最直接的文本画像"><span class="header-section-number">11.5.1</span> 词频统计：最直接的文本画像</h3>
+<p>统计每个词出现了多少次，是理解一篇文本”在说什么”的最简单方法。</p>
+<p>我们用素材④的三条新闻来演示：</p>
+<div class="sourceCode" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> collections <span class="im">import</span> Counter</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> jieba</span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a><span class="co"># 选取新闻1（正面）、新闻2（负面）、新闻6（中性）</span></span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>texts <span class="op">=</span> {</span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">"正面（宁德时代）"</span>: news_list[<span class="dv">0</span>][<span class="st">"text"</span>],</span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">"负面（房企违约）"</span>: news_list[<span class="dv">1</span>][<span class="st">"text"</span>],</span>
+<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">"中性（退市新规）"</span>: news_list[<span class="dv">5</span>][<span class="st">"text"</span>],</span>
+<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-11"><a href="#cb26-11" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> label, text <span class="kw">in</span> texts.items():</span>
+<span id="cb26-12"><a href="#cb26-12" aria-hidden="true" tabindex="-1"></a>    words <span class="op">=</span> preprocess_chinese_text(text, stopwords<span class="op">=</span>basic_stopwords, remove_numbers<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb26-13"><a href="#cb26-13" aria-hidden="true" tabindex="-1"></a>    top_words <span class="op">=</span> Counter(words).most_common(<span class="dv">8</span>)</span>
+<span id="cb26-14"><a href="#cb26-14" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">【</span><span class="sc">{</span>label<span class="sc">}</span><span class="ss">】Top 8 高频词："</span>)</span>
+<span id="cb26-15"><a href="#cb26-15" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> word, count <span class="kw">in</span> top_words:</span>
+<span id="cb26-16"><a href="#cb26-16" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"  </span><span class="sc">{</span>word<span class="sc">}</span><span class="ss">: </span><span class="sc">{</span>count<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>仅从高频词就能看出三条新闻的主题差异：正面新闻的高频词是”增长”“电池”“市场份额”，负面新闻是”违约”“评级”“下调”“压力”，中性新闻是”退市”“营业收入”“指标”。</p>
+</section>
+<section id="tf-idf找到真正重要的词" class="level3" data-number="11.5.2">
+<h3 data-number="11.5.2" class="anchored" data-anchor-id="tf-idf找到真正重要的词"><span class="header-section-number">11.5.2</span> TF-IDF：找到”真正重要”的词</h3>
+<p>词频统计有一个明显的局限：如果你分析的是 10 份年报，“公司”“经营”“报告期”这些词在<strong>每份年报</strong>中都会高频出现——它们出现频率高，但并不能帮助你区分不同公司或不同行业。</p>
+<p><strong>TF-IDF（Term Frequency - Inverse Document Frequency）</strong> 解决的就是这个问题。它的直觉是：</p>
+<blockquote class="blockquote">
+<p>一个词在<strong>当前文档</strong>中频繁出现（TF 高），但在<strong>其他文档</strong>中很少出现（IDF 高），说明它对当前文档特别重要。</p>
+</blockquote>
+<ul>
+<li><strong>TF（词频）</strong>= 该词在当前文档中的出现次数 / 当前文档的总词数</li>
+<li><strong>IDF（逆文档频率）</strong>= log(文档总数 / 包含该词的文档数)</li>
+<li><strong>TF-IDF</strong> = TF × IDF</li>
+</ul>
+<p>“公司”这个词在每份年报中都出现，IDF 接近 0，TF-IDF 值很低——它虽然频繁，但不重要。而”芯片”可能只在科技公司的年报中出现，IDF 很高，TF-IDF 值也高——它是区分这家公司与其他公司的关键词。</p>
+<p>我们用素材③的三段年报 MD&amp;A 来演示：</p>
+<div class="sourceCode" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.feature_extraction.text <span class="im">import</span> TfidfVectorizer</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a><span class="co"># 三段年报 MD&amp;A（已分词，用空格连接）</span></span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>mda_texts <span class="op">=</span> {</span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">"招商银行（银行业）"</span>: (</span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a>        <span class="st">"报告期内 本行 坚持 轻型银行 战略 方向 持续 深化 零售金融 护城河 "</span></span>
+<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a>        <span class="st">"全年 实现 营业收入 同比 增长 归属 股东 净利润 同比 增长 "</span></span>
+<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a>        <span class="st">"资产质量 保持 稳健 不良贷款率 较上年末 下降 个百分点 "</span></span>
+<span id="cb27-10"><a href="#cb27-10" aria-hidden="true" tabindex="-1"></a>        <span class="st">"拨备覆盖率 风险 抵补 能力 充足 本行 零售 客户 总数 突破 "</span></span>
+<span id="cb27-11"><a href="#cb27-11" aria-hidden="true" tabindex="-1"></a>        <span class="st">"管理 零售 客户 总资产 达 万亿元 财富 管理 手续费 佣金 收入 "</span></span>
+<span id="cb27-12"><a href="#cb27-12" aria-hidden="true" tabindex="-1"></a>        <span class="st">"连续三年 保持 两位数 增长 面对 复杂 多变 外部 环境 "</span></span>
+<span id="cb27-13"><a href="#cb27-13" aria-hidden="true" tabindex="-1"></a>        <span class="st">"本行 继续 坚守 合规 底线 强化 风险管理 能力 高质量 发展"</span></span>
+<span id="cb27-14"><a href="#cb27-14" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb27-15"><a href="#cb27-15" aria-hidden="true" tabindex="-1"></a>    <span class="st">"中兴通讯（通信设备）"</span>: (</span>
+<span id="cb27-16"><a href="#cb27-16" aria-hidden="true" tabindex="-1"></a>        <span class="st">"报告期内 全球 通信设备 市场 竞争格局 进一步 分化 5G 网络建设 "</span></span>
+<span id="cb27-17"><a href="#cb27-17" aria-hidden="true" tabindex="-1"></a>        <span class="st">"大规模 部署 阶段 逐步 过渡 深度覆盖 行业 应用 拓展 阶段 "</span></span>
+<span id="cb27-18"><a href="#cb27-18" aria-hidden="true" tabindex="-1"></a>        <span class="st">"运营商 资本开支 增速 有所 放缓 公司 实现 营业收入 "</span></span>
+<span id="cb27-19"><a href="#cb27-19" aria-hidden="true" tabindex="-1"></a>        <span class="st">"同比 下降 研发投入 占 营业收入 比例 继续 保持 行业 领先 水平 "</span></span>
+<span id="cb27-20"><a href="#cb27-20" aria-hidden="true" tabindex="-1"></a>        <span class="st">"产品 层面 公司 第三代 自研 芯片 已 完成 流片 验证 "</span></span>
+<span id="cb27-21"><a href="#cb27-21" aria-hidden="true" tabindex="-1"></a>        <span class="st">"进入 小批量 商用 阶段 服务器 存储 产品 全球 市场份额 "</span></span>
+<span id="cb27-22"><a href="#cb27-22" aria-hidden="true" tabindex="-1"></a>        <span class="st">"稳步 提升 海外 收入 占比 地缘政治 风险 部分 市场 拓展 "</span></span>
+<span id="cb27-23"><a href="#cb27-23" aria-hidden="true" tabindex="-1"></a>        <span class="st">"构成 不确定性 公司 持续 加大 研发投入 力度 聚焦 核心技术 突破"</span></span>
+<span id="cb27-24"><a href="#cb27-24" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb27-25"><a href="#cb27-25" aria-hidden="true" tabindex="-1"></a>    <span class="st">"万科 A（房地产业）"</span>: (</span>
+<span id="cb27-26"><a href="#cb27-26" aria-hidden="true" tabindex="-1"></a>        <span class="st">"报告期内 房地产市场 深度 调整 态势 延续 行业 整体 面临 "</span></span>
+<span id="cb27-27"><a href="#cb27-27" aria-hidden="true" tabindex="-1"></a>        <span class="st">"前所未有 挑战 受 商品房 销售 大幅 下滑 影响 公司 全年 "</span></span>
+<span id="cb27-28"><a href="#cb27-28" aria-hidden="true" tabindex="-1"></a>        <span class="st">"实现 营业收入 同比 下降 归属 上市公司 股东 净利润 "</span></span>
+<span id="cb27-29"><a href="#cb27-29" aria-hidden="true" tabindex="-1"></a>        <span class="st">"同比 下降 公司 部分 城市 项目 去化 速度 不及 预期 "</span></span>
+<span id="cb27-30"><a href="#cb27-30" aria-hidden="true" tabindex="-1"></a>        <span class="st">"存货 跌价 准备 计提 金额 较上年 显著 增加 流动性 方面 "</span></span>
+<span id="cb27-31"><a href="#cb27-31" aria-hidden="true" tabindex="-1"></a>        <span class="st">"公司 通过 加快 销售 回款 处置 非核心 资产 压缩 资本开支 "</span></span>
+<span id="cb27-32"><a href="#cb27-32" aria-hidden="true" tabindex="-1"></a>        <span class="st">"多措并举 全力 保障 债务 如期 偿付 公司 有息负债 总额 "</span></span>
+<span id="cb27-33"><a href="#cb27-33" aria-hidden="true" tabindex="-1"></a>        <span class="st">"一年内 到期 债务 占比 短期 偿债 压力 较为 突出 "</span></span>
+<span id="cb27-34"><a href="#cb27-34" aria-hidden="true" tabindex="-1"></a>        <span class="st">"公司 继续 活下去 首要 目标 主动 作为 积极 应对 严峻 考验"</span></span>
+<span id="cb27-35"><a href="#cb27-35" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb27-36"><a href="#cb27-36" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb27-37"><a href="#cb27-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-38"><a href="#cb27-38" aria-hidden="true" tabindex="-1"></a><span class="co"># 构建 TF-IDF 矩阵</span></span>
+<span id="cb27-39"><a href="#cb27-39" aria-hidden="true" tabindex="-1"></a>vectorizer <span class="op">=</span> TfidfVectorizer(max_features<span class="op">=</span><span class="dv">200</span>)</span>
+<span id="cb27-40"><a href="#cb27-40" aria-hidden="true" tabindex="-1"></a>tfidf_matrix <span class="op">=</span> vectorizer.fit_transform(mda_texts.values())</span>
+<span id="cb27-41"><a href="#cb27-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-42"><a href="#cb27-42" aria-hidden="true" tabindex="-1"></a><span class="co"># 提取每份文档的 Top 10 关键词</span></span>
+<span id="cb27-43"><a href="#cb27-43" aria-hidden="true" tabindex="-1"></a>feature_names <span class="op">=</span> vectorizer.get_feature_names_out()</span>
+<span id="cb27-44"><a href="#cb27-44" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i, (company, _) <span class="kw">in</span> <span class="bu">enumerate</span>(mda_texts.items()):</span>
+<span id="cb27-45"><a href="#cb27-45" aria-hidden="true" tabindex="-1"></a>    scores <span class="op">=</span> tfidf_matrix[i].toarray().flatten()</span>
+<span id="cb27-46"><a href="#cb27-46" aria-hidden="true" tabindex="-1"></a>    top_indices <span class="op">=</span> scores.argsort()[<span class="op">-</span><span class="dv">10</span>:][::<span class="op">-</span><span class="dv">1</span>]</span>
+<span id="cb27-47"><a href="#cb27-47" aria-hidden="true" tabindex="-1"></a>    top_words <span class="op">=</span> [(feature_names[j], <span class="bu">round</span>(scores[j], <span class="dv">3</span>)) <span class="cf">for</span> j <span class="kw">in</span> top_indices]</span>
+<span id="cb27-48"><a href="#cb27-48" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">【</span><span class="sc">{</span>company<span class="sc">}</span><span class="ss">】TF-IDF Top 10:"</span>)</span>
+<span id="cb27-49"><a href="#cb27-49" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> word, score <span class="kw">in</span> top_words:</span>
+<span id="cb27-50"><a href="#cb27-50" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"  </span><span class="sc">{</span>word<span class="sc">}</span><span class="ss">: </span><span class="sc">{</span>score<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>TF-IDF 的结果比简单词频更有区分度：</p>
+<ul>
+<li><strong>招商银行</strong>的关键词是”零售”“财富”“管理”“护城河”“拨备覆盖率”——精准反映了其”零售银行”的战略定位</li>
+<li><strong>中兴通讯</strong>的关键词是”5G”“芯片”“流片”“运营商”“研发投入”——典型的通信设备制造商特征</li>
+<li><strong>万科</strong>的关键词是”去化”“活下去”“偿债”“跌价”“回款”——直指房地产行业的困境</li>
+</ul>
+<p>而”报告期内”“公司”“实现”“营业收入”等在三份文档中都出现的词，TF-IDF 得分很低，不会出现在关键词列表中。这正是 TF-IDF 相比简单词频的价值所在。</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+提示词：TF-IDF 关键词提取
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>我有若干份上市公司年报的 MD&amp;A 文本（已分词，词之间用空格分隔），存储在一个字典 <code>mda_texts</code> 中，键为公司名称，值为分词后的文本字符串。</p>
+<p>请帮我： 1. 用 sklearn 的 TfidfVectorizer（max_features=500）构建 TF-IDF 矩阵 2. 输出每份文档中 TF-IDF 得分最高的 10 个关键词及其得分 3. 找出<strong>只在一份文档中出现</strong>的高 TF-IDF 词（即该文档的”独有特征词”） 4. 将结果整理为 DataFrame 格式，列为：公司名称、排名、关键词、TF-IDF 得分</p>
+</div>
+</div>
+<hr>
+</section>
+</section>
+<section id="综合案例从-50-条借贷公告到结构化贷款数据表" class="level2" data-number="11.6">
+<h2 data-number="11.6" class="anchored" data-anchor-id="综合案例从-50-条借贷公告到结构化贷款数据表"><span class="header-section-number">11.6</span> 综合案例：从 50 条借贷公告到结构化贷款数据表</h2>
+<p>前面几节分别介绍了预处理、正则提取、LLM 提取和关键词分析。本节将这些方法串联起来，完成一个完整的实操案例：<strong>从 50 条借贷公告的原始文本出发，批量提取结构化的贷款信息，最终输出一份可以直接用于回归分析的干净数据表。</strong></p>
+<p>这个案例直接衔接数据清洗章的 Announcement 场景 [1]——数据清洗章只处理了一条公告，这里扩展到 50 条，走完从”拿到文本”到”输出 CSV”的全流程。</p>
+<section id="数据来源" class="level3" data-number="11.6.1">
+<h3 data-number="11.6.1" class="anchored" data-anchor-id="数据来源"><span class="header-section-number">11.6.1</span> 数据来源</h3>
+<p>这 50 条公告来自爬虫章从巨潮资讯网获取的上市公司临时公告。每条公告已经保存为 <code>data_raw/announcements/</code> 目录下的 <code>.txt</code> 文件，文件名格式为 <code>{stkcd}_{year}_{seq}.txt</code>（如 <code>000001_2023_01.txt</code>）。</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>如果你跳过了爬虫章，可以从课程 GitHub 仓库下载这 50 条公告的文本包。在本节的代码演示中，我们使用素材①中的 8 条公告作为精简示例来展示完整流程。</p>
+</div>
+</div>
+</section>
+<section id="step-1批量读取与文本清洗" class="level3" data-number="11.6.2">
+<h3 data-number="11.6.2" class="anchored" data-anchor-id="step-1批量读取与文本清洗"><span class="header-section-number">11.6.2</span> Step 1：批量读取与文本清洗</h3>
+<div class="sourceCode" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a><span class="co"># 构建 DataFrame（使用素材①的 8 条公告）</span></span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>df_ann <span class="op">=</span> pd.DataFrame({</span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"stkcd"</span>: [m[<span class="st">"stkcd"</span>] <span class="cf">for</span> m <span class="kw">in</span> ann_meta],</span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">"year"</span>:  [m[<span class="st">"year"</span>]  <span class="cf">for</span> m <span class="kw">in</span> ann_meta],</span>
+<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">"text"</span>:  announcements,</span>
+<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb28-9"><a href="#cb28-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-10"><a href="#cb28-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"原始数据：</span><span class="sc">{</span><span class="bu">len</span>(df_ann)<span class="sc">}</span><span class="ss"> 条公告"</span>)</span>
+<span id="cb28-11"><a href="#cb28-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"公司数量：</span><span class="sc">{</span>df_ann[<span class="st">'stkcd'</span>]<span class="sc">.</span>nunique()<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb28-12"><a href="#cb28-12" aria-hidden="true" tabindex="-1"></a>df_ann[[<span class="st">"stkcd"</span>, <span class="st">"year"</span>, <span class="st">"text"</span>]].head(<span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 批量清洗</span></span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>df_ann[<span class="st">"text_clean"</span>] <span class="op">=</span> df_ann[<span class="st">"text"</span>].<span class="bu">apply</span>(clean_text)</span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a><span class="co"># 对比清洗前后（以公告4为例）</span></span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a>idx <span class="op">=</span> <span class="dv">3</span>  <span class="co"># 公告4</span></span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"【清洗前】"</span>)</span>
+<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df_ann.loc[idx, <span class="st">"text"</span>][:<span class="dv">80</span>], <span class="st">"..."</span>)</span>
+<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">【清洗后】"</span>)</span>
+<span id="cb29-9"><a href="#cb29-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df_ann.loc[idx, <span class="st">"text_clean"</span>][:<span class="dv">80</span>], <span class="st">"..."</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="step-2正则提取可直接匹配的字段" class="level3" data-number="11.6.3">
+<h3 data-number="11.6.3" class="anchored" data-anchor-id="step-2正则提取可直接匹配的字段"><span class="header-section-number">11.6.3</span> Step 2：正则提取（可直接匹配的字段）</h3>
+<div class="sourceCode" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> re</span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> extract_by_regex(text):</span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""用正则从借贷公告中提取结构化字段"""</span></span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>    result <span class="op">=</span> {</span>
+<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a>        <span class="st">"loan_amount"</span>: <span class="va">None</span>, <span class="st">"loan_unit"</span>: <span class="va">None</span>,</span>
+<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a>        <span class="st">"loan_rate"</span>: <span class="va">None</span>, <span class="st">"loan_term"</span>: <span class="va">None</span>, <span class="st">"loan_term_unit"</span>: <span class="va">None</span>,</span>
+<span id="cb30-8"><a href="#cb30-8" aria-hidden="true" tabindex="-1"></a>        <span class="st">"regex_warnings"</span>: []</span>
+<span id="cb30-9"><a href="#cb30-9" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb30-10"><a href="#cb30-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-11"><a href="#cb30-11" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 金额</span></span>
+<span id="cb30-12"><a href="#cb30-12" aria-hidden="true" tabindex="-1"></a>    m <span class="op">=</span> re.search(<span class="vs">r'(?:贷款|借款)?金额[为是]?(?:人民币)?(\d+\.?\d*)(万元|亿元|元)'</span>, text)</span>
+<span id="cb30-13"><a href="#cb30-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> m:</span>
+<span id="cb30-14"><a href="#cb30-14" aria-hidden="true" tabindex="-1"></a>        result[<span class="st">"loan_amount"</span>] <span class="op">=</span> <span class="bu">float</span>(m.group(<span class="dv">1</span>))</span>
+<span id="cb30-15"><a href="#cb30-15" aria-hidden="true" tabindex="-1"></a>        result[<span class="st">"loan_unit"</span>] <span class="op">=</span> m.group(<span class="dv">2</span>)</span>
+<span id="cb30-16"><a href="#cb30-16" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
+<span id="cb30-17"><a href="#cb30-17" aria-hidden="true" tabindex="-1"></a>        result[<span class="st">"regex_warnings"</span>].append(<span class="st">"金额未提取"</span>)</span>
+<span id="cb30-18"><a href="#cb30-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-19"><a href="#cb30-19" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 利率</span></span>
+<span id="cb30-20"><a href="#cb30-20" aria-hidden="true" tabindex="-1"></a>    m <span class="op">=</span> re.search(<span class="vs">r'(?:利率|年息|年利率)[为是]?年?化?(\d+\.?\d*)%'</span>, text)</span>
+<span id="cb30-21"><a href="#cb30-21" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> m:</span>
+<span id="cb30-22"><a href="#cb30-22" aria-hidden="true" tabindex="-1"></a>        result[<span class="st">"loan_rate"</span>] <span class="op">=</span> <span class="bu">float</span>(m.group(<span class="dv">1</span>))</span>
+<span id="cb30-23"><a href="#cb30-23" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
+<span id="cb30-24"><a href="#cb30-24" aria-hidden="true" tabindex="-1"></a>        result[<span class="st">"regex_warnings"</span>].append(<span class="st">"利率未提取"</span>)</span>
+<span id="cb30-25"><a href="#cb30-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-26"><a href="#cb30-26" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 期限</span></span>
+<span id="cb30-27"><a href="#cb30-27" aria-hidden="true" tabindex="-1"></a>    m <span class="op">=</span> re.search(<span class="vs">r'(?:贷款|借款)?期限[为是]?(\d+)(年|个月)'</span>, text)</span>
+<span id="cb30-28"><a href="#cb30-28" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> m:</span>
+<span id="cb30-29"><a href="#cb30-29" aria-hidden="true" tabindex="-1"></a>        result[<span class="st">"loan_term"</span>] <span class="op">=</span> <span class="bu">int</span>(m.group(<span class="dv">1</span>))</span>
+<span id="cb30-30"><a href="#cb30-30" aria-hidden="true" tabindex="-1"></a>        result[<span class="st">"loan_term_unit"</span>] <span class="op">=</span> m.group(<span class="dv">2</span>)</span>
+<span id="cb30-31"><a href="#cb30-31" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
+<span id="cb30-32"><a href="#cb30-32" aria-hidden="true" tabindex="-1"></a>        result[<span class="st">"regex_warnings"</span>].append(<span class="st">"期限未提取"</span>)</span>
+<span id="cb30-33"><a href="#cb30-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-34"><a href="#cb30-34" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> result</span>
+<span id="cb30-35"><a href="#cb30-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-36"><a href="#cb30-36" aria-hidden="true" tabindex="-1"></a><span class="co"># 批量提取</span></span>
+<span id="cb30-37"><a href="#cb30-37" aria-hidden="true" tabindex="-1"></a>regex_results <span class="op">=</span> df_ann[<span class="st">"text_clean"</span>].<span class="bu">apply</span>(extract_by_regex).<span class="bu">apply</span>(pd.Series)</span>
+<span id="cb30-38"><a href="#cb30-38" aria-hidden="true" tabindex="-1"></a>df_ann <span class="op">=</span> pd.concat([df_ann, regex_results], axis<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb30-39"><a href="#cb30-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-40"><a href="#cb30-40" aria-hidden="true" tabindex="-1"></a><span class="co"># 统计提取成功率</span></span>
+<span id="cb30-41"><a href="#cb30-41" aria-hidden="true" tabindex="-1"></a>total <span class="op">=</span> <span class="bu">len</span>(df_ann)</span>
+<span id="cb30-42"><a href="#cb30-42" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> field <span class="kw">in</span> [<span class="st">"loan_amount"</span>, <span class="st">"loan_rate"</span>, <span class="st">"loan_term"</span>]:</span>
+<span id="cb30-43"><a href="#cb30-43" aria-hidden="true" tabindex="-1"></a>    success <span class="op">=</span> df_ann[field].notna().<span class="bu">sum</span>()</span>
+<span id="cb30-44"><a href="#cb30-44" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>field<span class="sc">}</span><span class="ss">: </span><span class="sc">{</span>success<span class="sc">}</span><span class="ss">/</span><span class="sc">{</span>total<span class="sc">}</span><span class="ss"> 条成功 (</span><span class="sc">{</span>success<span class="op">/</span>total<span class="op">*</span><span class="dv">100</span><span class="sc">:.0f}</span><span class="ss">%)"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre><code>loan_amount: 6/8 条成功 (75%)
+loan_rate: 5/8 条成功 (62%)
+loan_term: 6/8 条成功 (75%)</code></pre>
+<p>公告 3（LPR 浮动利率）和公告 6（利率未确定）的利率提取失败；公告 7（一文多笔）只提取到了第一笔的信息；公告 8（重复）的结果与公告 1 相同。这些都是预期内的——正则表达式处理了能处理的部分，剩下的交给 LLM。</p>
+</section>
+<section id="step-3llm-补充提取" class="level3" data-number="11.6.4">
+<h3 data-number="11.6.4" class="anchored" data-anchor-id="step-3llm-补充提取"><span class="header-section-number">11.6.4</span> Step 3：LLM 补充提取</h3>
+<div class="sourceCode" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 找出正则提取不完整的记录</span></span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>needs_llm <span class="op">=</span> df_ann[</span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>    df_ann[<span class="st">"regex_warnings"</span>].<span class="bu">apply</span>(<span class="bu">len</span>) <span class="op">&gt;</span> <span class="dv">0</span></span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a>].index.tolist()</span>
+<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"需要 LLM 补充提取的记录：</span><span class="sc">{</span><span class="bu">len</span>(needs_llm)<span class="sc">}</span><span class="ss"> 条"</span>)</span>
+<span id="cb32-7"><a href="#cb32-7" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> idx <span class="kw">in</span> needs_llm:</span>
+<span id="cb32-8"><a href="#cb32-8" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"  公告 </span><span class="sc">{</span>idx<span class="op">+</span><span class="dv">1</span><span class="sc">}</span><span class="ss">：</span><span class="sc">{</span>df_ann<span class="sc">.</span>loc[idx, <span class="st">'regex_warnings'</span>]<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre><code>需要 LLM 补充提取的记录：3 条
+  公告 3：['利率未提取']
+  公告 6：['利率未提取']
+  公告 7：['金额未提取', '利率未提取', '期限未提取']</code></pre>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+提示词：LLM 补充提取正则失败的公告
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>我正在从上市公司借贷公告中批量提取贷款信息。以下 3 条公告的部分字段正则提取失败，请帮我提取。</p>
+<p>输出为 JSON 格式，每条公告对应一个 JSON 对象（若一条公告含多笔贷款则返回列表），字段包括： - loan_date: 日期 (YYYY-MM-DD) - bank_name: 银行标准化名称 - bank_level: 银行层级（总行/省级分行/地级分行） - loan_amount: 金额数值 - loan_unit: 单位（元/万元/亿元） - loan_rate: 利率(%)，浮动利率请注明公式 - loan_rate_type: 固定/浮动 - loan_term_year: 期限（年） - warnings: 无法提取的字段及原因</p>
+<p>公告 3：{df_ann.loc[2, ‘text_clean’]} 公告 6：{df_ann.loc[5, ‘text_clean’]} 公告 7：{df_ann.loc[6, ‘text_clean’]}</p>
+</div>
+</div>
+</section>
+<section id="step-4结果验证与清洗" class="level3" data-number="11.6.5">
+<h3 data-number="11.6.5" class="anchored" data-anchor-id="step-4结果验证与清洗"><span class="header-section-number">11.6.5</span> Step 4：结果验证与清洗</h3>
+<div class="sourceCode" id="cb34"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 4.1 去除精确重复（公告1和公告8）</span></span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"去重前：</span><span class="sc">{</span><span class="bu">len</span>(df_ann)<span class="sc">}</span><span class="ss"> 条"</span>)</span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>df_ann <span class="op">=</span> df_ann.drop_duplicates(subset<span class="op">=</span>[<span class="st">"text_clean"</span>])</span>
+<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"去重后：</span><span class="sc">{</span><span class="bu">len</span>(df_ann)<span class="sc">}</span><span class="ss"> 条"</span>)</span>
+<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-6"><a href="#cb34-6" aria-hidden="true" tabindex="-1"></a><span class="co"># 4.2 金额单位统一换算为万元（复用数据清洗章的逻辑 [1]）</span></span>
+<span id="cb34-7"><a href="#cb34-7" aria-hidden="true" tabindex="-1"></a>unit_map <span class="op">=</span> {<span class="st">"元"</span>: <span class="fl">0.0001</span>, <span class="st">"万元"</span>: <span class="dv">1</span>, <span class="st">"亿元"</span>: <span class="dv">10000</span>}</span>
+<span id="cb34-8"><a href="#cb34-8" aria-hidden="true" tabindex="-1"></a>df_ann[<span class="st">"loan_amount_wan"</span>] <span class="op">=</span> (</span>
+<span id="cb34-9"><a href="#cb34-9" aria-hidden="true" tabindex="-1"></a>    df_ann[<span class="st">"loan_amount"</span>] <span class="op">*</span> df_ann[<span class="st">"loan_unit"</span>].<span class="bu">map</span>(unit_map)</span>
+<span id="cb34-10"><a href="#cb34-10" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb34-11"><a href="#cb34-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-12"><a href="#cb34-12" aria-hidden="true" tabindex="-1"></a><span class="co"># 4.3 期限统一换算为年</span></span>
+<span id="cb34-13"><a href="#cb34-13" aria-hidden="true" tabindex="-1"></a>df_ann[<span class="st">"loan_term_year"</span>] <span class="op">=</span> df_ann.<span class="bu">apply</span>(</span>
+<span id="cb34-14"><a href="#cb34-14" aria-hidden="true" tabindex="-1"></a>    <span class="kw">lambda</span> row: row[<span class="st">"loan_term"</span>] <span class="op">/</span> <span class="dv">12</span> <span class="cf">if</span> row[<span class="st">"loan_term_unit"</span>] <span class="op">==</span> <span class="st">"个月"</span></span>
+<span id="cb34-15"><a href="#cb34-15" aria-hidden="true" tabindex="-1"></a>                <span class="cf">else</span> row[<span class="st">"loan_term"</span>],</span>
+<span id="cb34-16"><a href="#cb34-16" aria-hidden="true" tabindex="-1"></a>    axis<span class="op">=</span><span class="dv">1</span></span>
+<span id="cb34-17"><a href="#cb34-17" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb34-18"><a href="#cb34-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-19"><a href="#cb34-19" aria-hidden="true" tabindex="-1"></a><span class="co"># 4.4 stkcd 格式统一（复用数据清洗章方法 [1]）</span></span>
+<span id="cb34-20"><a href="#cb34-20" aria-hidden="true" tabindex="-1"></a>df_ann[<span class="st">"stkcd"</span>] <span class="op">=</span> df_ann[<span class="st">"stkcd"</span>].astype(<span class="bu">str</span>).<span class="bu">str</span>.zfill(<span class="dv">6</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="step-5聚合为公司-年层面" class="level3" data-number="11.6.6">
+<h3 data-number="11.6.6" class="anchored" data-anchor-id="step-5聚合为公司-年层面"><span class="header-section-number">11.6.6</span> Step 5：聚合为公司-年层面</h3>
+<p>同一家公司在同一年可能有多笔贷款（如公告 7 中万科的两笔），需要聚合为公司-年层面，才能与 FinRatio 数据做合并 [1]。</p>
+<div class="sourceCode" id="cb35"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 按 (stkcd, year) 聚合（复用数据清洗章的长表聚合逻辑 [1]）</span></span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>df_loans <span class="op">=</span> (</span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>    df_ann</span>
+<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a>    .groupby([<span class="st">"stkcd"</span>, <span class="st">"year"</span>])</span>
+<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a>    .<span class="bu">apply</span>(<span class="kw">lambda</span> g: pd.Series({</span>
+<span id="cb35-6"><a href="#cb35-6" aria-hidden="true" tabindex="-1"></a>        <span class="st">"loan_count"</span>: <span class="bu">len</span>(g),</span>
+<span id="cb35-7"><a href="#cb35-7" aria-hidden="true" tabindex="-1"></a>        <span class="st">"total_loan_wan"</span>: g[<span class="st">"loan_amount_wan"</span>].<span class="bu">sum</span>(),</span>
+<span id="cb35-8"><a href="#cb35-8" aria-hidden="true" tabindex="-1"></a>        <span class="st">"avg_loan_rate"</span>: (  <span class="co"># 以金额为权重的加权平均利率</span></span>
+<span id="cb35-9"><a href="#cb35-9" aria-hidden="true" tabindex="-1"></a>            (g[<span class="st">"loan_rate"</span>] <span class="op">*</span> g[<span class="st">"loan_amount_wan"</span>]).<span class="bu">sum</span>()</span>
+<span id="cb35-10"><a href="#cb35-10" aria-hidden="true" tabindex="-1"></a>            <span class="op">/</span> g[<span class="st">"loan_amount_wan"</span>].<span class="bu">sum</span>()</span>
+<span id="cb35-11"><a href="#cb35-11" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> g[<span class="st">"loan_rate"</span>].notna().<span class="bu">any</span>() <span class="cf">else</span> <span class="va">None</span></span>
+<span id="cb35-12"><a href="#cb35-12" aria-hidden="true" tabindex="-1"></a>        ),</span>
+<span id="cb35-13"><a href="#cb35-13" aria-hidden="true" tabindex="-1"></a>        <span class="st">"avg_loan_term"</span>: (  <span class="co"># 以金额为权重的加权平均期限</span></span>
+<span id="cb35-14"><a href="#cb35-14" aria-hidden="true" tabindex="-1"></a>            (g[<span class="st">"loan_term_year"</span>] <span class="op">*</span> g[<span class="st">"loan_amount_wan"</span>]).<span class="bu">sum</span>()</span>
+<span id="cb35-15"><a href="#cb35-15" aria-hidden="true" tabindex="-1"></a>            <span class="op">/</span> g[<span class="st">"loan_amount_wan"</span>].<span class="bu">sum</span>()</span>
+<span id="cb35-16"><a href="#cb35-16" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> g[<span class="st">"loan_term_year"</span>].notna().<span class="bu">any</span>() <span class="cf">else</span> <span class="va">None</span></span>
+<span id="cb35-17"><a href="#cb35-17" aria-hidden="true" tabindex="-1"></a>        ),</span>
+<span id="cb35-18"><a href="#cb35-18" aria-hidden="true" tabindex="-1"></a>    }))</span>
+<span id="cb35-19"><a href="#cb35-19" aria-hidden="true" tabindex="-1"></a>    .reset_index()</span>
+<span id="cb35-20"><a href="#cb35-20" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb35-21"><a href="#cb35-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-22"><a href="#cb35-22" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"聚合后：</span><span class="sc">{</span><span class="bu">len</span>(df_loans)<span class="sc">}</span><span class="ss"> 个公司-年观测"</span>)</span>
+<span id="cb35-23"><a href="#cb35-23" aria-hidden="true" tabindex="-1"></a>df_loans</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="step-6输出" class="level3" data-number="11.6.7">
+<h3 data-number="11.6.7" class="anchored" data-anchor-id="step-6输出"><span class="header-section-number">11.6.7</span> Step 6：输出</h3>
+<div class="sourceCode" id="cb36"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 保存到 data_clean/ 目录</span></span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>df_loans.to_csv(<span class="st">"data_clean/loans_extracted.csv"</span>, index<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"已保存至 data_clean/loans_extracted.csv"</span>)</span>
+<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"可直接与 FinRatio 数据通过 (stkcd, year) 合并"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>这份数据的结构与数据清洗章中 FinRatio 表的主键完全一致——都是 <code>(stkcd, year)</code> [1]，可以直接 <code>merge</code>，将文本提取的贷款特征纳入回归分析。</p>
+<hr>
+</section>
+</section>
+<section id="本章小结" class="level2" data-number="11.7">
+<h2 data-number="11.7" class="anchored" data-anchor-id="本章小结"><span class="header-section-number">11.7</span> 本章小结</h2>
+<p>本章介绍了金融文本分析的基础工具和流程，核心内容可以用下图概括：</p>
+<pre><code>金融文本（公告/研报/新闻/央行报告）
+  │
+  ├─→ 文本清洗（去HTML、全角转半角、去噪音）
+  │
+  ├─→ 中文分词（jieba + 金融自定义词典）
+  │     │
+  │     └─→ 停用词过滤
+  │
+  ├─→ 信息提取
+  │     ├─→ 正则表达式（格式明确的数字字段）
+  │     └─→ LLM（语义复杂、正则失败的字段）
+  │
+  └─→ 词频/关键词分析
+        ├─→ 词频统计（Counter）
+        └─→ TF-IDF（区分文档的关键词）
+              │
+              ▼
+        结构化数据（可纳入回归/建模）</code></pre>
+<p><strong>关键要点：</strong></p>
+<ol type="1">
+<li><strong>先清洗，后分词，再分析</strong>——顺序不能乱</li>
+<li><strong>金融术语需要自定义词典</strong>——否则分词结果不可信</li>
+<li><strong>正则和 LLM 互补</strong>——正则处理大部分，LLM 处理正则搞不定的</li>
+<li><strong>TF-IDF 优于简单词频</strong>——它能发现真正有区分度的关键词</li>
+</ol>
+<p>下一章将在本章预处理的基础上，进入文本分析的核心应用——<strong>情感分析与文本建模</strong>：用词典方法、机器学习和大语言模型来量化文本的”语气”和”情感”，并将文本指标纳入金融量化分析框架。</p>
+<hr>
+<section id="章末练习" class="level3" data-number="11.7.1">
+<h3 data-number="11.7.1" class="anchored" data-anchor-id="章末练习"><span class="header-section-number">11.7.1</span> 章末练习</h3>
+<ol type="1">
+<li><p><strong>基础题：</strong> 使用 <code>akshare</code> 获取某家上市公司最近 20 条公告标题（<code>ak.stock_notice_report()</code>），对标题做分词和词频统计，绘制 Top 15 高频词的条形图。</p></li>
+<li><p><strong>应用题：</strong> 对本章提供的 8 条借贷公告，分别用正则表达式和 LLM 提取贷款信息，将两种方法的结果整理为 DataFrame 进行对比。哪些字段两种方法结果一致？哪些存在差异？差异的原因是什么？</p></li>
+<li><p><strong>应用题：</strong> 对本章提供的 6 条财经新闻，使用 TF-IDF 提取每条新闻的 Top 5 关键词。哪些词在多条新闻中都出现但 TF-IDF 得分很低？哪些词只在一条新闻中出现但得分很高？</p></li>
+<li><p><strong>思考题：</strong> 如果你要分析央行货币政策报告的语气变化趋势，请设计一个从”获取文本”到”输出语气指数时序图”的完整分析方案。画出流程图，列出每个步骤需要的工具和方法，以及可能遇到的挑战。</p></li>
+</ol>
+<hr>
+</section>
+<section id="参考文献" class="level3" data-number="11.7.2">
+<h3 data-number="11.7.2" class="anchored" data-anchor-id="参考文献"><span class="header-section-number">11.7.2</span> 参考文献</h3>
+<ul>
+<li>Loughran, T., &amp; McDonald, B. (2011). When is a liability not a liability? Textual analysis, dictionaries, and 10-Ks. <em>Journal of Finance</em>, 66(1), 35–65. <a href="https://doi.org/10.1111/j.1540-6261.2010.01625.x">Link</a>, <a href="https://scholar.google.com/scholar?q=When+is+a+liability+not+a+liability+Loughran+McDonald+2011">Google</a>.</li>
+</ul>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const disableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'prefetch';
+    }
+  }
+  const enableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'stylesheet';
+    }
+  }
+  const manageTransitions = (selector, allowTransitions) => {
+    const els = window.document.querySelectorAll(selector);
+    for (let i=0; i < els.length; i++) {
+      const el = els[i];
+      if (allowTransitions) {
+        el.classList.remove('notransition');
+      } else {
+        el.classList.add('notransition');
+      }
+    }
+  }
+  const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+    const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+    const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+    let newTheme = '';
+    if(darkModeDefault) {
+      newTheme = isAlternate ? baseTheme : alternateTheme;
+    } else {
+      newTheme = isAlternate ? alternateTheme : baseTheme;
+    }
+    const changeGiscusTheme = () => {
+      // From: https://github.com/giscus/giscus/issues/336
+      const sendMessage = (message) => {
+        const iframe = document.querySelector('iframe.giscus-frame');
+        if (!iframe) return;
+        iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+      }
+      sendMessage({
+        setConfig: {
+          theme: newTheme
+        }
+      });
+    }
+    const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+    if (isGiscussLoaded) {
+      changeGiscusTheme();
+    }
+  }
+  const toggleColorMode = (alternate) => {
+    // Switch the stylesheets
+    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+    manageTransitions('#quarto-margin-sidebar .nav-link', false);
+    if (alternate) {
+      enableStylesheet(alternateStylesheets);
+      for (const sheetNode of alternateStylesheets) {
+        if (sheetNode.id === "quarto-bootstrap") {
+          toggleBodyColorMode(sheetNode);
+        }
+      }
+    } else {
+      disableStylesheet(alternateStylesheets);
+      toggleBodyColorPrimary();
+    }
+    manageTransitions('#quarto-margin-sidebar .nav-link', true);
+    // Switch the toggles
+    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+    for (let i=0; i < toggles.length; i++) {
+      const toggle = toggles[i];
+      if (toggle) {
+        if (alternate) {
+          toggle.classList.add("alternate");     
+        } else {
+          toggle.classList.remove("alternate");
+        }
+      }
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455)
+    if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+      manageTransitions("body", false);
+      window.scrollTo(0, 1);
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        manageTransitions("body", true);
+      }, 40);  
+    }
+  }
+  const isFileUrl = () => { 
+    return window.location.protocol === 'file:';
+  }
+  const hasAlternateSentinel = () => {  
+    let styleSentinel = getColorSchemeSentinel();
+    if (styleSentinel !== null) {
+      return styleSentinel === "alternate";
+    } else {
+      return false;
+    }
+  }
+  const setStyleSentinel = (alternate) => {
+    const value = alternate ? "alternate" : "default";
+    if (!isFileUrl()) {
+      window.localStorage.setItem("quarto-color-scheme", value);
+    } else {
+      localAlternateSentinel = value;
+    }
+  }
+  const getColorSchemeSentinel = () => {
+    if (!isFileUrl()) {
+      const storageValue = window.localStorage.getItem("quarto-color-scheme");
+      return storageValue != null ? storageValue : localAlternateSentinel;
+    } else {
+      return localAlternateSentinel;
+    }
+  }
+  const darkModeDefault = false;
+  let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+  // Dark / light mode switch
+  window.quartoToggleColorScheme = () => {
+    // Read the current dark / light value 
+    let toAlternate = !hasAlternateSentinel();
+    toggleColorMode(toAlternate);
+    setStyleSentinel(toAlternate);
+    toggleGiscusIfUsed(toAlternate, darkModeDefault);
+  };
+  // Ensure there is a toggle, if there isn't float one in the top right
+  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+    const a = window.document.createElement('a');
+    a.classList.add('top-right');
+    a.classList.add('quarto-color-scheme-toggle');
+    a.href = "";
+    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+    const i = window.document.createElement("i");
+    i.classList.add('bi');
+    a.appendChild(i);
+    window.document.body.appendChild(a);
+  }
+  // Switch to dark mode if need be
+  if (hasAlternateSentinel()) {
+    toggleColorMode(true);
+  } else {
+    toggleColorMode(false);
+  }
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp("https:\/\/lianxhcn\.github\.io\/dsfin\/");
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+          // target, if specified
+          link.setAttribute("target", "_blank");
+          if (link.getAttribute("rel") === null) {
+            link.setAttribute("rel", "noopener");
+          }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../../Lecture/crawing/craw_02_sec02_lingnan_dialog.html" class="pagination-link" aria-label="实例-对话模式：爬取岭南学院教师名录">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">实例-对话模式：爬取岭南学院教师名录</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../../Lecture/text_analysis/lecture_text_02_ailn.html" class="pagination-link" aria-label="金融文本分析（下）——情感分析与文本建模">
+        <span class="nav-page-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">金融文本分析（下）——情感分析与文本建模</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+      &nbsp;
+    </div>   
+    <div class="nav-footer-center">
+<p><a href="https://www.lianxh.cn">lianxh.cn</a></p>
+</div>
+    <div class="nav-footer-right">
+<p>Support: <a href="https://lianxhcn.github.io/quarto_book/">Quarto</a></p>
+</div>
+  </div>
+</footer>
+
+
+
+
+</body></html>

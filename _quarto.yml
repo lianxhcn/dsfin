@@ -59,6 +59,14 @@ book:
         - Lecture/crawing/craw_02_sec01_lingnan_prompt.md
         - Lecture/crawing/craw_02_sec02_lingnan_dialog.ipynb
 
+    - part: "**文本分析**"
+      chapters:
+        - Lecture/text_analysis/lecture_text_01_ailn.md
+        - Lecture/text_analysis/lecture_text_02_ailn.md
+        - Lecture/text_analysis/lecture_text_analysis_01_claude.ipynb
+        - Lecture/text_analysis/lecture_text_analysis_02_claude.ipynb
+
+
     - part: "**附录：Python 提示词**"
       chapters:
         - appendix_python/index.qmd

@@ -266,12 +266,47 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true">
- <span class="menu-text"><strong>附录：Python 提示词</strong></span></a>
+ <span class="menu-text"><strong>文本分析</strong></span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
       <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/text_analysis/lecture_text_01_ailn.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">金融文本分析（上）——从文本到结构化数据</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/text_analysis/lecture_text_02_ailn.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">金融文本分析（下）——情感分析与文本建模</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/text_analysis/lecture_text_analysis_01_claude.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">文本数据处理基础</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/text_analysis/lecture_text_analysis_02_claude.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">文本分析：情感分析与主题建模</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true">
+ <span class="menu-text"><strong>附录：Python 提示词</strong></span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../appendix_python/index.html" class="sidebar-item-text sidebar-link">
@@ -356,7 +391,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#非结构化数据的结构化转换" id="toc-非结构化数据的结构化转换" class="nav-link" data-scroll-target="#非结构化数据的结构化转换"><span class="header-section-number">7.4</span> 非结构化数据的结构化转换</a></li>
   <li><a href="#项目文件夹结构" id="toc-项目文件夹结构" class="nav-link" data-scroll-target="#项目文件夹结构"><span class="header-section-number">7.5</span> 项目文件夹结构</a></li>
   <li><a href="#数据清洗的整体流程" id="toc-数据清洗的整体流程" class="nav-link" data-scroll-target="#数据清洗的整体流程"><span class="header-section-number">7.6</span> 数据清洗的整体流程</a></li>
-  <li><a href="#第一层单表内部问题" id="toc-第一层单表内部问题" class="nav-link" data-scroll-target="#第一层单表内部问题"><span class="header-section-number">7.7</span> 第一层：单表内部问题</a>
+  <li><a href="#第一层单个数据表的清洗" id="toc-第一层单个数据表的清洗" class="nav-link" data-scroll-target="#第一层单个数据表的清洗"><span class="header-section-number">7.7</span> 第一层：单个数据表的清洗</a>
   <ul class="collapse">
   <li><a href="#虚构数据" id="toc-虚构数据" class="nav-link" data-scroll-target="#虚构数据"><span class="header-section-number">7.7.1</span> 虚构数据</a></li>
   <li><a href="#缺失值" id="toc-缺失值" class="nav-link" data-scroll-target="#缺失值"><span class="header-section-number">7.7.2</span> 缺失值</a></li>
@@ -366,15 +401,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#数据类型错误" id="toc-数据类型错误" class="nav-link" data-scroll-target="#数据类型错误"><span class="header-section-number">7.7.6</span> 数据类型错误</a></li>
   <li><a href="#宽表与长表的转换" id="toc-宽表与长表的转换" class="nav-link" data-scroll-target="#宽表与长表的转换"><span class="header-section-number">7.7.7</span> 宽表与长表的转换</a></li>
   </ul></li>
-  <li><a href="#第二层多表操作问题" id="toc-第二层多表操作问题" class="nav-link" data-scroll-target="#第二层多表操作问题"><span class="header-section-number">7.8</span> 第二层：多表操作问题</a>
+  <li><a href="#第二层多个数据表的合并与追加" id="toc-第二层多个数据表的合并与追加" class="nav-link" data-scroll-target="#第二层多个数据表的合并与追加"><span class="header-section-number">7.8</span> 第二层：多个数据表的合并与追加</a>
   <ul class="collapse">
-  <li><a href="#合并前的准备" id="toc-合并前的准备" class="nav-link" data-scroll-target="#合并前的准备"><span class="header-section-number">7.8.1</span> 合并前的准备</a></li>
+  <li><a href="#横向合并前的准备" id="toc-横向合并前的准备" class="nav-link" data-scroll-target="#横向合并前的准备"><span class="header-section-number">7.8.1</span> 横向合并前的准备</a></li>
   <li><a href="#连接类型选错导致样本丢失" id="toc-连接类型选错导致样本丢失" class="nav-link" data-scroll-target="#连接类型选错导致样本丢失"><span class="header-section-number">7.8.2</span> 连接类型选错导致样本丢失</a></li>
-  <li><a href="#键不唯一导致行数膨胀" id="toc-键不唯一导致行数膨胀" class="nav-link" data-scroll-target="#键不唯一导致行数膨胀"><span class="header-section-number">7.8.3</span> 键不唯一导致行数膨胀</a></li>
-  <li><a href="#第三层系统性数据质量问题" id="toc-第三层系统性数据质量问题" class="nav-link" data-scroll-target="#第三层系统性数据质量问题"><span class="header-section-number">7.8.4</span> 第三层：系统性数据质量问题</a></li>
-  <li><a href="#样本选择偏差" id="toc-样本选择偏差" class="nav-link" data-scroll-target="#样本选择偏差"><span class="header-section-number">7.8.5</span> 样本选择偏差</a></li>
   </ul></li>
-  <li><a href="#自选择偏误预告" id="toc-自选择偏误预告" class="nav-link" data-scroll-target="#自选择偏误预告"><span class="header-section-number">7.9</span> 自选择偏误（预告）</a></li>
+  <li><a href="#样本选择偏差" id="toc-样本选择偏差" class="nav-link" data-scroll-target="#样本选择偏差"><span class="header-section-number">7.9</span> 样本选择偏差</a>
+  <ul class="collapse">
+  <li><a href="#自选择偏误" id="toc-自选择偏误" class="nav-link" data-scroll-target="#自选择偏误"><span class="header-section-number">7.9.1</span> 自选择偏误</a></li>
+  </ul></li>
   <li><a href="#提示词模式从问题描述到可运行代码" id="toc-提示词模式从问题描述到可运行代码" class="nav-link" data-scroll-target="#提示词模式从问题描述到可运行代码"><span class="header-section-number">7.10</span> 提示词模式：从问题描述到可运行代码</a>
   <ul class="collapse">
   <li><a href="#综合案例与章末练习" id="toc-综合案例与章末练习" class="nav-link" data-scroll-target="#综合案例与章末练习"><span class="header-section-number">7.10.1</span> 综合案例与章末练习</a></li>
@@ -481,9 +516,24 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 data-number="7.2" class="anchored" data-anchor-id="本章导读"><span class="header-section-number">7.2</span> 本章导读</h2>
 <p>本章的目标不是教你记住所有清洗函数的语法，而是帮你建立两种能力：第一，看到数据时能快速识别潜在问题；第二，能用准确的语言把问题描述清楚，让 AI 辅助你生成可靠的处理代码。</p>
 <p>贯穿本章的例子来自一个真实的研究场景：<strong>上市公司借款利率的影响因素分析</strong>。我们有三张来源不同的表，需要把它们合并成一份可以直接用于回归分析的干净数据。三张表的基本情况如下 (生成如下模拟数据的代码：<a href="create_sample_data.ipynb">create_sample_data</a>)：</p>
-<p><strong>BasicInf</strong>——上市公司基本信息，来源：CSMAR 上市公司基本信息库 - 观测维度：公司（截面） - 主键：<code>stkcd</code>（公司ID） - 字段：<code>stkcd</code>（公司ID）、<code>comp_name</code>（公司简称）、<code>industry</code>（行业归属）、<code>soe</code>（是否为国企，1=是，0=否）</p>
-<p><strong>FinRatio</strong>——上市公司财务比率，来源：CSMAR 财务比率数据库 - 观测维度：公司 × 年度（面板） - 主键：<code>(stkcd, year)</code> - 字段：<code>stkcd</code>、<code>year</code>、<code>Leverage</code>（总负债/总资产）、<code>Size</code>（ln 总资产）、<code>ROA</code>（资产回报率）、<code>CFlow</code>（经营现金流/总资产）、<code>Cash_holding</code>（现金/总资产）、<code>RD</code>（研发支出/总资产）、<code>report_type</code>（报表类型：A=合并报表，B=母公司报表）</p>
-<p><strong>Announcement</strong>——上市公司借贷公告，来源：网络爬虫 - 观测维度：公司 × 年度 × 贷款笔数（非结构化文本） - 字段：<code>stkcd</code>、<code>year</code>、<code>text</code>（公告原文） - 示例：「本公司于2023年6月1日，与建行深圳分行签署贷款协议，贷款金额为2亿元，期限3年，利率为年化4.2%。」</p>
+<p><strong>BasicInf</strong>——上市公司基本信息，来源：CSMAR 上市公司基本信息库</p>
+<ul>
+<li>观测维度：公司（截面）</li>
+<li>主键：<code>stkcd</code>（公司ID）</li>
+<li>字段：<code>stkcd</code>（公司ID）、<code>comp_name</code>（公司简称）、<code>industry</code>（行业归属）、<code>soe</code>（是否为国企，1=是，0=否）</li>
+</ul>
+<p><strong>FinRatio</strong>——上市公司财务比率，来源：CSMAR 财务比率数据库</p>
+<ul>
+<li>观测维度：公司 × 年度（面板）</li>
+<li>主键：<code>(stkcd, year)</code></li>
+<li>字段：<code>stkcd</code>、<code>year</code>、<code>Leverage</code>（总负债/总资产）、<code>Size</code>（ln 总资产）、<code>ROA</code>（资产回报率）、<code>CFlow</code>（经营现金流/总资产）、<code>Cash_holding</code>（现金/总资产）、<code>RD</code>（研发支出/总资产）、<code>report_type</code>（报表类型：A=合并报表，B=母公司报表）</li>
+</ul>
+<p><strong>Announcement</strong>——上市公司借贷公告，来源：网络爬虫</p>
+<ul>
+<li>观测维度：公司 × 年度 × 贷款笔数（非结构化文本）</li>
+<li>字段：<code>stkcd</code>、<code>year</code>、<code>text</code>（公告原文）</li>
+<li>示例：「本公司于2023年6月1日，与建行深圳分行签署贷款协议，贷款金额为2亿元，期限3年，利率为年化4.2%。」</li>
+</ul>
 <p><img src="Fig/Data_clean_Snip_Basic_inf.png" class="img-fluid" style="width:50.0%"></p>
 <p><img src="Fig/Data_clean_Snip_FinRatio.png" class="img-fluid" style="width:70.0%"></p>
 <p><img src="Fig/Data_clean_Snip_Announcement.png" class="img-fluid" style="width:90.0%"></p>
@@ -494,7 +544,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="结构化-vs-非结构化" class="level3" data-number="7.3.1">
 <h3 data-number="7.3.1" class="anchored" data-anchor-id="结构化-vs-非结构化"><span class="header-section-number">7.3.1</span> 结构化 vs 非结构化</h3>
 <ul>
-<li><p><strong>结构化数据</strong> 是指能够自然地用行列表格表示的数据。每一行是一个观测单位，每一列是一个变量，单元格里是对应的值。我们的 BasicInf 和 FinRatio 就是典型的结构化数据。</p></li>
+<li><p><strong>结构化数据</strong> 是指能够自然地用行列表格表示的数据。上文提到的 BasicInf 和 FinRatio 就是典型的结构化数据。结构化数据满足以下三个条件：</p>
+<ul>
+<li>每一行是一个观测单位</li>
+<li>每一列是一个变量</li>
+<li>每个单元格只含一个值。</li>
+</ul></li>
 <li><p><strong>非结构化数据</strong> 没有预定义的格式。文本、图片、音频、视频都属于这一类。我们的 Announcement 公告文本就是非结构化数据——它是一段自然语言，不能直接作为变量放进回归方程。</p></li>
 </ul>
 <p>实际研究中，大量有价值的信息藏在非结构化数据里：上市公司公告、新闻报道、社交媒体、卫星图像…… 处理它们的第一步，通常是把非结构化数据转换为结构化数据，我们在第 2 节专门讨论这个问题。</p>
@@ -732,7 +787,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>公告中的金额表达方式多样：「2 亿元」、「20000 万元」、「0.2 十亿元」指的是同一个数。如果在提取阶段就统一换算，一旦换算逻辑有误，原始信息就永久丢失了。更稳健的做法是先提取原始值和单位，在后续的清洗步骤中再统一换算，并保留换算过程可供核查。</p>
+<p>公告中的金额表达方式多样：「2 亿元」、「20000 万元」、「0.2 十亿元」指的是同一个数。<br>
+如果在提取阶段就统一换算，一旦换算逻辑有误，原始信息就永久丢失了。<br>
+<strong>更稳健的做法</strong>是先提取原始值和单位，在后续的清洗步骤中再统一换算，并保留换算过程可供核查。</p>
 </div>
 </div>
 <p>银行层级（总行/省级分行/地级分行）对贷款利率有实质性影响——地级分行通常有更大的利率浮动空间，而总行贷款往往意味着更优惠的条件。因此将「建行深圳分行」拆分为银行名称和银行层级两个字段，而非简单保留全称。</p>
@@ -824,7 +881,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>这样即使处理逻辑出错，原始数据始终可以回溯。</p>
 </div>
 </div>
-<hr>
 </section>
 <section id="数据清洗的整体流程" class="level2" data-number="7.6">
 <h2 data-number="7.6" class="anchored" data-anchor-id="数据清洗的整体流程"><span class="header-section-number">7.6</span> 数据清洗的整体流程</h2>
@@ -917,9 +973,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>清洗完毕后，将结果保存到 <code>data_clean/</code> 文件夹，不覆盖原始数据。建议同时在 <code>readme.md</code> 中补充一条记录，说明本次清洗的主要操作和输出文件名。</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>df_clean.to_csv(<span class="st">'data_clean/merged_clean.csv'</span>, index<span class="op">=</span><span class="va">False</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
-<section id="第一层单表内部问题" class="level2" data-number="7.7">
-<h2 data-number="7.7" class="anchored" data-anchor-id="第一层单表内部问题"><span class="header-section-number">7.7</span> 第一层：单表内部问题</h2>
-<p>下面用虚构的小型数据集演示各类问题。数据规模刻意压缩（5–10 行），以便清晰展示问题的本质。</p>
+<section id="第一层单个数据表的清洗" class="level2" data-number="7.7">
+<h2 data-number="7.7" class="anchored" data-anchor-id="第一层单个数据表的清洗"><span class="header-section-number">7.7</span> 第一层：单个数据表的清洗</h2>
+<p>对于单个数据表，常见的问题类型包括：</p>
+<ul>
+<li><strong>缺失值</strong>（Missing Values）</li>
+<li><strong>异常值</strong>（Outliers）</li>
+<li><strong>格式不一致</strong>（Format Inconsistency）</li>
+<li><strong>类型错误</strong>（Type Errors）</li>
+<li><strong>重复记录</strong>（Duplicates）</li>
+<li><strong>宽表与长表的转换</strong>（Wide vs Long Format）</li>
+</ul>
+<p>下面，我们将典型问题浓缩至一组虚构的小型数据集，逐一演示识别、处理和验证的全过程。数据规模刻意压缩（5–10 行），以便清晰展示问题的本质。</p>
 <section id="虚构数据" class="level3" data-number="7.7.1">
 <h3 data-number="7.7.1" class="anchored" data-anchor-id="虚构数据"><span class="header-section-number">7.7.1</span> 虚构数据</h3>
 <p><strong>BasicInf</strong>（5 家公司）：</p>
@@ -1133,7 +1198,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>为了确保下表显示时不至于过宽，部分变量名使用了缩写：</p>
 <ul>
 <li><code>date</code> 代表 <code>loan_date</code></li>
-<li><code>bank</code> 代表 <code>bank_name</code></li>
 <li><code>level</code> 代表 <code>bank_level</code></li>
 <li><code>amount</code> 代表 <code>loan_amount</code></li>
 <li><code>unit</code> 代表 <code>loan_unit</code></li>
@@ -1147,21 +1211,21 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <table class="caption-top table">
 <colgroup>
 <col style="width: 5%">
-<col style="width: 1%">
+<col style="width: 5%">
 <col style="width: 12%">
 <col style="width: 10%">
 <col style="width: 12%">
 <col style="width: 14%">
 <col style="width: 10%">
 <col style="width: 10%">
-<col style="width: 20%">
+<col style="width: 19%">
 </colgroup>
 <thead>
 <tr class="header">
 <th>stkcd</th>
 <th>year</th>
 <th>date</th>
-<th>name</th>
+<th>bank_name</th>
 <th>level</th>
 <th>amount</th>
 <th>unit</th>
@@ -1298,19 +1362,28 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <div class="callout-body-container callout-body">
 <p>我有一个 DataFrame df，需要对以下列进行缩尾（Winsorize）处理： [‘Leverage’, ‘ROA’, ‘CFlow’, ‘Cash_holding’]</p>
-<p>要求： 1. 按上下各 1% 分位数进行缩尾（即将低于 1% 分位数的值替换为该分位数值， 高于 99% 分位数的值替换为该分位数值） 2. 处理在每一列内独立进行 3. 生成新列，命名规则为原列名加 _w 后缀（如 Leverage_w），保留原列不变 4. 输出处理前后各列的 min、均值、中位数、标准差、max 对比表格 5. 分别绘制处理前后各变量的箱型图，并排显示</p>
+<p>要求：</p>
+<ol type="1">
+<li>按上下各 1% 分位数进行缩尾（即将低于 1% 分位数的值替换为该分位数值， 高于 99% 分位数的值替换为该分位数值）</li>
+<li>处理在每一列内独立进行</li>
+<li>生成新列，命名规则为原列名加 _w 后缀（如 Leverage_w），保留原列不变</li>
+<li>输出处理前后各列的 min、均值、中位数、标准差、max 对比表格</li>
+<li>分别绘制处理前后各变量的箱型图，并排显示</li>
+</ol>
 </div>
 </div>
 <p><strong>验证处理结果：</strong></p>
 <p>缩尾之后需要从以下几个角度确认结果合理：</p>
-<p>第一，查看基本统计量，处理后的均值和标准差应与文献中同类研究的报告值大体一致。比如，中国上市公司的平均资产负债率通常在 0.4–0.6 之间，若处理后均值大幅偏离，说明阈值设定或数据本身有问题。</p>
-<p>第二，比较处理前后的均值和标准差，两者应无系统性差异——缩尾只影响分布的尾部，不应大幅改变均值。</p>
-<p>第三，绘制处理前后的箱型图或密度图，直观确认极端值已被压缩至合理范围。</p>
+<ol type="1">
+<li><p><strong>查看基本统计量</strong>。处理后的均值和标准差应与文献中同类研究的报告值大体一致。比如，中国上市公司的平均资产负债率通常在 0.4–0.6 之间，若处理后均值大幅偏离，说明阈值设定或数据本身有问题。</p></li>
+<li><p><strong>比较处理前后的均值和标准差</strong>。两者应无系统性差异——缩尾只影响分布的尾部，不应大幅改变均值。</p></li>
+<li><p><strong>绘制处理前后的箱型图或密度图</strong>，直观确认极端值已被压缩至合理范围。</p></li>
+</ol>
 </section>
 <section id="格式不一致" class="level3" data-number="7.7.4">
 <h3 data-number="7.7.4" class="anchored" data-anchor-id="格式不一致"><span class="header-section-number">7.7.4</span> 格式不一致</h3>
 <p><strong>问题的本质：</strong> 同一个变量，在不同数据来源或不同导出方式下，可能用不同格式记录。格式不一致不会让代码报错，但会让合并失败或产生错误结果。</p>
-<p>在我们的虚构数据中，<code>stkcd</code> 在 BasicInf 和 FinRatio 里大多是 6 位字符串（<code>"000001"</code>），但万科 A 的代码被存为整数 <code>2</code>。合并时 <code>"000002" != 2</code>，结果是这家公司找不到匹配，产生大量 NaN——Python 不会报错，只是静默失败。</p>
+<p>在我们的虚构数据中，<code>stkcd</code> 在 <strong>BasicInf.csv</strong> 和 <strong>FinRatio.csv</strong> 里大多是 6 位字符串（<code>"000001"</code>），但万科 A 的代码被存为整数 <code>2</code>。合并时 <code>"000002" != 2</code>，结果是这家公司找不到匹配，产生大量 NaN——Python 不会报错，只是静默失败。</p>
 <p>其他常见格式问题还有：日期格式混用（<code>"2023-06-01"</code> vs <code>"20230601"</code>）、行业编码含多余空格（<code>" 银行业"</code> vs <code>"银行业"</code>）、金额单位混用。</p>
 <div class="callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center">
@@ -1450,7 +1523,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><strong>宽表（wide format）</strong>：每行是一个个体，不同时间点的数据分布在不同列。适合某些可视化场景或来自网页的原始数据。</li>
 </ul>
 <p><strong>场景一：多笔贷款聚合（长表内部聚合）</strong></p>
-<p>一家公司在同一年可能有多笔贷款，Announcement 提取结果是每笔贷款一行，而 FinRatio 是每个公司-年一行。合并前需要先聚合 (对同年度的多笔贷款进行加总)：</p>
+<p>一家公司在同一年可能有多笔贷款，<strong>Announcement.csv</strong> 提取结果是每笔贷款一行，而在 <strong>FinRatio.csv</strong> 文件中，是每个「公司-年」一行。因此，在对 <strong>Announcement.csv</strong> 和 <strong>FinRatio.csv</strong> 进行横向合并之前，需要先将 <strong>Announcement.csv</strong> 从「长表」聚合为「公司-年」层面，生成新的指标（如贷款总金额、加权平均利率等），才能与 <strong>FinRatio.csv</strong> 的公司-年层面数据正确「对齐」。</p>
+<p>需要说明的是，虽然贷款总金额可以直接将同一年度内获得所有贷款进行求和，但在对「利率」和「贷款期限」进行聚合时建议使用加权平均值（权重为贷款金额），而非简单算术平均。因为不同金额的贷款对公司的财务状况影响不同，简单平均可能会低估大额贷款的影响力。最大贷款银行的识别也需要考虑金额、期限等多个维度，以便更准确地反映公司的贷款结构。</p>
 <div class="callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -1467,9 +1541,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>loan_count: 贷款笔数</li>
 <li>avg_loan_rate: 以 loan_amount 为权重的加权平均利率</li>
 <li>total_loan_wan: 贷款总金额（万元）</li>
-<li>avg_loan_term: 简单平均贷款期限（年）</li>
-<li>bank_count: 涉及不同银行数量</li>
-<li>top_bank: 贷款金额最大的银行名称</li>
+<li>avg_loan_term: 以 loan_amount 为权重的加权平均贷款期限</li>
+<li>bank_count: 在同一个年度有几家不同的银行提供贷款</li>
+<li>top_bank: 贷款金额最大的银行名称 / 若金额相同则选择贷款期限最长的银行名称</li>
 </ul>
 <p>请使用 groupby + agg 实现，输出聚合前后的行数对比。</p>
 </div>
@@ -1481,9 +1555,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a> -----------------------------------+----------------------</span>
 <span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  id   sex    1980    1981    1982  |  1980   1981    1982 </span>
 <span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a> -----------------------------------+----------------------</span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>   1     0    5000    5500    6000  |    0      1      0   </span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>   2     1    2000    2200    3300  |    1      0      0   </span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>   3     0    3000    2000    1000  |    0      0      1   </span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>   1     0    5000    5500    6000  |    0      1       0  </span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>   2     1    2000    2200    3300  |    1      0       0  </span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>   3     0    3000    2000    1000  |    0      0       1  </span>
 <span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a> -----------------------------------+----------------------</span>
 <span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a><span class="ss">* </span>整理后的资料     【wide 型数据】</span>
@@ -1522,15 +1596,20 @@ ue_1980, ue_1981, ue_1982</li>
 </ul>
 <p>请帮我将其转换为长表，目标格式为：<br>
 id, year, sex, inc, ue</p>
-<p>其中 year 列应为整数（1980, 1981, 1982）， 请使用 pd.wide_to_long() 或 pd.melt() 实现， 并输出转换前后的行列数对比和前 9 行结果。</p>
+<p>其中 year 列应为整数（1980, 1981, 1982）。<br>
+请使用 pd.wide_to_long() 或 pd.melt() 实现，<br>
+并输出转换前后的行列数对比和前 9 行结果。</p>
 </div>
 </div>
 </section>
 </section>
-<section id="第二层多表操作问题" class="level2" data-number="7.8">
-<h2 data-number="7.8" class="anchored" data-anchor-id="第二层多表操作问题"><span class="header-section-number">7.8</span> 第二层：多表操作问题</h2>
-<section id="合并前的准备" class="level3" data-number="7.8.1">
-<h3 data-number="7.8.1" class="anchored" data-anchor-id="合并前的准备"><span class="header-section-number">7.8.1</span> 合并前的准备</h3>
+<section id="第二层多个数据表的合并与追加" class="level2" data-number="7.8">
+<h2 data-number="7.8" class="anchored" data-anchor-id="第二层多个数据表的合并与追加"><span class="header-section-number">7.8</span> 第二层：多个数据表的合并与追加</h2>
+<p>数据分析中经常需要将来自不同来源、不同层次的数据表进行合并。这类合并通常称为「横向合并 (<code>merge</code>)」或「横向关联 (<code>join</code>)」。这类合并的关键在于<strong>主键的定义和唯一性</strong>，以及<strong>连接类型的选择</strong>。错误的主键定义或连接类型选择，都会导致样本丢失或行数膨胀，严重影响后续分析的有效性。</p>
+<p>另一类合并是「纵向追加 (<code>concat</code> 或 <code>append</code>)」，即将一张表的行追加到另一张表的下面。这种合并的关键在于<strong>列名的一致性</strong>和<strong>数据类型的一致性</strong>，以及<strong>是否需要重置索引</strong>。例如，当上市公司的财务数据分为多个文件（如 2022 年和 2023 年分别存储在不同文件中）时，需要先对两张表进行清洗，确保列名和数据类型一致，然后再进行纵向追加。</p>
+<p>相比之下，横向合并更容易出问题，因为它涉及到不同表之间的匹配关系，而纵向追加只要列名和数据类型一致，通常不会出现样本丢失或行数膨胀的问题。因此，后文中除非特别说明，但凡提及「合并」，默认指的是横向合并。</p>
+<section id="横向合并前的准备" class="level3" data-number="7.8.1">
+<h3 data-number="7.8.1" class="anchored" data-anchor-id="横向合并前的准备"><span class="header-section-number">7.8.1</span> 横向合并前的准备</h3>
 <p>在做任何合并之前，需要明确三张表各自的主键：</p>
 <ul>
 <li>BasicInf：主键为 <code>stkcd</code>（每家公司一行）</li>
@@ -1548,7 +1627,13 @@ id, year, sex, inc, ue</p>
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>在合并 BasicInf 和 FinRatio 之前，请帮我做以下检查： 1. 验证 BasicInf 中 stkcd 是否唯一 2. 验证 FinRatio 中 (stkcd, year) 组合是否唯一 3. 统计两张表 stkcd 的重叠情况： 共同 stkcd 数量、BasicInf 独有数量、FinRatio 独有数量 4. 根据检查结果，建议合并类型并说明理由</p>
+<p>在合并 BasicInf 和 FinRatio 之前，请帮我做以下检查：</p>
+<ol type="1">
+<li>验证 BasicInf 中 stkcd 是否唯一</li>
+<li>验证 FinRatio 中 (stkcd, year) 组合是否唯一</li>
+<li>统计两张表 stkcd 的重叠情况： 共同 stkcd 数量、BasicInf 独有数量、FinRatio 独有数量</li>
+<li>根据检查结果，建议合并类型并说明理由</li>
+</ol>
 </div>
 </div>
 </section>
@@ -1572,36 +1657,266 @@ id, year, sex, inc, ue</p>
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>我刚完成了一次 merge 操作，结果存储在 df_merged 中。 请帮我验证合并是否符合预期： 1. 输出左表行数、右表行数、合并后行数 2. 统计合并后来自右表的列的缺失值数量 3. 若合并后行数 &gt; 左表行数，警告可能发生了一对多导致的行数膨胀 4. 若合并后行数 &lt; 左表行数 × 0.9，警告可能有大量记录未匹配</p>
+<p>我刚完成了一次 merge 操作，结果存储在 df_merged 中。 请帮我验证合并是否符合预期：</p>
+<ol type="1">
+<li>输出左表行数、右表行数、合并后行数</li>
+<li>统计合并后来自右表的列的缺失值数量</li>
+<li>若合并后行数 &gt; 左表行数，警告可能发生了一对多导致的行数膨胀</li>
+<li>若合并后行数 &lt; 左表行数 × 0.9，警告可能有大量记录未匹配</li>
+</ol>
 </div>
 </div>
-</section>
-<section id="键不唯一导致行数膨胀" class="level3" data-number="7.8.3">
-<h3 data-number="7.8.3" class="anchored" data-anchor-id="键不唯一导致行数膨胀"><span class="header-section-number">7.8.3</span> 键不唯一导致行数膨胀</h3>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+键不唯一导致行数膨胀
+</div>
+</div>
+<div class="callout-body-container callout-body">
 <p>如果 BasicInf 中某家公司的 <code>stkcd</code> 出现了两次（录入错误），合并时该公司的每条财务记录都会被复制，行数静默增加，且不报错。</p>
 <p>预警信号就是合并后行数超过预期，因此上面的合并后验证步骤至关重要。</p>
+</div>
+</div>
 </section>
-<section id="第三层系统性数据质量问题" class="level3" data-number="7.8.4">
-<h3 data-number="7.8.4" class="anchored" data-anchor-id="第三层系统性数据质量问题"><span class="header-section-number">7.8.4</span> 第三层：系统性数据质量问题</h3>
-<p>完成了前两层的清洗，数据在技术上已经「干净」了。但这里有一个重要的区分：</p>
+</section>
+<section id="样本选择偏差" class="level2" data-number="7.9">
+<h2 data-number="7.9" class="anchored" data-anchor-id="样本选择偏差"><span class="header-section-number">7.9</span> 样本选择偏差</h2>
+<p>完成前两层的操作之后，数据在技术层面已经「干净」了：格式统一、主键唯一、类型正确、重复已删。但这里有一个重要的区分：</p>
 <blockquote class="blockquote">
-<p><strong>数据干净</strong> ≠ <strong>数据准确</strong> ≠ <strong>数据适合回答你的研究问题</strong></p>
+<p><strong>数据干净</strong> ≠ <strong>样本可信</strong> ≠ <strong>结论可推广</strong></p>
 </blockquote>
+<p>即使一份数据没有任何格式错误，它仍然可能因为「哪些观测进入了样本、哪些没有」这一机制，导致估计结果系统性偏误。这就是<strong>样本选择偏差</strong>（sample selection bias）。</p>
+<section id="一个直观的例子" class="level4" data-number="7.9.0.1">
+<h4 data-number="7.9.0.1" class="anchored" data-anchor-id="一个直观的例子"><span class="header-section-number">7.9.0.1</span> 一个直观的例子</h4>
+<p>我们的研究问题是：<strong>上市公司的贷款利率（Rate）受哪些因素影响？</strong></p>
+<p>手头有 10 家公司的数据，包含杠杆率（Leverage）、公司规模（Size，ln 总资产）和国企身份（soe）。其中 6 家公司在公告中完整披露了贷款利率，另外 4 家没有披露——换句话说，<strong>Rate 对 4 家公司是缺失的（NaN）</strong>。</p>
+<p>乍一看，这只是一个普通的缺失值问题，用上一节介绍的方法处理即可。但在动手之前，需要先问一个关键问题：</p>
+<blockquote class="blockquote">
+<p><strong>这 4 家公司的贷款利率，是「随机」没有披露，还是「因为某些特征」而没有披露？</strong></p>
+</blockquote>
+<p>如果是后者，那么留在样本里的 6 家公司就不是全体上市公司的随机子集，用它们估计出的系数将无法推广到整体。</p>
+<p><strong>表 3-X　mini 数据集（N = 10）</strong></p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>id</th>
+<th>公司</th>
+<th>soe</th>
+<th>Leverage</th>
+<th>Size</th>
+<th>Rate（%）</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>平安银行</td>
+<td>0</td>
+<td>0.89</td>
+<td>25.3</td>
+<td>4.20</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td>万科A</td>
+<td>0</td>
+<td>0.65</td>
+<td>24.1</td>
+<td>3.85</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td>中兴通讯</td>
+<td>0</td>
+<td>0.52</td>
+<td>23.8</td>
+<td>4.50</td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td>中国石化</td>
+<td>1</td>
+<td>0.58</td>
+<td>26.2</td>
+<td>3.60</td>
+</tr>
+<tr class="odd">
+<td>5</td>
+<td>招商银行</td>
+<td>0</td>
+<td>0.88</td>
+<td>25.4</td>
+<td>4.10</td>
+</tr>
+<tr class="even">
+<td>6</td>
+<td>格力电器</td>
+<td>0</td>
+<td>0.44</td>
+<td>23.5</td>
+<td>4.75</td>
+</tr>
+<tr class="odd">
+<td>7</td>
+<td>宁德时代</td>
+<td>0</td>
+<td>0.72</td>
+<td>23.2</td>
+<td>—（未披露）</td>
+</tr>
+<tr class="even">
+<td>8</td>
+<td>东方财富</td>
+<td>0</td>
+<td>0.68</td>
+<td>22.8</td>
+<td>—（未披露）</td>
+</tr>
+<tr class="odd">
+<td>9</td>
+<td>三一重工</td>
+<td>0</td>
+<td>0.75</td>
+<td>23.9</td>
+<td>—（未披露）</td>
+</tr>
+<tr class="even">
+<td>10</td>
+<td>比亚迪</td>
+<td>0</td>
+<td>0.70</td>
+<td>23.4</td>
+<td>—（未披露）</td>
+</tr>
+</tbody>
+</table>
+<p>注意观察第 7–10 行的公司：它们的规模（Size）均低于 24，而已知组（第 1–6 行）的规模普遍更大。这不像是巧合。</p>
 </section>
-<section id="样本选择偏差" class="level3" data-number="7.8.5">
-<h3 data-number="7.8.5" class="anchored" data-anchor-id="样本选择偏差"><span class="header-section-number">7.8.5</span> 样本选择偏差</h3>
-<p>我们的数据来自 CSMAR，只包含上市公司。这意味着样本中不包含非上市企业，而上市公司本身是「通过了市场筛选」的企业，在规模、信息披露质量和融资能力上与普通企业有系统性差异。用这份数据估计出的系数，严格来说只适用于上市公司群体，这是在解读结论时需要明确说明的限制。</p>
+<section id="第一步用分组统计检验缺失是否随机" class="level4" data-number="7.9.0.2">
+<h4 data-number="7.9.0.2" class="anchored" data-anchor-id="第一步用分组统计检验缺失是否随机"><span class="header-section-number">7.9.0.2</span> 第一步：用分组统计检验缺失是否随机</h4>
+<p>最简单的诊断方式是按 <code>Rate</code> 的缺失状态把样本分成两组，比较它们在其他变量上的均值是否存在系统性差异。</p>
+<p><strong>表 3-X+1　按 Rate 缺失状态分组的描述统计</strong></p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>变量</th>
+<th>y 已知组（n = 6）</th>
+<th>y 缺失组（n = 4）</th>
+<th>差异</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Leverage（均值）</td>
+<td>0.660</td>
+<td>0.712</td>
+<td>+0.052</td>
+</tr>
+<tr class="even">
+<td>Size（均值）</td>
+<td>24.72</td>
+<td>23.33</td>
+<td>−1.39 *</td>
+</tr>
+<tr class="odd">
+<td>国企占比</td>
+<td>16.7%</td>
+<td>0.0%</td>
+<td>−16.7%</td>
+</tr>
+</tbody>
+</table>
+<p>注：* 表示 t 检验 p &lt; 0.05。样本量极小（n = 10），仅供方向性判断。</p>
+<p>结论很清晰：<strong>缺失组的公司规模显著偏小（均值相差约 1.4 个对数点，p = 0.042），且全为民营企业。</strong> 这说明 Rate 的缺失不是随机的，而是系统性地集中于「规模较小的民营公司」——这类公司的银行贷款更多依赖间接渠道，信息披露动力和能力都相对不足。</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy <span class="im">import</span> stats</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>obs  <span class="op">=</span> df[df[<span class="st">'Rate'</span>].notna()]   <span class="co"># y 已知（n=6）</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>miss <span class="op">=</span> df[df[<span class="st">'Rate'</span>].isna()]    <span class="co"># y 缺失（n=4）</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="co"># 对每个协变量做 t 检验</span></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> var <span class="kw">in</span> [<span class="st">'Leverage'</span>, <span class="st">'Size'</span>, <span class="st">'soe'</span>]:</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>    t, p <span class="op">=</span> stats.ttest_ind(obs[var], miss[var])</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>var<span class="sc">}</span><span class="ss">: 已知均值=</span><span class="sc">{</span>obs[var]<span class="sc">.</span>mean()<span class="sc">:.3f}</span><span class="ss">, "</span></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>          <span class="ss">f"缺失均值=</span><span class="sc">{</span>miss[var]<span class="sc">.</span>mean()<span class="sc">:.3f}</span><span class="ss">, p=</span><span class="sc">{</span>p<span class="sc">:.3f}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+提示词：诊断缺失是否随机
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>我有一个 DataFrame <code>df</code>，其中 <code>Rate</code> 列存在部分缺失（NaN）。 请帮我诊断缺失是否随机：</p>
+<ol type="1">
+<li>新建一个二值变量 <code>rate_missing</code>：Rate 缺失时为 1，否则为 0</li>
+<li>对 <code>['Leverage', 'Size', 'soe']</code> 三列，分别计算 <code>rate_missing=1</code> 和 <code>rate_missing=0</code> 两组的均值，并做 t 检验</li>
+<li>输出一张对比表：变量名、两组均值、差异、t 统计量、p 值</li>
+<li>如果任一变量的 p &lt; 0.1，给出警告提示：缺失可能不随机，建议谨慎处理</li>
+</ol>
+</div>
+</div>
 </section>
+<section id="第二步理解偏差的方向" class="level4" data-number="7.9.0.3">
+<h4 data-number="7.9.0.3" class="anchored" data-anchor-id="第二步理解偏差的方向"><span class="header-section-number">7.9.0.3</span> 第二步：理解偏差的方向</h4>
+<p>如果直接删除 Rate 缺失的 4 家公司，用剩余 6 家估计「规模对利率的影响」，会发生什么？</p>
+<p>下图展示了问题所在。图（b）中，蓝色拟合线基于已知组（n = 6）估计，斜率约为 −0.30。但缺失的 4 家公司（橙色菱形）全部堆积在图的左侧低规模区域——如果它们的利率被观测到，大概率会比现有拟合线预测的更高（规模小、融资难、利率高）。这意味着：</p>
+<blockquote class="blockquote">
+<p><strong>已知组的拟合线高估了规模对利率的负向效应。</strong> 真实斜率（包含缺失组后）应更平缓。</p>
+</blockquote>
+<p><img src="fig/fig_sample_selection.png" class="img-fluid" style="width:90.0%"></p>
+<p>图（a）同样值得关注：缺失组的杠杆率（Leverage）均值略高于已知组（0.71 vs 0.66），方向符合预期，但因样本量极小（n = 4），未达统计显著。在真实数据中，这类方向性证据仍需认真对待。</p>
 </section>
-<section id="自选择偏误预告" class="level2" data-number="7.9">
-<h2 data-number="7.9" class="anchored" data-anchor-id="自选择偏误预告"><span class="header-section-number">7.9</span> 自选择偏误（预告）</h2>
+<section id="这个例子说明了什么" class="level4" data-number="7.9.0.4">
+<h4 data-number="7.9.0.4" class="anchored" data-anchor-id="这个例子说明了什么"><span class="header-section-number">7.9.0.4</span> 这个例子说明了什么</h4>
+<p>样本选择偏差的关键特征有三：</p>
+<p><strong>一、缺失不随机（MNAR）。</strong> 数据缺失的概率本身与研究关注的变量相关——本例中，规模越小的公司越可能不披露贷款利率，而规模恰好是影响利率的核心变量。</p>
+<p><strong>二、偏差方向可以推断。</strong> 通过分组统计就能看出：留在样本里的公司系统性地规模更大、利率更低。因此用这个样本估计的 Size 系数（利率随规模下降的速度）被高估，即斜率绝对值偏大。</p>
+<p><strong>三、数据清洗本身无法解决这个问题。</strong> 无论如何填充缺失值，都无法恢复这 4 家公司的「真实」利率信息。真正的解决方案是在建模阶段引入选择方程，对缺失机制进行显式建模。</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+与后续章节的衔接
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>本节的目标是让你在数据阶段就发现这个潜在问题，并在研究报告中诚实说明。处理样本选择偏差的计量方法将在后续章节介绍：</p>
+<ul>
+<li><strong>Heckman 两步法</strong>：用 Probit 模型对「利率是否披露」建模（选择方程），再将逆米尔斯比率（IMR）加入主回归方程纠正偏误</li>
+<li><strong>熵平衡（Entropy Balancing）</strong>：对已知组和缺失组的协变量分布进行重加权，使两组在均值（乃至高阶矩）上可比</li>
+<li><strong>匹配方法（Matching）或逆概率加权（IPW）</strong>：基于选择方程的预测概率，对已知组进行加权或匹配，使其在协变量分布上与缺失组更接近</li>
+</ul>
+<p>在此之前，数据清洗阶段能做的最重要的事，是<strong>把这个问题暴露出来</strong>——用分组统计表清楚地展示缺失组与已知组的差异，并在研究报告中明确说明：样本仅包含贷款利率有公开披露的公司，结论的外部有效性因此受到限制。</p>
+</div>
+</div>
+</section>
+<section id="更大范围的样本选择问题" class="level4" data-number="7.9.0.5">
+<h4 data-number="7.9.0.5" class="anchored" data-anchor-id="更大范围的样本选择问题"><span class="header-section-number">7.9.0.5</span> 更大范围的样本选择问题</h4>
+<p>上面的例子聚焦于「y 缺失」这一种形式，但样本选择偏差在金融数据中有更广泛的来源，值得在拿到数据时就系统性地检查：</p>
+<ul>
+<li><p><strong>数据库覆盖范围本身就是一种选择。</strong> CSMAR 只收录 A 股上市公司，而上市公司是经过市场筛选的群体，在规模、信披质量和融资能力上与非上市企业有系统性差异。用这份数据估计的融资成本决定因素，严格来说只适用于「有资格上市」的公司群体。</p></li>
+<li><p><strong>生存偏差（survivorship bias）。</strong> 样本里只有「活着」的公司，退市、被 ST、破产重组的公司已经从数据库中消失。如果这些公司在退出前的财务特征（高杠杆、低盈利）与研究变量相关，基于现存样本的估计会系统性地低估风险变量的影响。</p></li>
+<li><p><strong>自愿披露与选择性报告。</strong> 部分财务指标（如研发支出、高管薪酬细节）并非强制披露，倾向于主动披露这些信息的公司可能本身就在该维度上表现更好，导致「有数据的样本」与「没有数据的样本」之间存在系统性差异。</p></li>
+</ul>
+<p>处理以上这些问题，需要在研究设计阶段就做出明确的样本界定，并在稳健性检验中评估样本选择对结论的影响。</p>
+</section>
+<section id="自选择偏误" class="level3" data-number="7.9.1">
+<h3 data-number="7.9.1" class="anchored" data-anchor-id="自选择偏误"><span class="header-section-number">7.9.1</span> 自选择偏误</h3>
 <p>观察到「国有企业的平均借款利率低于民营企业」，这能说明「国企身份导致了更低的融资成本」吗？不一定。国企可能同时在财务质量上优于同类民企，银行给出更低利率是因为风险评估，而非国企身份本身。这就是<strong>自选择偏误</strong>——某种特征（国企身份）的获得不是随机的，而是与其他影响结果的变量同时相关。</p>
 <p>类似的问题在经济研究中无处不在：</p>
 <ul>
 <li>「名校毕业生的教育回报率更高吗？」——还是因为能进名校的人本来就能力更强？(Card, 1995)</li>
 <li>「政府对高新技术企业的税收优惠是否促进了创新投入？」——还是因为本来就有创新意愿的企业更容易获得认定资格？</li>
 </ul>
-<p>这类问题不能通过数据清洗解决，需要专门的因果推断方法（工具变量、双重差分、断点回归等）。我们将在第六章详细讨论。</p>
+<p>这类问题不能通过数据清洗解决，需要专门的因果推断方法（工具变量、Heckman 两步法、匹配方法、断点回归等）。我们将在后续章节详细讨论。</p>
+</section>
 </section>
 <section id="提示词模式从问题描述到可运行代码" class="level2" data-number="7.10">
 <h2 data-number="7.10" class="anchored" data-anchor-id="提示词模式从问题描述到可运行代码"><span class="header-section-number">7.10</span> 提示词模式：从问题描述到可运行代码</h2>

@@ -129,6 +129,11 @@
 * Goodfellow, I., Bengio, Y., & Courville, A. (2016). Deep Learning. MIT Press. [Link](http://www.deeplearningbook.org). [TensorFlow Exercises](https://www.tensorflow.org/tutorials?hl=zh-cn). [Slides](https://www.deeplearningbook.org/lecture_slides.html). [PDF1](http://alvarestech.com/temp/deep/Deep%20Learning%20by%20Ian%20Goodfellow,%20Yoshua%20Bengio,%20Aaron%20Courville%20%28z-lib.org%29.pdf). [PDF2](https://github.com/janishar/mit-deep-learning-book-pdf/blob/master/complete-book-pdf/Ian%20Goodfellow%2C%20Yoshua%20Bengio%2C%20Aaron%20Courville%20-%20Deep%20Learning%20%282017%2C%20MIT%29.pdf).
   * Note: 深度学习领域的代表性教材，系统覆盖前馈网络、卷积网络、序列模型、优化与概率图模型；配有官网、练习资源与课件。
 
+### 其它
+
+- Rob Hicks, 2022. ECON414 Bayesian Econometrics. [Link](https://econ.pages.code.wm.edu/414/notes/docs/index.html).
+  - 介绍了 Bayes 的基本概念，MCMC 方法，贝叶斯线性回归，贝叶斯模型比较等内容；配有在线阅读版本和 GitHub 代码仓库。
+
 ---
 
 ## 分析工具
