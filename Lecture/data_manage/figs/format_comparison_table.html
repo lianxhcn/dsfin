@@ -1,0 +1,86 @@
+
+<div style="padding:0.5rem 0">
+<table style="width:100%;border-collapse:collapse;font-size:13px;table-layout:fixed">
+  <colgroup>
+    <col style="width:18%">
+    <col style="width:20%">
+    <col style="width:21%">
+    <col style="width:20%">
+    <col style="width:21%">
+  </colgroup>
+  <thead>
+    <tr style="border-bottom:1px solid var(--color-border-secondary)">
+      <th style="padding:10px 8px;text-align:left;font-weight:500;color:var(--color-text-secondary);font-size:12px"></th>
+      <th style="padding:10px 8px;text-align:center;font-weight:500;font-size:13px">CSV</th>
+      <th style="padding:10px 8px;text-align:center;font-weight:500;font-size:13px">Parquet</th>
+      <th style="padding:10px 8px;text-align:center;font-weight:500;font-size:13px">SQLite</th>
+      <th style="padding:10px 8px;text-align:center;font-weight:500;font-size:13px">MySQL/PG</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr style="border-bottom:0.5px solid var(--color-border-tertiary)">
+      <td style="padding:10px 8px;color:var(--color-text-secondary);font-size:12px">存储方式</td>
+      <td style="padding:10px 8px;text-align:center">行式文本</td>
+      <td style="padding:10px 8px;text-align:center">列式二进制</td>
+      <td style="padding:10px 8px;text-align:center">行式二进制</td>
+      <td style="padding:10px 8px;text-align:center">行式 + 索引</td>
+    </tr>
+    <tr style="border-bottom:0.5px solid var(--color-border-tertiary);background:var(--color-background-secondary)">
+      <td style="padding:10px 8px;color:var(--color-text-secondary);font-size:12px">文件大小</td>
+      <td style="padding:10px 8px;text-align:center">⭐⭐（大）</td>
+      <td style="padding:10px 8px;text-align:center;color:var(--color-text-success);font-weight:500">⭐⭐⭐⭐⭐（最小）</td>
+      <td style="padding:10px 8px;text-align:center">⭐⭐⭐（中）</td>
+      <td style="padding:10px 8px;text-align:center">需服务器</td>
+    </tr>
+    <tr style="border-bottom:0.5px solid var(--color-border-tertiary)">
+      <td style="padding:10px 8px;color:var(--color-text-secondary);font-size:12px">列查询速度</td>
+      <td style="padding:10px 8px;text-align:center">慢</td>
+      <td style="padding:10px 8px;text-align:center;color:var(--color-text-success);font-weight:500">极快（列跳过）</td>
+      <td style="padding:10px 8px;text-align:center">快（有索引）</td>
+      <td style="padding:10px 8px;text-align:center">快（有索引）</td>
+    </tr>
+    <tr style="border-bottom:0.5px solid var(--color-border-tertiary);background:var(--color-background-secondary)">
+      <td style="padding:10px 8px;color:var(--color-text-secondary);font-size:12px">多表 JOIN</td>
+      <td style="padding:10px 8px;text-align:center">❌</td>
+      <td style="padding:10px 8px;text-align:center">❌（需 Spark）</td>
+      <td style="padding:10px 8px;text-align:center;color:var(--color-text-success);font-weight:500">✅ 完整 SQL</td>
+      <td style="padding:10px 8px;text-align:center;color:var(--color-text-success);font-weight:500">✅ 完整 SQL</td>
+    </tr>
+    <tr style="border-bottom:0.5px solid var(--color-border-tertiary)">
+      <td style="padding:10px 8px;color:var(--color-text-secondary);font-size:12px">CRUD 更新</td>
+      <td style="padding:10px 8px;text-align:center">❌</td>
+      <td style="padding:10px 8px;text-align:center">❌（追加写）</td>
+      <td style="padding:10px 8px;text-align:center;color:var(--color-text-success);font-weight:500">✅</td>
+      <td style="padding:10px 8px;text-align:center;color:var(--color-text-success);font-weight:500">✅</td>
+    </tr>
+    <tr style="border-bottom:0.5px solid var(--color-border-tertiary);background:var(--color-background-secondary)">
+      <td style="padding:10px 8px;color:var(--color-text-secondary);font-size:12px">并发写入</td>
+      <td style="padding:10px 8px;text-align:center">—</td>
+      <td style="padding:10px 8px;text-align:center">—</td>
+      <td style="padding:10px 8px;text-align:center;color:var(--color-text-warning)">有限</td>
+      <td style="padding:10px 8px;text-align:center;color:var(--color-text-success);font-weight:500">✅</td>
+    </tr>
+    <tr style="border-bottom:0.5px solid var(--color-border-tertiary)">
+      <td style="padding:10px 8px;color:var(--color-text-secondary);font-size:12px">安装部署</td>
+      <td style="padding:10px 8px;text-align:center;color:var(--color-text-success)">无需</td>
+      <td style="padding:10px 8px;text-align:center;color:var(--color-text-success)">pip install</td>
+      <td style="padding:10px 8px;text-align:center;color:var(--color-text-success)">Python 内置</td>
+      <td style="padding:10px 8px;text-align:center;color:var(--color-text-danger)">需服务器</td>
+    </tr>
+    <tr style="border-bottom:0.5px solid var(--color-border-tertiary);background:var(--color-background-secondary)">
+      <td style="padding:10px 8px;color:var(--color-text-secondary);font-size:12px">数据量上限</td>
+      <td style="padding:10px 8px;text-align:center">~GB</td>
+      <td style="padding:10px 8px;text-align:center;color:var(--color-text-success);font-weight:500">TB 级</td>
+      <td style="padding:10px 8px;text-align:center">~几十 GB</td>
+      <td style="padding:10px 8px;text-align:center">TB+</td>
+    </tr>
+    <tr>
+      <td style="padding:10px 8px;color:var(--color-text-secondary);font-size:12px">典型场景</td>
+      <td style="padding:10px 8px;text-align:center;font-size:12px">小数据交换<br>Excel 兼容</td>
+      <td style="padding:10px 8px;text-align:center;font-size:12px">大规模<br>分析查询</td>
+      <td style="padding:10px 8px;text-align:center;font-size:12px">本地 DB<br>原型开发</td>
+      <td style="padding:10px 8px;text-align:center;font-size:12px">生产系统<br>多用户并发</td>
+    </tr>
+  </tbody>
+</table>
+</div>

@@ -1,0 +1,445 @@
+---
+title: "虚拟环境管理"
+---
+
+Python 初学者最容易忽视的一件事，不是语法，不是算法，而是**环境管理**。
+
+你可能遇到过这样的情形：老师的代码在课上跑得好好的，你复制下来一行报错；或者你在自己电脑上写好的代码，发到同学那里跑不起来；再或者你更新了某个包，结果另一个项目的代码全部崩了。
+
+这些问题的根源，往往都是一件事：**没有用好虚拟环境**。
+
+虚拟环境不是高级话题，而是每一个用 Python 做分析的人都应该从一开始就养成的基本习惯。
+
+本节内容如下：
+
+| 节次 | 内容 | 重要程度 |
+|------|------|----------|
+| Sec 1 | 什么是虚拟环境，为什么需要它 | ⭐⭐⭐ |
+| Sec 2 | 本课程的统一环境：`dsfin_py311` | ⭐⭐⭐ |
+| Sec 3 | 常用环境管理命令 | ⭐⭐⭐ |
+| Sec 4 | 在 Jupyter 中使用正确的内核 | ⭐⭐⭐ |
+| Sec 5 | 环境的导出与共享 | ⭐⭐ |
+| Sec 6 | 给未来工作的你：行业中的环境管理 | ⭐⭐ |
+| Sec 7 | 常见问题排错 | ⭐ |
+
+::: {.callout-note}
+### 如何找到 Terminal（命令行）？
+
+本节中所有命令都需要在 Terminal（终端）中运行。如果你还不清楚在哪里打开 Terminal，或者不熟悉命令行的基本操作，请先参阅 [Python 安装常见问题](https://lianxhcn.github.io/dsfin/Lecture/00-setup/01_03_install_FAQs.html) 中的"打开 Terminal"部分。
+:::
+
+---
+
+##  什么是虚拟环境，为什么需要它
+
+###  一个具体的场景
+
+假设你同时在做两个项目：一个是给导师整理数据，用了旧版本的 `pandas 1.5`；另一个是自己的毕业论文，用了 `pandas 2.0`。两个版本的语法在某些地方不兼容——你装了新版本，老项目跑不起来；降回旧版本，新项目又出错。
+
+这就是**包版本冲突**，是 Python 使用者最常遇到的麻烦之一。
+
+虚拟环境的解决思路很简单：**给每个项目单独开一个隔离的空间**，里面有自己独立的 Python 版本和包，互不干扰。就像你手机上的沙盒游戏——游戏里的操作不会影响手机的系统文件。
+
+###  为什么不能什么都装在 base 环境里
+
+Anaconda 安装完毕后，默认有一个 `base` 环境。很多初学者习惯直接在 `base` 里安装所有的包，久而久之会出现几个问题：
+
+**包版本混乱。** 不同项目对同一个包的版本要求不同，全堆在 `base` 里迟早会相互冲突，而且冲突发生时你很难排查是哪个包的问题。
+
+**环境越来越难以复现。** 一两年后你拿出旧项目，发现那时候的运行环境早已被后来安装的包改得面目全非，代码跑不起来了。
+
+**换电脑时无法迁移。** 你在旧电脑上装了几十个包，换新电脑后要一个一个重装，而且你已经记不清楚装了什么。
+
+**正确的做法**：`base` 环境只用来运行 Conda 本身，每个项目或课程都建一个独立的虚拟环境。
+
+###  Conda 环境存在哪里
+
+Conda 环境默认保存在 Anaconda 安装目录下的 `envs/` 子文件夹中，**与你的项目代码是分离的**：
+
+```dos
+# macOS / Linux
+~/anaconda3/envs/dsfin_py311/
+
+# Windows
+C:\Users\你的用户名\anaconda3\envs\dsfin_py311\
+```
+
+你的 Jupyter Notebook 文件（`.ipynb`）放在你的项目文件夹里，虚拟环境放在 Anaconda 目录里。两者的关系是：**代码在项目文件夹里，运行代码所需的工具箱在虚拟环境里**。
+
+可以运行以下命令查看你电脑上所有的环境：
+
+```bash
+conda env list
+```
+
+---
+
+##  本课程的统一环境：`dsfin_py311`
+
+###  为什么是 Python 3.11
+
+本课程统一使用一个名为 `dsfin_py311` 的虚拟环境，基于 **Python 3.11**。选择 3.11 而非更新版本的原因是：部分章节需要在 Jupyter Notebook 中运行 Stata 代码（通过 `nbstata` 包实现），而 `nbstata` 目前只支持 Python 3.11 及以下版本。
+
+Python 3.11 对本课程所有其他章节完全兼容，没有任何功能限制。
+
+###  创建环境
+
+环境配置文件 `env_dsfin_py311.yml` 已经放在 [课程仓库](https://github.com/lianxhcn/dsfin) 的根目录中。它记录了这门课所有章节需要的包和版本。你只需要运行一条命令，Conda 就会自动完成所有安装。
+
+**第一步：** 打开 Terminal (`Ctrl+~`)，进入你 Clone 的课程仓库目录：
+
+```bash
+cd /你的路径/dsfin
+```
+
+**第二步：** 创建环境（约需 5～15 分钟，取决于网络速度）：
+
+```bash
+conda env create -f env_dsfin_py311.yml
+```
+
+**第三步：** 激活环境：
+
+```bash
+conda activate dsfin_py311
+```
+
+激活成功后，命令行最左侧会出现 `(dsfin_py311)` 字样，说明你当前处于这个环境中。
+
+**第四步：** 在 Jupyter Notebook 中运行代码：
+
+用 VS Code 打开仓库中任意 `.ipynb` 文件，点击右上角内核选择器 (**Select Kernal**)，选择 `dsfin_py311` 即可开始运行代码。
+
+::: {.callout-note}
+
+如果你更习惯使用 Jupyter Lab，也可以在激活环境后运行 `jupyter lab` 启动。
+:::
+
+
+
+&emsp;
+
+::: {.callout-tip}
+### 提示词：帮我创建 Conda 虚拟环境
+
+如果在创建环境的过程中遇到报错，可以将完整的错误信息粘贴给 AI，使用如下提示词：
+
+---
+
+**我在用 Anaconda 创建虚拟环境时遇到了报错，请帮我解决。**
+
+我的操作系统：[Windows 11 / macOS 14 / Linux]  
+Anaconda 版本：[在 Terminal 中运行 `conda --version` 查看]  
+运行的命令：`conda env create -f env_dsfin_py311.yml`  
+完整报错信息如下：
+
+`[将你的报错信息粘贴在这里]`
+
+请告诉我错误的原因，并给出逐步解决方案。
+
+---
+
+通常，AI 能准确定位问题是包源访问超时、磁盘空间不足、还是 yml 文件格式有误。
+:::
+
+###  每次使用前：记得激活环境
+
+创建环境只需要做**一次**。但每次打开新的 Terminal 后，你需要重新激活环境：
+
+```bash
+conda activate dsfin_py311
+jupyter lab
+```
+
+很多同学忘记激活，直接在 `base` 环境下启动 Jupyter，结果发现 `import akshare` 报错——因为 `akshare` 只装在了 `dsfin_py311` 里，不在 `base` 中。
+
+::: {.callout-note}
+### 提示：想让 Terminal 打开后自动激活某个环境？
+
+可以在 Terminal 的配置文件（macOS 是 `~/.zshrc`，Windows 可在 Anaconda Navigator 中设置默认环境）中加入 `conda activate dsfin_py311`。具体操作可以问 AI。
+:::
+
+---
+
+##  常用环境管理命令
+
+下面是使用频率最高的一批命令，建议留存备用。
+
+```bash
+# ── 查看 ─────────────────────────────────────────────────
+conda env list              # 列出所有环境（带路径）
+conda list                  # 列出当前环境中所有已安装的包
+
+# ── 激活 / 退出 ──────────────────────────────────────────
+conda activate dsfin_py311  # 激活指定环境
+conda deactivate            # 退出当前环境，回到 base
+
+# ── 创建 / 删除 ──────────────────────────────────────────
+conda env create -f env_dsfin_py311.yml   # 从配置文件创建环境
+conda env remove -n dsfin_py311           # 删除环境
+
+# ── 更新环境（老师发布新配置文件后使用）──────────────────
+conda env update -f env_dsfin_py311.yml --prune
+
+# ── 安装单个包 ───────────────────────────────────────────
+conda install 包名          # 优先使用 conda 安装
+pip install 包名            # conda 找不到时用 pip
+
+# ── 清理缓存（释放磁盘空间）─────────────────────────────
+conda clean --all
+```
+
+::: {.callout-tip}
+### 提示词：帮我安装一个 Python 包
+
+当你需要在当前环境中安装一个新包时，可以发送如下提示词给 AI：
+
+**我在使用 Anaconda 管理的虚拟环境 `dsfin_py311`（Python 3.11）中，想安装 `[包名]` 包。请告诉我：**
+
+1. 应该用 `conda install` 还是 `pip install`？有什么区别？
+2. 给出具体的安装命令。
+3. 安装完成后，如何验证安装成功？
+
+:::
+
+
+::: {.callout-note collapse="true"}
+### 扩展：conda install 和 pip install 的区别
+
+**不冲突，但有优先级**。在同一个 conda 环境中，conda 和 pip 都可以用来安装包，但混用需要注意：
+
+- **优先用 conda**。conda 在安装时会自动检查所有已安装包的版本兼容性，发现冲突会提前报错。pip 没有这个机制，可能悄悄破坏已有的依赖关系。
+- **conda 找不到时再用 pip**。有些包只在 PyPI（pip 的包仓库）上有，conda 找不到，这时才用 pip。
+- **不要在同一个环境里频繁切换**。如果某个包既能 conda 装又能 pip 装，就选一种方式，不要混用，否则升级时容易出问题。
+
+`nbstata`、`akshare`、`jieba` 等本课程用到的包都需要通过 pip 安装，因为它们在 conda 官方源中没有或版本较旧。
+:::
+
+---
+
+##  在 Jupyter 中使用正确的内核
+
+创建好虚拟环境之后，还有一个容易忽略的步骤：**在 Jupyter Notebook 中选择正确的内核（Kernel）**。
+
+内核是 Jupyter 用来执行代码的"引擎"。每个虚拟环境对应一个内核。如果内核选错了——比如选了 `base` 环境的内核——`import akshare` 一样会报错，因为 Jupyter 用的是 base 环境的 Python，而不是 `dsfin_py311` 的 Python。
+
+###  如何切换内核
+
+在 Jupyter Lab 中打开一个 Notebook 后，右上角会显示当前的内核名称。点击它，可以看到所有可用的内核，选择 **`Python 3 (ipykernel)`** 对应的 `dsfin_py311` 环境即可。
+
+如果列表中没有 `dsfin_py311`，说明该环境的内核还没有注册。在 Terminal 中激活环境后运行：
+
+```bash
+conda activate dsfin_py311
+python -m ipykernel install --user --name dsfin_py311 --display-name "Python (dsfin_py311)"
+```
+
+之后重新启动 Jupyter，内核列表中就会出现 `Python (dsfin_py311)`。
+
+###  Stata 内核（nbstata）
+
+涉及 Stata 代码的章节需要使用 Stata 内核。安装方法：
+
+```bash
+conda activate dsfin_py311
+python -m nbstata.install
+```
+
+如果 nbstata 无法自动找到 Stata，手动指定路径：
+
+```bash
+# Windows（根据你的 Stata 版本修改路径）
+python -m nbstata.install --stata-dir "C:\Program Files\Stata18"
+
+# macOS
+python -m nbstata.install --stata-dir "/Applications/Stata"
+```
+
+安装完成后，Jupyter 的内核列表中会多出一个 `Stata` 内核，在对应章节中选择它即可。
+
+
+::: {.callout-tip}
+### 提示词：Jupyter 找不到我的虚拟环境内核
+
+**我用 Anaconda 创建了一个名为 `dsfin_py311` 的虚拟环境，但在 Jupyter Lab 中切换内核时，列表里看不到这个环境。**
+
+我的操作系统：`[填写]`  
+我是如何启动 Jupyter 的：[例如：在 base 环境下运行 `jupyter lab`]
+
+请告诉我原因，以及如何让 Jupyter 识别这个虚拟环境的内核。
+:::
+
+---
+
+##  环境的导出与共享
+
+虚拟环境本身（几百 MB 的文件）不会放进 GitHub 仓库，但可以把**环境的配置信息**导出为一个文本文件，让别人根据这个文件在自己的电脑上重建完全相同的环境。
+
+本课程使用的配置文件格式是 `environment.yml`，已经放在仓库根目录。下面介绍如何自己维护或更新这个文件。
+
+###  导出当前环境
+
+```bash
+conda activate dsfin_py311
+
+# 推荐：只导出主动安装的包（跨平台兼容性好）
+conda env export --from-history > env_dsfin_py311.yml
+
+# 备选：完整导出含所有依赖（精确复现，但可能跨平台有问题）
+conda env export > env_dsfin_py311_full.yml
+```
+
+###  `environment.yml` 的结构
+
+打开 `env_dsfin_py311.yml`，内容大致如下：
+
+```yaml
+name: dsfin_py311
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.11
+  - numpy>=1.24
+  - pandas>=2.0
+  - matplotlib>=3.7
+  - pip:
+    - akshare>=1.14
+    - nbstata>=0.8
+```
+
+要点说明如下：
+
+- `name`：环境名称
+- `channels`：包的来源（优先从 `conda-forge` 找，找不到再去 `defaults`）
+- `dependencies`：要安装的包，`pip:` 下方的是用 pip 安装的包
+
+
+::: {.callout-note collapse="true"}
+### 扩展：conda-forge 是什么？
+
+`conda-forge` 是一个由社区维护的 Conda 包仓库，包含的包比官方 `defaults` 源更多、更新也更及时。它和 `defaults` 的关系类似于：`defaults` 是官方超市，`conda-forge` 是社区集市——后者品种更多，但都是志愿者维护的。
+
+本课程将 `conda-forge` 设为最高优先级，是目前 Python 数据科学领域的最佳实践。
+:::
+
+---
+
+##  给未来工作的你：行业中的环境管理 (选读)
+
+毕业进入业界之后，你会发现环境管理不只是自己用，而是**整个团队都要统一**。
+
+###  实际工作中的常见场景
+
+**场景一：接手前任的项目**。你拿到一堆 Python 脚本，第一件事是搞清楚它需要什么环境。如果前任留下了 `environment.yml` 或 `requirements.txt`，你可以一键重建环境；如果没有，你可能需要花几天时间排查各种 `ModuleNotFoundError`。
+
+**这告诉你**：每次开始新项目，就把你的环境配置文件放进仓库。这是对你自己负责，也是对同事负责。
+
+**场景二：把代码交给甲方或下游团队**。银行、券商、基金的数据分析项目，交付时通常要求"可复现"。一个专业的交付物不只是代码，还包括运行环境的说明。`environment.yml` 或 `requirements.txt` 是这份说明最标准的形式。
+
+**场景三：在服务器上跑大规模数据**。你在本地用笔记本调试好的代码，要放到公司服务器上跑全量数据。服务器上同样需要配置一个和本地一致的环境，这时 `environment.yml` 就是你迁移环境最可靠的工具。
+
+###  `requirements.txt` 和 `environment.yml` 的区别
+
+你在 GitHub 上看别人的项目，会遇到两种环境配置文件，容易混淆：
+
+| 文件 | 工具 | 适用场景 |
+|------|------|----------|
+| `requirements.txt` | pip | 纯 Python 项目，与 conda 无关，工程圈更常见 |
+| `environment.yml` | conda | 数据科学/研究项目，可同时管理 conda 和 pip 包 |
+
+两者不冲突，可以并存。本课程用 `environment.yml` 是因为我们用 Anaconda 管理环境，且涉及 `nbstata` 这样需要 conda 精确管理版本的包。如果你将来进入一家以工程师文化为主的公司（比如阿里、华为的数据平台团队），你会更多接触 `requirements.txt` 和 Docker。
+
+###  Docker：虚拟环境的"升级版"
+
+如果你将来负责把数据分析项目上线到生产环境，你会接触到 **Docker**。它的思路和虚拟环境类似，但更彻底——不只是隔离 Python 版本和包，而是把整个操作系统环境都打包在一起，确保代码在任何机器上的行为完全一致。
+
+数据科学家不一定需要精通 Docker，但了解它的存在和基本逻辑，能帮助你和工程师更顺畅地沟通。现阶段先把 conda 虚拟环境用好，Docker 的学习可以留到实习或工作中按需展开。
+
+---
+
+##  常见问题排错
+
+### `conda activate` 之后命令行没有变化
+
+**原因**：conda 还没有初始化你的 shell。
+
+**解决**（macOS/Linux）：
+
+```bash
+conda init zsh   # 或 conda init bash（取决于你用的 shell）
+# 关闭 Terminal，重新打开后再试
+```
+
+**解决**（Windows）：确保使用 **Anaconda Prompt** 而非普通的 cmd，或者在普通 cmd 中先运行：
+
+```bash
+conda init cmd.exe
+```
+
+
+### 环境创建速度极慢，长时间卡在 "Solving environment"
+
+**原因**：默认连接的服务器在海外，国内访问很慢。
+
+**解决**：配置清华大学镜像源（只需做一次）：
+
+```bash
+conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/main
+conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud/conda-forge
+conda config --set show_channel_urls yes
+```
+
+::: {.callout-tip}
+### 提示词：帮我配置 Conda 国内镜像源
+
+**我在中国大陆使用 Anaconda，创建虚拟环境时下载速度极慢甚至超时。请帮我配置清华或中科大的 conda 镜像源，要求：**
+
+1. 给出完整的配置命令（适用于 [Windows / macOS]）。
+2. 配置完成后，如何验证镜像源已经生效？
+3. 如果某个包在镜像源中找不到，应该怎么处理？
+
+:::
+
+
+### 某个包 `conda install` 报错，找不到
+
+**解决**：先尝试指定 `conda-forge` 频道：
+
+```bash
+conda install -c conda-forge 包名
+```
+
+如果还是找不到，改用 pip：
+
+```bash
+pip install 包名
+```
+
+
+### 想删除环境重头来过
+
+
+```bash
+conda deactivate                    # 先退出当前环境
+conda env remove -n dsfin_py311     # 删除
+conda env create -f env_dsfin_py311.yml  # 重新创建
+```
+
+---
+
+## 本章小结
+
+虚拟环境是 Python 项目管理的基础设施。核心要点：
+
+- **不要在 base 环境里装业务包**，每个课程/项目建一个独立环境
+- **用 `environment.yml` 管理环境配置**，放进 Git 仓库，方便复现和协作
+- **每次使用前先激活环境**，再启动 Jupyter
+- **conda 优先，pip 兜底**：安装包时先试 conda，找不到再用 pip
+
+本课程的统一环境是 `dsfin_py311`，创建命令：
+
+```bash
+conda env create -f env_dsfin_py311.yml
+conda activate dsfin_py311
+```

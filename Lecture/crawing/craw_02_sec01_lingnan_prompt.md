@@ -94,75 +94,81 @@
 ## 提示词
 
 ::: {.callout-tip}
-## 💬 提示词参考
+### 提示词：爬虫任务描述
 
-> 请帮我用 Python 写一个爬虫，完成以下任务。本代码仅用于课堂教学演示。
->
-> **目标网站**：`https://lingnan.sysu.edu.cn/Faculty`，教师名录全部在一个页面内，无需翻页。
->
-> **采集对象**：每一位教师的基本信息，每条记录对应一位教师。
->
-> **数据格式**：数据直接写在 HTML 中（模式 A）。以下是两条真实 HTML 样例，注意两者结构不同——刘贯春有职务字段，罗党论没有：
->
-> ```html
-> <!-- 样例 A：有职务 -->
-> <div class="infors">
->   <h3>
->     <a href="/faculty/LiuGuanchun" target="_blank">刘贯春</a>
->     <span>教授</span>
->   </h3>
->   <p class="one-line">宏观经济教研室</p>
->   <p class="one-line">宏观经济教研室主任</p>
->   <p class="one-line">liugch9@mail.sysu.edu.cn</p>
->   <p class="text-light two-line">
->     <b>研究方向:</b>财政与金融、企业投融资决策
->   </p>
-> </div>
->
-> <!-- 样例 B：无职务 -->
-> <div class="infors">
->   <h3>
->     <a href="/faculty/LuoDanglun" target="_blank">罗党论</a>
->     <span>教授</span>
->   </h3>
->   <p class="one-line">公司金融教研室</p>
->   <p class="one-line">luodl@mail.sysu.edu.cn</p>
->   <p class="text-light two-line">
->     <b>研究方向:</b>公司治理与政府治理、资本市场、民营企业
->   </p>
-> </div>
-> ```
->
-> **字段识别规则**（请严格按此逻辑解析）：
-> - `h3 > a` 文本为**姓名**；`href` 属性拼接 `https://lingnan.sysu.edu.cn` 后为**个人主页链接**
-> - `h3 > span` 文本为**职称**
-> - `class="one-line"` 的 `<p>` 标签按顺序处理：第一个文本为**教研室**；之后若存在不含 `@` 的文本则为**职务**；含 `@` 的文本为**电子邮箱**
-> - `class` 包含 `two-line` 的 `<p>` 标签内容去掉「研究方向:」前缀后为**研究方向**
-> - 某字段不存在时填入空字符串，不跳过整条记录
->
-> **需要提取的字段**（共 7 个，按此顺序）：
-> `姓名`、`职称`、`教研室`、`职务`、`研究方向`、`电子邮箱`、`个人主页链接`
->
-> **技术要求**：
-> - 使用 `requests` + `BeautifulSoup`
-> - `User-Agent` 设置为真实 Chrome 浏览器值
-> - 请求失败时打印错误信息并终止，不静默失败
-> - 将解析单条教师信息的逻辑封装为函数 `parse_faculty(card)`
->
-> **输出**：
-> - 一份 Excel 文件，命名为 `lingnan_faculty.xlsx`，中文字段名
-> - 一份 Markdown 文件，命名为 `lingnan_faculty.md`，每位教师用列表格式呈现，邮箱和链接用尖括号包裹（可点击），格式如下：
->
-> ```markdown
-> - **刘贯春**｜教授
->   - 教研室：宏观经济教研室
->   - 职务：宏观经济教研室主任
->   - 研究方向：财政与金融、企业投融资决策
->   - 邮箱：<liugch9@mail.sysu.edu.cn>
->   - 主页：<https://lingnan.sysu.edu.cn/faculty/LiuGuanchun>
-> ```
->
-> **代码要求**：加中文注释；先只打印前 3 条结果，确认字段正确后再保存完整文件。
+ 请帮我用 Python 写一个爬虫，完成以下任务。本代码仅用于课堂教学演示。
+
+ **目标网站**：`https://lingnan.sysu.edu.cn/Faculty`，教师名录全部在一个页面内，无需翻页。
+
+ **采集对象**：每一位教师的基本信息，每条记录对应一位教师。
+
+ **数据格式**：数据直接写在 HTML 中（模式 A）。以下是两条真实 HTML 样例，注意两者结构不同——刘贯春有职务字段，罗党论没有：
+
+ ```html
+ <!-- 样例 A：有职务 -->
+ <div class="infors">
+   <h3>
+     <a href="/faculty/LiuGuanchun" target="_blank">刘贯春</a>
+     <span>教授</span>
+   </h3>
+   <p class="one-line">宏观经济教研室</p>
+   <p class="one-line">宏观经济教研室主任</p>
+   <p class="one-line">liugch9@mail.sysu.edu.cn</p>
+   <p class="text-light two-line">
+     <b>研究方向:</b>财政与金融、企业投融资决策
+   </p>
+ </div>
+ ```
+
+ ```html
+ <!-- 样例 B：无职务 -->
+ <div class="infors">
+   <h3>
+     <a href="/faculty/LuoDanglun" target="_blank">罗党论</a>
+     <span>教授</span>
+   </h3>
+   <p class="one-line">公司金融教研室</p>
+   <p class="one-line">luodl@mail.sysu.edu.cn</p>
+   <p class="text-light two-line">
+     <b>研究方向:</b>公司治理与政府治理、资本市场、民营企业
+   </p>
+ </div>
+ ```
+
+ **字段识别规则**（请严格按此逻辑解析）：
+
+ - `h3 > a` 文本为**姓名**；`href` 属性拼接 `https://lingnan.sysu.edu.cn` 后为**个人主页链接**
+ - `h3 > span` 文本为**职称**
+ - `class="one-line"` 的 `<p>` 标签按顺序处理：第一个文本为**教研室**；之后若存在不含 `@` 的文本则为**职务**；含 `@` 的文本为**电子邮箱**
+ - `class` 包含 `two-line` 的 `<p>` 标签内容去掉「研究方向:」前缀后为**研究方向**
+ - 某字段不存在时填入空字符串，不跳过整条记录
+
+ **需要提取的字段**（共 7 个，按此顺序）：
+
+ `姓名`、`职称`、`教研室`、`职务`、`研究方向`、`电子邮箱`、`个人主页链接`
+
+ **技术要求**：
+
+ - 使用 `requests` + `BeautifulSoup`
+ - `User-Agent` 设置为真实 Chrome 浏览器值
+ - 请求失败时打印错误信息并终止，不静默失败
+ - 将解析单条教师信息的逻辑封装为函数 `parse_faculty(card)`
+
+ **输出**：
+
+ - 一份 Excel 文件，命名为 `lingnan_faculty.xlsx`，中文字段名
+ - 一份 Markdown 文件，命名为 `lingnan_faculty.md`，每位教师用列表格式呈现，邮箱和链接用尖括号包裹（可点击），格式如下：
+
+ ```markdown
+ - **刘贯春**｜教授
+   - 教研室：宏观经济教研室
+   - 职务：宏观经济教研室主任
+   - 研究方向：财政与金融、企业投融资决策
+   - 邮箱：<liugch9@mail.sysu.edu.cn>
+   - 主页：<https://lingnan.sysu.edu.cn/faculty/LiuGuanchun>
+ ```
+
+ **代码要求**：加中文注释；先只打印前 3 条结果，确认字段正确后再保存完整文件。
 
 **提示词要点分析：**
 
@@ -171,7 +177,9 @@
 - ✅ **指定了输出格式的具体样式**，包括 Markdown 尖括号写法，AI 不需要猜
 - ✅ **要求先打印 3 条再保存**，对应「先验证、再输出」的实践习惯
 - ✅ **封装为函数**，代码结构清晰，便于后续修改单条解析逻辑
+  
 :::
+
 
 ---
 
@@ -295,7 +303,6 @@ def main():
     with open(md_path, 'w', encoding='utf-8') as f:
         f.write('\n'.join(md_lines))
     print(f'✅ Markdown 已保存：{md_path}')
-
 
 if __name__ == '__main__':
     main()

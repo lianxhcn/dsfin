@@ -1,0 +1,154 @@
+<mxGraphModel dx="1422" dy="762" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
+  <root>
+    <mxCell id="0" />
+    <mxCell id="1" parent="0" />
+
+    <!-- Title -->
+    <mxCell id="title" value="项目文件结构与数据流" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=16;fontStyle=1;" vertex="1" parent="1">
+      <mxGeometry x="335" y="20" width="280" height="30" as="geometry" />
+    </mxCell>
+
+    <!-- Root folder -->
+    <mxCell id="root" value="lecture_data_manage/" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f1efe8;strokeColor=#5F5E5A;fontStyle=1;fontSize=13;" vertex="1" parent="1">
+      <mxGeometry x="385" y="70" width="210" height="40" as="geometry" />
+    </mxCell>
+
+    <!-- codes_get_data.ipynb -->
+    <mxCell id="codes" value="&lt;b&gt;codes_get_data.ipynb&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:11px;&quot;&gt;数据下载脚本&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E1F5EE;strokeColor=#0F6E56;fontSize=12;" vertex="1" parent="1">
+      <mxGeometry x="80" y="170" width="200" height="55" as="geometry" />
+    </mxCell>
+
+    <!-- data_store_manage.ipynb -->
+    <mxCell id="lecture" value="&lt;b&gt;data_store_manage.ipynb&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:11px;&quot;&gt;本章讲义主文件&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#EEEDFE;strokeColor=#534AB7;fontSize=12;" vertex="1" parent="1">
+      <mxGeometry x="385" y="170" width="210" height="55" as="geometry" />
+    </mxCell>
+
+    <!-- data_raw/ -->
+    <mxCell id="dataraw" value="&lt;b&gt;data_raw/&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:11px;&quot;&gt;原始数据存储目录&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FAEEDA;strokeColor=#854F0B;fontSize=12;" vertex="1" parent="1">
+      <mxGeometry x="690" y="170" width="200" height="55" as="geometry" />
+    </mxCell>
+
+    <!-- stock_daily/ -->
+    <mxCell id="stock" value="&lt;b&gt;stock_daily/&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:11px;&quot;&gt;10只个股日度&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FAECE7;strokeColor=#993C1D;fontSize=12;" vertex="1" parent="1">
+      <mxGeometry x="590" y="290" width="160" height="50" as="geometry" />
+    </mxCell>
+
+    <!-- index_daily/ -->
+    <mxCell id="index" value="&lt;b&gt;index_daily/&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:11px;&quot;&gt;市场指数日度&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FAECE7;strokeColor=#993C1D;fontSize=12;" vertex="1" parent="1">
+      <mxGeometry x="770" y="290" width="160" height="50" as="geometry" />
+    </mxCell>
+
+    <!-- macro_monthly/ -->
+    <mxCell id="macro" value="&lt;b&gt;macro_monthly/&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:11px;&quot;&gt;宏观月度数据&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FAECE7;strokeColor=#993C1D;fontSize=12;" vertex="1" parent="1">
+      <mxGeometry x="590" y="360" width="160" height="50" as="geometry" />
+    </mxCell>
+
+    <!-- fin_annual/ -->
+    <mxCell id="fin" value="&lt;b&gt;fin_annual/&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:11px;&quot;&gt;财务面板年度&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FAECE7;strokeColor=#993C1D;fontSize=12;" vertex="1" parent="1">
+      <mxGeometry x="770" y="360" width="160" height="50" as="geometry" />
+    </mxCell>
+
+    <!-- Tree edges: root -> three children -->
+    <mxCell id="e1" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="root" target="codes" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+    <mxCell id="e2" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="root" target="lecture" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+    <mxCell id="e3" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="root" target="dataraw" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+
+    <!-- data_raw -> subfolders -->
+    <mxCell id="e4" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="dataraw" target="stock" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+    <mxCell id="e5" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="dataraw" target="index" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+    <mxCell id="e6" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="dataraw" target="macro" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+    <mxCell id="e7" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="dataraw" target="fin" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+
+    <!-- Data flow: codes -> data_raw (writes) -->
+    <mxCell id="e8" value="写入" style="edgeStyle=orthogonalEdgeStyle;dashed=1;strokeColor=#0F6E56;fontColor=#0F6E56;fontSize=11;" edge="1" source="codes" target="dataraw" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+
+    <!-- Data flow: data_raw -> lecture (reads) -->
+    <mxCell id="e9" value="读取" style="edgeStyle=orthogonalEdgeStyle;dashed=1;strokeColor=#534AB7;fontColor=#534AB7;fontSize=11;" edge="1" source="dataraw" target="lecture" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+
+    <!-- Divider label -->
+    <mxCell id="div1" value="数据集设计（四类，覆盖不同频率与层级）" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;fontSize=12;fontStyle=2;" vertex="1" parent="1">
+      <mxGeometry x="200" y="450" width="560" height="30" as="geometry" />
+    </mxCell>
+
+    <!-- Dataset A -->
+    <mxCell id="dsa" value="&lt;b&gt;A  个股日度&lt;/b&gt;&lt;br&gt;来源：akshare&lt;br&gt;频率：日度&lt;br&gt;主键：code+date&lt;br&gt;时长：6年 / 10只&lt;br&gt;格式：CSV / Parquet&lt;br&gt;&lt;font color=&quot;#185FA5&quot;&gt;→ 时序/收益分析&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E6F1FB;strokeColor=#185FA5;fontSize=11;align=left;spacingLeft=8;verticalAlign=top;spacingTop=6;" vertex="1" parent="1">
+      <mxGeometry x="80" y="500" width="150" height="160" as="geometry" />
+    </mxCell>
+
+    <!-- Dataset B -->
+    <mxCell id="dsb" value="&lt;b&gt;B  指数+宏观&lt;/b&gt;&lt;br&gt;来源：akshare&lt;br&gt;频率：日/月混频&lt;br&gt;主键：date&lt;br&gt;指数：沪深300等&lt;br&gt;宏观：利率/汇率&lt;br&gt;&lt;font color=&quot;#0F6E56&quot;&gt;→ 混频 JOIN 演示&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E1F5EE;strokeColor=#0F6E56;fontSize=11;align=left;spacingLeft=8;verticalAlign=top;spacingTop=6;" vertex="1" parent="1">
+      <mxGeometry x="250" y="500" width="150" height="160" as="geometry" />
+    </mxCell>
+
+    <!-- Dataset C -->
+    <mxCell id="dsc" value="&lt;b&gt;C  财务面板&lt;/b&gt;&lt;br&gt;来源：akshare&lt;br&gt;频率：年度&lt;br&gt;主键：code+year&lt;br&gt;字段：PE/PB/ROE&lt;br&gt;字段：营收/利润&lt;br&gt;&lt;font color=&quot;#854F0B&quot;&gt;→ 面板数据管理&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FAEEDA;strokeColor=#854F0B;fontSize=11;align=left;spacingLeft=8;verticalAlign=top;spacingTop=6;" vertex="1" parent="1">
+      <mxGeometry x="420" y="500" width="150" height="160" as="geometry" />
+    </mxCell>
+
+    <!-- Dataset D -->
+    <mxCell id="dsd" value="&lt;b&gt;D  公司信息&lt;/b&gt;&lt;br&gt;来源：akshare&lt;br&gt;频率：截面&lt;br&gt;主键：code&lt;br&gt;字段：行业/地区&lt;br&gt;字段：上市日期&lt;br&gt;&lt;font color=&quot;#3C3489&quot;&gt;→ 维度表/JOIN键&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#EEEDFE;strokeColor=#534AB7;fontSize=11;align=left;spacingLeft=8;verticalAlign=top;spacingTop=6;" vertex="1" parent="1">
+      <mxGeometry x="590" y="500" width="150" height="160" as="geometry" />
+    </mxCell>
+
+    <!-- Section mapping label -->
+    <mxCell id="div2" value="讲义各节使用哪些数据集" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;fontSize=12;fontStyle=2;" vertex="1" parent="1">
+      <mxGeometry x="200" y="685" width="560" height="25" as="geometry" />
+    </mxCell>
+
+    <!-- Sec boxes -->
+    <mxCell id="s1" value="&lt;b&gt;Sec 1&lt;/b&gt;&lt;br&gt;粒度/主键" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f1efe8;strokeColor=#5F5E5A;fontSize=11;" vertex="1" parent="1">
+      <mxGeometry x="60" y="725" width="90" height="40" as="geometry" />
+    </mxCell>
+    <mxCell id="s2" value="&lt;b&gt;Sec 2&lt;/b&gt;&lt;br&gt;格式  A" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E6F1FB;strokeColor=#185FA5;fontSize=11;" vertex="1" parent="1">
+      <mxGeometry x="165" y="725" width="90" height="40" as="geometry" />
+    </mxCell>
+    <mxCell id="s3" value="&lt;b&gt;Sec 3&lt;/b&gt;&lt;br&gt;SQLite  A+C" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E1F5EE;strokeColor=#0F6E56;fontSize=11;" vertex="1" parent="1">
+      <mxGeometry x="270" y="725" width="100" height="40" as="geometry" />
+    </mxCell>
+    <mxCell id="s4" value="&lt;b&gt;Sec 4&lt;/b&gt;&lt;br&gt;SQL  A+B+D" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FAEEDA;strokeColor=#854F0B;fontSize=11;" vertex="1" parent="1">
+      <mxGeometry x="385" y="725" width="100" height="40" as="geometry" />
+    </mxCell>
+    <mxCell id="s5" value="&lt;b&gt;Sec 5&lt;/b&gt;&lt;br&gt;DuckDB  A全量" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#EEEDFE;strokeColor=#534AB7;fontSize=11;" vertex="1" parent="1">
+      <mxGeometry x="500" y="725" width="110" height="40" as="geometry" />
+    </mxCell>
+    <mxCell id="s6" value="&lt;b&gt;Sec 6&lt;/b&gt;&lt;br&gt;规范  全部" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f1efe8;strokeColor=#5F5E5A;fontSize=11;" vertex="1" parent="1">
+      <mxGeometry x="625" y="725" width="90" height="40" as="geometry" />
+    </mxCell>
+
+    <!-- Sec arrows -->
+    <mxCell id="es1" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="s1" target="s2" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+    <mxCell id="es2" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="s2" target="s3" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+    <mxCell id="es3" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="s3" target="s4" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+    <mxCell id="es4" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="s4" target="s5" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+    <mxCell id="es5" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="s5" target="s6" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+
+  </root>
+</mxGraphModel>

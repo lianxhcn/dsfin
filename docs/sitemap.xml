@@ -9,6 +9,10 @@
     <lastmod>2026-03-27T11:17:43.441Z</lastmod>
   </url>
   <url>
+    <loc>https://lianxhcn.github.io/dsfin/Lecture/00_setup.html</loc>
+    <lastmod>2026-04-01T16:57:38.879Z</lastmod>
+  </url>
+  <url>
     <loc>https://lianxhcn.github.io/dsfin/Lecture/01_homework.html</loc>
     <lastmod>2026-03-31T10:25:58.373Z</lastmod>
   </url>
@@ -33,6 +37,10 @@
     <lastmod>2026-03-24T09:04:17.253Z</lastmod>
   </url>
   <url>
+    <loc>https://lianxhcn.github.io/dsfin/Lecture/00-setup/01_06_conda_env.html</loc>
+    <lastmod>2026-04-01T16:29:54.230Z</lastmod>
+  </url>
+  <url>
     <loc>https://lianxhcn.github.io/dsfin/Lecture/data_get_data/lecture_get_data.html</loc>
     <lastmod>2026-03-31T10:32:39.689Z</lastmod>
   </url>
@@ -46,19 +54,47 @@
   </url>
   <url>
     <loc>https://lianxhcn.github.io/dsfin/Lecture/data_store_structure/lecture_data_management_organization.html</loc>
-    <lastmod>2026-03-31T10:26:20.907Z</lastmod>
+    <lastmod>2026-04-01T16:34:35.484Z</lastmod>
   </url>
   <url>
     <loc>https://lianxhcn.github.io/dsfin/Lecture/data_clean/lecture_data_clean.html</loc>
     <lastmod>2026-03-31T10:13:23.990Z</lastmod>
   </url>
   <url>
+    <loc>https://lianxhcn.github.io/dsfin/Lecture/data_visual/graph_01_intro.html</loc>
+    <lastmod>2025-09-09T12:08:23.056Z</lastmod>
+  </url>
+  <url>
+    <loc>https://lianxhcn.github.io/dsfin/Lecture/data_visual/graph_dis_box_violin.html</loc>
+    <lastmod>2026-04-01T17:44:29.612Z</lastmod>
+  </url>
+  <url>
+    <loc>https://lianxhcn.github.io/dsfin/Lecture/data_visual/graph_dis_histogram.html</loc>
+    <lastmod>2025-10-17T01:56:37.932Z</lastmod>
+  </url>
+  <url>
+    <loc>https://lianxhcn.github.io/dsfin/Lecture/data_visual/graph_dis_kdensity.html</loc>
+    <lastmod>2026-03-13T19:51:32.340Z</lastmod>
+  </url>
+  <url>
+    <loc>https://lianxhcn.github.io/dsfin/Lecture/data_visual/lec_distribution.html</loc>
+    <lastmod>2026-04-01T19:35:57.548Z</lastmod>
+  </url>
+  <url>
+    <loc>https://lianxhcn.github.io/dsfin/Lecture/data_visual/lec_distribution_codes.html</loc>
+    <lastmod>2026-04-01T19:16:10.088Z</lastmod>
+  </url>
+  <url>
+    <loc>https://lianxhcn.github.io/dsfin/Lecture/data_visual/lec_visualization.html</loc>
+    <lastmod>2026-04-01T18:36:11.607Z</lastmod>
+  </url>
+  <url>
     <loc>https://lianxhcn.github.io/dsfin/Lecture/crawing/craw_01_introduction.html</loc>
-    <lastmod>2026-03-22T11:55:07.801Z</lastmod>
+    <lastmod>2026-04-01T17:59:46.820Z</lastmod>
   </url>
   <url>
     <loc>https://lianxhcn.github.io/dsfin/Lecture/crawing/craw_02_sec01_lingnan_prompt.html</loc>
-    <lastmod>2026-03-24T16:41:21.310Z</lastmod>
+    <lastmod>2026-04-01T17:39:21.783Z</lastmod>
   </url>
   <url>
     <loc>https://lianxhcn.github.io/dsfin/Lecture/crawing/craw_02_sec02_lingnan_dialog.html</loc>
@@ -114,6 +150,6 @@
   </url>
   <url>
     <loc>https://lianxhcn.github.io/dsfin/appendix_python/a8_workflow.html</loc>
-    <lastmod>2026-03-26T12:45:10.781Z</lastmod>
+    <lastmod>2026-04-01T14:26:22.944Z</lastmod>
   </url>
 </urlset>

@@ -1,0 +1,2173 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.6.39">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>18&nbsp; 数据可视化 – 金融数据分析与建模</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../Lecture/crawing/craw_01_introduction.html" rel="next">
+<link href="../../Lecture/data_visual/lec_distribution_codes.html" rel="prev">
+<link href="../../images/book-logo.png" rel="icon" type="image/png">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-e8fb9d25728d58bfeac61b497e4a6629.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark-57a92833092fd6dc0d7710b6bdfff9c5.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-7ef202e96c563d31d9e5226e4d6cabf9.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark-490ba4e843cb1303a232ed0c676384f2.min.css" rel="prefetch" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../Lecture/data_visual/graph_01_intro.html"><strong>可视化</strong></a></li><li class="breadcrumb-item"><a href="../../Lecture/data_visual/lec_visualization.html"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">数据可视化</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header sidebar-header-stacked">
+      <a href="https://lianxhcn.github.io/dsfin/" class="sidebar-logo-link">
+      <img src="../../images/book-logo.png" alt="" class="sidebar-logo py-0 d-lg-inline d-none">
+      </a>
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../../">DS Finance</a> 
+        <div class="sidebar-tools-main tools-wide">
+    <a href="https://github.com/lianxhcn/dsfin" title="" class="quarto-navigation-tool px-1" aria-label=""><i class="bi bi-github"></i></a>
+    <a href="https://www.lianxh.cn" title="" class="quarto-navigation-tool px-1" aria-label=""><i class="bi bi-house-fill"></i></a>
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">封面</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/00_intro.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">📚课程资料</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/00_setup.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">📌课件使用指南</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/01_homework.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">🚀作业</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text"><strong>环境配置</strong></span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/00-setup/01_00_coding_with_AI.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">借助 AI 写代码</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/00-setup/01_01_install_anaconda.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Python：安装和环境配置</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/00-setup/01_02_jupyter_notebook.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Jupyter Notebook 的使用</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/00-setup/01_03_install_FAQs.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Python 安装常见问题</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/00-setup/01_04_markdown.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Markdown</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/00-setup/01_06_conda_env.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">虚拟环境管理</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
+ <span class="menu-text"><strong>数据分析</strong></span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/data_get_data/lecture_get_data.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">金融数据获取</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/data_get_data/data_02_get_data_GMD.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">获取数据：GMD</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/data_get_data/data_03_TS_SZ_index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">上证指数的时序特征</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/data_store_structure/lecture_data_management_organization.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">数据管理与组织</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/data_clean/lecture_data_clean.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">数据清洗</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true">
+ <span class="menu-text"><strong>可视化</strong></span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/data_visual/graph_01_intro.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Python 可视化：简介</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/data_visual/graph_dis_box_violin.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">箱型图和小提琴图</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/data_visual/graph_dis_histogram.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">直方图</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/data_visual/graph_dis_kdensity.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">核密度函数图</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/data_visual/lec_distribution.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">数据分布：原理与可视化</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/data_visual/lec_distribution_codes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">数据分布：原理与可视化 — 配套代码</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/data_visual/lec_visualization.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">数据可视化</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true">
+ <span class="menu-text"><strong>数据爬取</strong></span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/crawing/craw_01_introduction.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">网络爬虫简介</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/crawing/craw_02_sec01_lingnan_prompt.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">实例-提示词模式：爬取岭南学院教师名录</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/crawing/craw_02_sec02_lingnan_dialog.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">实例-对话模式：爬取岭南学院教师名录</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true">
+ <span class="menu-text"><strong>文本分析</strong></span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/text_analysis/lecture_text_01_ailn.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">金融文本分析（上）——从文本到结构化数据</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/text_analysis/lecture_text_02_ailn.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">金融文本分析（下）——情感分析与文本建模</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/text_analysis/lecture_text_analysis_01_claude.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">文本数据处理基础</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/text_analysis/lecture_text_analysis_02_claude.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">文本分析：情感分析与主题建模</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="true">
+ <span class="menu-text"><strong>附录：Python 提示词</strong></span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../appendix_python/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">概览</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../appendix_python/a1_setup.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">A1. 环境配置</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../appendix_python/a2_project.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">A2. 项目规划与版本控制</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../appendix_python/a3_concepts.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">A3. 提示词核心词汇</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../appendix_python/a4_data.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">A4. 数据获取与清洗</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../appendix_python/a5_visualization.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">A5. 数据可视化</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../appendix_python/a6_modeling.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">A6. 统计建模</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../appendix_python/a7_results.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">A7. 结果呈现与表格美化</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../appendix_python/a8_workflow.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">A8. 上下文管理与调试</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#可视化的基本原则" id="toc-可视化的基本原则" class="nav-link active" data-scroll-target="#可视化的基本原则"><span class="header-section-number">18.1</span> 可视化的基本原则</a>
+  <ul class="collapse">
+  <li><a href="#图形-vs-表格什么时候用哪个" id="toc-图形-vs-表格什么时候用哪个" class="nav-link" data-scroll-target="#图形-vs-表格什么时候用哪个"><span class="header-section-number">18.1.1</span> 图形 vs 表格：什么时候用哪个</a></li>
+  <li><a href="#图形类型的选择按分析目的匹配" id="toc-图形类型的选择按分析目的匹配" class="nav-link" data-scroll-target="#图形类型的选择按分析目的匹配"><span class="header-section-number">18.1.2</span> 图形类型的选择：按分析目的匹配</a></li>
+  <li><a href="#数据墨水比简洁即美" id="toc-数据墨水比简洁即美" class="nav-link" data-scroll-target="#数据墨水比简洁即美"><span class="header-section-number">18.1.3</span> 数据墨水比：简洁即美</a></li>
+  <li><a href="#颜色功能配色方案与色盲友好" id="toc-颜色功能配色方案与色盲友好" class="nav-link" data-scroll-target="#颜色功能配色方案与色盲友好"><span class="header-section-number">18.1.4</span> 颜色：功能、配色方案与色盲友好</a></li>
+  <li><a href="#文字元素标题标签标注与图例" id="toc-文字元素标题标签标注与图例" class="nav-link" data-scroll-target="#文字元素标题标签标注与图例"><span class="header-section-number">18.1.5</span> 文字元素：标题、标签、标注与图例</a></li>
+  <li><a href="#坐标轴与可比性" id="toc-坐标轴与可比性" class="nav-link" data-scroll-target="#坐标轴与可比性"><span class="header-section-number">18.1.6</span> 坐标轴与可比性</a></li>
+  <li><a href="#诚实性财经媒体中的常见误导陷阱" id="toc-诚实性财经媒体中的常见误导陷阱" class="nav-link" data-scroll-target="#诚实性财经媒体中的常见误导陷阱"><span class="header-section-number">18.1.7</span> 诚实性：财经媒体中的常见误导陷阱</a></li>
+  <li><a href="#叙事性让图说话" id="toc-叙事性让图说话" class="nav-link" data-scroll-target="#叙事性让图说话"><span class="header-section-number">18.1.8</span> 叙事性：让图说话</a></li>
+  <li><a href="#小结" id="toc-小结" class="nav-link" data-scroll-target="#小结"><span class="header-section-number">18.1.9</span> 小结</a></li>
+  <li><a href="#延伸阅读" id="toc-延伸阅读" class="nav-link" data-scroll-target="#延伸阅读"><span class="header-section-number">18.1.10</span> 延伸阅读</a></li>
+  </ul></li>
+  <li><a href="#双变量与多变量关系的可视化" id="toc-双变量与多变量关系的可视化" class="nav-link" data-scroll-target="#双变量与多变量关系的可视化"><span class="header-section-number">18.2</span> 双变量与多变量关系的可视化</a>
+  <ul class="collapse">
+  <li><a href="#散点图与回归线" id="toc-散点图与回归线" class="nav-link" data-scroll-target="#散点图与回归线"><span class="header-section-number">18.2.1</span> 散点图与回归线</a></li>
+  <li><a href="#相关矩阵热力图" id="toc-相关矩阵热力图" class="nav-link" data-scroll-target="#相关矩阵热力图"><span class="header-section-number">18.2.2</span> 相关矩阵热力图</a></li>
+  <li><a href="#散点图矩阵pairs-plot" id="toc-散点图矩阵pairs-plot" class="nav-link" data-scroll-target="#散点图矩阵pairs-plot"><span class="header-section-number">18.2.3</span> 散点图矩阵（Pairs Plot）</a></li>
+  <li><a href="#综合案例多资产收益率的联动关系" id="toc-综合案例多资产收益率的联动关系" class="nav-link" data-scroll-target="#综合案例多资产收益率的联动关系"><span class="header-section-number">18.2.4</span> 综合案例：多资产收益率的联动关系</a></li>
+  </ul></li>
+  <li><a href="#时间序列的可视化" id="toc-时间序列的可视化" class="nav-link" data-scroll-target="#时间序列的可视化"><span class="header-section-number">18.3</span> 时间序列的可视化</a>
+  <ul class="collapse">
+  <li><a href="#折线图的规范画法" id="toc-折线图的规范画法" class="nav-link" data-scroll-target="#折线图的规范画法"><span class="header-section-number">18.3.1</span> 折线图的规范画法</a></li>
+  <li><a href="#事件标注政策时间线与危机区间" id="toc-事件标注政策时间线与危机区间" class="nav-link" data-scroll-target="#事件标注政策时间线与危机区间"><span class="header-section-number">18.3.2</span> 事件标注：政策时间线与危机区间</a></li>
+  <li><a href="#对数坐标轴" id="toc-对数坐标轴" class="nav-link" data-scroll-target="#对数坐标轴"><span class="header-section-number">18.3.3</span> 对数坐标轴</a></li>
+  <li><a href="#多资产对比与不确定性" id="toc-多资产对比与不确定性" class="nav-link" data-scroll-target="#多资产对比与不确定性"><span class="header-section-number">18.3.4</span> 多资产对比与不确定性</a></li>
+  <li><a href="#k-线图mplfinance" id="toc-k-线图mplfinance" class="nav-link" data-scroll-target="#k-线图mplfinance"><span class="header-section-number">18.3.5</span> K 线图（mplfinance）</a></li>
+  </ul></li>
+  <li><a href="#回归结果的可视化" id="toc-回归结果的可视化" class="nav-link" data-scroll-target="#回归结果的可视化"><span class="header-section-number">18.4</span> 回归结果的可视化</a>
+  <ul class="collapse">
+  <li><a href="#系数图coefficient-plot" id="toc-系数图coefficient-plot" class="nav-link" data-scroll-target="#系数图coefficient-plot"><span class="header-section-number">18.4.1</span> 系数图（Coefficient Plot）</a></li>
+  <li><a href="#残差诊断图" id="toc-残差诊断图" class="nav-link" data-scroll-target="#残差诊断图"><span class="header-section-number">18.4.2</span> 残差诊断图</a></li>
+  <li><a href="#边际效应图与预测区间" id="toc-边际效应图与预测区间" class="nav-link" data-scroll-target="#边际效应图与预测区间"><span class="header-section-number">18.4.3</span> 边际效应图与预测区间</a></li>
+  </ul></li>
+  <li><a href="#完整案例capm-beta-的可视化估计" id="toc-完整案例capm-beta-的可视化估计" class="nav-link" data-scroll-target="#完整案例capm-beta-的可视化估计"><span class="header-section-number">18.5</span> 完整案例：CAPM Beta 的可视化估计</a></li>
+  <li><a href="#图形导出与报告整合" id="toc-图形导出与报告整合" class="nav-link" data-scroll-target="#图形导出与报告整合"><span class="header-section-number">18.6</span> 图形导出与报告整合</a>
+  <ul class="collapse">
+  <li><a href="#格式与分辨率" id="toc-格式与分辨率" class="nav-link" data-scroll-target="#格式与分辨率"><span class="header-section-number">18.6.1</span> 格式与分辨率</a></li>
+  <li><a href="#图注的写法规范" id="toc-图注的写法规范" class="nav-link" data-scroll-target="#图注的写法规范"><span class="header-section-number">18.6.2</span> 图注的写法规范</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../Lecture/data_visual/graph_01_intro.html"><strong>可视化</strong></a></li><li class="breadcrumb-item"><a href="../../Lecture/data_visual/lec_visualization.html"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">数据可视化</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">数据可视化</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<hr>
+<section id="可视化的基本原则" class="level2" data-number="18.1">
+<h2 data-number="18.1" class="anchored" data-anchor-id="可视化的基本原则"><span class="header-section-number">18.1</span> 可视化的基本原则</h2>
+<blockquote class="blockquote">
+<p><strong>本节目标</strong>：建立”好图”的审美标准和判断框架。不追求代码细节，而是理解<strong>为什么这样画</strong>——这是让 AI 帮你生成高质量图形代码的前提。</p>
+</blockquote>
+<hr>
+<section id="图形-vs-表格什么时候用哪个" class="level3" data-number="18.1.1">
+<h3 data-number="18.1.1" class="anchored" data-anchor-id="图形-vs-表格什么时候用哪个"><span class="header-section-number">18.1.1</span> 图形 vs 表格：什么时候用哪个</h3>
+<p>图形和表格是数据呈现的两种基本形式，选择哪种取决于<strong>你想传递什么信息</strong>，而不是习惯或偏好。</p>
+<p><strong>适合用表格的场景</strong></p>
+<ul>
+<li>读者需要查询精确数值（如回归系数、标准误）</li>
+<li>需要同时呈现多个维度的精确对比</li>
+<li>数据量少，关系简单，不需要视觉辅助</li>
+</ul>
+<p><strong>适合用图形的场景</strong></p>
+<ul>
+<li>展示趋势（上升、下降、周期性）</li>
+<li>展示分布形态（偏态、肥尾、双峰）</li>
+<li>展示变量之间的关系（正相关、非线性）</li>
+<li>识别离群值</li>
+</ul>
+<p><strong>金融场景举例：回归结果用表还是图？</strong></p>
+<p>传统做法是把回归系数整理成表格。但当解释变量较多、或需要比较多个模型时，<strong>系数图（coefficient plot）</strong> 往往更直观——把系数估计值和置信区间画成点+误差棒，读者一眼就能看出哪些变量显著、效应方向和大小。</p>
+<blockquote class="blockquote">
+<p>📌 <strong>原则</strong>：如果读者需要”读数”，用表格；如果读者需要”看趋势/模式”，用图形。</p>
+</blockquote>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+示例提示词
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<div class="sourceCode" id="cb1"><pre class="sourceCode md code-with-copy"><code class="sourceCode markdown"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>我有一个 OLS 回归结果，包含 8 个解释变量的系数和标准误。</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>请帮我用 matplotlib 画一个系数图（coefficient plot）：</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>横轴为系数估计值，纵轴为变量名</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>用水平误差棒表示 95% 置信区间</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>在 x=0 处画一条垂直虚线作为参考线</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>显著（p&lt;0.05）的变量用深色，不显著的用浅灰色</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>去掉上边框和右边框，整体风格简洁</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+<hr>
+</section>
+<section id="图形类型的选择按分析目的匹配" class="level3" data-number="18.1.2">
+<h3 data-number="18.1.2" class="anchored" data-anchor-id="图形类型的选择按分析目的匹配"><span class="header-section-number">18.1.2</span> 图形类型的选择：按分析目的匹配</h3>
+<p><strong>最常见的错误</strong>：拿到数据先想”我要画什么图”，而不是先问”我想回答什么问题”。</p>
+<p>图形类型应由<strong>分析目的</strong>决定：</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>分析目的</th>
+<th>推荐图形</th>
+<th>避免</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>单变量分布</td>
+<td>直方图、KDE、箱线图、小提琴图</td>
+<td>折线图</td>
+</tr>
+<tr class="even">
+<td>两变量关系</td>
+<td>散点图（+回归线）</td>
+<td>折线图（除非是时序）</td>
+</tr>
+<tr class="odd">
+<td>分组比较</td>
+<td>分组箱线图、分组柱状图</td>
+<td>饼图</td>
+</tr>
+<tr class="even">
+<td>时间趋势</td>
+<td>折线图</td>
+<td>柱状图（时间点多时）</td>
+</tr>
+<tr class="odd">
+<td>构成比例</td>
+<td>堆叠柱状图、面积图</td>
+<td>饼图（类别&gt;4时）</td>
+</tr>
+<tr class="even">
+<td>相关结构</td>
+<td>热力图（相关矩阵）、散点图矩阵</td>
+<td>多条折线堆叠</td>
+</tr>
+</tbody>
+</table>
+<p><strong>关于饼图</strong>：饼图在经济/金融研究中几乎没有好的使用场景。人眼对角度的判断远不如对长度的判断准确，当类别超过 3–4 个时，读者根本无法比较各扇形的大小。绝大多数饼图都可以用<strong>横向柱状图</strong>替代，且信息传递更清晰。</p>
+<p><strong>关于 3D 图形</strong>：3D 效果几乎从不增加信息量，反而会造成视觉扭曲——靠近观察者的柱体看起来更高，远处的更低，读者无法准确读取数值。永远不要用 3D 柱状图或 3D 饼图。</p>
+<p><strong>金融场景举例</strong></p>
+<ul>
+<li>想展示沪深 300 过去 10 年的走势 → <strong>折线图</strong>（时间序列）</li>
+<li>想比较不同行业股票的收益率分布 → <strong>分组箱线图或小提琴图</strong></li>
+<li>想看多个资产之间的相关性 → <strong>热力图</strong></li>
+<li>想看某只股票日收益率是否接近正态分布 → <strong>直方图 + KDE</strong></li>
+</ul>
+<blockquote class="blockquote">
+<p>参考：<a href="https://www.data-to-viz.com/#explore">data-to-viz.com</a> 提供了最全面的”数据类型 → 图形类型”决策树，遇到不确定的情况可以查阅。</p>
+</blockquote>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+示例提示词
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>我想比较 A 股市场中金融、消费、科技三个行业在 2020–2024 年间 月收益率的分布差异。请推荐最合适的图形类型，并说明理由。 然后用 Python (seaborn) 帮我画出来，使用模拟数据作为示例。</p>
+<p>要求：去掉上边框和右边框，添加合适的中文标题和坐标轴标签。</p>
+</div>
+</div>
+<hr>
+</section>
+<section id="数据墨水比简洁即美" class="level3" data-number="18.1.3">
+<h3 data-number="18.1.3" class="anchored" data-anchor-id="数据墨水比简洁即美"><span class="header-section-number">18.1.3</span> 数据墨水比：简洁即美</h3>
+<p>爱德华·塔夫特（Edward Tufte）在《<a href="https://www.edwardtufte.com/tufte/books_vdqi">定量信息的视觉呈现</a>》中提出了 <strong>数据墨水比（Data-Ink Ratio）</strong>的概念：</p>
+<p><span class="math display">\[
+\text{数据墨水比} = \frac{\text{用于呈现数据的墨水量}}{\text{图形使用的全部墨水量}}
+\]</span></p>
+<p><strong>核心思想</strong>：去除一切不传递数据信息的视觉元素，让每一滴”墨水”都在做有效的工作。</p>
+<p><strong>常见的冗余元素</strong>（应当删除或弱化）</p>
+<ul>
+<li><strong>3D 效果</strong>：没有第三个数据维度，却用了三维空间</li>
+<li><strong>渐变填充和阴影</strong>：视觉噪音，不传递任何数据信息</li>
+<li><strong>过密的网格线</strong>：轻淡的辅助线即可，深色粗网格线干扰数据</li>
+<li><strong>多余的边框</strong>：通常只需要左轴和下轴，去掉上边框和右边框</li>
+<li><strong>重复的数据标签</strong>：坐标轴已经提供了数值信息，柱体上再标一遍是冗余</li>
+<li><strong>默认图例框</strong>：能直接在图上标注的，不需要图例</li>
+</ul>
+<p><strong>Before / After 对比</strong></p>
+<p>原始图（低数据墨水比）往往具有：蓝色背景、粗黑边框、深色网格线、3D 效果、渐变色填充。</p>
+<p>改进后的图：白色背景、去掉上/右边框、浅灰色辅助线（或无网格线）、单色填充、直接标注。</p>
+<p>在 Python 中，<code>sns.despine()</code> 一行代码就能去掉上边框和右边框，是提升数据墨水比最简单的操作。</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+示例提示词
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<pre><code>请帮我画一个简洁风格的柱状图，展示 5 个行业的平均市盈率（PE）。
+要求遵循高数据墨水比原则：
+
+- 白色背景，去掉上边框和右边框
+- 使用浅灰色水平辅助线（而非网格线）
+- 柱体使用单一颜色（不要渐变），按数值从大到小排序
+- 柱体顶部直接标注数值，不需要纵轴刻度
+- 使用 matplotlib，图形尺寸 (8, 5)</code></pre>
+</div>
+</div>
+<hr>
+</section>
+<section id="颜色功能配色方案与色盲友好" class="level3" data-number="18.1.4">
+<h3 data-number="18.1.4" class="anchored" data-anchor-id="颜色功能配色方案与色盲友好"><span class="header-section-number">18.1.4</span> 颜色：功能、配色方案与色盲友好</h3>
+<p>颜色是可视化中最容易被滥用的元素。使用颜色之前，先问：<strong>这个颜色在传递什么信息？</strong></p>
+<p><strong>颜色的三种功能</strong></p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 16%">
+<col style="width: 16%">
+<col style="width: 27%">
+<col style="width: 38%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>功能</th>
+<th>含义</th>
+<th>示例场景</th>
+<th>推荐配色类型</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>分类</strong></td>
+<td>区分不同类别</td>
+<td>不同行业、不同资产</td>
+<td>定性调色板（Qualitative）</td>
+</tr>
+<tr class="even">
+<td><strong>顺序</strong></td>
+<td>表示数值大小</td>
+<td>相关系数热力图、地图密度</td>
+<td>顺序调色板（Sequential）</td>
+</tr>
+<tr class="odd">
+<td><strong>强调</strong></td>
+<td>突出特定数据点</td>
+<td>高亮某个离群点、某个时期</td>
+<td>单色 + 强调色</td>
+</tr>
+</tbody>
+</table>
+<p><strong>实用配色建议</strong></p>
+<ul>
+<li><strong>定性</strong>：<code>Set2</code>、<code>tab10</code>（seaborn/matplotlib 内置），颜色区分度高且美观</li>
+<li><strong>顺序</strong>：<code>viridis</code>、<code>Blues</code>——避免使用彩虹色（<code>jet</code>），彩虹色在灰度打印时完全失效</li>
+<li><strong>发散</strong>：<code>RdBu</code>、<code>coolwarm</code>——适合有正负含义的数据（如超额收益、温度异常）</li>
+</ul>
+<p><strong>色盲友好</strong></p>
+<p>约 8% 的男性存在红绿色盲，无法区分红色和绿色。检验方法：将图形转为灰度，如果仍然可读，色盲友好度较高。Seaborn 的 <code>colorblind</code> 调色板是专门为色觉缺陷设计的，在学术论文中推荐使用。</p>
+<p><strong>金融惯例的特殊性</strong></p>
+<p>中国 A 股市场使用<strong>红涨绿跌</strong>的惯例，与国际市场（红跌绿涨）相反。在面向国际读者的论文中，应使用国际惯例或用文字说明，避免误读。</p>
+<p><strong>黑白打印兼容性</strong></p>
+<p>学术期刊论文在印刷时往往是黑白的。如果图形只靠颜色区分类别，打印后将完全无法区分。解决方案：同时使用颜色 + 线型/标记形状（如实线、虚线、点线）进行双重编码。</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+示例提示词
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<div class="sourceCode" id="cb3"><pre class="sourceCode md code-with-copy"><code class="sourceCode markdown"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>我想画一张折线图，比较沪深300、中证500、创业板指三个指数</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>在 2019–2024 年的累计收益率走势。</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>要求：</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>使用色盲友好的配色（seaborn colorblind palette）</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>同时用不同线型区分三条线（实线、虚线、点划线），确保黑白打印可读</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>图例直接标注在每条线的末端，而非放在图例框中</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>中文标题和标签，去掉上/右边框</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+<hr>
+</section>
+<section id="文字元素标题标签标注与图例" class="level3" data-number="18.1.5">
+<h3 data-number="18.1.5" class="anchored" data-anchor-id="文字元素标题标签标注与图例"><span class="header-section-number">18.1.5</span> 文字元素：标题、标签、标注与图例</h3>
+<p>文字元素是图形的”说明书”，设计得好能让图形自己说话，设计得差会让读者在图形和说明文字之间来回跳转。</p>
+<section id="标题描述性-vs-结论性" class="level4" data-number="18.1.5.1">
+<h4 data-number="18.1.5.1" class="anchored" data-anchor-id="标题描述性-vs-结论性"><span class="header-section-number">18.1.5.1</span> 标题：描述性 vs 结论性</h4>
+<p><strong>描述性标题</strong>：告诉读者图里有什么数据。 &gt; “2010–2023 年中国 GDP 增速”</p>
+<p><strong>结论性标题</strong>：告诉读者图里的核心发现。 &gt; “金融危机后 GDP 增速系统性低于危机前水平”</p>
+<p>对于学术论文和研究报告，<strong>结论性标题</strong>通常更有力——它让读者在看图之前就知道该关注什么。探索性分析阶段用描述性标题即可。</p>
+</section>
+<section id="坐标轴标签单位不能省" class="level4" data-number="18.1.5.2">
+<h4 data-number="18.1.5.2" class="anchored" data-anchor-id="坐标轴标签单位不能省"><span class="header-section-number">18.1.5.2</span> 坐标轴标签：单位不能省</h4>
+<p>坐标轴标签必须包含<strong>变量名</strong>和<strong>单位</strong>，缺一不可。</p>
+<ul>
+<li>❌ <code>"GDP"</code></li>
+<li>✅ <code>"GDP（万亿元，2015年不变价）"</code></li>
+<li>❌ <code>"Return"</code></li>
+<li>✅ <code>"日收益率（%）"</code></li>
+</ul>
+</section>
+<section id="标注直接标在图上" class="level4" data-number="18.1.5.3">
+<h4 data-number="18.1.5.3" class="anchored" data-anchor-id="标注直接标在图上"><span class="header-section-number">18.1.5.3</span> 标注：直接标在图上</h4>
+<p>能直接在图上标注的信息，不要放进图例。直接标注（direct labeling）有两个优点：读者不需要在图形和图例之间来回对应；标注的位置本身就传递信息（靠近数据点）。</p>
+<p>适合直接标注的情形：折线图末端直接写系列名称；散点图中标注关键数据点的名称；柱状图柱体顶端标注数值。</p>
+</section>
+<section id="字体与字号的层级感" class="level4" data-number="18.1.5.4">
+<h4 data-number="18.1.5.4" class="anchored" data-anchor-id="字体与字号的层级感"><span class="header-section-number">18.1.5.4</span> 字体与字号的层级感</h4>
+<p>一张图中，文字元素应有清晰的视觉层级：</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>元素</th>
+<th>建议字号</th>
+<th>建议样式</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>图形标题</td>
+<td>13–14pt</td>
+<td>加粗</td>
+</tr>
+<tr class="even">
+<td>坐标轴标签</td>
+<td>11–12pt</td>
+<td>正常</td>
+</tr>
+<tr class="odd">
+<td>刻度标签</td>
+<td>9–10pt</td>
+<td>正常</td>
+</tr>
+<tr class="even">
+<td>图内标注</td>
+<td>9–10pt</td>
+<td>正常或斜体</td>
+</tr>
+<tr class="odd">
+<td>图注（caption）</td>
+<td>9–10pt</td>
+<td>正常</td>
+</tr>
+</tbody>
+</table>
+<p>字号差异制造视觉层次感，让读者的视线自然地从标题→坐标轴→数据→标注依次移动。</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+示例提示词
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<pre><code>请帮我改进一张折线图的文字元素：
+
+- 将标题改为结论性标题："新冠疫情冲击后，A股波动率持续高于疫情前水平"
+- 纵轴标签改为"日收益率波动率（%，20日滚动标准差）"
+- 去掉图例框，在每条线的右端直接标注名称
+- 标题字号 13，加粗；坐标轴标签字号 11；刻度标签字号 9
+- 在 2020 年 2 月处添加一条垂直虚线，标注文字"新冠疫情冲击"</code></pre>
+</div>
+</div>
+<hr>
+</section>
+</section>
+<section id="坐标轴与可比性" class="level3" data-number="18.1.6">
+<h3 data-number="18.1.6" class="anchored" data-anchor-id="坐标轴与可比性"><span class="header-section-number">18.1.6</span> 坐标轴与可比性</h3>
+<p>坐标轴的设置直接决定读者对数据的感知，是最容易造成误导的技术细节。</p>
+<section id="y-轴是否从零开始" class="level4" data-number="18.1.6.1">
+<h4 data-number="18.1.6.1" class="anchored" data-anchor-id="y-轴是否从零开始"><span class="header-section-number">18.1.6.1</span> Y 轴是否从零开始</h4>
+<p><strong>柱状图必须从零开始</strong>。柱体的高度代表数值的绝对大小，截断 Y 轴会严重夸大差异。例如，两个分别为 520 和 500 的数值，Y 轴从 490 开始时看起来差异巨大，实际上只有 4% 的差距。</p>
+<p><strong>折线图不必须从零</strong>。折线图关注的是趋势和变化，适当截断 Y 轴可以让趋势更清晰。但应该在图中说明 Y 轴范围，让读者自行判断变化幅度。</p>
+</section>
+<section id="对数坐标轴的适用场景" class="level4" data-number="18.1.6.2">
+<h4 data-number="18.1.6.2" class="anchored" data-anchor-id="对数坐标轴的适用场景"><span class="header-section-number">18.1.6.2</span> 对数坐标轴的适用场景</h4>
+<p>当数据跨越多个数量级，或关注的是<strong>百分比变化</strong>（而非绝对变化）时，对数坐标轴更合适：</p>
+<ul>
+<li><strong>股价长期走势</strong>：线性坐标轴下，早期的波动几乎看不见；对数坐标轴下，相同的百分比涨跌在任何时期都占相同的视觉空间</li>
+<li><strong>跨量级比较</strong>：同时展示大盘股和小盘股的市值</li>
+<li><strong>经济增长率比较</strong>：不同基数的国家之间</li>
+</ul>
+<p>对数坐标轴的<strong>注意事项</strong>：数值不能为零或负数；需要在图中明确标注”对数坐标”，避免读者误读。</p>
+</section>
+<section id="多图并排时的一致性" class="level4" data-number="18.1.6.3">
+<h4 data-number="18.1.6.3" class="anchored" data-anchor-id="多图并排时的一致性"><span class="header-section-number">18.1.6.3</span> 多图并排时的一致性</h4>
+<p>当多张图并排对比时（如不同时期、不同国家），<strong>坐标轴范围必须一致</strong>。否则，即使数值相近，图形呈现出来的视觉差异也会截然不同，读者会被误导。</p>
+</section>
+<section id="双-y-轴的规范使用" class="level4" data-number="18.1.6.4">
+<h4 data-number="18.1.6.4" class="anchored" data-anchor-id="双-y-轴的规范使用"><span class="header-section-number">18.1.6.4</span> 双 Y 轴的规范使用</h4>
+<p>双 Y 轴（twinx）是一个有争议的设计——它让两个量级不同的变量共享同一张图，但读者很难判断两条线的相对变化是否真实。</p>
+<p><strong>合理使用场景</strong>：两个变量在概念上密切相关，且读者对两者的单独走势都感兴趣（如股价与成交量）。</p>
+<p><strong>应避免的场景</strong>：用双 Y 轴制造虚假的视觉相关性——通过调整其中一个 Y 轴的范围，可以让两条任意的时间序列看起来高度同步。</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+示例提示词
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<pre><code>我想画两张并排的折线图，分别展示 A 股和港股
+在 2020–2024 年的年化波动率，用于直接对比。
+要求：
+
+- 两张子图的 Y 轴范围必须一致（手动设置为相同的 ylim）
+- 在两张图的标题下方各加一行副标题，注明数据来源和计算方式
+- 图形尺寸 (12, 5)，左右子图间距适当</code></pre>
+</div>
+</div>
+<hr>
+</section>
+</section>
+<section id="诚实性财经媒体中的常见误导陷阱" class="level3" data-number="18.1.7">
+<h3 data-number="18.1.7" class="anchored" data-anchor-id="诚实性财经媒体中的常见误导陷阱"><span class="header-section-number">18.1.7</span> 诚实性：财经媒体中的常见误导陷阱</h3>
+<p>数据可视化的误导，有时是无意的（设计不规范），有时是刻意的（为了强化某个结论）。识别误导图形是数据素养的重要组成部分。</p>
+<p><strong>① 截断 Y 轴夸大差异</strong></p>
+<p>财经媒体和上市公司公告中最常见。某公司净利润从 100 亿增长到 103 亿，Y 轴从 98 亿开始，柱体看起来增长了 150%，实际只有 3%。判断方法：看 Y 轴的起点，问自己”如果 Y 轴从零开始，这个差异还显著吗？”</p>
+<p><strong>② 选择性时间窗口</strong></p>
+<p>选择对自己有利的起始和结束时间点。某产品宣称”过去三年累计收益 60%“，但恰好从市场底部算起。判断方法：拉长时间窗口，或选择多个不同起始点重新计算。</p>
+<p><strong>③ 面积/体积误用</strong></p>
+<p>用圆的面积代表数值大小时，有些图用<strong>半径</strong>而非<strong>面积</strong>对应数值——导致大值被严重夸大（面积 = π r²，半径翻倍则面积变为 4 倍）。</p>
+<p><strong>④ 用双 Y 轴制造虚假相关性</strong></p>
+<p>通过分别调整两个 Y 轴的范围，可以让任意两条时间序列看起来高度相关或完全无关。</p>
+<p><strong>⑤ 忽略基数的百分比变化</strong></p>
+<p>“同比增长 100%”可能是从 1 单位增长到 2 单位。绝对值和相对值应该同时呈现。</p>
+<blockquote class="blockquote">
+<p>📌 <strong>建议</strong>：在阅读财经报告、研究报告时，养成习惯——先看坐标轴范围，再看数据本身。</p>
+</blockquote>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+示例提示词
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<pre><code>请生成两张对比图，演示「截断 Y 轴」的误导效果：
+
+- 数据：5 个季度的营收数据，数值依次为 [100, 101, 102, 103, 104]（单位：亿元）
+- 左图：Y 轴从 0 开始（诚实版本）
+- 右图：Y 轴从 99 开始（误导版本）
+- 两张图使用相同的标题、颜色和样式，只有 Y 轴范围不同
+- 在图形下方添加说明文字，指出两图的视觉差异</code></pre>
+</div>
+</div>
+<hr>
+</section>
+<section id="叙事性让图说话" class="level3" data-number="18.1.8">
+<h3 data-number="18.1.8" class="anchored" data-anchor-id="叙事性让图说话"><span class="header-section-number">18.1.8</span> 叙事性：让图说话</h3>
+<p>一张好的图形应该能独立传递一个清晰的信息，不依赖大段文字解释。这需要<strong>叙事设计</strong>：在画图之前，先想清楚”这张图的核心结论是什么”，然后围绕这个结论做所有设计决策。</p>
+<section id="一张图一个核心结论" class="level4" data-number="18.1.8.1">
+<h4 data-number="18.1.8.1" class="anchored" data-anchor-id="一张图一个核心结论"><span class="header-section-number">18.1.8.1</span> 一张图，一个核心结论</h4>
+<p>如果一张图试图同时说明三件事，读者通常什么都记不住。把复杂信息拆成多张图，每张聚焦一个核心发现。</p>
+<p><strong>如何围绕核心结论设计图形</strong></p>
+<ul>
+<li><strong>标题</strong>：直接写出结论</li>
+<li><strong>颜色</strong>：用强调色突出支持结论的数据，其余数据用灰色淡化</li>
+<li><strong>标注</strong>：在关键数据点、关键时间节点直接标注文字说明</li>
+<li><strong>坐标轴范围</strong>：让最重要的变化在视觉上占据足够空间</li>
+</ul>
+</section>
+<section id="图形在报告论文中的位置逻辑" class="level4" data-number="18.1.8.2">
+<h4 data-number="18.1.8.2" class="anchored" data-anchor-id="图形在报告论文中的位置逻辑"><span class="header-section-number">18.1.8.2</span> 图形在报告/论文中的位置逻辑</h4>
+<ul>
+<li>图形应紧跟相关文字，而非集中放在文末</li>
+<li>正文中要引用图形编号，并用一两句话说明读者应该从图中注意什么</li>
+<li>图注（caption）应该让图形能独立被理解，包含数据来源、样本范围、必要的计算说明</li>
+</ul>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+示例提示词
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<div class="sourceCode" id="cb7"><pre class="sourceCode md code-with-copy"><code class="sourceCode markdown"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>我想用一张图说明这个结论：</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>"2015年股灾期间，小盘股的跌幅显著大于大盘股"</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>请帮我设计这张图：</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>数据：用模拟数据，两条时间序列分别代表大盘股指数和小盘股指数，</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>  在某个时间段内小盘股跌幅更大</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>小盘股用深红色实线，大盘股用浅灰色实线</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>在跌幅最大的时间点标注两者的跌幅数值</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>在股灾期间（约 3 个月）加灰色背景色块</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>结论性标题："股灾期间小盘股跌幅约为大盘股的 2 倍"</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>图例直接标在线条末端</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+<hr>
+</section>
+</section>
+<section id="小结" class="level3" data-number="18.1.9">
+<h3 data-number="18.1.9" class="anchored" data-anchor-id="小结"><span class="header-section-number">18.1.9</span> 小结</h3>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 21%">
+<col style="width: 35%">
+<col style="width: 42%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>原则</th>
+<th>核心问题</th>
+<th>一句话记忆</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>图 vs 表</td>
+<td>读者需要读数还是看模式？</td>
+<td>查数用表，看趋势用图</td>
+</tr>
+<tr class="even">
+<td>图形选择</td>
+<td>我想回答什么问题？</td>
+<td>目的决定图形，而非数据决定图形</td>
+</tr>
+<tr class="odd">
+<td>数据墨水比</td>
+<td>这个元素在传递数据信息吗？</td>
+<td>删掉一切不做贡献的元素</td>
+</tr>
+<tr class="even">
+<td>颜色</td>
+<td>这个颜色在说什么？</td>
+<td>颜色有功能，不是装饰</td>
+</tr>
+<tr class="odd">
+<td>文字元素</td>
+<td>读者能独立理解这张图吗？</td>
+<td>结论性标题 + 直接标注</td>
+</tr>
+<tr class="even">
+<td>坐标轴</td>
+<td>视觉比例是否反映真实比例？</td>
+<td>柱图从零，折线看趋势，多图轴一致</td>
+</tr>
+<tr class="odd">
+<td>诚实性</td>
+<td>有没有视觉上夸大或缩小差异？</td>
+<td>先看坐标轴，再看数据</td>
+</tr>
+<tr class="even">
+<td>叙事性</td>
+<td>这张图的核心结论是什么？</td>
+<td>一张图，一个结论</td>
+</tr>
+</tbody>
+</table>
+<hr>
+</section>
+<section id="延伸阅读" class="level3" data-number="18.1.10">
+<h3 data-number="18.1.10" class="anchored" data-anchor-id="延伸阅读"><span class="header-section-number">18.1.10</span> 延伸阅读</h3>
+<ul>
+<li>Schwabish, J. A. (2014). An Economist’s Guide to Visualizing Data. <em>Journal of Economic Perspectives</em>, 28(1), 209–234. <a href="https://www.aeaweb.org/articles?id=10.1257/jep.28.1.209">Link</a>, <a href="https://www.aeaweb.org/articles/pdf/10.1257/jep.28.1.209">PDF</a></li>
+<li>Tufte, E. R. (2001). <em>The Visual Display of Quantitative Information</em>. <a href="https://www.edwardtufte.com/tufte/books_vdqi">Link</a>.</li>
+<li>张蛟蛟 (2025). 从”能看”到”好懂”：科研图表设计的原则和建议. 连享会. <a href="https://www.lianxh.cn/details/1572.html">Link</a></li>
+<li><a href="https://www.data-to-viz.com/#explore">data-to-viz.com</a> — 图形类型决策树</li>
+<li><a href="https://colorbrewer2.org">ColorBrewer 2.0</a> — 配色方案工具</li>
+</ul>
+<hr>
+</section>
+</section>
+<section id="双变量与多变量关系的可视化" class="level2" data-number="18.2">
+<h2 data-number="18.2" class="anchored" data-anchor-id="双变量与多变量关系的可视化"><span class="header-section-number">18.2</span> 双变量与多变量关系的可视化</h2>
+<blockquote class="blockquote">
+<p><strong>本节数据</strong>：使用 <code>codes_data_china.ipynb</code> 中的 <code>ret_wide</code>（五只股票日收益率宽表）</p>
+</blockquote>
+<section id="散点图与回归线" class="level3" data-number="18.2.1">
+<h3 data-number="18.2.1" class="anchored" data-anchor-id="散点图与回归线"><span class="header-section-number">18.2.1</span> 散点图与回归线</h3>
+<p>散点图是探索两个连续变量之间关系的最基本工具。单独的散点图只能”看到”数据点的分布，加上回归线后才能量化关系的方向和强度。</p>
+<p><strong>散点图的三个层次</strong>：</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>层次</th>
+<th>内容</th>
+<th>工具</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>基础</td>
+<td>散点 + OLS 回归线</td>
+<td><code>sns.regplot()</code></td>
+</tr>
+<tr class="even">
+<td>进阶</td>
+<td>散点 + 局部加权回归（LOWESS）</td>
+<td><code>sns.regplot(lowess=True)</code></td>
+</tr>
+<tr class="odd">
+<td>完整</td>
+<td>散点 + 回归线 + 边际分布</td>
+<td><code>sns.jointplot()</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>何时用 LOWESS 而非 OLS 直线？</strong> 当你不确定关系是否线性时，先用 LOWESS（局部加权散点平滑）探索，如果 LOWESS 曲线接近直线，再用 OLS；如果呈明显弯曲，说明存在非线性关系，直接用 OLS 会误导。</p>
+<p><strong>金融场景</strong>：个股收益率 vs 市场收益率（<span class="math inline">\(\beta\)</span> 系数的直觉来源）。</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+示例提示词
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<pre><code>我有两列数据：个股日收益率（y）和市场指数日收益率（x）。
+请帮我用 seaborn 画一张散点图：
+
+- 散点颜色用密度着色（越密集的区域颜色越深）
+- 叠加 OLS 回归线和 95% 置信带
+- 在图内标注回归方程和 R²
+- 添加 x=0 和 y=0 的参考线
+- 坐标轴单位为 %，标题说明这是 CAPM Beta 的直觉展示</code></pre>
+</div>
+</div>
+</section>
+<section id="相关矩阵热力图" class="level3" data-number="18.2.2">
+<h3 data-number="18.2.2" class="anchored" data-anchor-id="相关矩阵热力图"><span class="header-section-number">18.2.2</span> 相关矩阵热力图</h3>
+<p>当变量数量超过 2 个时，散点图矩阵变得拥挤，相关矩阵热力图是更紧凑的替代方案。</p>
+<p><strong>设计要点</strong>：</p>
+<ul>
+<li>使用<strong>发散型配色</strong>（如 <code>RdBu_r</code>）：正相关为红，负相关为蓝，零相关为白</li>
+<li>只显示<strong>下三角</strong>（上下三角对称，显示全部是冗余）</li>
+<li>在每个格子中<strong>直接标注相关系数数值</strong>，不要让读者猜</li>
+<li>将色阶固定为 <code>vmin=-1, vmax=1</code>，而非自适应——否则当所有相关系数都是正数时，最小的正相关会显示为蓝色，造成误读</li>
+</ul>
+<p><strong>金融场景</strong>：多资产组合构建时，低相关资产的识别是分散化的基础。</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+示例提示词
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<pre><code>我有 5 只股票的日收益率数据（DataFrame，列为股票名称）。
+请帮我画一张相关矩阵热力图：
+
+- 只显示下三角（上三角和对角线用白色遮盖）
+- 使用 RdBu_r 配色，vmin=-1, vmax=1
+- 每个格子内标注相关系数（保留 2 位小数）
+- 标题说明股票名称和时间范围，图形尺寸 (7, 6)</code></pre>
+</div>
+</div>
+</section>
+<section id="散点图矩阵pairs-plot" class="level3" data-number="18.2.3">
+<h3 data-number="18.2.3" class="anchored" data-anchor-id="散点图矩阵pairs-plot"><span class="header-section-number">18.2.3</span> 散点图矩阵（Pairs Plot）</h3>
+<p>散点图矩阵同时展示所有变量的两两关系：<strong>对角线</strong>显示每个变量的分布（直方图或 KDE），<strong>非对角线</strong>显示两两散点图。</p>
+<p>适用场景：变量数量在 3–7 个之间，需要同时探索分布和关系。变量过多时图形会过于拥挤，建议换用相关矩阵热力图。</p>
+<p><code>seaborn.pairplot()</code> 的关键参数：<code>hue</code> 按类别变量着色；<code>corner=True</code> 只显示下三角；<code>diag_kind='kde'</code> 对角线用 KDE 替代直方图。</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+示例提示词
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<div class="sourceCode" id="cb10"><pre class="sourceCode md code-with-copy"><code class="sourceCode markdown"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>我有 5 只股票的日收益率数据，请用 seaborn.pairplot 画散点图矩阵：</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>只显示下三角（corner=True）</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>对角线显示 KDE 曲线</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>非对角线的散点半透明（alpha=0.3），加 OLS 回归线</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>颜色使用 colorblind palette，图形整体尺寸约 (10, 10)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</section>
+<section id="综合案例多资产收益率的联动关系" class="level3" data-number="18.2.4">
+<h3 data-number="18.2.4" class="anchored" data-anchor-id="综合案例多资产收益率的联动关系"><span class="header-section-number">18.2.4</span> 综合案例：多资产收益率的联动关系</h3>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+示例提示词
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<div class="sourceCode" id="cb11"><pre class="sourceCode md code-with-copy"><code class="sourceCode markdown"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>使用 codes_data_china.ipynb 中的 ret_wide 数据（五只A股股票日收益率），</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>完成以下分析并用一张多子图展示：</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>左图：相关矩阵热力图（下三角，RdBu_r 配色）</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>右图：贵州茅台 vs 宁德时代的散点图（两者行业差异大），</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>  叠加 OLS 回归线，图内标注相关系数和 Beta 值</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>总标题："消费与新能源龙头股收益率相关性较低，适合组合配置"</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+<hr>
+</section>
+</section>
+<section id="时间序列的可视化" class="level2" data-number="18.3">
+<h2 data-number="18.3" class="anchored" data-anchor-id="时间序列的可视化"><span class="header-section-number">18.3</span> 时间序列的可视化</h2>
+<blockquote class="blockquote">
+<p><strong>本节数据</strong>：<code>index_close</code> / <code>index_norm</code>（四大指数）、<code>cpi_df</code> / <code>gdp_df</code>（宏观数据）</p>
+</blockquote>
+<p>时间序列是金融数据最常见的形态。除了基本的折线图，金融时序可视化有几个独特的设计元素。</p>
+<section id="折线图的规范画法" class="level3" data-number="18.3.1">
+<h3 data-number="18.3.1" class="anchored" data-anchor-id="折线图的规范画法"><span class="header-section-number">18.3.1</span> 折线图的规范画法</h3>
+<p>时序折线图的几个容易忽略的规范：</p>
+<ul>
+<li><strong>X 轴刻度</strong>：使用 <code>matplotlib.dates</code> 格式化，避免出现 <code>2020-01-01 00:00:00</code> 这样的冗余时间戳</li>
+<li><strong>多条线的区分</strong>：颜色 + 线型双重编码（参见颜色一节）</li>
+<li><strong>直接标注</strong>：将系列名称标在线条末端，而非放在图例框中</li>
+<li><strong>Y 轴起点</strong>：折线图不需要从零开始，但要在轴标签中注明数值含义</li>
+</ul>
+</section>
+<section id="事件标注政策时间线与危机区间" class="level3" data-number="18.3.2">
+<h3 data-number="18.3.2" class="anchored" data-anchor-id="事件标注政策时间线与危机区间"><span class="header-section-number">18.3.2</span> 事件标注：政策时间线与危机区间</h3>
+<p>金融时序图中，<strong>事件标注</strong>往往比数据本身更有叙事价值。</p>
+<p><strong>竖线 + 文字</strong>（<code>ax.axvline</code> + <code>ax.text</code>）：适合标注单一时间点，如政策发布日、上市日期。</p>
+<p><strong>背景色块</strong>（<code>ax.axvspan</code>）：适合标注持续一段时间的事件区间，如经济衰退期、疫情管控期。</p>
+<p>A 股常用事件节点：</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>事件</th>
+<th>时间</th>
+<th>标注建议</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>2015 年股灾</td>
+<td>2015-06 ~ 2015-09</td>
+<td>背景色块（红色，低透明度）</td>
+</tr>
+<tr class="even">
+<td>去杠杆</td>
+<td>2018-01 ~ 2018-12</td>
+<td>背景色块</td>
+</tr>
+<tr class="odd">
+<td>新冠冲击</td>
+<td>2020-01 ~ 2020-03</td>
+<td>背景色块</td>
+</tr>
+<tr class="even">
+<td>注册制改革</td>
+<td>2019-07-22</td>
+<td>竖线</td>
+</tr>
+<tr class="odd">
+<td>北交所开市</td>
+<td>2021-11-15</td>
+<td>竖线</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="对数坐标轴" class="level3" data-number="18.3.3">
+<h3 data-number="18.3.3" class="anchored" data-anchor-id="对数坐标轴"><span class="header-section-number">18.3.3</span> 对数坐标轴</h3>
+<p><strong>典型应用</strong>：展示沪深 300 自 2005 年以来的长期走势。线性坐标下，2007 年和 2015 年的牛市在早期几乎看不出波动；对数坐标下，早期的涨跌与近期的涨跌在视觉比例上保持一致。</p>
+</section>
+<section id="多资产对比与不确定性" class="level3" data-number="18.3.4">
+<h3 data-number="18.3.4" class="anchored" data-anchor-id="多资产对比与不确定性"><span class="header-section-number">18.3.4</span> 多资产对比与不确定性</h3>
+<p><strong>滚动统计</strong>：金融时序中经常需要展示滚动均值、滚动标准差（波动率）。<code>pandas</code> 的 <code>.rolling(window).mean()</code> 和 <code>.rolling(window).std()</code> 提供简洁的实现。</p>
+<p><strong>置信带</strong>：<code>ax.fill_between(x, y_lower, y_upper)</code> 绘制置信区间或预测区间的阴影带。</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+示例提示词
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<div class="sourceCode" id="cb12"><pre class="sourceCode md code-with-copy"><code class="sourceCode markdown"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>使用 index_norm 数据（四大指数归一化走势），画一张完整的时序对比图：</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>四条线，颜色+线型双重编码，线条末端直接标注指数名称</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>在以下时间节点加事件标注：</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>2015-06 ~ 2015-09：红色色块，标注"2015股灾"</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>2020-01 ~ 2020-03：灰色色块，标注"新冠冲击"</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>2018-01 ~ 2018-12：橙色色块，标注"去杠杆"</span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Y 轴用对数刻度（semilogy），标注"归一化指数（对数刻度，基期=100）"</span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>结论性标题："创业板指长期弹性最大，但经历了更剧烈的波动"</span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>图形尺寸 (12, 5)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</section>
+<section id="k-线图mplfinance" class="level3" data-number="18.3.5">
+<h3 data-number="18.3.5" class="anchored" data-anchor-id="k-线图mplfinance"><span class="header-section-number">18.3.5</span> K 线图（mplfinance）</h3>
+<p>K 线图（蜡烛图）是股票技术分析的标准图形，由<strong>开盘价、收盘价、最高价、最低价</strong>四个数值构成。</p>
+<p><strong>K 线的基本规则</strong>（中国 A 股惯例）：</p>
+<ul>
+<li>收盘价 &gt; 开盘价 → <strong>红色实心</strong>柱（阳线，上涨）</li>
+<li>收盘价 &lt; 开盘价 → <strong>蓝色空心</strong>柱（阴线，下跌）</li>
+<li>上下影线代表当日最高价和最低价</li>
+</ul>
+<p><strong><code>mplfinance</code> 常用叠加指标</strong>：移动均线（<code>make_addplot()</code>）、成交量（<code>volume=True</code>）、布林带（手动叠加）。</p>
+<blockquote class="blockquote">
+<p>⚠️ <strong>注意</strong>：<code>mplfinance</code> 要求 DataFrame 的索引必须是 <code>DatetimeIndex</code>，列名必须包含 <code>Open</code>、<code>High</code>、<code>Low</code>、<code>Close</code>（首字母大写），否则会报错。</p>
+</blockquote>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+示例提示词
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<div class="sourceCode" id="cb13"><pre class="sourceCode md code-with-copy"><code class="sourceCode markdown"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>使用 kline_df 数据（贵州茅台日K线，含 open/high/low/close/volume），</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>用 mplfinance 画一张专业K线图：</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>取最近 60 个交易日</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>颜色：红涨（#d7191c）蓝跌（#2166ac），符合A股惯例</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>叠加 MA20（橙色实线）和 MA60（蓝色虚线）</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>下方显示成交量柱状图，白色背景，去掉多余边框</span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>图形标题包含股票名称和时间范围</span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>注意：mplfinance 需要列名为 Open/High/Low/Close/Volume（首字母大写）</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+<hr>
+</section>
+</section>
+<section id="回归结果的可视化" class="level2" data-number="18.4">
+<h2 data-number="18.4" class="anchored" data-anchor-id="回归结果的可视化"><span class="header-section-number">18.4</span> 回归结果的可视化</h2>
+<blockquote class="blockquote">
+<p><strong>衔接说明</strong>：本节是可视化与计量分析的接口。本章只讲”怎么画”，回归本身的理论在后续计量章节中展开。</p>
+</blockquote>
+<section id="系数图coefficient-plot" class="level3" data-number="18.4.1">
+<h3 data-number="18.4.1" class="anchored" data-anchor-id="系数图coefficient-plot"><span class="header-section-number">18.4.1</span> 系数图（Coefficient Plot）</h3>
+<p>当需要比较多个模型的同一系数时（如加入不同控制变量后系数的稳健性），可以将多组系数并排绘制：每个变量对应一行，不同模型用不同颜色/形状的点表示。</p>
+<p>这种图在实证论文中被称为<strong>稳健性检验图</strong>，比在文中写”系数在加入控制变量后基本不变”更直观。</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+示例提示词
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<pre><code>我有三个 OLS 回归模型，解释变量相同但控制变量不同（模型1无控制变量，
+模型2加入行业固定效应，模型3加入时间和行业双固定效应）。
+请帮我画一张多模型系数对比图：
+
+- 纵轴为变量名，每个变量画 3 个点（对应三个模型）
+- 三个模型用不同颜色和形状区分（圆、方、三角）
+- 每个点配 95% 置信区间误差棒，x=0 处画垂直虚线
+- 图例说明三个模型的区别，图形尺寸 (8, 6)，使用模拟数据演示</code></pre>
+</div>
+</div>
+</section>
+<section id="残差诊断图" class="level3" data-number="18.4.2">
+<h3 data-number="18.4.2" class="anchored" data-anchor-id="残差诊断图"><span class="header-section-number">18.4.2</span> 残差诊断图</h3>
+<p>OLS 回归有四个核心假设，每个假设对应一种诊断图：</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>假设</th>
+<th>诊断图</th>
+<th>理想状态</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>线性性</td>
+<td>残差 vs 拟合值图</td>
+<td>散点随机分布在 y=0 两侧，无系统性弯曲</td>
+</tr>
+<tr class="even">
+<td>正态性</td>
+<td>残差 QQ 图</td>
+<td>散点落在对角参考线上</td>
+</tr>
+<tr class="odd">
+<td>同方差性</td>
+<td>标准化残差 vs 拟合值</td>
+<td>散点的垂直扩散范围一致，无漏斗形</td>
+</tr>
+<tr class="even">
+<td>无强影响点</td>
+<td>Cook’s 距离图</td>
+<td>无超过阈值（通常 4/n）的点</td>
+</tr>
+</tbody>
+</table>
+<p>这四张图通常<strong>2×2 排列</strong>，构成”标准残差诊断面板”。R 语言的 <code>plot(lm_model)</code> 直接输出这四张图；Python 中需要手动实现，但逻辑完全相同。</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+示例提示词
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<pre><code>我用 statsmodels OLS 跑了一个回归，结果存储在变量 model_result 中。
+请帮我画标准的 2×2 残差诊断面板：
+
+- 左上：残差 vs 拟合值（散点 + y=0 参考线 + LOWESS 平滑线）
+- 右上：残差 QQ 图（散点 + 参考线）
+- 左下：标准化残差的平方根 vs 拟合值（检验同方差）
+- 右下：Cook's 距离柱状图（标出超过 4/n 阈值的点）
+- 每张子图有结论性标题，说明该图检验什么假设
+- 使用模拟数据演示（N=200，有轻微异方差）</code></pre>
+</div>
+</div>
+</section>
+<section id="边际效应图与预测区间" class="level3" data-number="18.4.3">
+<h3 data-number="18.4.3" class="anchored" data-anchor-id="边际效应图与预测区间"><span class="header-section-number">18.4.3</span> 边际效应图与预测区间</h3>
+<p>回归系数是线性模型的”全局”斜率，但在非线性模型（Logit、Probit、含交互项的 OLS）中，<strong>边际效应</strong>随其他变量的取值而变化，必须用图形展示。</p>
+<ul>
+<li><strong>含交互项的 OLS</strong>：<span class="math inline">\(y = \beta_0 + \beta_1 x_1 + \beta_2 x_2 + \beta_3 x_1 x_2\)</span>，<span class="math inline">\(x_1\)</span> 对 <span class="math inline">\(y\)</span> 的边际效应为 <span class="math inline">\(\beta_1 + \beta_3 x_2\)</span>，随 <span class="math inline">\(x_2\)</span> 变化</li>
+<li><strong>Logit/Probit</strong>：边际效应在概率的中间值处最大，在两端趋近于零</li>
+</ul>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+示例提示词
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<pre><code>我有一个含交互项的 OLS 回归：y = β0 + β1*x1 + β2*x2 + β3*x1*x2 + ε
+请帮我画一张边际效应图，展示 x1 对 y 的边际效应如何随 x2 变化：
+
+- 横轴为 x2 的取值范围（从 p5 到 p95 分位数）
+- 纵轴为 x1 的边际效应（β1 + β3*x2），叠加 95% 置信带
+- 在 x2 均值处标注一个点，注明边际效应数值
+- y=0 处加参考线（区分正/负边际效应区间）
+- 使用模拟数据，N=500，seed=42</code></pre>
+</div>
+</div>
+<hr>
+</section>
+</section>
+<section id="完整案例capm-beta-的可视化估计" class="level2" data-number="18.5">
+<h2 data-number="18.5" class="anchored" data-anchor-id="完整案例capm-beta-的可视化估计"><span class="header-section-number">18.5</span> 完整案例：CAPM Beta 的可视化估计</h2>
+<p><strong>模型</strong>：<span class="math inline">\(r_i - r_f = \alpha + \beta (r_m - r_f) + \varepsilon\)</span></p>
+<p>用个股超额收益率对市场超额收益率回归，<span class="math inline">\(\beta\)</span> 衡量系统性风险。可视化流程：散点图（个股 vs 市场超额收益率）→ OLS 回归线 + 置信带 → 图内标注 <span class="math inline">\(\hat{\alpha}\)</span>、<span class="math inline">\(\hat{\beta}\)</span>、<span class="math inline">\(R^2\)</span> → 残差 QQ 图（检验正态性）。</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+示例提示词
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<pre><code>使用 ret_wide 数据中的「宁德时代」和「沪深300指数」日收益率，
+完成 CAPM 回归的完整可视化：
+
+步骤1：画散点图
+- 横轴：沪深300日收益率（市场收益率）
+- 纵轴：宁德时代日收益率
+- 散点半透明（alpha=0.3），使用密度着色（颜色越深表示数据点越密集）
+
+步骤2：叠加回归结果
+- 用 statsmodels OLS 估计 Alpha 和 Beta
+- 在图上绘制回归线 + 95% 置信带（fill_between）
+- 在图内右上角标注：Alpha=xx%, Beta=xx, R²=xx%（含显著性星号）
+
+步骤3：右侧子图画残差 QQ 图
+- 验证残差正态性，标注 Jarque-Bera 检验的 p 值
+
+整体布局 1 行 2 列，图形尺寸 (12, 5)
+结论性总标题："宁德时代 Beta 显著大于1，系统性风险高于市场"</code></pre>
+</div>
+</div>
+<hr>
+</section>
+<section id="图形导出与报告整合" class="level2" data-number="18.6">
+<h2 data-number="18.6" class="anchored" data-anchor-id="图形导出与报告整合"><span class="header-section-number">18.6</span> 图形导出与报告整合</h2>
+<section id="格式与分辨率" class="level3" data-number="18.6.1">
+<h3 data-number="18.6.1" class="anchored" data-anchor-id="格式与分辨率"><span class="header-section-number">18.6.1</span> 格式与分辨率</h3>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>用途</th>
+<th>格式</th>
+<th>分辨率</th>
+<th>代码</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>PPT / Word 嵌入</td>
+<td>PNG</td>
+<td>150–200 dpi</td>
+<td><code>dpi=150</code></td>
+</tr>
+<tr class="even">
+<td>论文投稿</td>
+<td>PDF 或 EPS</td>
+<td>矢量（无损）</td>
+<td><code>format='pdf'</code></td>
+</tr>
+<tr class="odd">
+<td>网页 / 邮件</td>
+<td>PNG</td>
+<td>96–120 dpi</td>
+<td><code>dpi=96</code></td>
+</tr>
+<tr class="even">
+<td>海报</td>
+<td>PNG</td>
+<td>300 dpi</td>
+<td><code>dpi=300</code></td>
+</tr>
+</tbody>
+</table>
+<p>PDF 是论文投稿的首选：矢量格式，无论放大多少倍都不模糊；文件体积也通常小于高分辨率 PNG。</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>fig.savefig(<span class="st">'fig.pdf'</span>, bbox_inches<span class="op">=</span><span class="st">'tight'</span>, facecolor<span class="op">=</span><span class="st">'white'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<blockquote class="blockquote">
+<p>📌 <code>bbox_inches='tight'</code> 是必须加的参数，否则图形边缘容易被裁切。<code>facecolor='white'</code> 防止透明背景在某些 PDF 阅读器中显示为黑色。</p>
+</blockquote>
+</section>
+<section id="图注的写法规范" class="level3" data-number="18.6.2">
+<h3 data-number="18.6.2" class="anchored" data-anchor-id="图注的写法规范"><span class="header-section-number">18.6.2</span> 图注的写法规范</h3>
+<p>学术论文中，<strong>图注（Figure Caption）</strong>必须让图形能独立于正文被理解。规范写法包含：图形编号、标题、数据说明（样本范围、时间区间、数据来源）、变量定义、统计显著性标记说明。</p>
+<p><strong>示例</strong>： &gt; <strong>图 3</strong> 五只 A 股股票日收益率的分布比较（2020–2024 年）。箱体上下边缘分别为 25% 和 75% 分位数，中线为中位数，须为 1.5 倍 IQR 范围，超出范围的点为离群值。收益率为前复权日对数收益率（%）。数据来源：akshare，原始数据来自上交所和深交所。</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+示例提示词
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<div class="sourceCode" id="cb19"><pre class="sourceCode md code-with-copy"><code class="sourceCode markdown"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>我完成了一张图形（多股票收益率分布的分组箱线图），</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>请帮我写一段规范的学术图注（中英文各一版），包含：</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>图形编号（Figure 1 / 图1）、描述性标题</span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>数据说明：5只A股股票，2020-2024年，前复权日对数收益率</span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>变量定义：箱线图的各元素含义，数据来源：akshare</span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>字数控制在 80 字以内（中文）/ 120 words 以内（英文）</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const disableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'prefetch';
+    }
+  }
+  const enableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'stylesheet';
+    }
+  }
+  const manageTransitions = (selector, allowTransitions) => {
+    const els = window.document.querySelectorAll(selector);
+    for (let i=0; i < els.length; i++) {
+      const el = els[i];
+      if (allowTransitions) {
+        el.classList.remove('notransition');
+      } else {
+        el.classList.add('notransition');
+      }
+    }
+  }
+  const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+    const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+    const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+    let newTheme = '';
+    if(darkModeDefault) {
+      newTheme = isAlternate ? baseTheme : alternateTheme;
+    } else {
+      newTheme = isAlternate ? alternateTheme : baseTheme;
+    }
+    const changeGiscusTheme = () => {
+      // From: https://github.com/giscus/giscus/issues/336
+      const sendMessage = (message) => {
+        const iframe = document.querySelector('iframe.giscus-frame');
+        if (!iframe) return;
+        iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+      }
+      sendMessage({
+        setConfig: {
+          theme: newTheme
+        }
+      });
+    }
+    const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+    if (isGiscussLoaded) {
+      changeGiscusTheme();
+    }
+  }
+  const toggleColorMode = (alternate) => {
+    // Switch the stylesheets
+    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+    manageTransitions('#quarto-margin-sidebar .nav-link', false);
+    if (alternate) {
+      enableStylesheet(alternateStylesheets);
+      for (const sheetNode of alternateStylesheets) {
+        if (sheetNode.id === "quarto-bootstrap") {
+          toggleBodyColorMode(sheetNode);
+        }
+      }
+    } else {
+      disableStylesheet(alternateStylesheets);
+      toggleBodyColorPrimary();
+    }
+    manageTransitions('#quarto-margin-sidebar .nav-link', true);
+    // Switch the toggles
+    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+    for (let i=0; i < toggles.length; i++) {
+      const toggle = toggles[i];
+      if (toggle) {
+        if (alternate) {
+          toggle.classList.add("alternate");     
+        } else {
+          toggle.classList.remove("alternate");
+        }
+      }
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455)
+    if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+      manageTransitions("body", false);
+      window.scrollTo(0, 1);
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        manageTransitions("body", true);
+      }, 40);  
+    }
+  }
+  const isFileUrl = () => { 
+    return window.location.protocol === 'file:';
+  }
+  const hasAlternateSentinel = () => {  
+    let styleSentinel = getColorSchemeSentinel();
+    if (styleSentinel !== null) {
+      return styleSentinel === "alternate";
+    } else {
+      return false;
+    }
+  }
+  const setStyleSentinel = (alternate) => {
+    const value = alternate ? "alternate" : "default";
+    if (!isFileUrl()) {
+      window.localStorage.setItem("quarto-color-scheme", value);
+    } else {
+      localAlternateSentinel = value;
+    }
+  }
+  const getColorSchemeSentinel = () => {
+    if (!isFileUrl()) {
+      const storageValue = window.localStorage.getItem("quarto-color-scheme");
+      return storageValue != null ? storageValue : localAlternateSentinel;
+    } else {
+      return localAlternateSentinel;
+    }
+  }
+  const darkModeDefault = false;
+  let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+  // Dark / light mode switch
+  window.quartoToggleColorScheme = () => {
+    // Read the current dark / light value 
+    let toAlternate = !hasAlternateSentinel();
+    toggleColorMode(toAlternate);
+    setStyleSentinel(toAlternate);
+    toggleGiscusIfUsed(toAlternate, darkModeDefault);
+  };
+  // Ensure there is a toggle, if there isn't float one in the top right
+  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+    const a = window.document.createElement('a');
+    a.classList.add('top-right');
+    a.classList.add('quarto-color-scheme-toggle');
+    a.href = "";
+    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+    const i = window.document.createElement("i");
+    i.classList.add('bi');
+    a.appendChild(i);
+    window.document.body.appendChild(a);
+  }
+  // Switch to dark mode if need be
+  if (hasAlternateSentinel()) {
+    toggleColorMode(true);
+  } else {
+    toggleColorMode(false);
+  }
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp("https:\/\/lianxhcn\.github\.io\/dsfin\/");
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+          // target, if specified
+          link.setAttribute("target", "_blank");
+          if (link.getAttribute("rel") === null) {
+            link.setAttribute("rel", "noopener");
+          }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../../Lecture/data_visual/lec_distribution_codes.html" class="pagination-link" aria-label="数据分布：原理与可视化 — 配套代码">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">数据分布：原理与可视化 — 配套代码</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../../Lecture/crawing/craw_01_introduction.html" class="pagination-link" aria-label="网络爬虫简介">
+        <span class="nav-page-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">网络爬虫简介</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+      &nbsp;
+    </div>   
+    <div class="nav-footer-center">
+<p><a href="https://www.lianxh.cn">lianxh.cn</a></p>
+</div>
+    <div class="nav-footer-right">
+<p>Support: <a href="https://lianxhcn.github.io/quarto_book/">Quarto</a></p>
+</div>
+  </div>
+</footer>
+
+
+
+
+</body></html>

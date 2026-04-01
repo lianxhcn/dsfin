@@ -1,0 +1,88 @@
+# 📌课件使用指南 {.unnumbered}
+
+
+本课程所有讲义中的 Python 代码均写在 `.ipynb` 文件中，统一在虚拟环境 **`dsfin_py311`** 下运行。按以下步骤完成一次性配置后，即可在 VS Code 中直接打开并运行任意课件。
+
+::: {.callout-note}
+### 前提条件
+
+请确认已完成以下安装，否则请先参阅 [2 Python：安装和环境配置](https://lianxhcn.github.io/dsfin/Lecture/00-setup/01_01_install_anaconda.html)：
+
+- ✅ 已安装 **Anaconda**
+- ✅ 已安装 **VS Code** 及其 Python、Jupyter 插件
+:::
+
+---
+
+## Step 1：获取课程仓库
+
+在 GitHub 上 Fork [dsfin 仓库](https://github.com/lianxhcn/dsfin) 到你自己的账号，再 Clone 到本地。推荐使用 Github Desktop，当然，你也可以使用 git 命令行语句。
+
+```bash
+git clone https://github.com/{你的GitHub用户名}/dsfin.git
+cd dsfin
+```
+
+---
+
+## Step 2：创建虚拟环境
+
+环境配置文件 `env_dsfin_py311.yml` 已放在仓库根目录下。打开 VS Code 终端 (Terminal，快捷键：`Ctrl+~`)，运行以下命令，一键完成安装（约需 5～15 分钟）：
+
+```bash
+conda env create -f env_dsfin_py311.yml
+```
+
+::: {.callout-note}
+### 下载速度慢？
+
+国内网络访问 conda 官方源较慢，可以先配置清华镜像源再创建环境。具体方法见 [虚拟环境管理 → 常见问题排错](https://lianxhcn.github.io/dsfin/Lecture/00-setup/01_06_conda_env.html)。
+:::
+
+---
+
+## Step 3：在 VS Code 中选择内核
+
+用 VS Code 打开仓库中任意 `.ipynb` 文件，点击右上角的内核选择器 (**Select Kernal**)，选择 **`dsfin_py311`**，即可运行代码。
+
+如果内核列表中看不到 `dsfin_py311`，先在 Terminal 中运行一次激活命令：
+
+```bash
+conda activate dsfin_py311
+```
+
+再重新打开 VS Code，内核列表中即可看到该环境。详见 [虚拟环境管理 → 在 Jupyter 中使用正确的内核](https://lianxhcn.github.io/dsfin/Lecture/00-setup/01_06_conda_env.html)。
+
+---
+
+## Step 4：配置 Stata 内核（可选）
+
+仅在运行含有 Stata 代码的章节时需要。前提是电脑上已安装 Stata。
+
+激活环境后运行：
+
+```bash
+conda activate dsfin_py311
+python -m nbstata.install
+```
+
+安装完成后，在对应章节的 `.ipynb` 文件中将内核切换为 **`Stata`** 即可。详细步骤及常见问题见 [Python：安装和环境配置 → 配置 Stata 环境](https://lianxhcn.github.io/dsfin/Lecture/00-setup/01_01_install_anaconda.html)。
+
+---
+
+## 保持环境与课程同步
+
+课程更新时，`env_dsfin_py311.yml` 可能会新增包。请在 Github Desktop 中强制同步 [dsfin 仓库](https://github.com/lianxhcn/dsfin)，或使用 `git pull origin main` 命令拉取最新代码。完成后，运行如下代码更新环境配置：
+
+```bash
+conda activate dsfin_py311
+conda env update -f env_dsfin_py311.yml --prune
+```
+
+---
+
+::: {.callout-note}
+### 想深入了解虚拟环境？
+
+包括虚拟环境的原理、常用管理命令、导出与共享方法，以及行业中的实践场景，见 [虚拟环境管理](https://lianxhcn.github.io/dsfin/Lecture/00-setup/01_06_conda_env.html) 小节。
+:::

@@ -38,6 +38,7 @@ book:
   chapters:
     - index.qmd
     - Lecture/00_intro.md
+    - Lecture/00_setup.qmd
     - Lecture/01_homework.md
 
     - part: "**环境配置**"
@@ -47,6 +48,7 @@ book:
         - Lecture/00-setup/01_02_jupyter_notebook.ipynb
         - Lecture/00-setup/01_03_install_FAQs.ipynb
         - Lecture/00-setup/01_04_markdown.md
+        - Lecture/00-setup/01_06_conda_env.qmd
 
     - part: "**数据分析**"
       chapters:
@@ -56,6 +58,16 @@ book:
         - Lecture/data_store_structure/lecture_data_management_organization.ipynb
         - Lecture/data_clean/lecture_data_clean.ipynb 
     
+    - part: "**可视化**"
+      chapters: 
+        - Lecture/data_visual/graph_01_intro.ipynb
+        - Lecture/data_visual/graph_dis_box_violin.ipynb
+        - Lecture/data_visual/graph_dis_histogram.ipynb
+        - Lecture/data_visual/graph_dis_kdensity.ipynb
+        - Lecture/data_visual/lec_distribution.md
+        - Lecture/data_visual/lec_distribution_codes.ipynb
+        - Lecture/data_visual/lec_visualization.md
+
     - part: "**数据爬取**"
       chapters:
         - Lecture/crawing/craw_01_introduction.md
