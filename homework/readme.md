@@ -1,13 +1,15 @@
 
 ## News
 
+- **第二次个人作业** 已经发布：
+  - [ex_P02.md](https://github.com/lianxhcn/dsfin/blob/main/homework/ex_P02_get_clean_fin_data.md)
+  - 提交**截止时间**：2026 年 4 月 8 日 23:30
+
 - **第一次个人作业** 已经发布：
   - [ex_P01.md](https://github.com/lianxhcn/dsfin/blob/main/homework/ex_P01.md)
   - 提交**截止时间**：2026 年 3 月 26 日 18:30
-  - 本次作业只需提交一个 `.ipynb` 文件即可。
-    - 请在第一个 Markdown block 中写清楚作业编号、姓名和版本号。
-    - 如果使用了 AI 工具，请在 Markdown block 中附上提示词或提示词链接。
-    - 所有代码必须确保正确运行，不得出现中文乱码或其他错误。
+
+---
 
 - **第一次小组作业** 已经发布：
   - [ex_Team01.md](https://github.com/lianxhcn/dsfin/blob/main/homework/ex_Team01.md)
