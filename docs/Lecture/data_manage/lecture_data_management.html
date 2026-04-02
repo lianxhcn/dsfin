@@ -1,0 +1,2174 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.6.39">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>11&nbsp; 数据管理：格式、存储与工作流 – 金融数据分析与建模</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../Lecture/data_clean/lecture_data_clean.html" rel="next">
+<link href="../../Lecture/data_store_structure/lecture_data_management_organization.html" rel="prev">
+<link href="../../images/book-logo.png" rel="icon" type="image/png">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-e8fb9d25728d58bfeac61b497e4a6629.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark-57a92833092fd6dc0d7710b6bdfff9c5.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-7ef202e96c563d31d9e5226e4d6cabf9.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark-490ba4e843cb1303a232ed0c676384f2.min.css" rel="prefetch" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../Lecture/data_get_data/lecture_get_data.html"><strong>数据分析</strong></a></li><li class="breadcrumb-item"><a href="../../Lecture/data_manage/lecture_data_management.html"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">数据管理：格式、存储与工作流</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header sidebar-header-stacked">
+      <a href="https://lianxhcn.github.io/dsfin/" class="sidebar-logo-link">
+      <img src="../../images/book-logo.png" alt="" class="sidebar-logo py-0 d-lg-inline d-none">
+      </a>
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../../">DS Finance</a> 
+        <div class="sidebar-tools-main tools-wide">
+    <a href="https://github.com/lianxhcn/dsfin" title="" class="quarto-navigation-tool px-1" aria-label=""><i class="bi bi-github"></i></a>
+    <a href="https://www.lianxh.cn" title="" class="quarto-navigation-tool px-1" aria-label=""><i class="bi bi-house-fill"></i></a>
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">封面</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/00_intro.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">📚课程资料</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/00_setup.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">📌课件使用指南</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/01_homework.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">🚀作业</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text"><strong>环境配置</strong></span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/00-setup/01_00_coding_with_AI.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">借助 AI 写代码</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/00-setup/01_01_install_anaconda.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Python：安装和环境配置</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/00-setup/01_02_jupyter_notebook.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Jupyter Notebook 的使用</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/00-setup/01_03_install_FAQs.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Python 安装常见问题</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/00-setup/01_04_markdown.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Markdown</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/00-setup/01_06_conda_env.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">虚拟环境管理</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
+ <span class="menu-text"><strong>数据分析</strong></span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/data_get_data/lecture_get_data.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">金融数据获取</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/data_get_data/data_02_get_data_GMD.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">获取数据：GMD</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/data_get_data/data_03_TS_SZ_index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">上证指数的时序特征</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/data_store_structure/lecture_data_management_organization.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">数据管理与组织</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/data_manage/lecture_data_management.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">数据管理：格式、存储与工作流</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/data_clean/lecture_data_clean.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">数据清洗</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true">
+ <span class="menu-text"><strong>可视化</strong></span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/data_visual/graph_01_intro.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Python 可视化：简介</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/data_visual/graph_dis_box_violin.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">箱型图和小提琴图</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/data_visual/graph_dis_histogram.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">直方图</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/data_visual/graph_dis_kdensity.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">核密度函数图</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/data_visual/lec_distribution.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">数据分布：原理与可视化</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/data_visual/lec_distribution_codes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">数据分布：原理与可视化 — 配套代码</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/data_visual/lec_visualization.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">数据可视化</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true">
+ <span class="menu-text"><strong>数据爬取</strong></span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/crawing/craw_01_introduction.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">网络爬虫简介</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/crawing/craw_02_sec01_lingnan_prompt.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">实例-提示词模式：爬取岭南学院教师名录</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/crawing/craw_02_sec02_lingnan_dialog.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">实例-对话模式：爬取岭南学院教师名录</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true">
+ <span class="menu-text"><strong>文本分析</strong></span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/text_analysis/lecture_text_01_ailn.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">金融文本分析（上）——从文本到结构化数据</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/text_analysis/lecture_text_02_ailn.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">金融文本分析（下）——情感分析与文本建模</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/text_analysis/lecture_text_analysis_01_claude.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">文本数据处理基础</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/text_analysis/lecture_text_analysis_02_claude.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">文本分析：情感分析与主题建模</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="true">
+ <span class="menu-text"><strong>附录：Python 提示词</strong></span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../appendix_python/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">概览</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../appendix_python/a1_setup.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">A1. 环境配置</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../appendix_python/a2_project.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">A2. 项目规划与版本控制</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../appendix_python/a3_concepts.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">A3. 提示词核心词汇</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../appendix_python/a4_data.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">A4. 数据获取与清洗</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../appendix_python/a5_visualization.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">A5. 数据可视化</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../appendix_python/a6_modeling.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">A6. 统计建模</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../appendix_python/a7_results.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">A7. 结果呈现与表格美化</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../appendix_python/a8_workflow.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">A8. 上下文管理与调试</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#本章导读" id="toc-本章导读" class="nav-link active" data-scroll-target="#本章导读"><span class="header-section-number">11.1</span> 本章导读</a></li>
+  <li><a href="#核心理念数据格式是一种契约" id="toc-核心理念数据格式是一种契约" class="nav-link" data-scroll-target="#核心理念数据格式是一种契约"><span class="header-section-number">11.2</span> 核心理念：数据格式是一种契约</a></li>
+  <li><a href="#文件命名与目录规范" id="toc-文件命名与目录规范" class="nav-link" data-scroll-target="#文件命名与目录规范"><span class="header-section-number">11.3</span> 文件命名与目录规范</a>
+  <ul class="collapse">
+  <li><a href="#命名的坏例子与好例子" id="toc-命名的坏例子与好例子" class="nav-link" data-scroll-target="#命名的坏例子与好例子"><span class="header-section-number">11.3.1</span> 命名的坏例子与好例子</a></li>
+  <li><a href="#目录结构" id="toc-目录结构" class="nav-link" data-scroll-target="#目录结构"><span class="header-section-number">11.3.2</span> 目录结构</a></li>
+  <li><a href="#readme.md-的最简模板" id="toc-readme.md-的最简模板" class="nav-link" data-scroll-target="#readme.md-的最简模板"><span class="header-section-number">11.3.3</span> README.md 的最简模板</a></li>
+  </ul></li>
+  <li><a href="#parquet列式存储与数据契约" id="toc-parquet列式存储与数据契约" class="nav-link" data-scroll-target="#parquet列式存储与数据契约"><span class="header-section-number">11.4</span> Parquet：列式存储与数据契约</a>
+  <ul class="collapse">
+  <li><a href="#为什么不能只用-csv" id="toc-为什么不能只用-csv" class="nav-link" data-scroll-target="#为什么不能只用-csv"><span class="header-section-number">11.4.1</span> 为什么不能只用 CSV</a></li>
+  <li><a href="#列式存储的直觉" id="toc-列式存储的直觉" class="nav-link" data-scroll-target="#列式存储的直觉"><span class="header-section-number">11.4.2</span> 列式存储的直觉</a></li>
+  <li><a href="#schema类型契约" id="toc-schema类型契约" class="nav-link" data-scroll-target="#schema类型契约"><span class="header-section-number">11.4.3</span> Schema：类型契约</a></li>
+  <li><a href="#读取时过滤懒加载原则" id="toc-读取时过滤懒加载原则" class="nav-link" data-scroll-target="#读取时过滤懒加载原则"><span class="header-section-number">11.4.4</span> 读取时过滤：懒加载原则</a></li>
+  <li><a href="#分区存储数据集发布的最佳实践" id="toc-分区存储数据集发布的最佳实践" class="nav-link" data-scroll-target="#分区存储数据集发布的最佳实践"><span class="header-section-number">11.4.5</span> 分区存储：数据集发布的最佳实践</a></li>
+  <li><a href="#把-csv-发布为-parquet一个实用场景" id="toc-把-csv-发布为-parquet一个实用场景" class="nav-link" data-scroll-target="#把-csv-发布为-parquet一个实用场景"><span class="header-section-number">11.4.6</span> 把 CSV 发布为 Parquet：一个实用场景</a></li>
+  <li><a href="#索引查询加速的关键" id="toc-索引查询加速的关键" class="nav-link" data-scroll-target="#索引查询加速的关键"><span class="header-section-number">11.4.7</span> 索引：查询加速的关键</a></li>
+  <li><a href="#多表联合查询" id="toc-多表联合查询" class="nav-link" data-scroll-target="#多表联合查询"><span class="header-section-number">11.4.8</span> 多表联合查询</a></li>
+  <li><a href="#参数化查询" id="toc-参数化查询" class="nav-link" data-scroll-target="#参数化查询"><span class="header-section-number">11.4.9</span> 参数化查询</a></li>
+  <li><a href="#把分析结果写回数据库" id="toc-把分析结果写回数据库" class="nav-link" data-scroll-target="#把分析结果写回数据库"><span class="header-section-number">11.4.10</span> 把分析结果写回数据库</a></li>
+  </ul></li>
+  <li><a href="#duckdb对文件直接执行-sql" id="toc-duckdb对文件直接执行-sql" class="nav-link" data-scroll-target="#duckdb对文件直接执行-sql"><span class="header-section-number">11.5</span> DuckDB：对文件直接执行 SQL</a>
+  <ul class="collapse">
+  <li><a href="#一个常见的困境" id="toc-一个常见的困境" class="nav-link" data-scroll-target="#一个常见的困境"><span class="header-section-number">11.5.1</span> 一个常见的困境</a></li>
+  <li><a href="#跨文件-join" id="toc-跨文件-join" class="nav-link" data-scroll-target="#跨文件-join"><span class="header-section-number">11.5.2</span> 跨文件 JOIN</a></li>
+  <li><a href="#duckdbsqlite-与-parquet-的定位" id="toc-duckdbsqlite-与-parquet-的定位" class="nav-link" data-scroll-target="#duckdbsqlite-与-parquet-的定位"><span class="header-section-number">11.5.3</span> DuckDB、SQLite 与 Parquet 的定位</a></li>
+  </ul></li>
+  <li><a href="#端到端工作流" id="toc-端到端工作流" class="nav-link" data-scroll-target="#端到端工作流"><span class="header-section-number">11.6</span> 端到端工作流</a>
+  <ul class="collapse">
+  <li><a href="#清洗函数固化处理步骤" id="toc-清洗函数固化处理步骤" class="nav-link" data-scroll-target="#清洗函数固化处理步骤"><span class="header-section-number">11.6.1</span> 清洗函数：固化处理步骤</a></li>
+  <li><a href="#从模拟数据到完整流程" id="toc-从模拟数据到完整流程" class="nav-link" data-scroll-target="#从模拟数据到完整流程"><span class="header-section-number">11.6.2</span> 从模拟数据到完整流程</a></li>
+  <li><a href="#常见坑与检查清单" id="toc-常见坑与检查清单" class="nav-link" data-scroll-target="#常见坑与检查清单"><span class="header-section-number">11.6.3</span> 常见坑与检查清单</a></li>
+  </ul></li>
+  <li><a href="#本章小结" id="toc-本章小结" class="nav-link" data-scroll-target="#本章小结"><span class="header-section-number">11.7</span> 本章小结</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../Lecture/data_get_data/lecture_get_data.html"><strong>数据分析</strong></a></li><li class="breadcrumb-item"><a href="../../Lecture/data_manage/lecture_data_management.html"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">数据管理：格式、存储与工作流</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">数据管理：格式、存储与工作流</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="本章导读" class="level2" data-number="11.1">
+<h2 data-number="11.1" class="anchored" data-anchor-id="本章导读"><span class="header-section-number">11.1</span> 本章导读</h2>
+<p>你即将进入的工作环境，和课堂上的数据练习有一个根本性的差别。</p>
+<p>课堂上，老师给你一个整洁的 CSV 文件，几百行，列名清晰，直接 <code>pd.read_csv()</code> 就能用。但在银行、券商或研究机构，你面对的可能是这样的局面：</p>
+<blockquote class="blockquote">
+<p>师兄发来一个压缩包，解压后是 6 个子文件夹，47 个 CSV 文件，总计 3.2 GB。你打开其中一个需要等 20 秒；想把所有文件合并，内存溢出，Jupyter 崩溃；终于合并成功了，发现 ticker 列里「000001」变成了数字 1，前导零丢失；花了三天清洗完数据，同事说他用的是另一个版本，两个人的分析结果对不上……</p>
+</blockquote>
+<p>这不是极端情况，这是真实战场的日常。</p>
+<p>本章的目标不是让你现在就掌握所有工具，而是让你建立正确的数据管理理念，知道专业人士是怎么工作的，并且在需要的时候能够快速上手。</p>
+<p><strong>本章能力层级说明：</strong></p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>层级</th>
+<th>你能做什么</th>
+<th>对应工具</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>入门</td>
+<td>读写 CSV，用 pandas 完成基本分析</td>
+<td>CSV + pandas</td>
+</tr>
+<tr class="even">
+<td>进阶</td>
+<td>处理大文件，跨表关联查询</td>
+<td>Parquet + SQLite</td>
+</tr>
+<tr class="odd">
+<td>专业</td>
+<td>跨文件 SQL，分区存储，团队协作</td>
+<td>DuckDB + 分区 Parquet</td>
+</tr>
+<tr class="even">
+<td>业界</td>
+<td>分布式计算，数据湖</td>
+<td>Spark + Delta Lake</td>
+</tr>
+</tbody>
+</table>
+<p>本课程帮你从「入门」升到「进阶」，同时让你看懂「专业」和「业界」层级在做什么。</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://fig-lianxh.oss-cn-shenzhen.aliyuncs.com/data_manage_data_format_decision_tree.png" class="img-fluid figure-img" style="width:90.0%"></p>
+<figcaption>data_manage_data_format_decision_tree</figcaption>
+</figure>
+</div>
+<hr>
+</section>
+<section id="核心理念数据格式是一种契约" class="level2" data-number="11.2">
+<h2 data-number="11.2" class="anchored" data-anchor-id="核心理念数据格式是一种契约"><span class="header-section-number">11.2</span> 核心理念：数据格式是一种契约</h2>
+<p>在开始介绍具体工具之前，需要先建立一个贯穿本章的核心概念。</p>
+<p><strong>选择数据格式不只是一个技术决定，更是一种沟通契约。</strong> 它决定了：你的数据能被谁读、读多快、读多准；接收方是否需要猜测字段的类型；团队成员拿到文件后能不能直接使用。</p>
+<p>CSV 是一种「人类可读」的格式，任何人用 Excel 打开都能看懂，但它不携带任何类型信息——date 列可能被读成字符串，ticker「000001」可能被读成整数 1，空值可能是空字符串、<code>N/A</code>、<code>--</code>、<code>#N/A</code> 中的任何一种，每次读入都需要手动修复。</p>
+<p>Parquet 是一种「机器高效」的格式，它把数据类型、压缩方式、字段说明都打包在文件里，接收方读入时不需要猜测，类型自动还原。这就是「契约」的含义：格式本身承诺了数据的结构。</p>
+<p>一个简单的判断框架：</p>
+<ul>
+<li><strong>数据用于与人交流</strong>（发给导师、领导、客户）→ 给 CSV 或 Excel</li>
+<li><strong>数据用于计算和分析</strong>（自己跑模型、存中间结果）→ 存 Parquet</li>
+<li><strong>数据需要多表关联</strong>（行情 × 财报 × 宏观）→ 用 SQLite 或 DuckDB</li>
+</ul>
+<hr>
+</section>
+<section id="文件命名与目录规范" class="level2" data-number="11.3">
+<h2 data-number="11.3" class="anchored" data-anchor-id="文件命名与目录规范"><span class="header-section-number">11.3</span> 文件命名与目录规范</h2>
+<p>在所有数据管理习惯中，这一条的投入产出比最高，也是最容易被忽视的。</p>
+<section id="命名的坏例子与好例子" class="level3" data-number="11.3.1">
+<h3 data-number="11.3.1" class="anchored" data-anchor-id="命名的坏例子与好例子"><span class="header-section-number">11.3.1</span> 命名的坏例子与好例子</h3>
+<p>以下场景在研究生论文写作和实习中极为常见：</p>
+<pre><code># 坏的命名（真实案例）
+最终版.csv
+最终版2.csv
+最终版_修改.csv
+最终版_真的最终.csv
+老师改过的.xlsx
+用这个！！.csv
+data_20240115(1).csv</code></pre>
+<p>这些文件名的问题是：无法排序、无法知道时间范围、无法知道谁改过、无法知道哪个是最新版。</p>
+<p>好的命名遵循一个简单原则：<code>主题_时间范围_版本.扩展名</code></p>
+<pre><code># 好的命名
+fin_ratios_2010_2023_v1.csv          # 财务比率，2010-2023年，第1版
+stock_daily_000001_20230101.parquet  # 000001日线，2023年1月1日起
+macro_cpi_ppi_2000_2024.parquet      # 宏观数据，CPI和PPI，2000-2024</code></pre>
+<p><strong>命名规则：</strong></p>
+<ul>
+<li>用下划线 <code>_</code> 分隔词组，不用空格（空格在命令行中会引发问题）</li>
+<li>日期用 <code>YYYYMMDD</code> 或 <code>YYYY_MM</code> 格式，可以按字母顺序排序</li>
+<li>版本号用 <code>v1</code>、<code>v2</code> 而不是「最终」、「修改」</li>
+<li>全部小写英文，避免中文文件名（在不同操作系统间传输时容易乱码）</li>
+</ul>
+</section>
+<section id="目录结构" class="level3" data-number="11.3.2">
+<h3 data-number="11.3.2" class="anchored" data-anchor-id="目录结构"><span class="header-section-number">11.3.2</span> 目录结构</h3>
+<p>一个研究项目的推荐目录结构如下：</p>
+<pre><code>project_momentum_factor/          # 项目根目录，名称描述研究主题
+│
+├── data/
+│   ├── raw/                      # 原始数据：只读，永远不修改
+│   │   ├── wind_stock_daily_2023.csv
+│   │   └── wind_fin_ratios_2023.csv
+│   ├── processed/                # 清洗后的数据
+│   │   ├── stock_daily_clean.parquet
+│   │   └── fin_ratios_clean.parquet
+│   └── outputs/                  # 分析结果和因子数据
+│       └── factor_momentum.parquet
+│
+├── notebooks/
+│   ├── 01_data_cleaning.ipynb    # 数字前缀保证执行顺序
+│   ├── 02_factor_construction.ipynb
+│   └── 03_regression_analysis.ipynb
+│
+├── scripts/                      # 可复用的函数和工具
+│   └── data_utils.py
+│
+└── README.md                     # 数据来源、字段说明、更新日期</code></pre>
+<p><strong>最重要的一条规则：<code>data/raw/</code> 目录下的文件只读，永远不修改。</strong> 所有清洗和处理都在代码中完成，原始文件保持原样。这样任何时候都可以从原始数据重新生成所有结果。</p>
+</section>
+<section id="readme.md-的最简模板" class="level3" data-number="11.3.3">
+<h3 data-number="11.3.3" class="anchored" data-anchor-id="readme.md-的最简模板"><span class="header-section-number">11.3.3</span> README.md 的最简模板</h3>
+<p>每个数据项目都应该有一个 README 文件，回答三个问题：这份数据从哪来？经过了什么处理？最后更新是什么时候？</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu"># 动量因子研究项目</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="fu">## 数据来源</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>股票日线数据：Wind 金融终端，账号 research01</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>财务比率数据：Wind 财务数据库</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="fu">## 数据范围</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>时间：2010-01-01 至 2023-12-31</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>标的：A 股全市场（含退市，已标记）</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="fu">## 处理说明</span></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>已剔除 ST 股票和上市不足 12 个月的股票</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>ticker 列统一为 6 位字符串（补前导零）</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>缺失值来源：Wind 原始数据中的 "--"，已替换为 NaN</span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a><span class="fu">## 更新记录</span></span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>2024-01-15：初始版本，张三</span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>2024-02-03：新增 2023Q4 财务数据，李四</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+提示词：生成项目目录结构
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>我正在开始一个金融数据分析项目，研究主题是 [你的研究主题，例如：A 股动量因子]。</p>
+<p>数据来源包括：</p>
+<ul>
+<li>[数据1，例如：Wind 股票日线数据]</li>
+<li>[数据2，例如：Wind 财务比率数据]</li>
+</ul>
+<p>请帮我：</p>
+<ol type="1">
+<li>生成一个适合这个项目的目录结构（包含 data/raw、data/processed、notebooks 等）</li>
+<li>给出 3-5 条适合这类数据的文件命名示例</li>
+<li>生成一个 README.md 模板，包含数据来源、处理说明、更新记录三个部分</li>
+</ol>
+<p>要求：目录结构用代码块展示，文件名全部小写英文加下划线。</p>
+</div>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://fig-lianxh.oss-cn-shenzhen.aliyuncs.com/data_manage_project_structure_overview.png" class="img-fluid figure-img" style="width:100.0%"></p>
+<figcaption>data_manage_project_structure_overview</figcaption>
+</figure>
+</div>
+<hr>
+</section>
+</section>
+<section id="parquet列式存储与数据契约" class="level2" data-number="11.4">
+<h2 data-number="11.4" class="anchored" data-anchor-id="parquet列式存储与数据契约"><span class="header-section-number">11.4</span> Parquet：列式存储与数据契约</h2>
+<section id="为什么不能只用-csv" class="level3" data-number="11.4.1">
+<h3 data-number="11.4.1" class="anchored" data-anchor-id="为什么不能只用-csv"><span class="header-section-number">11.4.1</span> 为什么不能只用 CSV</h3>
+<p>先用一个小例子感受问题所在。假设你有一份上市公司财务数据，100 万行，6 列：</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> time</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="co"># 生成模拟数据（100万行财务数据）</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>np.random.seed(<span class="dv">42</span>)</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>n <span class="op">=</span> <span class="dv">1_000_000</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.DataFrame({</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>    <span class="st">"date"</span>:     pd.date_range(<span class="st">"2010-01-01"</span>, periods<span class="op">=</span>n, freq<span class="op">=</span><span class="st">"D"</span>).astype(<span class="bu">str</span>),</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>    <span class="st">"ticker"</span>:   [<span class="bu">str</span>(i).zfill(<span class="dv">6</span>) <span class="cf">for</span> i <span class="kw">in</span> np.random.randint(<span class="dv">1</span>, <span class="dv">5000</span>, n)],</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>    <span class="st">"roe"</span>:      np.random.uniform(<span class="op">-</span><span class="fl">0.2</span>, <span class="fl">0.3</span>, n).<span class="bu">round</span>(<span class="dv">4</span>),</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>    <span class="st">"pe_ratio"</span>: np.random.uniform(<span class="dv">5</span>, <span class="dv">80</span>, n).<span class="bu">round</span>(<span class="dv">2</span>),</span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>    <span class="st">"revenue"</span>:  np.random.uniform(<span class="fl">1e8</span>, <span class="fl">1e11</span>, n).<span class="bu">round</span>(<span class="dv">0</span>),</span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>    <span class="st">"industry"</span>: np.random.choice([<span class="st">"银行"</span>, <span class="st">"医药"</span>, <span class="st">"地产"</span>, <span class="st">"消费"</span>, <span class="st">"科技"</span>], n),</span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a><span class="co"># 保存为 CSV</span></span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>df.to_csv(<span class="st">"fin_ratios.csv"</span>, index<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a><span class="co"># 保存为 Parquet</span></span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>df.to_parquet(<span class="st">"fin_ratios.parquet"</span>, index<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a><span class="co"># 比较文件大小</span></span>
+<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a>csv_mb     <span class="op">=</span> os.path.getsize(<span class="st">"fin_ratios.csv"</span>)     <span class="op">/</span> <span class="dv">1024</span><span class="op">**</span><span class="dv">2</span></span>
+<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a>parquet_mb <span class="op">=</span> os.path.getsize(<span class="st">"fin_ratios.parquet"</span>) <span class="op">/</span> <span class="dv">1024</span><span class="op">**</span><span class="dv">2</span></span>
+<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"CSV 文件：    </span><span class="sc">{</span>csv_mb<span class="sc">:.1f}</span><span class="ss"> MB"</span>)</span>
+<span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Parquet 文件：</span><span class="sc">{</span>parquet_mb<span class="sc">:.1f}</span><span class="ss"> MB"</span>)</span>
+<span id="cb5-30"><a href="#cb5-30" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"压缩比：      </span><span class="sc">{</span>csv_mb <span class="op">/</span> parquet_mb<span class="sc">:.1f}</span><span class="ss">x"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>典型输出：</p>
+<pre><code>CSV 文件：    98.3 MB
+Parquet 文件：18.7 MB
+压缩比：      5.3x</code></pre>
+<p>文件小了 5 倍，但这还不是最重要的差异。真正的差异在<strong>读取速度</strong>：</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 只需要 roe 列做计算，对比两种方式的速度</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="co"># CSV：必须读取全部列才能得到 roe</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>t0 <span class="op">=</span> time.time()</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>roe_csv <span class="op">=</span> pd.read_csv(<span class="st">"fin_ratios.csv"</span>)[<span class="st">"roe"</span>]</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"CSV  读取 roe 列：</span><span class="sc">{</span>time<span class="sc">.</span>time() <span class="op">-</span> t0<span class="sc">:.2f}</span><span class="ss"> 秒"</span>)</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Parquet：只读取 roe 列，其他列的数据不会被加载</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>t0 <span class="op">=</span> time.time()</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>roe_pq <span class="op">=</span> pd.read_parquet(<span class="st">"fin_ratios.parquet"</span>, columns<span class="op">=</span>[<span class="st">"roe"</span>])</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Parquet 读取 roe 列：</span><span class="sc">{</span>time<span class="sc">.</span>time() <span class="op">-</span> t0<span class="sc">:.2f}</span><span class="ss"> 秒"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>典型输出：</p>
+<pre><code>CSV  读取 roe 列：3.21 秒
+Parquet 读取 roe 列：0.09 秒</code></pre>
+<p>速度快了约 35 倍。差异来自存储方式的根本不同。</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://fig-lianxh.oss-cn-shenzhen.aliyuncs.com/data_manage_parquet_vs_csv_storage_format.png" class="img-fluid figure-img" style="width:100.0%"></p>
+<figcaption>data_manage_parquet_vs_csv_storage_format</figcaption>
+</figure>
+</div>
+</section>
+<section id="列式存储的直觉" class="level3" data-number="11.4.2">
+<h3 data-number="11.4.2" class="anchored" data-anchor-id="列式存储的直觉"><span class="header-section-number">11.4.2</span> 列式存储的直觉</h3>
+<p>CSV 是「行优先」存储：每一行的所有字段连续存放。要取出 <code>roe</code> 列，必须把每一行都读进来，再丢掉其他列。</p>
+<p>Parquet 是「列优先」存储：同一列的所有数据紧挨着存放。要取出 <code>roe</code> 列，直接跳到那一列的位置读取，其他列完全不碰。</p>
+<p>此外，Parquet 对每一列独立压缩，效率极高：</p>
+<ul>
+<li><code>industry</code> 列只有 5 个值（银行、医药、地产……），用<strong>字典编码</strong>存储，100 万行只需要 5 个字符串 + 100 万个索引号</li>
+<li><code>date</code> 列是有序的日期，用<strong>差值编码</strong>存储，每个日期只记录与前一个的差值</li>
+<li><code>roe</code> 列是浮点数，用<strong>通用压缩算法</strong>（默认 Snappy）压缩</li>
+</ul>
+<p>你不需要手动配置这些，Parquet 会自动选择最优编码方式。</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://fig-lianxh.oss-cn-shenzhen.aliyuncs.com/data_manage_parquet_internal_structure.png" class="img-fluid figure-img" style="width:100.0%"></p>
+<figcaption>data_manage_parquet_internal_structure</figcaption>
+</figure>
+</div>
+</section>
+<section id="schema类型契约" class="level3" data-number="11.4.3">
+<h3 data-number="11.4.3" class="anchored" data-anchor-id="schema类型契约"><span class="header-section-number">11.4.3</span> Schema：类型契约</h3>
+<p>Parquet 最被低估的特性是它携带了完整的数据类型信息（Schema）。这解决了 CSV 最常见的痛点：</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pyarrow <span class="im">as</span> pa</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pyarrow.parquet <span class="im">as</span> pq</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="co"># 读取 Parquet，查看它的 Schema</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>schema <span class="op">=</span> pq.read_schema(<span class="st">"fin_ratios.parquet"</span>)</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(schema)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>输出：</p>
+<pre><code>date: string
+ticker: string       ← 始终是字符串，"000001" 不会变成 1
+roe: double
+pe_ratio: double
+revenue: double
+industry: string</code></pre>
+<p>对比 CSV 读入后需要手动修复的常见问题：</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># CSV 读入后的典型问题</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>df_csv <span class="op">=</span> pd.read_csv(<span class="st">"fin_ratios.csv"</span>)</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="co"># 问题1：ticker 前导零丢失（如果原始数据没有加引号）</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="co"># "000001" → 1</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="co"># 问题2：date 列是字符串，不是 datetime</span></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df_csv[<span class="st">"date"</span>].dtype)  <span class="co"># object（字符串）</span></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a><span class="co"># 问题3：Wind 导出的 "--" 不会自动识别为 NaN</span></span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a><span class="co"># df_csv["roe"].mean() 会报错</span></span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a><span class="co"># 每次都要手动修复：</span></span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>df_csv[<span class="st">"date"</span>]   <span class="op">=</span> pd.to_datetime(df_csv[<span class="st">"date"</span>])</span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>df_csv[<span class="st">"ticker"</span>] <span class="op">=</span> df_csv[<span class="st">"ticker"</span>].astype(<span class="bu">str</span>).<span class="bu">str</span>.zfill(<span class="dv">6</span>)</span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a>df_csv.replace(<span class="st">"--"</span>, pd.NA, inplace<span class="op">=</span><span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Parquet 读入：类型直接正确，无需修复</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>df_pq <span class="op">=</span> pd.read_parquet(<span class="st">"fin_ratios.parquet"</span>)</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df_pq.dtypes)</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="co"># date      object</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="co"># ticker    object    ← 字符串，000001 完好</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="co"># roe       float64   ← 直接可用</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="读取时过滤懒加载原则" class="level3" data-number="11.4.4">
+<h3 data-number="11.4.4" class="anchored" data-anchor-id="读取时过滤懒加载原则"><span class="header-section-number">11.4.4</span> 读取时过滤：懒加载原则</h3>
+<p><strong>核心原则：永远不要把整个文件读进内存再筛选，要先筛选再读入。</strong></p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 坏的做法：全量读入，再筛选（内存占用是有效数据的几十倍）</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>df_all <span class="op">=</span> pd.read_parquet(<span class="st">"fin_ratios.parquet"</span>)</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>df_bank <span class="op">=</span> df_all[df_all[<span class="st">"industry"</span>] <span class="op">==</span> <span class="st">"银行"</span>]   <span class="co"># 读了 100 万行，只用了 20 万行</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="co"># 好的做法：读取时就过滤</span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>df_bank <span class="op">=</span> pd.read_parquet(</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">"fin_ratios.parquet"</span>,</span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>    filters<span class="op">=</span>[(<span class="st">"industry"</span>, <span class="st">"=="</span>, <span class="st">"银行"</span>)]          <span class="co"># 只加载银行行业的数据</span></span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a><span class="co"># 同时只读需要的列</span></span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>df_bank_roe <span class="op">=</span> pd.read_parquet(</span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a>    <span class="st">"fin_ratios.parquet"</span>,</span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a>    columns<span class="op">=</span>[<span class="st">"date"</span>, <span class="st">"ticker"</span>, <span class="st">"roe"</span>],            <span class="co"># 只加载 3 列</span></span>
+<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a>    filters<span class="op">=</span>[(<span class="st">"industry"</span>, <span class="st">"=="</span>, <span class="st">"银行"</span>)]</span>
+<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="分区存储数据集发布的最佳实践" class="level3" data-number="11.4.5">
+<h3 data-number="11.4.5" class="anchored" data-anchor-id="分区存储数据集发布的最佳实践"><span class="header-section-number">11.4.5</span> 分区存储：数据集发布的最佳实践</h3>
+<p>当数据量很大，或者需要在团队间共享时，<strong>按维度分区存储</strong>是标准做法：</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>df[<span class="st">"year"</span>] <span class="op">=</span> pd.to_datetime(df[<span class="st">"date"</span>]).dt.year</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="co"># 按年份分区写入（生成独立的子文件夹）</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>df.to_parquet(</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"data/processed/fin_ratios/"</span>,</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>    partition_cols<span class="op">=</span>[<span class="st">"year"</span>],</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>    index<span class="op">=</span><span class="va">False</span></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>生成的目录结构：</p>
+<pre><code>data/processed/fin_ratios/
+├── year=2010/part-0.parquet    (~9 MB)
+├── year=2011/part-0.parquet    (~9 MB)
+├── ...
+└── year=2023/part-0.parquet    (~9 MB)</code></pre>
+<p>这样做有两个优势：</p>
+<ul>
+<li>用户只需要 2023 年的数据时，只下载 <code>year=2023/</code> 文件夹，不需要下载完整数据集</li>
+<li>放到 GitHub 仓库，单个文件都在 100 MB 以内，可以直接上传，无需 Git LFS</li>
+</ul>
+<div class="sourceCode" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 读取分区数据：只读指定年份，速度极快</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>df_2023 <span class="op">=</span> pd.read_parquet(</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"data/processed/fin_ratios/"</span>,</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>    filters<span class="op">=</span>[(<span class="st">"year"</span>, <span class="st">"=="</span>, <span class="dv">2023</span>)]</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="把-csv-发布为-parquet一个实用场景" class="level3" data-number="11.4.6">
+<h3 data-number="11.4.6" class="anchored" data-anchor-id="把-csv-发布为-parquet一个实用场景"><span class="header-section-number">11.4.6</span> 把 CSV 发布为 Parquet：一个实用场景</h3>
+<p>如果你有一份 <code>fin_ratios.csv</code>（200 MB），想发布到 GitHub 供他人使用，可以先转为 Parquet，再附上转换说明：</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 你（数据提供方）：一次性转换</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_csv(<span class="st">"fin_ratios.csv"</span>)</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>df.to_parquet(<span class="st">"fin_ratios.parquet"</span>, compression<span class="op">=</span><span class="st">"zstd"</span>, index<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a><span class="co"># zstd 压缩率比默认的 snappy 更高，适合存档场景</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>在 README 里附上这两行说明：</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">## 数据使用</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>数据以 Parquet 格式发布（约 40 MB），原始 CSV 约 200 MB。</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>**直接分析（推荐）：**</span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a><span class="in">```python</span></span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_parquet(<span class="st">"fin_ratios.parquet"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><strong>转换为 CSV（如需 Excel 查看）：</strong></p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>pd.read_parquet(<span class="st">"fin_ratios.parquet"</span>).to_csv(<span class="st">"fin_ratios.csv"</span>, index<span class="op">=</span><span class="va">False</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre><code>
+用户使用时，一行代码即可上手，不需要安装任何额外工具（pandas 已内置 Parquet 支持）。
+
+::: {.callout-tip}
+### 提示词：CSV 转 Parquet 并生成使用说明
+
+我有一个 CSV 文件，路径是 `[你的文件路径]`，包含以下列：
+
+`[列1（类型）、列2（类型）……]`
+
+其中有一些需要注意的问题：
+
+- ticker 列是股票代码，需要保持字符串格式（保留前导零）
+- date 列格式是 [YYYY-MM-DD / YYYYMMDD]
+- 空值在原始文件中表示为 [-- / N/A / 空字符串]
+
+请帮我：
+
+1. 写一个读取和清洗这份 CSV 的函数，修复上述问题
+2. 将清洗后的数据按 [year / industry] 分区存为 Parquet
+3. 打印转换前后的文件大小对比
+4. 生成一段供他人使用的 README 说明（包含直接分析和转为 CSV 两种方式）
+
+使用 pandas + pyarrow，代码需要有注释。
+:::
+
+---
+
+## SQLite：嵌入式关系数据库
+
+### 什么时候需要 SQLite
+
+Parquet 解决了「大文件快速读取」的问题，但它不支持多表关联查询，也不支持数据的增删改。当你需要做类似这样的分析时，就需要 SQLite：
+
+&gt; 把日线行情数据和季度财务数据关联，筛选出 ROE &gt; 15%、PE &lt; 20 的股票，计算它们在财报发布后 30 天的平均超额收益。
+
+这是一个典型的「行情表 × 财务表」联合查询，在 Parquet 中做需要把两个大文件都读进内存再手动合并，而在 SQLite 中一条 SQL 语句就能完成。
+
+SQLite 的特点：
+
+- **无需安装服务器**：整个数据库就是一个 `.db` 文件，可以直接发邮件或上传
+- **Python 标准库内置**：`import sqlite3`，不需要 pip install
+- **完整的 SQL 支持**：JOIN、索引、聚合、窗口函数
+- **适合规模**：几十 GB 以内的数据都可以流畅运行
+
+![data_manage_sqlite_use_cases_diagram](https://fig-lianxh.oss-cn-shenzhen.aliyuncs.com/data_manage_sqlite_use_cases_diagram.png){width="100%"}
+
+### 基本操作
+
+```python
+import sqlite3
+import pandas as pd
+import numpy as np
+
+# 创建数据库（文件不存在时自动创建）
+conn = sqlite3.connect("finance.db")
+cur  = conn.cursor()
+
+# 建表：股票日线
+cur.execute("""
+    CREATE TABLE IF NOT EXISTS stock_daily (
+        date    TEXT NOT NULL,
+        ticker  TEXT NOT NULL,
+        close   REAL,
+        volume  INTEGER,
+        PRIMARY KEY (date, ticker)
+    )
+""")
+
+# 建表：季度财务数据
+cur.execute("""
+    CREATE TABLE IF NOT EXISTS fin_quarterly (
+        ticker   TEXT NOT NULL,
+        year     INTEGER NOT NULL,
+        quarter  INTEGER NOT NULL,
+        roe      REAL,
+        pe_ratio REAL,
+        PRIMARY KEY (ticker, year, quarter)
+    )
+""")
+conn.commit()</code></pre>
+<div class="sourceCode" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 批量插入（pandas → SQLite，推荐用 to_sql）</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>np.random.seed(<span class="dv">42</span>)</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>df_daily <span class="op">=</span> pd.DataFrame({</span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"date"</span>:   pd.date_range(<span class="st">"2023-01-01"</span>, periods<span class="op">=</span><span class="dv">250</span>).astype(<span class="bu">str</span>).tolist() <span class="op">*</span> <span class="dv">10</span>,</span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">"ticker"</span>: [<span class="bu">str</span>(i).zfill(<span class="dv">6</span>) <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">10</span>) <span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">250</span>)],</span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">"close"</span>:  np.random.uniform(<span class="dv">10</span>, <span class="dv">100</span>, <span class="dv">2500</span>).<span class="bu">round</span>(<span class="dv">2</span>),</span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">"volume"</span>: np.random.randint(<span class="dv">1_000_000</span>, <span class="dv">50_000_000</span>, <span class="dv">2500</span>),</span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a>df_daily.to_sql(<span class="st">"stock_daily"</span>, conn, if_exists<span class="op">=</span><span class="st">"append"</span>, index<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a>df_fin <span class="op">=</span> pd.DataFrame({</span>
+<span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a>    <span class="st">"ticker"</span>:   [<span class="bu">str</span>(i).zfill(<span class="dv">6</span>) <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">10</span>) <span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">4</span>)],</span>
+<span id="cb21-14"><a href="#cb21-14" aria-hidden="true" tabindex="-1"></a>    <span class="st">"year"</span>:     [<span class="dv">2023</span>] <span class="op">*</span> <span class="dv">40</span>,</span>
+<span id="cb21-15"><a href="#cb21-15" aria-hidden="true" tabindex="-1"></a>    <span class="st">"quarter"</span>:  [<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>] <span class="op">*</span> <span class="dv">10</span>,</span>
+<span id="cb21-16"><a href="#cb21-16" aria-hidden="true" tabindex="-1"></a>    <span class="st">"roe"</span>:      np.random.uniform(<span class="fl">0.05</span>, <span class="fl">0.25</span>, <span class="dv">40</span>).<span class="bu">round</span>(<span class="dv">4</span>),</span>
+<span id="cb21-17"><a href="#cb21-17" aria-hidden="true" tabindex="-1"></a>    <span class="st">"pe_ratio"</span>: np.random.uniform(<span class="dv">8</span>, <span class="dv">40</span>, <span class="dv">40</span>).<span class="bu">round</span>(<span class="dv">2</span>),</span>
+<span id="cb21-18"><a href="#cb21-18" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb21-19"><a href="#cb21-19" aria-hidden="true" tabindex="-1"></a>df_fin.to_sql(<span class="st">"fin_quarterly"</span>, conn, if_exists<span class="op">=</span><span class="st">"replace"</span>, index<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb21-20"><a href="#cb21-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-21"><a href="#cb21-21" aria-hidden="true" tabindex="-1"></a>conn.commit()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="索引查询加速的关键" class="level3" data-number="11.4.7">
+<h3 data-number="11.4.7" class="anchored" data-anchor-id="索引查询加速的关键"><span class="header-section-number">11.4.7</span> 索引：查询加速的关键</h3>
+<p>建表之后，立刻建索引。索引对于「按 ticker 查询」这类操作，可以把速度从秒级提升到毫秒级：</p>
+<div class="sourceCode" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 在最常用的查询维度上建索引</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>cur.execute(<span class="st">"""</span></span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a><span class="st">    CREATE INDEX IF NOT EXISTS idx_daily_ticker_date</span></span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a><span class="st">    ON stock_daily (ticker, date)</span></span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a><span class="st">"""</span>)</span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>conn.commit()</span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a><span class="co"># 验证：查询单只股票的全年数据</span></span>
+<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> time</span>
+<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-11"><a href="#cb22-11" aria-hidden="true" tabindex="-1"></a>t0 <span class="op">=</span> time.time()</span>
+<span id="cb22-12"><a href="#cb22-12" aria-hidden="true" tabindex="-1"></a>df_result <span class="op">=</span> pd.read_sql(</span>
+<span id="cb22-13"><a href="#cb22-13" aria-hidden="true" tabindex="-1"></a>    <span class="st">"SELECT * FROM stock_daily WHERE ticker = '000001'"</span>,</span>
+<span id="cb22-14"><a href="#cb22-14" aria-hidden="true" tabindex="-1"></a>    conn</span>
+<span id="cb22-15"><a href="#cb22-15" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb22-16"><a href="#cb22-16" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"查询耗时：</span><span class="sc">{</span>time<span class="sc">.</span>time() <span class="op">-</span> t0<span class="sc">:.4f}</span><span class="ss"> 秒，共 </span><span class="sc">{</span><span class="bu">len</span>(df_result)<span class="sc">}</span><span class="ss"> 行"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="多表联合查询" class="level3" data-number="11.4.8">
+<h3 data-number="11.4.8" class="anchored" data-anchor-id="多表联合查询"><span class="header-section-number">11.4.8</span> 多表联合查询</h3>
+<p>这是 SQLite 相对于 Parquet 最核心的优势：</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 关联行情与财务数据：找出 2023 年 ROE &gt; 15%、PE &lt; 20 的股票</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="co"># 并计算这些股票在 Q2 财报发布后的平均收盘价</span></span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>df_combined <span class="op">=</span> pd.read_sql(<span class="st">"""</span></span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a><span class="st">    SELECT</span></span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a><span class="st">        d.ticker,</span></span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a><span class="st">        ROUND(AVG(d.close), 2)  AS avg_close_h2,</span></span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a><span class="st">        f.roe,</span></span>
+<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a><span class="st">        f.pe_ratio</span></span>
+<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a><span class="st">    FROM stock_daily d</span></span>
+<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a><span class="st">    JOIN fin_quarterly f</span></span>
+<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a><span class="st">        ON d.ticker  = f.ticker</span></span>
+<span id="cb23-12"><a href="#cb23-12" aria-hidden="true" tabindex="-1"></a><span class="st">        AND f.year   = 2023</span></span>
+<span id="cb23-13"><a href="#cb23-13" aria-hidden="true" tabindex="-1"></a><span class="st">        AND f.quarter = 2</span></span>
+<span id="cb23-14"><a href="#cb23-14" aria-hidden="true" tabindex="-1"></a><span class="st">    WHERE</span></span>
+<span id="cb23-15"><a href="#cb23-15" aria-hidden="true" tabindex="-1"></a><span class="st">        f.roe      &gt; 0.15</span></span>
+<span id="cb23-16"><a href="#cb23-16" aria-hidden="true" tabindex="-1"></a><span class="st">        AND f.pe_ratio &lt; 20</span></span>
+<span id="cb23-17"><a href="#cb23-17" aria-hidden="true" tabindex="-1"></a><span class="st">        AND d.date &gt;= '2023-07-01'</span></span>
+<span id="cb23-18"><a href="#cb23-18" aria-hidden="true" tabindex="-1"></a><span class="st">        AND d.date &lt;= '2023-12-31'</span></span>
+<span id="cb23-19"><a href="#cb23-19" aria-hidden="true" tabindex="-1"></a><span class="st">    GROUP BY</span></span>
+<span id="cb23-20"><a href="#cb23-20" aria-hidden="true" tabindex="-1"></a><span class="st">        d.ticker, f.roe, f.pe_ratio</span></span>
+<span id="cb23-21"><a href="#cb23-21" aria-hidden="true" tabindex="-1"></a><span class="st">    ORDER BY</span></span>
+<span id="cb23-22"><a href="#cb23-22" aria-hidden="true" tabindex="-1"></a><span class="st">        f.roe DESC</span></span>
+<span id="cb23-23"><a href="#cb23-23" aria-hidden="true" tabindex="-1"></a><span class="st">"""</span>, conn)</span>
+<span id="cb23-24"><a href="#cb23-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-25"><a href="#cb23-25" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df_combined)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="参数化查询" class="level3" data-number="11.4.9">
+<h3 data-number="11.4.9" class="anchored" data-anchor-id="参数化查询"><span class="header-section-number">11.4.9</span> 参数化查询</h3>
+<p>当查询条件来自用户输入或变量时，必须使用参数化查询，避免 SQL 注入风险：</p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 错误做法（字符串拼接，有安全风险）</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>ticker <span class="op">=</span> <span class="st">"000001"</span></span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_sql(<span class="ss">f"SELECT * FROM stock_daily WHERE ticker = '</span><span class="sc">{</span>ticker<span class="sc">}</span><span class="ss">'"</span>, conn)</span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a><span class="co"># 正确做法（参数化查询）</span></span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_sql(</span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">"SELECT * FROM stock_daily WHERE ticker = ? AND date &gt;= ?"</span>,</span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a>    conn,</span>
+<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a>    params<span class="op">=</span>(<span class="st">"000001"</span>, <span class="st">"2023-06-01"</span>)</span>
+<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="把分析结果写回数据库" class="level3" data-number="11.4.10">
+<h3 data-number="11.4.10" class="anchored" data-anchor-id="把分析结果写回数据库"><span class="header-section-number">11.4.10</span> 把分析结果写回数据库</h3>
+<p>SQLite 还可以用来存储中间结果，下次直接读取而不需要重新计算：</p>
+<div class="sourceCode" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 计算每只股票的月度均价（耗时操作）</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>df_monthly <span class="op">=</span> pd.read_sql(<span class="st">"""</span></span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a><span class="st">    SELECT</span></span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a><span class="st">        ticker,</span></span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a><span class="st">        SUBSTR(date, 1, 7)      AS month,</span></span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a><span class="st">        ROUND(AVG(close), 2)    AS avg_close,</span></span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a><span class="st">        ROUND(MAX(close), 2)    AS max_close,</span></span>
+<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a><span class="st">        ROUND(MIN(close), 2)    AS min_close,</span></span>
+<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a><span class="st">        SUM(volume)             AS total_vol</span></span>
+<span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a><span class="st">    FROM stock_daily</span></span>
+<span id="cb25-11"><a href="#cb25-11" aria-hidden="true" tabindex="-1"></a><span class="st">    GROUP BY ticker, month</span></span>
+<span id="cb25-12"><a href="#cb25-12" aria-hidden="true" tabindex="-1"></a><span class="st">"""</span>, conn)</span>
+<span id="cb25-13"><a href="#cb25-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-14"><a href="#cb25-14" aria-hidden="true" tabindex="-1"></a><span class="co"># 写回数据库，下次直接读，不需要重新聚合</span></span>
+<span id="cb25-15"><a href="#cb25-15" aria-hidden="true" tabindex="-1"></a>df_monthly.to_sql(<span class="st">"monthly_summary"</span>, conn, if_exists<span class="op">=</span><span class="st">"replace"</span>, index<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb25-16"><a href="#cb25-16" aria-hidden="true" tabindex="-1"></a>conn.commit()</span>
+<span id="cb25-17"><a href="#cb25-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-18"><a href="#cb25-18" aria-hidden="true" tabindex="-1"></a>conn.close()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+提示词：多表 SQL 查询设计
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>我有一个 SQLite 数据库 <code>finance.db</code>，包含以下表：</p>
+<p><strong>stock_daily 表</strong>（股票日线数据）： - date（TEXT，格式 YYYY-MM-DD） - ticker（TEXT，6 位股票代码） - close（REAL，收盘价） - volume（INTEGER，成交量）</p>
+<p><strong>fin_quarterly 表</strong>（季度财务数据）： - ticker（TEXT） - year（INTEGER） - quarter（INTEGER，1-4） - roe（REAL，净资产收益率，小数形式） - pe_ratio（REAL，市盈率）</p>
+<p>我想完成以下分析：[用自然语言描述你的分析目标，例如：找出 2023 年全年 ROE 持续大于 12% 的股票，计算它们在每个季报发布后一个月内的平均涨跌幅]</p>
+<p>请帮我：</p>
+<ol type="1">
+<li>写出完成这个分析的 SQL 查询</li>
+<li>用 <code>pd.read_sql()</code> 封装成 Python 代码</li>
+<li>解释每一个 JOIN 和 WHERE 条件的逻辑</li>
+<li>说明应该在哪些列上建索引来加速查询</li>
+</ol>
+<p>如果需要多步查询，请用 WITH 子句（CTE）组织。</p>
+</div>
+</div>
+<hr>
+</section>
+</section>
+<section id="duckdb对文件直接执行-sql" class="level2" data-number="11.5">
+<h2 data-number="11.5" class="anchored" data-anchor-id="duckdb对文件直接执行-sql"><span class="header-section-number">11.5</span> DuckDB：对文件直接执行 SQL</h2>
+<section id="一个常见的困境" class="level3" data-number="11.5.1">
+<h3 data-number="11.5.1" class="anchored" data-anchor-id="一个常见的困境"><span class="header-section-number">11.5.1</span> 一个常见的困境</h3>
+<p>你清洗好了数据，存成了 Parquet。现在想做一个跨文件的分析：把 5 年的日线数据（5 个 Parquet 文件）合并，计算每只股票的年化波动率。</p>
+<p>传统做法是把 5 个文件都读进内存，合并成一个 DataFrame，再计算。但 5 年数据可能有几十 GB，内存放不下。</p>
+<p>DuckDB 解决了这个问题：<strong>它可以直接对 Parquet 文件执行 SQL，不需要先把数据加载到内存，也不需要数据库服务器。</strong></p>
+<div class="sourceCode" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="co"># pip install duckdb</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> duckdb</span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a><span class="co"># 直接对 Parquet 文件执行 SQL，不需要读入内存</span></span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>result <span class="op">=</span> duckdb.execute(<span class="st">"""</span></span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a><span class="st">    SELECT</span></span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a><span class="st">        ticker,</span></span>
+<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a><span class="st">        COUNT(*)                                     AS trading_days,</span></span>
+<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a><span class="st">        ROUND(AVG(close), 2)                         AS avg_close,</span></span>
+<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a><span class="st">        ROUND(STDDEV(close) / AVG(close) * 100, 2)  AS cv_pct</span></span>
+<span id="cb26-11"><a href="#cb26-11" aria-hidden="true" tabindex="-1"></a><span class="st">    FROM read_parquet('data/processed/stock_daily_*.parquet')</span></span>
+<span id="cb26-12"><a href="#cb26-12" aria-hidden="true" tabindex="-1"></a><span class="st">    WHERE date &gt;= '2023-01-01'</span></span>
+<span id="cb26-13"><a href="#cb26-13" aria-hidden="true" tabindex="-1"></a><span class="st">    GROUP BY ticker</span></span>
+<span id="cb26-14"><a href="#cb26-14" aria-hidden="true" tabindex="-1"></a><span class="st">    ORDER BY cv_pct DESC</span></span>
+<span id="cb26-15"><a href="#cb26-15" aria-hidden="true" tabindex="-1"></a><span class="st">    LIMIT 20</span></span>
+<span id="cb26-16"><a href="#cb26-16" aria-hidden="true" tabindex="-1"></a><span class="st">"""</span>).df()   <span class="co"># .df() 直接返回 pandas DataFrame</span></span>
+<span id="cb26-17"><a href="#cb26-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-18"><a href="#cb26-18" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(result)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><code>read_parquet()</code> 支持通配符，可以一次性读取多个文件，DuckDB 会自动并行处理，速度接近 Apache Spark，但配置极为简单。</p>
+</section>
+<section id="跨文件-join" class="level3" data-number="11.5.2">
+<h3 data-number="11.5.2" class="anchored" data-anchor-id="跨文件-join"><span class="header-section-number">11.5.2</span> 跨文件 JOIN</h3>
+<p>DuckDB 甚至可以对不同目录下的多个 Parquet 文件做 JOIN：</p>
+<div class="sourceCode" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>result <span class="op">=</span> duckdb.execute(<span class="st">"""</span></span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="st">    SELECT</span></span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a><span class="st">        a.ticker,</span></span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a><span class="st">        a.date,</span></span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a><span class="st">        a.close,</span></span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a><span class="st">        b.roe,</span></span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a><span class="st">        b.pe_ratio</span></span>
+<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a><span class="st">    FROM read_parquet('data/processed/stock_daily.parquet')  a</span></span>
+<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a><span class="st">    JOIN read_parquet('data/processed/fin_quarterly.parquet') b</span></span>
+<span id="cb27-10"><a href="#cb27-10" aria-hidden="true" tabindex="-1"></a><span class="st">        ON  a.ticker  = b.ticker</span></span>
+<span id="cb27-11"><a href="#cb27-11" aria-hidden="true" tabindex="-1"></a><span class="st">        AND YEAR(a.date::DATE) = b.year</span></span>
+<span id="cb27-12"><a href="#cb27-12" aria-hidden="true" tabindex="-1"></a><span class="st">    WHERE</span></span>
+<span id="cb27-13"><a href="#cb27-13" aria-hidden="true" tabindex="-1"></a><span class="st">        b.roe      &gt; 0.15</span></span>
+<span id="cb27-14"><a href="#cb27-14" aria-hidden="true" tabindex="-1"></a><span class="st">        AND b.quarter = 4</span></span>
+<span id="cb27-15"><a href="#cb27-15" aria-hidden="true" tabindex="-1"></a><span class="st">    ORDER BY a.date, a.ticker</span></span>
+<span id="cb27-16"><a href="#cb27-16" aria-hidden="true" tabindex="-1"></a><span class="st">"""</span>).df()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="duckdbsqlite-与-parquet-的定位" class="level3" data-number="11.5.3">
+<h3 data-number="11.5.3" class="anchored" data-anchor-id="duckdbsqlite-与-parquet-的定位"><span class="header-section-number">11.5.3</span> DuckDB、SQLite 与 Parquet 的定位</h3>
+<p>三者之间不是竞争关系，而是互补：</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>场景</th>
+<th>推荐工具</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>存储大规模分析数据，用于共享</td>
+<td>Parquet</td>
+</tr>
+<tr class="even">
+<td>跨多个 Parquet 文件做 SQL 分析</td>
+<td>DuckDB</td>
+</tr>
+<tr class="odd">
+<td>需要频繁增删改，多表长期维护</td>
+<td>SQLite</td>
+</tr>
+<tr class="even">
+<td>生成结果给非技术人员查看</td>
+<td>CSV / Excel</td>
+</tr>
+</tbody>
+</table>
+<p>一个典型的工作流是：原始数据存 Parquet → 用 DuckDB 做探索性分析和因子计算 → 把需要长期维护的多表关系放进 SQLite → 最终结果导出 CSV 给导师或报告。</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+提示词：用 DuckDB 分析多个 Parquet 文件
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>我有多个 Parquet 文件，存放在 <code>[目录路径]</code>，文件命名规律是 <code>[例如：stock_daily_YYYY.parquet]</code>。</p>
+<p>每个文件的列结构如下：</p>
+<ul>
+<li>[列1]：[类型和说明]</li>
+<li>[列2]：[类型和说明]</li>
+</ul>
+<p>我想完成的分析是：[用自然语言描述，例如：计算每只股票过去 5 年的年化收益率和最大回撤，按收益率降序排列，取前 50 名]</p>
+<p>请帮我：</p>
+<ol type="1">
+<li>用 DuckDB 的 <code>read_parquet()</code> 读取所有文件（用通配符）</li>
+<li>写出完成分析的 SQL 查询</li>
+<li>用 <code>.df()</code> 转为 pandas DataFrame 方便后续处理</li>
+<li>如果分析结果需要保存，说明应该存成 Parquet 还是 SQLite，理由是什么</li>
+</ol>
+<p>如果涉及窗口函数（如计算移动平均、最大回撤），请用注释解释每个窗口函数的逻辑。</p>
+</div>
+</div>
+<hr>
+</section>
+</section>
+<section id="端到端工作流" class="level2" data-number="11.6">
+<h2 data-number="11.6" class="anchored" data-anchor-id="端到端工作流"><span class="header-section-number">11.6</span> 端到端工作流</h2>
+<p>把本章所有内容串联起来，形成一套可复用的完整流程。</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://fig-lianxh.oss-cn-shenzhen.aliyuncs.com/data_manage_end_to_end_workflow.png" class="img-fluid figure-img" style="width:100.0%"></p>
+<figcaption>data_manage_end_to_end_workflow</figcaption>
+</figure>
+</div>
+<section id="清洗函数固化处理步骤" class="level3" data-number="11.6.1">
+<h3 data-number="11.6.1" class="anchored" data-anchor-id="清洗函数固化处理步骤"><span class="header-section-number">11.6.1</span> 清洗函数：固化处理步骤</h3>
+<p>任何数据清洗都应该写成函数，而不是散落在 Notebook 的各个 Cell 里。函数化的好处是：任何人运行同一个函数，结果完全相同——这就是可复现性。</p>
+<div class="sourceCode" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pyarrow <span class="im">as</span> pa</span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pyarrow.parquet <span class="im">as</span> pq</span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> json</span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> datetime</span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
+<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> clean_and_save(</span>
+<span id="cb28-9"><a href="#cb28-9" aria-hidden="true" tabindex="-1"></a>    raw_path: <span class="bu">str</span>,</span>
+<span id="cb28-10"><a href="#cb28-10" aria-hidden="true" tabindex="-1"></a>    output_path: <span class="bu">str</span>,</span>
+<span id="cb28-11"><a href="#cb28-11" aria-hidden="true" tabindex="-1"></a>    source_desc: <span class="bu">str</span> <span class="op">=</span> <span class="st">""</span>,</span>
+<span id="cb28-12"><a href="#cb28-12" aria-hidden="true" tabindex="-1"></a>    na_values: <span class="bu">list</span> <span class="op">=</span> <span class="va">None</span>,</span>
+<span id="cb28-13"><a href="#cb28-13" aria-hidden="true" tabindex="-1"></a>) <span class="op">-&gt;</span> pd.DataFrame:</span>
+<span id="cb28-14"><a href="#cb28-14" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
+<span id="cb28-15"><a href="#cb28-15" aria-hidden="true" tabindex="-1"></a><span class="co">    标准化清洗流程：读取原始 CSV → 修复类型 → 存为 Parquet → 记录元数据</span></span>
+<span id="cb28-16"><a href="#cb28-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-17"><a href="#cb28-17" aria-hidden="true" tabindex="-1"></a><span class="co">    参数：</span></span>
+<span id="cb28-18"><a href="#cb28-18" aria-hidden="true" tabindex="-1"></a><span class="co">        raw_path    : 原始 CSV 文件路径</span></span>
+<span id="cb28-19"><a href="#cb28-19" aria-hidden="true" tabindex="-1"></a><span class="co">        output_path : 输出 Parquet 文件路径</span></span>
+<span id="cb28-20"><a href="#cb28-20" aria-hidden="true" tabindex="-1"></a><span class="co">        source_desc : 数据来源描述（写入元数据）</span></span>
+<span id="cb28-21"><a href="#cb28-21" aria-hidden="true" tabindex="-1"></a><span class="co">        na_values   : 额外的空值标记（如 Wind 的 "--"）</span></span>
+<span id="cb28-22"><a href="#cb28-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-23"><a href="#cb28-23" aria-hidden="true" tabindex="-1"></a><span class="co">    返回：</span></span>
+<span id="cb28-24"><a href="#cb28-24" aria-hidden="true" tabindex="-1"></a><span class="co">        清洗后的 DataFrame</span></span>
+<span id="cb28-25"><a href="#cb28-25" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb28-26"><a href="#cb28-26" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 1. 读取，识别空值</span></span>
+<span id="cb28-27"><a href="#cb28-27" aria-hidden="true" tabindex="-1"></a>    _na <span class="op">=</span> [<span class="st">"--"</span>, <span class="st">"N/A"</span>, <span class="st">"n/a"</span>, <span class="st">"#N/A"</span>] <span class="op">+</span> (na_values <span class="kw">or</span> [])</span>
+<span id="cb28-28"><a href="#cb28-28" aria-hidden="true" tabindex="-1"></a>    df <span class="op">=</span> pd.read_csv(raw_path, na_values<span class="op">=</span>_na, dtype<span class="op">=</span>{<span class="st">"ticker"</span>: <span class="bu">str</span>})</span>
+<span id="cb28-29"><a href="#cb28-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-30"><a href="#cb28-30" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 2. 统一列名（小写 + 下划线）</span></span>
+<span id="cb28-31"><a href="#cb28-31" aria-hidden="true" tabindex="-1"></a>    df.columns <span class="op">=</span> (</span>
+<span id="cb28-32"><a href="#cb28-32" aria-hidden="true" tabindex="-1"></a>        df.columns.<span class="bu">str</span>.strip()</span>
+<span id="cb28-33"><a href="#cb28-33" aria-hidden="true" tabindex="-1"></a>                  .<span class="bu">str</span>.lower()</span>
+<span id="cb28-34"><a href="#cb28-34" aria-hidden="true" tabindex="-1"></a>                  .<span class="bu">str</span>.replace(<span class="vs">r"\s+"</span>, <span class="st">"_"</span>, regex<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb28-35"><a href="#cb28-35" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb28-36"><a href="#cb28-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-37"><a href="#cb28-37" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 3. 修复 ticker（补前导零至 6 位）</span></span>
+<span id="cb28-38"><a href="#cb28-38" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="st">"ticker"</span> <span class="kw">in</span> df.columns:</span>
+<span id="cb28-39"><a href="#cb28-39" aria-hidden="true" tabindex="-1"></a>        df[<span class="st">"ticker"</span>] <span class="op">=</span> df[<span class="st">"ticker"</span>].<span class="bu">str</span>.zfill(<span class="dv">6</span>)</span>
+<span id="cb28-40"><a href="#cb28-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-41"><a href="#cb28-41" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 4. 修复 date 列</span></span>
+<span id="cb28-42"><a href="#cb28-42" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="st">"date"</span> <span class="kw">in</span> df.columns:</span>
+<span id="cb28-43"><a href="#cb28-43" aria-hidden="true" tabindex="-1"></a>        df[<span class="st">"date"</span>] <span class="op">=</span> pd.to_datetime(df[<span class="st">"date"</span>], errors<span class="op">=</span><span class="st">"coerce"</span>)</span>
+<span id="cb28-44"><a href="#cb28-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-45"><a href="#cb28-45" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 5. 存为 Parquet</span></span>
+<span id="cb28-46"><a href="#cb28-46" aria-hidden="true" tabindex="-1"></a>    os.makedirs(os.path.dirname(output_path) <span class="kw">or</span> <span class="st">"."</span>, exist_ok<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb28-47"><a href="#cb28-47" aria-hidden="true" tabindex="-1"></a>    df.to_parquet(output_path, index<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb28-48"><a href="#cb28-48" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-49"><a href="#cb28-49" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 6. 记录元数据（lineage）</span></span>
+<span id="cb28-50"><a href="#cb28-50" aria-hidden="true" tabindex="-1"></a>    meta <span class="op">=</span> {</span>
+<span id="cb28-51"><a href="#cb28-51" aria-hidden="true" tabindex="-1"></a>        <span class="st">"source_file"</span>:  raw_path,</span>
+<span id="cb28-52"><a href="#cb28-52" aria-hidden="true" tabindex="-1"></a>        <span class="st">"output_file"</span>:  output_path,</span>
+<span id="cb28-53"><a href="#cb28-53" aria-hidden="true" tabindex="-1"></a>        <span class="st">"source_desc"</span>:  source_desc,</span>
+<span id="cb28-54"><a href="#cb28-54" aria-hidden="true" tabindex="-1"></a>        <span class="st">"created_at"</span>:   datetime.datetime.now().isoformat(),</span>
+<span id="cb28-55"><a href="#cb28-55" aria-hidden="true" tabindex="-1"></a>        <span class="st">"row_count"</span>:    <span class="bu">len</span>(df),</span>
+<span id="cb28-56"><a href="#cb28-56" aria-hidden="true" tabindex="-1"></a>        <span class="st">"columns"</span>:      <span class="bu">list</span>(df.columns),</span>
+<span id="cb28-57"><a href="#cb28-57" aria-hidden="true" tabindex="-1"></a>        <span class="st">"date_range"</span>:   (</span>
+<span id="cb28-58"><a href="#cb28-58" aria-hidden="true" tabindex="-1"></a>            <span class="ss">f"</span><span class="sc">{</span>df[<span class="st">'date'</span>]<span class="sc">.</span><span class="bu">min</span>()<span class="sc">.</span>date()<span class="sc">}</span><span class="ss"> ~ </span><span class="sc">{</span>df[<span class="st">'date'</span>]<span class="sc">.</span><span class="bu">max</span>()<span class="sc">.</span>date()<span class="sc">}</span><span class="ss">"</span></span>
+<span id="cb28-59"><a href="#cb28-59" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> <span class="st">"date"</span> <span class="kw">in</span> df.columns <span class="cf">else</span> <span class="st">"N/A"</span></span>
+<span id="cb28-60"><a href="#cb28-60" aria-hidden="true" tabindex="-1"></a>        ),</span>
+<span id="cb28-61"><a href="#cb28-61" aria-hidden="true" tabindex="-1"></a>        <span class="st">"null_counts"</span>:  df.isnull().<span class="bu">sum</span>().to_dict(),</span>
+<span id="cb28-62"><a href="#cb28-62" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb28-63"><a href="#cb28-63" aria-hidden="true" tabindex="-1"></a>    meta_path <span class="op">=</span> output_path.replace(<span class="st">".parquet"</span>, <span class="st">"_lineage.json"</span>)</span>
+<span id="cb28-64"><a href="#cb28-64" aria-hidden="true" tabindex="-1"></a>    <span class="cf">with</span> <span class="bu">open</span>(meta_path, <span class="st">"w"</span>, encoding<span class="op">=</span><span class="st">"utf-8"</span>) <span class="im">as</span> f:</span>
+<span id="cb28-65"><a href="#cb28-65" aria-hidden="true" tabindex="-1"></a>        json.dump(meta, f, ensure_ascii<span class="op">=</span><span class="va">False</span>, indent<span class="op">=</span><span class="dv">2</span>)</span>
+<span id="cb28-66"><a href="#cb28-66" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-67"><a href="#cb28-67" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"✓ 已保存：</span><span class="sc">{</span>output_path<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb28-68"><a href="#cb28-68" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"  行数：</span><span class="sc">{</span><span class="bu">len</span>(df)<span class="sc">:,}</span><span class="ss">，列数：</span><span class="sc">{</span><span class="bu">len</span>(df.columns)<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb28-69"><a href="#cb28-69" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"  元数据：</span><span class="sc">{</span>meta_path<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb28-70"><a href="#cb28-70" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-71"><a href="#cb28-71" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> df</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>使用示例：</p>
+<div class="sourceCode" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>df_daily <span class="op">=</span> clean_and_save(</span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>    raw_path    <span class="op">=</span> <span class="st">"data/raw/wind_stock_daily_2023.csv"</span>,</span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>    output_path <span class="op">=</span> <span class="st">"data/processed/stock_daily_2023.parquet"</span>,</span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>    source_desc <span class="op">=</span> <span class="st">"Wind 金融终端，股票日线数据，2023年全年"</span>,</span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="从模拟数据到完整流程" class="level3" data-number="11.6.2">
+<h3 data-number="11.6.2" class="anchored" data-anchor-id="从模拟数据到完整流程"><span class="header-section-number">11.6.2</span> 从模拟数据到完整流程</h3>
+<p>以下用模拟数据演示「获取 → 清洗 → 分析 → 输出」的完整流程：</p>
+<div class="sourceCode" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> duckdb</span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sqlite3</span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a><span class="co"># ── 第一步：生成模拟原始数据（模拟 Wind 导出） ──────────────────</span></span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>np.random.seed(<span class="dv">0</span>)</span>
+<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a>n_stocks, n_days <span class="op">=</span> <span class="dv">50</span>, <span class="dv">500</span></span>
+<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-8"><a href="#cb30-8" aria-hidden="true" tabindex="-1"></a>tickers <span class="op">=</span> [<span class="bu">str</span>(i).zfill(<span class="dv">6</span>) <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, n_stocks <span class="op">+</span> <span class="dv">1</span>)]</span>
+<span id="cb30-9"><a href="#cb30-9" aria-hidden="true" tabindex="-1"></a>dates   <span class="op">=</span> pd.date_range(<span class="st">"2022-01-01"</span>, periods<span class="op">=</span>n_days, freq<span class="op">=</span><span class="st">"B"</span>)  <span class="co"># 工作日</span></span>
+<span id="cb30-10"><a href="#cb30-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-11"><a href="#cb30-11" aria-hidden="true" tabindex="-1"></a>rows <span class="op">=</span> []</span>
+<span id="cb30-12"><a href="#cb30-12" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> t <span class="kw">in</span> tickers:</span>
+<span id="cb30-13"><a href="#cb30-13" aria-hidden="true" tabindex="-1"></a>    price <span class="op">=</span> <span class="fl">50.0</span></span>
+<span id="cb30-14"><a href="#cb30-14" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> d <span class="kw">in</span> dates:</span>
+<span id="cb30-15"><a href="#cb30-15" aria-hidden="true" tabindex="-1"></a>        price <span class="op">*=</span> np.random.uniform(<span class="fl">0.97</span>, <span class="fl">1.03</span>)</span>
+<span id="cb30-16"><a href="#cb30-16" aria-hidden="true" tabindex="-1"></a>        rows.append({</span>
+<span id="cb30-17"><a href="#cb30-17" aria-hidden="true" tabindex="-1"></a>            <span class="st">"date"</span>:   d.strftime(<span class="st">"%Y-%m-</span><span class="sc">%d</span><span class="st">"</span>),</span>
+<span id="cb30-18"><a href="#cb30-18" aria-hidden="true" tabindex="-1"></a>            <span class="st">"ticker"</span>: t,</span>
+<span id="cb30-19"><a href="#cb30-19" aria-hidden="true" tabindex="-1"></a>            <span class="st">"close"</span>:  <span class="bu">round</span>(price, <span class="dv">2</span>),</span>
+<span id="cb30-20"><a href="#cb30-20" aria-hidden="true" tabindex="-1"></a>            <span class="st">"volume"</span>: <span class="bu">int</span>(np.random.randint(<span class="dv">1_000_000</span>, <span class="dv">10_000_000</span>)),</span>
+<span id="cb30-21"><a href="#cb30-21" aria-hidden="true" tabindex="-1"></a>        })</span>
+<span id="cb30-22"><a href="#cb30-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-23"><a href="#cb30-23" aria-hidden="true" tabindex="-1"></a>pd.DataFrame(rows).to_csv(<span class="st">"data/raw/stock_daily_raw.csv"</span>, index<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb30-24"><a href="#cb30-24" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"原始数据已生成"</span>)</span>
+<span id="cb30-25"><a href="#cb30-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-26"><a href="#cb30-26" aria-hidden="true" tabindex="-1"></a><span class="co"># ── 第二步：清洗并存为 Parquet ──────────────────────────────────</span></span>
+<span id="cb30-27"><a href="#cb30-27" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> clean_and_save(</span>
+<span id="cb30-28"><a href="#cb30-28" aria-hidden="true" tabindex="-1"></a>    raw_path    <span class="op">=</span> <span class="st">"data/raw/stock_daily_raw.csv"</span>,</span>
+<span id="cb30-29"><a href="#cb30-29" aria-hidden="true" tabindex="-1"></a>    output_path <span class="op">=</span> <span class="st">"data/processed/stock_daily.parquet"</span>,</span>
+<span id="cb30-30"><a href="#cb30-30" aria-hidden="true" tabindex="-1"></a>    source_desc <span class="op">=</span> <span class="st">"模拟数据，用于演示"</span>,</span>
+<span id="cb30-31"><a href="#cb30-31" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb30-32"><a href="#cb30-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-33"><a href="#cb30-33" aria-hidden="true" tabindex="-1"></a><span class="co"># ── 第三步：用 DuckDB 计算动量因子 ──────────────────────────────</span></span>
+<span id="cb30-34"><a href="#cb30-34" aria-hidden="true" tabindex="-1"></a>df_momentum <span class="op">=</span> duckdb.execute(<span class="st">"""</span></span>
+<span id="cb30-35"><a href="#cb30-35" aria-hidden="true" tabindex="-1"></a><span class="st">    WITH base AS (</span></span>
+<span id="cb30-36"><a href="#cb30-36" aria-hidden="true" tabindex="-1"></a><span class="st">        SELECT</span></span>
+<span id="cb30-37"><a href="#cb30-37" aria-hidden="true" tabindex="-1"></a><span class="st">            ticker,</span></span>
+<span id="cb30-38"><a href="#cb30-38" aria-hidden="true" tabindex="-1"></a><span class="st">            date,</span></span>
+<span id="cb30-39"><a href="#cb30-39" aria-hidden="true" tabindex="-1"></a><span class="st">            close,</span></span>
+<span id="cb30-40"><a href="#cb30-40" aria-hidden="true" tabindex="-1"></a><span class="st">            -- 20 日前的收盘价（窗口函数）</span></span>
+<span id="cb30-41"><a href="#cb30-41" aria-hidden="true" tabindex="-1"></a><span class="st">            LAG(close, 20) OVER (</span></span>
+<span id="cb30-42"><a href="#cb30-42" aria-hidden="true" tabindex="-1"></a><span class="st">                PARTITION BY ticker</span></span>
+<span id="cb30-43"><a href="#cb30-43" aria-hidden="true" tabindex="-1"></a><span class="st">                ORDER BY date</span></span>
+<span id="cb30-44"><a href="#cb30-44" aria-hidden="true" tabindex="-1"></a><span class="st">            ) AS close_20d_ago</span></span>
+<span id="cb30-45"><a href="#cb30-45" aria-hidden="true" tabindex="-1"></a><span class="st">        FROM read_parquet('data/processed/stock_daily.parquet')</span></span>
+<span id="cb30-46"><a href="#cb30-46" aria-hidden="true" tabindex="-1"></a><span class="st">    )</span></span>
+<span id="cb30-47"><a href="#cb30-47" aria-hidden="true" tabindex="-1"></a><span class="st">    SELECT</span></span>
+<span id="cb30-48"><a href="#cb30-48" aria-hidden="true" tabindex="-1"></a><span class="st">        ticker,</span></span>
+<span id="cb30-49"><a href="#cb30-49" aria-hidden="true" tabindex="-1"></a><span class="st">        date,</span></span>
+<span id="cb30-50"><a href="#cb30-50" aria-hidden="true" tabindex="-1"></a><span class="st">        close,</span></span>
+<span id="cb30-51"><a href="#cb30-51" aria-hidden="true" tabindex="-1"></a><span class="st">        ROUND((close / close_20d_ago - 1) * 100, 2) AS momentum_20d</span></span>
+<span id="cb30-52"><a href="#cb30-52" aria-hidden="true" tabindex="-1"></a><span class="st">    FROM base</span></span>
+<span id="cb30-53"><a href="#cb30-53" aria-hidden="true" tabindex="-1"></a><span class="st">    WHERE close_20d_ago IS NOT NULL</span></span>
+<span id="cb30-54"><a href="#cb30-54" aria-hidden="true" tabindex="-1"></a><span class="st">    ORDER BY date, ticker</span></span>
+<span id="cb30-55"><a href="#cb30-55" aria-hidden="true" tabindex="-1"></a><span class="st">"""</span>).df()</span>
+<span id="cb30-56"><a href="#cb30-56" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-57"><a href="#cb30-57" aria-hidden="true" tabindex="-1"></a><span class="co"># ── 第四步：保存因子数据 ─────────────────────────────────────────</span></span>
+<span id="cb30-58"><a href="#cb30-58" aria-hidden="true" tabindex="-1"></a>df_momentum.to_parquet(<span class="st">"data/outputs/factor_momentum.parquet"</span>, index<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb30-59"><a href="#cb30-59" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-60"><a href="#cb30-60" aria-hidden="true" tabindex="-1"></a><span class="co"># ── 第五步：存入 SQLite，方便后续多表查询 ──────────────────────</span></span>
+<span id="cb30-61"><a href="#cb30-61" aria-hidden="true" tabindex="-1"></a>conn <span class="op">=</span> sqlite3.<span class="ex">connect</span>(<span class="st">"finance.db"</span>)</span>
+<span id="cb30-62"><a href="#cb30-62" aria-hidden="true" tabindex="-1"></a>df_momentum.to_sql(<span class="st">"factor_momentum"</span>, conn, if_exists<span class="op">=</span><span class="st">"replace"</span>, index<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb30-63"><a href="#cb30-63" aria-hidden="true" tabindex="-1"></a>conn.execute(<span class="st">"""</span></span>
+<span id="cb30-64"><a href="#cb30-64" aria-hidden="true" tabindex="-1"></a><span class="st">    CREATE INDEX IF NOT EXISTS idx_mom_ticker_date</span></span>
+<span id="cb30-65"><a href="#cb30-65" aria-hidden="true" tabindex="-1"></a><span class="st">    ON factor_momentum (ticker, date)</span></span>
+<span id="cb30-66"><a href="#cb30-66" aria-hidden="true" tabindex="-1"></a><span class="st">"""</span>)</span>
+<span id="cb30-67"><a href="#cb30-67" aria-hidden="true" tabindex="-1"></a>conn.commit()</span>
+<span id="cb30-68"><a href="#cb30-68" aria-hidden="true" tabindex="-1"></a>conn.close()</span>
+<span id="cb30-69"><a href="#cb30-69" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-70"><a href="#cb30-70" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">完整流程执行完毕"</span>)</span>
+<span id="cb30-71"><a href="#cb30-71" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"  因子数据：</span><span class="sc">{</span><span class="bu">len</span>(df_momentum)<span class="sc">:,}</span><span class="ss"> 行"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="常见坑与检查清单" class="level3" data-number="11.6.3">
+<h3 data-number="11.6.3" class="anchored" data-anchor-id="常见坑与检查清单"><span class="header-section-number">11.6.3</span> 常见坑与检查清单</h3>
+<p>完成数据清洗后，用以下清单自查：</p>
+<div class="sourceCode" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> data_quality_check(df: pd.DataFrame, name: <span class="bu">str</span> <span class="op">=</span> <span class="st">"数据集"</span>):</span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""快速数据质量检查"""</span></span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="sc">{</span><span class="st">'='</span><span class="op">*</span><span class="dv">40</span><span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"  </span><span class="sc">{</span>name<span class="sc">}</span><span class="ss"> 质量报告"</span>)</span>
+<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span><span class="st">'='</span><span class="op">*</span><span class="dv">40</span><span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"  行数：</span><span class="sc">{</span><span class="bu">len</span>(df)<span class="sc">:,}</span><span class="ss">    列数：</span><span class="sc">{</span><span class="bu">len</span>(df.columns)<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">  列类型："</span>)</span>
+<span id="cb31-8"><a href="#cb31-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> col, dtype <span class="kw">in</span> df.dtypes.items():</span>
+<span id="cb31-9"><a href="#cb31-9" aria-hidden="true" tabindex="-1"></a>        null_n   <span class="op">=</span> df[col].isnull().<span class="bu">sum</span>()</span>
+<span id="cb31-10"><a href="#cb31-10" aria-hidden="true" tabindex="-1"></a>        null_pct <span class="op">=</span> null_n <span class="op">/</span> <span class="bu">len</span>(df) <span class="op">*</span> <span class="dv">100</span></span>
+<span id="cb31-11"><a href="#cb31-11" aria-hidden="true" tabindex="-1"></a>        flag     <span class="op">=</span> <span class="st">" ⚠️"</span> <span class="cf">if</span> null_pct <span class="op">&gt;</span> <span class="dv">5</span> <span class="cf">else</span> <span class="st">""</span></span>
+<span id="cb31-12"><a href="#cb31-12" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"    </span><span class="sc">{</span>col<span class="sc">:&lt;20}</span><span class="ss"> </span><span class="sc">{</span><span class="bu">str</span>(dtype)<span class="sc">:&lt;12}</span><span class="ss"> 空值：</span><span class="sc">{</span>null_pct<span class="sc">:.1f}</span><span class="ss">%</span><span class="sc">{</span>flag<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb31-13"><a href="#cb31-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-14"><a href="#cb31-14" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 检查 ticker 前导零</span></span>
+<span id="cb31-15"><a href="#cb31-15" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="st">"ticker"</span> <span class="kw">in</span> df.columns:</span>
+<span id="cb31-16"><a href="#cb31-16" aria-hidden="true" tabindex="-1"></a>        bad <span class="op">=</span> df[<span class="st">"ticker"</span>].dropna()</span>
+<span id="cb31-17"><a href="#cb31-17" aria-hidden="true" tabindex="-1"></a>        bad <span class="op">=</span> bad[bad.<span class="bu">str</span>.<span class="bu">len</span>() <span class="op">!=</span> <span class="dv">6</span>]</span>
+<span id="cb31-18"><a href="#cb31-18" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="bu">len</span>(bad) <span class="op">&gt;</span> <span class="dv">0</span>:</span>
+<span id="cb31-19"><a href="#cb31-19" aria-hidden="true" tabindex="-1"></a>            <span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">  ⚠️ ticker 长度不为 6 的记录：</span><span class="sc">{</span><span class="bu">len</span>(bad)<span class="sc">}</span><span class="ss"> 条"</span>)</span>
+<span id="cb31-20"><a href="#cb31-20" aria-hidden="true" tabindex="-1"></a>            <span class="bu">print</span>(<span class="ss">f"     示例：</span><span class="sc">{</span>bad<span class="sc">.</span>head(<span class="dv">3</span>)<span class="sc">.</span>tolist()<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb31-21"><a href="#cb31-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-22"><a href="#cb31-22" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 检查 date 列</span></span>
+<span id="cb31-23"><a href="#cb31-23" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="st">"date"</span> <span class="kw">in</span> df.columns <span class="kw">and</span> pd.api.types.is_datetime64_any_dtype(df[<span class="st">"date"</span>]):</span>
+<span id="cb31-24"><a href="#cb31-24" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">  日期范围：</span><span class="sc">{</span>df[<span class="st">'date'</span>]<span class="sc">.</span><span class="bu">min</span>()<span class="sc">.</span>date()<span class="sc">}</span><span class="ss"> ~ </span><span class="sc">{</span>df[<span class="st">'date'</span>]<span class="sc">.</span><span class="bu">max</span>()<span class="sc">.</span>date()<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb31-25"><a href="#cb31-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-26"><a href="#cb31-26" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 检查重复行</span></span>
+<span id="cb31-27"><a href="#cb31-27" aria-hidden="true" tabindex="-1"></a>    dup <span class="op">=</span> df.duplicated().<span class="bu">sum</span>()</span>
+<span id="cb31-28"><a href="#cb31-28" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> dup <span class="op">&gt;</span> <span class="dv">0</span>:</span>
+<span id="cb31-29"><a href="#cb31-29" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">  ⚠️ 重复行：</span><span class="sc">{</span>dup<span class="sc">}</span><span class="ss"> 条"</span>)</span>
+<span id="cb31-30"><a href="#cb31-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-31"><a href="#cb31-31" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span><span class="st">'='</span><span class="op">*</span><span class="dv">40</span><span class="sc">}</span><span class="ch">\n</span><span class="ss">"</span>)</span>
+<span id="cb31-32"><a href="#cb31-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-33"><a href="#cb31-33" aria-hidden="true" tabindex="-1"></a><span class="co"># 使用</span></span>
+<span id="cb31-34"><a href="#cb31-34" aria-hidden="true" tabindex="-1"></a>data_quality_check(df_momentum, <span class="st">"动量因子数据"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+提示词：数据质量诊断与修复
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>我在处理一份金融数据时遇到了以下问题（可多选）：</p>
+<ul class="task-list">
+<li><label><input type="checkbox">ticker 列前导零丢失，如「000001」变成了 1</label></li>
+<li><label><input type="checkbox">date 列读入后是字符串类型，无法做时间计算</label></li>
+<li><label><input type="checkbox">空值标记不统一，有 “–”、“N/A”、空字符串混用</label></li>
+<li><label><input type="checkbox">存在重复行（相同 date + ticker 出现多次）</label></li>
+<li><label><input type="checkbox">数值列中混入了字符串，导致类型为 object</label></li>
+<li><label><input type="checkbox">其他问题：[描述]</label></li>
+</ul>
+<p>我的数据基本信息：</p>
+<ul>
+<li>文件路径：[路径]</li>
+<li>数据来源：[Wind / tushare / 自己爬取]</li>
+<li>大概行数：[行数]</li>
+<li>列名：[列名列表]</li>
+</ul>
+<p>请帮我写一个函数，检测并修复上述问题，最后输出一份数据质量报告，说明修复了哪些问题、每列的空值比例、日期范围等关键信息。</p>
+</div>
+</div>
+<hr>
+</section>
+</section>
+<section id="本章小结" class="level2" data-number="11.7">
+<h2 data-number="11.7" class="anchored" data-anchor-id="本章小结"><span class="header-section-number">11.7</span> 本章小结</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 16%">
+<col style="width: 30%">
+<col style="width: 52%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>工具 / 概念</th>
+<th>核心价值</th>
+<th>记住这一句</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>文件命名规范</td>
+<td>防止混乱，支持协作</td>
+<td>日期用 YYYYMMDD，不用「最终版」</td>
+</tr>
+<tr class="even">
+<td>Parquet</td>
+<td>压缩、快速、携带类型</td>
+<td>分析用 Parquet，传阅用 CSV</td>
+</tr>
+<tr class="odd">
+<td>SQLite</td>
+<td>多表关联，单文件数据库</td>
+<td>不需要服务器，<code>.db</code> 文件即数据库</td>
+</tr>
+<tr class="even">
+<td>DuckDB</td>
+<td>对 Parquet 直接跑 SQL</td>
+<td>不读进内存，直接查文件</td>
+</tr>
+<tr class="odd">
+<td>懒加载原则</td>
+<td>节省内存和时间</td>
+<td>先筛选再读入，不要全量加载</td>
+</tr>
+<tr class="even">
+<td>数据血缘</td>
+<td>可追溯，可复现</td>
+<td>每份数据都能回答：从哪来、经过什么处理</td>
+</tr>
+</tbody>
+</table>
+<p>本章介绍的各类数据管理工具对比如下：</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 10%">
+<col style="width: 25%">
+<col style="width: 19%">
+<col style="width: 20%">
+<col style="width: 23%">
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th>CSV</th>
+<th>Parquet</th>
+<th>SQLite</th>
+<th>MySQL/PG</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>存储方式</td>
+<td>行式文本</td>
+<td>列式二进制</td>
+<td>行式二进制</td>
+<td>行式 + 索引</td>
+</tr>
+<tr class="even">
+<td>文件大小</td>
+<td>⭐⭐（大）</td>
+<td>⭐⭐⭐⭐⭐（最小）</td>
+<td>⭐⭐⭐（中）</td>
+<td>需服务器</td>
+</tr>
+<tr class="odd">
+<td>列查询速度</td>
+<td>慢</td>
+<td>极快（列跳过）</td>
+<td>快（有索引）</td>
+<td>快（有索引）</td>
+</tr>
+<tr class="even">
+<td>多表 JOIN</td>
+<td>❌</td>
+<td>❌（需 Spark）</td>
+<td>✅ 完整 SQL</td>
+<td>✅ 完整 SQL</td>
+</tr>
+<tr class="odd">
+<td>CRUD 更新</td>
+<td>❌</td>
+<td>❌（追加写）</td>
+<td>✅</td>
+<td>✅</td>
+</tr>
+<tr class="even">
+<td>并发写入</td>
+<td>—</td>
+<td>—</td>
+<td>有限</td>
+<td>✅</td>
+</tr>
+<tr class="odd">
+<td>安装部署</td>
+<td>无需</td>
+<td>pip install</td>
+<td>Python 内置</td>
+<td>需服务器</td>
+</tr>
+<tr class="even">
+<td>数据量上限</td>
+<td>~GB</td>
+<td>TB 级</td>
+<td>~几十 GB</td>
+<td>TB+</td>
+</tr>
+<tr class="odd">
+<td>典型场景</td>
+<td>小数据交换<br>Excel 兼容</td>
+<td>大规模<br>分析查询</td>
+<td>本地 DB<br>原型开发</td>
+<td>生产系统<br>多用户并发</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<p>下一章将使用真实的 A 股数据，把本章介绍的所有工具应用到一个完整的研究项目中：从 Wind 原始数据出发，经过清洗、存储、因子计算，最终完成一个可发表的实证分析。</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const disableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'prefetch';
+    }
+  }
+  const enableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'stylesheet';
+    }
+  }
+  const manageTransitions = (selector, allowTransitions) => {
+    const els = window.document.querySelectorAll(selector);
+    for (let i=0; i < els.length; i++) {
+      const el = els[i];
+      if (allowTransitions) {
+        el.classList.remove('notransition');
+      } else {
+        el.classList.add('notransition');
+      }
+    }
+  }
+  const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+    const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+    const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+    let newTheme = '';
+    if(darkModeDefault) {
+      newTheme = isAlternate ? baseTheme : alternateTheme;
+    } else {
+      newTheme = isAlternate ? alternateTheme : baseTheme;
+    }
+    const changeGiscusTheme = () => {
+      // From: https://github.com/giscus/giscus/issues/336
+      const sendMessage = (message) => {
+        const iframe = document.querySelector('iframe.giscus-frame');
+        if (!iframe) return;
+        iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+      }
+      sendMessage({
+        setConfig: {
+          theme: newTheme
+        }
+      });
+    }
+    const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+    if (isGiscussLoaded) {
+      changeGiscusTheme();
+    }
+  }
+  const toggleColorMode = (alternate) => {
+    // Switch the stylesheets
+    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+    manageTransitions('#quarto-margin-sidebar .nav-link', false);
+    if (alternate) {
+      enableStylesheet(alternateStylesheets);
+      for (const sheetNode of alternateStylesheets) {
+        if (sheetNode.id === "quarto-bootstrap") {
+          toggleBodyColorMode(sheetNode);
+        }
+      }
+    } else {
+      disableStylesheet(alternateStylesheets);
+      toggleBodyColorPrimary();
+    }
+    manageTransitions('#quarto-margin-sidebar .nav-link', true);
+    // Switch the toggles
+    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+    for (let i=0; i < toggles.length; i++) {
+      const toggle = toggles[i];
+      if (toggle) {
+        if (alternate) {
+          toggle.classList.add("alternate");     
+        } else {
+          toggle.classList.remove("alternate");
+        }
+      }
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455)
+    if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+      manageTransitions("body", false);
+      window.scrollTo(0, 1);
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        manageTransitions("body", true);
+      }, 40);  
+    }
+  }
+  const isFileUrl = () => { 
+    return window.location.protocol === 'file:';
+  }
+  const hasAlternateSentinel = () => {  
+    let styleSentinel = getColorSchemeSentinel();
+    if (styleSentinel !== null) {
+      return styleSentinel === "alternate";
+    } else {
+      return false;
+    }
+  }
+  const setStyleSentinel = (alternate) => {
+    const value = alternate ? "alternate" : "default";
+    if (!isFileUrl()) {
+      window.localStorage.setItem("quarto-color-scheme", value);
+    } else {
+      localAlternateSentinel = value;
+    }
+  }
+  const getColorSchemeSentinel = () => {
+    if (!isFileUrl()) {
+      const storageValue = window.localStorage.getItem("quarto-color-scheme");
+      return storageValue != null ? storageValue : localAlternateSentinel;
+    } else {
+      return localAlternateSentinel;
+    }
+  }
+  const darkModeDefault = false;
+  let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+  // Dark / light mode switch
+  window.quartoToggleColorScheme = () => {
+    // Read the current dark / light value 
+    let toAlternate = !hasAlternateSentinel();
+    toggleColorMode(toAlternate);
+    setStyleSentinel(toAlternate);
+    toggleGiscusIfUsed(toAlternate, darkModeDefault);
+  };
+  // Ensure there is a toggle, if there isn't float one in the top right
+  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+    const a = window.document.createElement('a');
+    a.classList.add('top-right');
+    a.classList.add('quarto-color-scheme-toggle');
+    a.href = "";
+    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+    const i = window.document.createElement("i");
+    i.classList.add('bi');
+    a.appendChild(i);
+    window.document.body.appendChild(a);
+  }
+  // Switch to dark mode if need be
+  if (hasAlternateSentinel()) {
+    toggleColorMode(true);
+  } else {
+    toggleColorMode(false);
+  }
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp("https:\/\/lianxhcn\.github\.io\/dsfin\/");
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+          // target, if specified
+          link.setAttribute("target", "_blank");
+          if (link.getAttribute("rel") === null) {
+            link.setAttribute("rel", "noopener");
+          }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../../Lecture/data_store_structure/lecture_data_management_organization.html" class="pagination-link" aria-label="数据管理与组织">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">数据管理与组织</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../../Lecture/data_clean/lecture_data_clean.html" class="pagination-link" aria-label="数据清洗">
+        <span class="nav-page-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">数据清洗</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+      &nbsp;
+    </div>   
+    <div class="nav-footer-center">
+<p><a href="https://www.lianxh.cn">lianxh.cn</a></p>
+</div>
+    <div class="nav-footer-right">
+<p>Support: <a href="https://lianxhcn.github.io/quarto_book/">Quarto</a></p>
+</div>
+  </div>
+</footer>
+
+
+
+
+</body></html>
