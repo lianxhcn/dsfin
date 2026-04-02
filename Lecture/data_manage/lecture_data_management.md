@@ -385,7 +385,7 @@ df.to_parquet("fin_ratios.parquet", compression="zstd", index=False)
 
 在 README 里附上这两行说明：
 
-```markdown
+````markdown
 ## 数据使用
 
 数据以 Parquet 格式发布（约 40 MB），原始 CSV 约 200 MB。
@@ -397,11 +397,12 @@ df = pd.read_parquet("fin_ratios.parquet")
 ```
 
 **转换为 CSV（如需 Excel 查看）：**
+
 ```python
 import pandas as pd
 pd.read_parquet("fin_ratios.parquet").to_csv("fin_ratios.csv", index=False)
 ```
-```
+````
 
 用户使用时，一行代码即可上手，不需要安装任何额外工具（pandas 已内置 Parquet 支持）。
 

@@ -478,24 +478,29 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#读取时过滤懒加载原则" id="toc-读取时过滤懒加载原则" class="nav-link" data-scroll-target="#读取时过滤懒加载原则"><span class="header-section-number">11.4.4</span> 读取时过滤：懒加载原则</a></li>
   <li><a href="#分区存储数据集发布的最佳实践" id="toc-分区存储数据集发布的最佳实践" class="nav-link" data-scroll-target="#分区存储数据集发布的最佳实践"><span class="header-section-number">11.4.5</span> 分区存储：数据集发布的最佳实践</a></li>
   <li><a href="#把-csv-发布为-parquet一个实用场景" id="toc-把-csv-发布为-parquet一个实用场景" class="nav-link" data-scroll-target="#把-csv-发布为-parquet一个实用场景"><span class="header-section-number">11.4.6</span> 把 CSV 发布为 Parquet：一个实用场景</a></li>
-  <li><a href="#索引查询加速的关键" id="toc-索引查询加速的关键" class="nav-link" data-scroll-target="#索引查询加速的关键"><span class="header-section-number">11.4.7</span> 索引：查询加速的关键</a></li>
-  <li><a href="#多表联合查询" id="toc-多表联合查询" class="nav-link" data-scroll-target="#多表联合查询"><span class="header-section-number">11.4.8</span> 多表联合查询</a></li>
-  <li><a href="#参数化查询" id="toc-参数化查询" class="nav-link" data-scroll-target="#参数化查询"><span class="header-section-number">11.4.9</span> 参数化查询</a></li>
-  <li><a href="#把分析结果写回数据库" id="toc-把分析结果写回数据库" class="nav-link" data-scroll-target="#把分析结果写回数据库"><span class="header-section-number">11.4.10</span> 把分析结果写回数据库</a></li>
   </ul></li>
-  <li><a href="#duckdb对文件直接执行-sql" id="toc-duckdb对文件直接执行-sql" class="nav-link" data-scroll-target="#duckdb对文件直接执行-sql"><span class="header-section-number">11.5</span> DuckDB：对文件直接执行 SQL</a>
+  <li><a href="#sqlite嵌入式关系数据库" id="toc-sqlite嵌入式关系数据库" class="nav-link" data-scroll-target="#sqlite嵌入式关系数据库"><span class="header-section-number">11.5</span> SQLite：嵌入式关系数据库</a>
   <ul class="collapse">
-  <li><a href="#一个常见的困境" id="toc-一个常见的困境" class="nav-link" data-scroll-target="#一个常见的困境"><span class="header-section-number">11.5.1</span> 一个常见的困境</a></li>
-  <li><a href="#跨文件-join" id="toc-跨文件-join" class="nav-link" data-scroll-target="#跨文件-join"><span class="header-section-number">11.5.2</span> 跨文件 JOIN</a></li>
-  <li><a href="#duckdbsqlite-与-parquet-的定位" id="toc-duckdbsqlite-与-parquet-的定位" class="nav-link" data-scroll-target="#duckdbsqlite-与-parquet-的定位"><span class="header-section-number">11.5.3</span> DuckDB、SQLite 与 Parquet 的定位</a></li>
+  <li><a href="#什么时候需要-sqlite" id="toc-什么时候需要-sqlite" class="nav-link" data-scroll-target="#什么时候需要-sqlite"><span class="header-section-number">11.5.1</span> 什么时候需要 SQLite</a></li>
+  <li><a href="#基本操作" id="toc-基本操作" class="nav-link" data-scroll-target="#基本操作"><span class="header-section-number">11.5.2</span> 基本操作</a></li>
+  <li><a href="#索引查询加速的关键" id="toc-索引查询加速的关键" class="nav-link" data-scroll-target="#索引查询加速的关键"><span class="header-section-number">11.5.3</span> 索引：查询加速的关键</a></li>
+  <li><a href="#多表联合查询" id="toc-多表联合查询" class="nav-link" data-scroll-target="#多表联合查询"><span class="header-section-number">11.5.4</span> 多表联合查询</a></li>
+  <li><a href="#参数化查询" id="toc-参数化查询" class="nav-link" data-scroll-target="#参数化查询"><span class="header-section-number">11.5.5</span> 参数化查询</a></li>
+  <li><a href="#把分析结果写回数据库" id="toc-把分析结果写回数据库" class="nav-link" data-scroll-target="#把分析结果写回数据库"><span class="header-section-number">11.5.6</span> 把分析结果写回数据库</a></li>
   </ul></li>
-  <li><a href="#端到端工作流" id="toc-端到端工作流" class="nav-link" data-scroll-target="#端到端工作流"><span class="header-section-number">11.6</span> 端到端工作流</a>
+  <li><a href="#duckdb对文件直接执行-sql" id="toc-duckdb对文件直接执行-sql" class="nav-link" data-scroll-target="#duckdb对文件直接执行-sql"><span class="header-section-number">11.6</span> DuckDB：对文件直接执行 SQL</a>
   <ul class="collapse">
-  <li><a href="#清洗函数固化处理步骤" id="toc-清洗函数固化处理步骤" class="nav-link" data-scroll-target="#清洗函数固化处理步骤"><span class="header-section-number">11.6.1</span> 清洗函数：固化处理步骤</a></li>
-  <li><a href="#从模拟数据到完整流程" id="toc-从模拟数据到完整流程" class="nav-link" data-scroll-target="#从模拟数据到完整流程"><span class="header-section-number">11.6.2</span> 从模拟数据到完整流程</a></li>
-  <li><a href="#常见坑与检查清单" id="toc-常见坑与检查清单" class="nav-link" data-scroll-target="#常见坑与检查清单"><span class="header-section-number">11.6.3</span> 常见坑与检查清单</a></li>
+  <li><a href="#一个常见的困境" id="toc-一个常见的困境" class="nav-link" data-scroll-target="#一个常见的困境"><span class="header-section-number">11.6.1</span> 一个常见的困境</a></li>
+  <li><a href="#跨文件-join" id="toc-跨文件-join" class="nav-link" data-scroll-target="#跨文件-join"><span class="header-section-number">11.6.2</span> 跨文件 JOIN</a></li>
+  <li><a href="#duckdbsqlite-与-parquet-的定位" id="toc-duckdbsqlite-与-parquet-的定位" class="nav-link" data-scroll-target="#duckdbsqlite-与-parquet-的定位"><span class="header-section-number">11.6.3</span> DuckDB、SQLite 与 Parquet 的定位</a></li>
   </ul></li>
-  <li><a href="#本章小结" id="toc-本章小结" class="nav-link" data-scroll-target="#本章小结"><span class="header-section-number">11.7</span> 本章小结</a></li>
+  <li><a href="#端到端工作流" id="toc-端到端工作流" class="nav-link" data-scroll-target="#端到端工作流"><span class="header-section-number">11.7</span> 端到端工作流</a>
+  <ul class="collapse">
+  <li><a href="#清洗函数固化处理步骤" id="toc-清洗函数固化处理步骤" class="nav-link" data-scroll-target="#清洗函数固化处理步骤"><span class="header-section-number">11.7.1</span> 清洗函数：固化处理步骤</a></li>
+  <li><a href="#从模拟数据到完整流程" id="toc-从模拟数据到完整流程" class="nav-link" data-scroll-target="#从模拟数据到完整流程"><span class="header-section-number">11.7.2</span> 从模拟数据到完整流程</a></li>
+  <li><a href="#常见坑与检查清单" id="toc-常见坑与检查清单" class="nav-link" data-scroll-target="#常见坑与检查清单"><span class="header-section-number">11.7.3</span> 常见坑与检查清单</a></li>
+  </ul></li>
+  <li><a href="#本章小结" id="toc-本章小结" class="nav-link" data-scroll-target="#本章小结"><span class="header-section-number">11.8</span> 本章小结</a></li>
   </ul>
 </nav>
     </div>
@@ -877,197 +882,209 @@ industry: string</code></pre>
 <span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>**直接分析（推荐）：**</span>
 <span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a><span class="in">```python</span></span>
 <span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
-<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_parquet(<span class="st">"fin_ratios.parquet"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p><strong>转换为 CSV（如需 Excel 查看）：</strong></p>
-<div class="sourceCode" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>pd.read_parquet(<span class="st">"fin_ratios.parquet"</span>).to_csv(<span class="st">"fin_ratios.csv"</span>, index<span class="op">=</span><span class="va">False</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<pre><code>
-用户使用时，一行代码即可上手，不需要安装任何额外工具（pandas 已内置 Parquet 支持）。
-
-::: {.callout-tip}
-### 提示词：CSV 转 Parquet 并生成使用说明
-
-我有一个 CSV 文件，路径是 `[你的文件路径]`，包含以下列：
-
-`[列1（类型）、列2（类型）……]`
-
-其中有一些需要注意的问题：
-
-- ticker 列是股票代码，需要保持字符串格式（保留前导零）
-- date 列格式是 [YYYY-MM-DD / YYYYMMDD]
-- 空值在原始文件中表示为 [-- / N/A / 空字符串]
-
-请帮我：
-
-1. 写一个读取和清洗这份 CSV 的函数，修复上述问题
-2. 将清洗后的数据按 [year / industry] 分区存为 Parquet
-3. 打印转换前后的文件大小对比
-4. 生成一段供他人使用的 README 说明（包含直接分析和转为 CSV 两种方式）
-
-使用 pandas + pyarrow，代码需要有注释。
-:::
-
----
-
-## SQLite：嵌入式关系数据库
-
-### 什么时候需要 SQLite
-
-Parquet 解决了「大文件快速读取」的问题，但它不支持多表关联查询，也不支持数据的增删改。当你需要做类似这样的分析时，就需要 SQLite：
-
-&gt; 把日线行情数据和季度财务数据关联，筛选出 ROE &gt; 15%、PE &lt; 20 的股票，计算它们在财报发布后 30 天的平均超额收益。
-
-这是一个典型的「行情表 × 财务表」联合查询，在 Parquet 中做需要把两个大文件都读进内存再手动合并，而在 SQLite 中一条 SQL 语句就能完成。
-
-SQLite 的特点：
-
-- **无需安装服务器**：整个数据库就是一个 `.db` 文件，可以直接发邮件或上传
-- **Python 标准库内置**：`import sqlite3`，不需要 pip install
-- **完整的 SQL 支持**：JOIN、索引、聚合、窗口函数
-- **适合规模**：几十 GB 以内的数据都可以流畅运行
-
-![data_manage_sqlite_use_cases_diagram](https://fig-lianxh.oss-cn-shenzhen.aliyuncs.com/data_manage_sqlite_use_cases_diagram.png){width="100%"}
-
-### 基本操作
-
-```python
-import sqlite3
-import pandas as pd
-import numpy as np
-
-# 创建数据库（文件不存在时自动创建）
-conn = sqlite3.connect("finance.db")
-cur  = conn.cursor()
-
-# 建表：股票日线
-cur.execute("""
-    CREATE TABLE IF NOT EXISTS stock_daily (
-        date    TEXT NOT NULL,
-        ticker  TEXT NOT NULL,
-        close   REAL,
-        volume  INTEGER,
-        PRIMARY KEY (date, ticker)
-    )
-""")
-
-# 建表：季度财务数据
-cur.execute("""
-    CREATE TABLE IF NOT EXISTS fin_quarterly (
-        ticker   TEXT NOT NULL,
-        year     INTEGER NOT NULL,
-        quarter  INTEGER NOT NULL,
-        roe      REAL,
-        pe_ratio REAL,
-        PRIMARY KEY (ticker, year, quarter)
-    )
-""")
-conn.commit()</code></pre>
-<div class="sourceCode" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 批量插入（pandas → SQLite，推荐用 to_sql）</span></span>
-<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>np.random.seed(<span class="dv">42</span>)</span>
-<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>df_daily <span class="op">=</span> pd.DataFrame({</span>
-<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"date"</span>:   pd.date_range(<span class="st">"2023-01-01"</span>, periods<span class="op">=</span><span class="dv">250</span>).astype(<span class="bu">str</span>).tolist() <span class="op">*</span> <span class="dv">10</span>,</span>
-<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">"ticker"</span>: [<span class="bu">str</span>(i).zfill(<span class="dv">6</span>) <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">10</span>) <span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">250</span>)],</span>
-<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">"close"</span>:  np.random.uniform(<span class="dv">10</span>, <span class="dv">100</span>, <span class="dv">2500</span>).<span class="bu">round</span>(<span class="dv">2</span>),</span>
-<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">"volume"</span>: np.random.randint(<span class="dv">1_000_000</span>, <span class="dv">50_000_000</span>, <span class="dv">2500</span>),</span>
-<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a>})</span>
-<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a>df_daily.to_sql(<span class="st">"stock_daily"</span>, conn, if_exists<span class="op">=</span><span class="st">"append"</span>, index<span class="op">=</span><span class="va">False</span>)</span>
-<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a>df_fin <span class="op">=</span> pd.DataFrame({</span>
-<span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a>    <span class="st">"ticker"</span>:   [<span class="bu">str</span>(i).zfill(<span class="dv">6</span>) <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">10</span>) <span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">4</span>)],</span>
-<span id="cb21-14"><a href="#cb21-14" aria-hidden="true" tabindex="-1"></a>    <span class="st">"year"</span>:     [<span class="dv">2023</span>] <span class="op">*</span> <span class="dv">40</span>,</span>
-<span id="cb21-15"><a href="#cb21-15" aria-hidden="true" tabindex="-1"></a>    <span class="st">"quarter"</span>:  [<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>] <span class="op">*</span> <span class="dv">10</span>,</span>
-<span id="cb21-16"><a href="#cb21-16" aria-hidden="true" tabindex="-1"></a>    <span class="st">"roe"</span>:      np.random.uniform(<span class="fl">0.05</span>, <span class="fl">0.25</span>, <span class="dv">40</span>).<span class="bu">round</span>(<span class="dv">4</span>),</span>
-<span id="cb21-17"><a href="#cb21-17" aria-hidden="true" tabindex="-1"></a>    <span class="st">"pe_ratio"</span>: np.random.uniform(<span class="dv">8</span>, <span class="dv">40</span>, <span class="dv">40</span>).<span class="bu">round</span>(<span class="dv">2</span>),</span>
-<span id="cb21-18"><a href="#cb21-18" aria-hidden="true" tabindex="-1"></a>})</span>
-<span id="cb21-19"><a href="#cb21-19" aria-hidden="true" tabindex="-1"></a>df_fin.to_sql(<span class="st">"fin_quarterly"</span>, conn, if_exists<span class="op">=</span><span class="st">"replace"</span>, index<span class="op">=</span><span class="va">False</span>)</span>
-<span id="cb21-20"><a href="#cb21-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-21"><a href="#cb21-21" aria-hidden="true" tabindex="-1"></a>conn.commit()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_parquet(<span class="st">"fin_ratios.parquet"</span>)</span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a>**转换为 CSV（如需 Excel 查看）：**</span>
+<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a><span class="in">```python</span></span>
+<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a>pd.read_parquet(<span class="st">"fin_ratios.parquet"</span>).to_csv(<span class="st">"fin_ratios.csv"</span>, index<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>用户使用时，一行代码即可上手，不需要安装任何额外工具（pandas 已内置 Parquet 支持）。</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+提示词：CSV 转 Parquet 并生成使用说明
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>我有一个 CSV 文件，路径是 <code>[你的文件路径]</code>，包含以下列：</p>
+<p><code>[列1（类型）、列2（类型）……]</code></p>
+<p>其中有一些需要注意的问题：</p>
+<ul>
+<li>ticker 列是股票代码，需要保持字符串格式（保留前导零）</li>
+<li>date 列格式是 [YYYY-MM-DD / YYYYMMDD]</li>
+<li>空值在原始文件中表示为 [– / N/A / 空字符串]</li>
+</ul>
+<p>请帮我：</p>
+<ol type="1">
+<li>写一个读取和清洗这份 CSV 的函数，修复上述问题</li>
+<li>将清洗后的数据按 [year / industry] 分区存为 Parquet</li>
+<li>打印转换前后的文件大小对比</li>
+<li>生成一段供他人使用的 README 说明（包含直接分析和转为 CSV 两种方式）</li>
+</ol>
+<p>使用 pandas + pyarrow，代码需要有注释。</p>
+</div>
+</div>
+<hr>
 </section>
-<section id="索引查询加速的关键" class="level3" data-number="11.4.7">
-<h3 data-number="11.4.7" class="anchored" data-anchor-id="索引查询加速的关键"><span class="header-section-number">11.4.7</span> 索引：查询加速的关键</h3>
+</section>
+<section id="sqlite嵌入式关系数据库" class="level2" data-number="11.5">
+<h2 data-number="11.5" class="anchored" data-anchor-id="sqlite嵌入式关系数据库"><span class="header-section-number">11.5</span> SQLite：嵌入式关系数据库</h2>
+<section id="什么时候需要-sqlite" class="level3" data-number="11.5.1">
+<h3 data-number="11.5.1" class="anchored" data-anchor-id="什么时候需要-sqlite"><span class="header-section-number">11.5.1</span> 什么时候需要 SQLite</h3>
+<p>Parquet 解决了「大文件快速读取」的问题，但它不支持多表关联查询，也不支持数据的增删改。当你需要做类似这样的分析时，就需要 SQLite：</p>
+<blockquote class="blockquote">
+<p>把日线行情数据和季度财务数据关联，筛选出 ROE &gt; 15%、PE &lt; 20 的股票，计算它们在财报发布后 30 天的平均超额收益。</p>
+</blockquote>
+<p>这是一个典型的「行情表 × 财务表」联合查询，在 Parquet 中做需要把两个大文件都读进内存再手动合并，而在 SQLite 中一条 SQL 语句就能完成。</p>
+<p>SQLite 的特点：</p>
+<ul>
+<li><strong>无需安装服务器</strong>：整个数据库就是一个 <code>.db</code> 文件，可以直接发邮件或上传</li>
+<li><strong>Python 标准库内置</strong>：<code>import sqlite3</code>，不需要 pip install</li>
+<li><strong>完整的 SQL 支持</strong>：JOIN、索引、聚合、窗口函数</li>
+<li><strong>适合规模</strong>：几十 GB 以内的数据都可以流畅运行</li>
+</ul>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://fig-lianxh.oss-cn-shenzhen.aliyuncs.com/data_manage_sqlite_use_cases_diagram.png" class="img-fluid figure-img" style="width:100.0%"></p>
+<figcaption>data_manage_sqlite_use_cases_diagram</figcaption>
+</figure>
+</div>
+</section>
+<section id="基本操作" class="level3" data-number="11.5.2">
+<h3 data-number="11.5.2" class="anchored" data-anchor-id="基本操作"><span class="header-section-number">11.5.2</span> 基本操作</h3>
+<div class="sourceCode" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sqlite3</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a><span class="co"># 创建数据库（文件不存在时自动创建）</span></span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>conn <span class="op">=</span> sqlite3.<span class="ex">connect</span>(<span class="st">"finance.db"</span>)</span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>cur  <span class="op">=</span> conn.cursor()</span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a><span class="co"># 建表：股票日线</span></span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a>cur.execute(<span class="st">"""</span></span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a><span class="st">    CREATE TABLE IF NOT EXISTS stock_daily (</span></span>
+<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a><span class="st">        date    TEXT NOT NULL,</span></span>
+<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a><span class="st">        ticker  TEXT NOT NULL,</span></span>
+<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a><span class="st">        close   REAL,</span></span>
+<span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a><span class="st">        volume  INTEGER,</span></span>
+<span id="cb19-16"><a href="#cb19-16" aria-hidden="true" tabindex="-1"></a><span class="st">        PRIMARY KEY (date, ticker)</span></span>
+<span id="cb19-17"><a href="#cb19-17" aria-hidden="true" tabindex="-1"></a><span class="st">    )</span></span>
+<span id="cb19-18"><a href="#cb19-18" aria-hidden="true" tabindex="-1"></a><span class="st">"""</span>)</span>
+<span id="cb19-19"><a href="#cb19-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-20"><a href="#cb19-20" aria-hidden="true" tabindex="-1"></a><span class="co"># 建表：季度财务数据</span></span>
+<span id="cb19-21"><a href="#cb19-21" aria-hidden="true" tabindex="-1"></a>cur.execute(<span class="st">"""</span></span>
+<span id="cb19-22"><a href="#cb19-22" aria-hidden="true" tabindex="-1"></a><span class="st">    CREATE TABLE IF NOT EXISTS fin_quarterly (</span></span>
+<span id="cb19-23"><a href="#cb19-23" aria-hidden="true" tabindex="-1"></a><span class="st">        ticker   TEXT NOT NULL,</span></span>
+<span id="cb19-24"><a href="#cb19-24" aria-hidden="true" tabindex="-1"></a><span class="st">        year     INTEGER NOT NULL,</span></span>
+<span id="cb19-25"><a href="#cb19-25" aria-hidden="true" tabindex="-1"></a><span class="st">        quarter  INTEGER NOT NULL,</span></span>
+<span id="cb19-26"><a href="#cb19-26" aria-hidden="true" tabindex="-1"></a><span class="st">        roe      REAL,</span></span>
+<span id="cb19-27"><a href="#cb19-27" aria-hidden="true" tabindex="-1"></a><span class="st">        pe_ratio REAL,</span></span>
+<span id="cb19-28"><a href="#cb19-28" aria-hidden="true" tabindex="-1"></a><span class="st">        PRIMARY KEY (ticker, year, quarter)</span></span>
+<span id="cb19-29"><a href="#cb19-29" aria-hidden="true" tabindex="-1"></a><span class="st">    )</span></span>
+<span id="cb19-30"><a href="#cb19-30" aria-hidden="true" tabindex="-1"></a><span class="st">"""</span>)</span>
+<span id="cb19-31"><a href="#cb19-31" aria-hidden="true" tabindex="-1"></a>conn.commit()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 批量插入（pandas → SQLite，推荐用 to_sql）</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>np.random.seed(<span class="dv">42</span>)</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>df_daily <span class="op">=</span> pd.DataFrame({</span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"date"</span>:   pd.date_range(<span class="st">"2023-01-01"</span>, periods<span class="op">=</span><span class="dv">250</span>).astype(<span class="bu">str</span>).tolist() <span class="op">*</span> <span class="dv">10</span>,</span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">"ticker"</span>: [<span class="bu">str</span>(i).zfill(<span class="dv">6</span>) <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">10</span>) <span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">250</span>)],</span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">"close"</span>:  np.random.uniform(<span class="dv">10</span>, <span class="dv">100</span>, <span class="dv">2500</span>).<span class="bu">round</span>(<span class="dv">2</span>),</span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">"volume"</span>: np.random.randint(<span class="dv">1_000_000</span>, <span class="dv">50_000_000</span>, <span class="dv">2500</span>),</span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a>df_daily.to_sql(<span class="st">"stock_daily"</span>, conn, if_exists<span class="op">=</span><span class="st">"append"</span>, index<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a>df_fin <span class="op">=</span> pd.DataFrame({</span>
+<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a>    <span class="st">"ticker"</span>:   [<span class="bu">str</span>(i).zfill(<span class="dv">6</span>) <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">10</span>) <span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">4</span>)],</span>
+<span id="cb20-14"><a href="#cb20-14" aria-hidden="true" tabindex="-1"></a>    <span class="st">"year"</span>:     [<span class="dv">2023</span>] <span class="op">*</span> <span class="dv">40</span>,</span>
+<span id="cb20-15"><a href="#cb20-15" aria-hidden="true" tabindex="-1"></a>    <span class="st">"quarter"</span>:  [<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>] <span class="op">*</span> <span class="dv">10</span>,</span>
+<span id="cb20-16"><a href="#cb20-16" aria-hidden="true" tabindex="-1"></a>    <span class="st">"roe"</span>:      np.random.uniform(<span class="fl">0.05</span>, <span class="fl">0.25</span>, <span class="dv">40</span>).<span class="bu">round</span>(<span class="dv">4</span>),</span>
+<span id="cb20-17"><a href="#cb20-17" aria-hidden="true" tabindex="-1"></a>    <span class="st">"pe_ratio"</span>: np.random.uniform(<span class="dv">8</span>, <span class="dv">40</span>, <span class="dv">40</span>).<span class="bu">round</span>(<span class="dv">2</span>),</span>
+<span id="cb20-18"><a href="#cb20-18" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb20-19"><a href="#cb20-19" aria-hidden="true" tabindex="-1"></a>df_fin.to_sql(<span class="st">"fin_quarterly"</span>, conn, if_exists<span class="op">=</span><span class="st">"replace"</span>, index<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb20-20"><a href="#cb20-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-21"><a href="#cb20-21" aria-hidden="true" tabindex="-1"></a>conn.commit()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="索引查询加速的关键" class="level3" data-number="11.5.3">
+<h3 data-number="11.5.3" class="anchored" data-anchor-id="索引查询加速的关键"><span class="header-section-number">11.5.3</span> 索引：查询加速的关键</h3>
 <p>建表之后，立刻建索引。索引对于「按 ticker 查询」这类操作，可以把速度从秒级提升到毫秒级：</p>
-<div class="sourceCode" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 在最常用的查询维度上建索引</span></span>
-<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>cur.execute(<span class="st">"""</span></span>
-<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a><span class="st">    CREATE INDEX IF NOT EXISTS idx_daily_ticker_date</span></span>
-<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a><span class="st">    ON stock_daily (ticker, date)</span></span>
-<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a><span class="st">"""</span>)</span>
-<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>conn.commit()</span>
-<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a><span class="co"># 验证：查询单只股票的全年数据</span></span>
-<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> time</span>
-<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-11"><a href="#cb22-11" aria-hidden="true" tabindex="-1"></a>t0 <span class="op">=</span> time.time()</span>
-<span id="cb22-12"><a href="#cb22-12" aria-hidden="true" tabindex="-1"></a>df_result <span class="op">=</span> pd.read_sql(</span>
-<span id="cb22-13"><a href="#cb22-13" aria-hidden="true" tabindex="-1"></a>    <span class="st">"SELECT * FROM stock_daily WHERE ticker = '000001'"</span>,</span>
-<span id="cb22-14"><a href="#cb22-14" aria-hidden="true" tabindex="-1"></a>    conn</span>
-<span id="cb22-15"><a href="#cb22-15" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb22-16"><a href="#cb22-16" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"查询耗时：</span><span class="sc">{</span>time<span class="sc">.</span>time() <span class="op">-</span> t0<span class="sc">:.4f}</span><span class="ss"> 秒，共 </span><span class="sc">{</span><span class="bu">len</span>(df_result)<span class="sc">}</span><span class="ss"> 行"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 在最常用的查询维度上建索引</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>cur.execute(<span class="st">"""</span></span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a><span class="st">    CREATE INDEX IF NOT EXISTS idx_daily_ticker_date</span></span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a><span class="st">    ON stock_daily (ticker, date)</span></span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a><span class="st">"""</span>)</span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>conn.commit()</span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a><span class="co"># 验证：查询单只股票的全年数据</span></span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> time</span>
+<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a>t0 <span class="op">=</span> time.time()</span>
+<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a>df_result <span class="op">=</span> pd.read_sql(</span>
+<span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a>    <span class="st">"SELECT * FROM stock_daily WHERE ticker = '000001'"</span>,</span>
+<span id="cb21-14"><a href="#cb21-14" aria-hidden="true" tabindex="-1"></a>    conn</span>
+<span id="cb21-15"><a href="#cb21-15" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb21-16"><a href="#cb21-16" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"查询耗时：</span><span class="sc">{</span>time<span class="sc">.</span>time() <span class="op">-</span> t0<span class="sc">:.4f}</span><span class="ss"> 秒，共 </span><span class="sc">{</span><span class="bu">len</span>(df_result)<span class="sc">}</span><span class="ss"> 行"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
-<section id="多表联合查询" class="level3" data-number="11.4.8">
-<h3 data-number="11.4.8" class="anchored" data-anchor-id="多表联合查询"><span class="header-section-number">11.4.8</span> 多表联合查询</h3>
+<section id="多表联合查询" class="level3" data-number="11.5.4">
+<h3 data-number="11.5.4" class="anchored" data-anchor-id="多表联合查询"><span class="header-section-number">11.5.4</span> 多表联合查询</h3>
 <p>这是 SQLite 相对于 Parquet 最核心的优势：</p>
-<div class="sourceCode" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 关联行情与财务数据：找出 2023 年 ROE &gt; 15%、PE &lt; 20 的股票</span></span>
-<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="co"># 并计算这些股票在 Q2 财报发布后的平均收盘价</span></span>
-<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>df_combined <span class="op">=</span> pd.read_sql(<span class="st">"""</span></span>
-<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a><span class="st">    SELECT</span></span>
-<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a><span class="st">        d.ticker,</span></span>
-<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a><span class="st">        ROUND(AVG(d.close), 2)  AS avg_close_h2,</span></span>
-<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a><span class="st">        f.roe,</span></span>
-<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a><span class="st">        f.pe_ratio</span></span>
-<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a><span class="st">    FROM stock_daily d</span></span>
-<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a><span class="st">    JOIN fin_quarterly f</span></span>
-<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a><span class="st">        ON d.ticker  = f.ticker</span></span>
-<span id="cb23-12"><a href="#cb23-12" aria-hidden="true" tabindex="-1"></a><span class="st">        AND f.year   = 2023</span></span>
-<span id="cb23-13"><a href="#cb23-13" aria-hidden="true" tabindex="-1"></a><span class="st">        AND f.quarter = 2</span></span>
-<span id="cb23-14"><a href="#cb23-14" aria-hidden="true" tabindex="-1"></a><span class="st">    WHERE</span></span>
-<span id="cb23-15"><a href="#cb23-15" aria-hidden="true" tabindex="-1"></a><span class="st">        f.roe      &gt; 0.15</span></span>
-<span id="cb23-16"><a href="#cb23-16" aria-hidden="true" tabindex="-1"></a><span class="st">        AND f.pe_ratio &lt; 20</span></span>
-<span id="cb23-17"><a href="#cb23-17" aria-hidden="true" tabindex="-1"></a><span class="st">        AND d.date &gt;= '2023-07-01'</span></span>
-<span id="cb23-18"><a href="#cb23-18" aria-hidden="true" tabindex="-1"></a><span class="st">        AND d.date &lt;= '2023-12-31'</span></span>
-<span id="cb23-19"><a href="#cb23-19" aria-hidden="true" tabindex="-1"></a><span class="st">    GROUP BY</span></span>
-<span id="cb23-20"><a href="#cb23-20" aria-hidden="true" tabindex="-1"></a><span class="st">        d.ticker, f.roe, f.pe_ratio</span></span>
-<span id="cb23-21"><a href="#cb23-21" aria-hidden="true" tabindex="-1"></a><span class="st">    ORDER BY</span></span>
-<span id="cb23-22"><a href="#cb23-22" aria-hidden="true" tabindex="-1"></a><span class="st">        f.roe DESC</span></span>
-<span id="cb23-23"><a href="#cb23-23" aria-hidden="true" tabindex="-1"></a><span class="st">"""</span>, conn)</span>
-<span id="cb23-24"><a href="#cb23-24" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-25"><a href="#cb23-25" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df_combined)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 关联行情与财务数据：找出 2023 年 ROE &gt; 15%、PE &lt; 20 的股票</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="co"># 并计算这些股票在 Q2 财报发布后的平均收盘价</span></span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>df_combined <span class="op">=</span> pd.read_sql(<span class="st">"""</span></span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a><span class="st">    SELECT</span></span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a><span class="st">        d.ticker,</span></span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a><span class="st">        ROUND(AVG(d.close), 2)  AS avg_close_h2,</span></span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a><span class="st">        f.roe,</span></span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a><span class="st">        f.pe_ratio</span></span>
+<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a><span class="st">    FROM stock_daily d</span></span>
+<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a><span class="st">    JOIN fin_quarterly f</span></span>
+<span id="cb22-11"><a href="#cb22-11" aria-hidden="true" tabindex="-1"></a><span class="st">        ON d.ticker  = f.ticker</span></span>
+<span id="cb22-12"><a href="#cb22-12" aria-hidden="true" tabindex="-1"></a><span class="st">        AND f.year   = 2023</span></span>
+<span id="cb22-13"><a href="#cb22-13" aria-hidden="true" tabindex="-1"></a><span class="st">        AND f.quarter = 2</span></span>
+<span id="cb22-14"><a href="#cb22-14" aria-hidden="true" tabindex="-1"></a><span class="st">    WHERE</span></span>
+<span id="cb22-15"><a href="#cb22-15" aria-hidden="true" tabindex="-1"></a><span class="st">        f.roe      &gt; 0.15</span></span>
+<span id="cb22-16"><a href="#cb22-16" aria-hidden="true" tabindex="-1"></a><span class="st">        AND f.pe_ratio &lt; 20</span></span>
+<span id="cb22-17"><a href="#cb22-17" aria-hidden="true" tabindex="-1"></a><span class="st">        AND d.date &gt;= '2023-07-01'</span></span>
+<span id="cb22-18"><a href="#cb22-18" aria-hidden="true" tabindex="-1"></a><span class="st">        AND d.date &lt;= '2023-12-31'</span></span>
+<span id="cb22-19"><a href="#cb22-19" aria-hidden="true" tabindex="-1"></a><span class="st">    GROUP BY</span></span>
+<span id="cb22-20"><a href="#cb22-20" aria-hidden="true" tabindex="-1"></a><span class="st">        d.ticker, f.roe, f.pe_ratio</span></span>
+<span id="cb22-21"><a href="#cb22-21" aria-hidden="true" tabindex="-1"></a><span class="st">    ORDER BY</span></span>
+<span id="cb22-22"><a href="#cb22-22" aria-hidden="true" tabindex="-1"></a><span class="st">        f.roe DESC</span></span>
+<span id="cb22-23"><a href="#cb22-23" aria-hidden="true" tabindex="-1"></a><span class="st">"""</span>, conn)</span>
+<span id="cb22-24"><a href="#cb22-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-25"><a href="#cb22-25" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df_combined)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
-<section id="参数化查询" class="level3" data-number="11.4.9">
-<h3 data-number="11.4.9" class="anchored" data-anchor-id="参数化查询"><span class="header-section-number">11.4.9</span> 参数化查询</h3>
+<section id="参数化查询" class="level3" data-number="11.5.5">
+<h3 data-number="11.5.5" class="anchored" data-anchor-id="参数化查询"><span class="header-section-number">11.5.5</span> 参数化查询</h3>
 <p>当查询条件来自用户输入或变量时，必须使用参数化查询，避免 SQL 注入风险：</p>
-<div class="sourceCode" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 错误做法（字符串拼接，有安全风险）</span></span>
-<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>ticker <span class="op">=</span> <span class="st">"000001"</span></span>
-<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_sql(<span class="ss">f"SELECT * FROM stock_daily WHERE ticker = '</span><span class="sc">{</span>ticker<span class="sc">}</span><span class="ss">'"</span>, conn)</span>
-<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a><span class="co"># 正确做法（参数化查询）</span></span>
-<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_sql(</span>
-<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">"SELECT * FROM stock_daily WHERE ticker = ? AND date &gt;= ?"</span>,</span>
-<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a>    conn,</span>
-<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a>    params<span class="op">=</span>(<span class="st">"000001"</span>, <span class="st">"2023-06-01"</span>)</span>
-<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 错误做法（字符串拼接，有安全风险）</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>ticker <span class="op">=</span> <span class="st">"000001"</span></span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_sql(<span class="ss">f"SELECT * FROM stock_daily WHERE ticker = '</span><span class="sc">{</span>ticker<span class="sc">}</span><span class="ss">'"</span>, conn)</span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a><span class="co"># 正确做法（参数化查询）</span></span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_sql(</span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">"SELECT * FROM stock_daily WHERE ticker = ? AND date &gt;= ?"</span>,</span>
+<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a>    conn,</span>
+<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a>    params<span class="op">=</span>(<span class="st">"000001"</span>, <span class="st">"2023-06-01"</span>)</span>
+<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
-<section id="把分析结果写回数据库" class="level3" data-number="11.4.10">
-<h3 data-number="11.4.10" class="anchored" data-anchor-id="把分析结果写回数据库"><span class="header-section-number">11.4.10</span> 把分析结果写回数据库</h3>
+<section id="把分析结果写回数据库" class="level3" data-number="11.5.6">
+<h3 data-number="11.5.6" class="anchored" data-anchor-id="把分析结果写回数据库"><span class="header-section-number">11.5.6</span> 把分析结果写回数据库</h3>
 <p>SQLite 还可以用来存储中间结果，下次直接读取而不需要重新计算：</p>
-<div class="sourceCode" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 计算每只股票的月度均价（耗时操作）</span></span>
-<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>df_monthly <span class="op">=</span> pd.read_sql(<span class="st">"""</span></span>
-<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a><span class="st">    SELECT</span></span>
-<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a><span class="st">        ticker,</span></span>
-<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a><span class="st">        SUBSTR(date, 1, 7)      AS month,</span></span>
-<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a><span class="st">        ROUND(AVG(close), 2)    AS avg_close,</span></span>
-<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a><span class="st">        ROUND(MAX(close), 2)    AS max_close,</span></span>
-<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a><span class="st">        ROUND(MIN(close), 2)    AS min_close,</span></span>
-<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a><span class="st">        SUM(volume)             AS total_vol</span></span>
-<span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a><span class="st">    FROM stock_daily</span></span>
-<span id="cb25-11"><a href="#cb25-11" aria-hidden="true" tabindex="-1"></a><span class="st">    GROUP BY ticker, month</span></span>
-<span id="cb25-12"><a href="#cb25-12" aria-hidden="true" tabindex="-1"></a><span class="st">"""</span>, conn)</span>
-<span id="cb25-13"><a href="#cb25-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-14"><a href="#cb25-14" aria-hidden="true" tabindex="-1"></a><span class="co"># 写回数据库，下次直接读，不需要重新聚合</span></span>
-<span id="cb25-15"><a href="#cb25-15" aria-hidden="true" tabindex="-1"></a>df_monthly.to_sql(<span class="st">"monthly_summary"</span>, conn, if_exists<span class="op">=</span><span class="st">"replace"</span>, index<span class="op">=</span><span class="va">False</span>)</span>
-<span id="cb25-16"><a href="#cb25-16" aria-hidden="true" tabindex="-1"></a>conn.commit()</span>
-<span id="cb25-17"><a href="#cb25-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-18"><a href="#cb25-18" aria-hidden="true" tabindex="-1"></a>conn.close()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 计算每只股票的月度均价（耗时操作）</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>df_monthly <span class="op">=</span> pd.read_sql(<span class="st">"""</span></span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a><span class="st">    SELECT</span></span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a><span class="st">        ticker,</span></span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a><span class="st">        SUBSTR(date, 1, 7)      AS month,</span></span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a><span class="st">        ROUND(AVG(close), 2)    AS avg_close,</span></span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a><span class="st">        ROUND(MAX(close), 2)    AS max_close,</span></span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a><span class="st">        ROUND(MIN(close), 2)    AS min_close,</span></span>
+<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a><span class="st">        SUM(volume)             AS total_vol</span></span>
+<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a><span class="st">    FROM stock_daily</span></span>
+<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a><span class="st">    GROUP BY ticker, month</span></span>
+<span id="cb24-12"><a href="#cb24-12" aria-hidden="true" tabindex="-1"></a><span class="st">"""</span>, conn)</span>
+<span id="cb24-13"><a href="#cb24-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-14"><a href="#cb24-14" aria-hidden="true" tabindex="-1"></a><span class="co"># 写回数据库，下次直接读，不需要重新聚合</span></span>
+<span id="cb24-15"><a href="#cb24-15" aria-hidden="true" tabindex="-1"></a>df_monthly.to_sql(<span class="st">"monthly_summary"</span>, conn, if_exists<span class="op">=</span><span class="st">"replace"</span>, index<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb24-16"><a href="#cb24-16" aria-hidden="true" tabindex="-1"></a>conn.commit()</span>
+<span id="cb24-17"><a href="#cb24-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-18"><a href="#cb24-18" aria-hidden="true" tabindex="-1"></a>conn.close()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -1095,55 +1112,55 @@ conn.commit()</code></pre>
 <hr>
 </section>
 </section>
-<section id="duckdb对文件直接执行-sql" class="level2" data-number="11.5">
-<h2 data-number="11.5" class="anchored" data-anchor-id="duckdb对文件直接执行-sql"><span class="header-section-number">11.5</span> DuckDB：对文件直接执行 SQL</h2>
-<section id="一个常见的困境" class="level3" data-number="11.5.1">
-<h3 data-number="11.5.1" class="anchored" data-anchor-id="一个常见的困境"><span class="header-section-number">11.5.1</span> 一个常见的困境</h3>
+<section id="duckdb对文件直接执行-sql" class="level2" data-number="11.6">
+<h2 data-number="11.6" class="anchored" data-anchor-id="duckdb对文件直接执行-sql"><span class="header-section-number">11.6</span> DuckDB：对文件直接执行 SQL</h2>
+<section id="一个常见的困境" class="level3" data-number="11.6.1">
+<h3 data-number="11.6.1" class="anchored" data-anchor-id="一个常见的困境"><span class="header-section-number">11.6.1</span> 一个常见的困境</h3>
 <p>你清洗好了数据，存成了 Parquet。现在想做一个跨文件的分析：把 5 年的日线数据（5 个 Parquet 文件）合并，计算每只股票的年化波动率。</p>
 <p>传统做法是把 5 个文件都读进内存，合并成一个 DataFrame，再计算。但 5 年数据可能有几十 GB，内存放不下。</p>
 <p>DuckDB 解决了这个问题：<strong>它可以直接对 Parquet 文件执行 SQL，不需要先把数据加载到内存，也不需要数据库服务器。</strong></p>
-<div class="sourceCode" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="co"># pip install duckdb</span></span>
-<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> duckdb</span>
-<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a><span class="co"># 直接对 Parquet 文件执行 SQL，不需要读入内存</span></span>
-<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>result <span class="op">=</span> duckdb.execute(<span class="st">"""</span></span>
-<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a><span class="st">    SELECT</span></span>
-<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a><span class="st">        ticker,</span></span>
-<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a><span class="st">        COUNT(*)                                     AS trading_days,</span></span>
-<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a><span class="st">        ROUND(AVG(close), 2)                         AS avg_close,</span></span>
-<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a><span class="st">        ROUND(STDDEV(close) / AVG(close) * 100, 2)  AS cv_pct</span></span>
-<span id="cb26-11"><a href="#cb26-11" aria-hidden="true" tabindex="-1"></a><span class="st">    FROM read_parquet('data/processed/stock_daily_*.parquet')</span></span>
-<span id="cb26-12"><a href="#cb26-12" aria-hidden="true" tabindex="-1"></a><span class="st">    WHERE date &gt;= '2023-01-01'</span></span>
-<span id="cb26-13"><a href="#cb26-13" aria-hidden="true" tabindex="-1"></a><span class="st">    GROUP BY ticker</span></span>
-<span id="cb26-14"><a href="#cb26-14" aria-hidden="true" tabindex="-1"></a><span class="st">    ORDER BY cv_pct DESC</span></span>
-<span id="cb26-15"><a href="#cb26-15" aria-hidden="true" tabindex="-1"></a><span class="st">    LIMIT 20</span></span>
-<span id="cb26-16"><a href="#cb26-16" aria-hidden="true" tabindex="-1"></a><span class="st">"""</span>).df()   <span class="co"># .df() 直接返回 pandas DataFrame</span></span>
-<span id="cb26-17"><a href="#cb26-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-18"><a href="#cb26-18" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(result)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># pip install duckdb</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> duckdb</span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a><span class="co"># 直接对 Parquet 文件执行 SQL，不需要读入内存</span></span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>result <span class="op">=</span> duckdb.execute(<span class="st">"""</span></span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a><span class="st">    SELECT</span></span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a><span class="st">        ticker,</span></span>
+<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a><span class="st">        COUNT(*)                                     AS trading_days,</span></span>
+<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a><span class="st">        ROUND(AVG(close), 2)                         AS avg_close,</span></span>
+<span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a><span class="st">        ROUND(STDDEV(close) / AVG(close) * 100, 2)  AS cv_pct</span></span>
+<span id="cb25-11"><a href="#cb25-11" aria-hidden="true" tabindex="-1"></a><span class="st">    FROM read_parquet('data/processed/stock_daily_*.parquet')</span></span>
+<span id="cb25-12"><a href="#cb25-12" aria-hidden="true" tabindex="-1"></a><span class="st">    WHERE date &gt;= '2023-01-01'</span></span>
+<span id="cb25-13"><a href="#cb25-13" aria-hidden="true" tabindex="-1"></a><span class="st">    GROUP BY ticker</span></span>
+<span id="cb25-14"><a href="#cb25-14" aria-hidden="true" tabindex="-1"></a><span class="st">    ORDER BY cv_pct DESC</span></span>
+<span id="cb25-15"><a href="#cb25-15" aria-hidden="true" tabindex="-1"></a><span class="st">    LIMIT 20</span></span>
+<span id="cb25-16"><a href="#cb25-16" aria-hidden="true" tabindex="-1"></a><span class="st">"""</span>).df()   <span class="co"># .df() 直接返回 pandas DataFrame</span></span>
+<span id="cb25-17"><a href="#cb25-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-18"><a href="#cb25-18" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(result)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p><code>read_parquet()</code> 支持通配符，可以一次性读取多个文件，DuckDB 会自动并行处理，速度接近 Apache Spark，但配置极为简单。</p>
 </section>
-<section id="跨文件-join" class="level3" data-number="11.5.2">
-<h3 data-number="11.5.2" class="anchored" data-anchor-id="跨文件-join"><span class="header-section-number">11.5.2</span> 跨文件 JOIN</h3>
+<section id="跨文件-join" class="level3" data-number="11.6.2">
+<h3 data-number="11.6.2" class="anchored" data-anchor-id="跨文件-join"><span class="header-section-number">11.6.2</span> 跨文件 JOIN</h3>
 <p>DuckDB 甚至可以对不同目录下的多个 Parquet 文件做 JOIN：</p>
-<div class="sourceCode" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>result <span class="op">=</span> duckdb.execute(<span class="st">"""</span></span>
-<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="st">    SELECT</span></span>
-<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a><span class="st">        a.ticker,</span></span>
-<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a><span class="st">        a.date,</span></span>
-<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a><span class="st">        a.close,</span></span>
-<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a><span class="st">        b.roe,</span></span>
-<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a><span class="st">        b.pe_ratio</span></span>
-<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a><span class="st">    FROM read_parquet('data/processed/stock_daily.parquet')  a</span></span>
-<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a><span class="st">    JOIN read_parquet('data/processed/fin_quarterly.parquet') b</span></span>
-<span id="cb27-10"><a href="#cb27-10" aria-hidden="true" tabindex="-1"></a><span class="st">        ON  a.ticker  = b.ticker</span></span>
-<span id="cb27-11"><a href="#cb27-11" aria-hidden="true" tabindex="-1"></a><span class="st">        AND YEAR(a.date::DATE) = b.year</span></span>
-<span id="cb27-12"><a href="#cb27-12" aria-hidden="true" tabindex="-1"></a><span class="st">    WHERE</span></span>
-<span id="cb27-13"><a href="#cb27-13" aria-hidden="true" tabindex="-1"></a><span class="st">        b.roe      &gt; 0.15</span></span>
-<span id="cb27-14"><a href="#cb27-14" aria-hidden="true" tabindex="-1"></a><span class="st">        AND b.quarter = 4</span></span>
-<span id="cb27-15"><a href="#cb27-15" aria-hidden="true" tabindex="-1"></a><span class="st">    ORDER BY a.date, a.ticker</span></span>
-<span id="cb27-16"><a href="#cb27-16" aria-hidden="true" tabindex="-1"></a><span class="st">"""</span>).df()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>result <span class="op">=</span> duckdb.execute(<span class="st">"""</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="st">    SELECT</span></span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a><span class="st">        a.ticker,</span></span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a><span class="st">        a.date,</span></span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a><span class="st">        a.close,</span></span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a><span class="st">        b.roe,</span></span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a><span class="st">        b.pe_ratio</span></span>
+<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a><span class="st">    FROM read_parquet('data/processed/stock_daily.parquet')  a</span></span>
+<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a><span class="st">    JOIN read_parquet('data/processed/fin_quarterly.parquet') b</span></span>
+<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a><span class="st">        ON  a.ticker  = b.ticker</span></span>
+<span id="cb26-11"><a href="#cb26-11" aria-hidden="true" tabindex="-1"></a><span class="st">        AND YEAR(a.date::DATE) = b.year</span></span>
+<span id="cb26-12"><a href="#cb26-12" aria-hidden="true" tabindex="-1"></a><span class="st">    WHERE</span></span>
+<span id="cb26-13"><a href="#cb26-13" aria-hidden="true" tabindex="-1"></a><span class="st">        b.roe      &gt; 0.15</span></span>
+<span id="cb26-14"><a href="#cb26-14" aria-hidden="true" tabindex="-1"></a><span class="st">        AND b.quarter = 4</span></span>
+<span id="cb26-15"><a href="#cb26-15" aria-hidden="true" tabindex="-1"></a><span class="st">    ORDER BY a.date, a.ticker</span></span>
+<span id="cb26-16"><a href="#cb26-16" aria-hidden="true" tabindex="-1"></a><span class="st">"""</span>).df()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
-<section id="duckdbsqlite-与-parquet-的定位" class="level3" data-number="11.5.3">
-<h3 data-number="11.5.3" class="anchored" data-anchor-id="duckdbsqlite-与-parquet-的定位"><span class="header-section-number">11.5.3</span> DuckDB、SQLite 与 Parquet 的定位</h3>
+<section id="duckdbsqlite-与-parquet-的定位" class="level3" data-number="11.6.3">
+<h3 data-number="11.6.3" class="anchored" data-anchor-id="duckdbsqlite-与-parquet-的定位"><span class="header-section-number">11.6.3</span> DuckDB、SQLite 与 Parquet 的定位</h3>
 <p>三者之间不是竞争关系，而是互补：</p>
 <table class="caption-top table">
 <thead>
@@ -1202,8 +1219,8 @@ conn.commit()</code></pre>
 <hr>
 </section>
 </section>
-<section id="端到端工作流" class="level2" data-number="11.6">
-<h2 data-number="11.6" class="anchored" data-anchor-id="端到端工作流"><span class="header-section-number">11.6</span> 端到端工作流</h2>
+<section id="端到端工作流" class="level2" data-number="11.7">
+<h2 data-number="11.7" class="anchored" data-anchor-id="端到端工作流"><span class="header-section-number">11.7</span> 端到端工作流</h2>
 <p>把本章所有内容串联起来，形成一套可复用的完整流程。</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
@@ -1211,199 +1228,199 @@ conn.commit()</code></pre>
 <figcaption>data_manage_end_to_end_workflow</figcaption>
 </figure>
 </div>
-<section id="清洗函数固化处理步骤" class="level3" data-number="11.6.1">
-<h3 data-number="11.6.1" class="anchored" data-anchor-id="清洗函数固化处理步骤"><span class="header-section-number">11.6.1</span> 清洗函数：固化处理步骤</h3>
+<section id="清洗函数固化处理步骤" class="level3" data-number="11.7.1">
+<h3 data-number="11.7.1" class="anchored" data-anchor-id="清洗函数固化处理步骤"><span class="header-section-number">11.7.1</span> 清洗函数：固化处理步骤</h3>
 <p>任何数据清洗都应该写成函数，而不是散落在 Notebook 的各个 Cell 里。函数化的好处是：任何人运行同一个函数，结果完全相同——这就是可复现性。</p>
-<div class="sourceCode" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
-<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pyarrow <span class="im">as</span> pa</span>
-<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pyarrow.parquet <span class="im">as</span> pq</span>
-<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> json</span>
-<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> datetime</span>
-<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
-<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> clean_and_save(</span>
-<span id="cb28-9"><a href="#cb28-9" aria-hidden="true" tabindex="-1"></a>    raw_path: <span class="bu">str</span>,</span>
-<span id="cb28-10"><a href="#cb28-10" aria-hidden="true" tabindex="-1"></a>    output_path: <span class="bu">str</span>,</span>
-<span id="cb28-11"><a href="#cb28-11" aria-hidden="true" tabindex="-1"></a>    source_desc: <span class="bu">str</span> <span class="op">=</span> <span class="st">""</span>,</span>
-<span id="cb28-12"><a href="#cb28-12" aria-hidden="true" tabindex="-1"></a>    na_values: <span class="bu">list</span> <span class="op">=</span> <span class="va">None</span>,</span>
-<span id="cb28-13"><a href="#cb28-13" aria-hidden="true" tabindex="-1"></a>) <span class="op">-&gt;</span> pd.DataFrame:</span>
-<span id="cb28-14"><a href="#cb28-14" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
-<span id="cb28-15"><a href="#cb28-15" aria-hidden="true" tabindex="-1"></a><span class="co">    标准化清洗流程：读取原始 CSV → 修复类型 → 存为 Parquet → 记录元数据</span></span>
-<span id="cb28-16"><a href="#cb28-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb28-17"><a href="#cb28-17" aria-hidden="true" tabindex="-1"></a><span class="co">    参数：</span></span>
-<span id="cb28-18"><a href="#cb28-18" aria-hidden="true" tabindex="-1"></a><span class="co">        raw_path    : 原始 CSV 文件路径</span></span>
-<span id="cb28-19"><a href="#cb28-19" aria-hidden="true" tabindex="-1"></a><span class="co">        output_path : 输出 Parquet 文件路径</span></span>
-<span id="cb28-20"><a href="#cb28-20" aria-hidden="true" tabindex="-1"></a><span class="co">        source_desc : 数据来源描述（写入元数据）</span></span>
-<span id="cb28-21"><a href="#cb28-21" aria-hidden="true" tabindex="-1"></a><span class="co">        na_values   : 额外的空值标记（如 Wind 的 "--"）</span></span>
-<span id="cb28-22"><a href="#cb28-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb28-23"><a href="#cb28-23" aria-hidden="true" tabindex="-1"></a><span class="co">    返回：</span></span>
-<span id="cb28-24"><a href="#cb28-24" aria-hidden="true" tabindex="-1"></a><span class="co">        清洗后的 DataFrame</span></span>
-<span id="cb28-25"><a href="#cb28-25" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
-<span id="cb28-26"><a href="#cb28-26" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 1. 读取，识别空值</span></span>
-<span id="cb28-27"><a href="#cb28-27" aria-hidden="true" tabindex="-1"></a>    _na <span class="op">=</span> [<span class="st">"--"</span>, <span class="st">"N/A"</span>, <span class="st">"n/a"</span>, <span class="st">"#N/A"</span>] <span class="op">+</span> (na_values <span class="kw">or</span> [])</span>
-<span id="cb28-28"><a href="#cb28-28" aria-hidden="true" tabindex="-1"></a>    df <span class="op">=</span> pd.read_csv(raw_path, na_values<span class="op">=</span>_na, dtype<span class="op">=</span>{<span class="st">"ticker"</span>: <span class="bu">str</span>})</span>
-<span id="cb28-29"><a href="#cb28-29" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb28-30"><a href="#cb28-30" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 2. 统一列名（小写 + 下划线）</span></span>
-<span id="cb28-31"><a href="#cb28-31" aria-hidden="true" tabindex="-1"></a>    df.columns <span class="op">=</span> (</span>
-<span id="cb28-32"><a href="#cb28-32" aria-hidden="true" tabindex="-1"></a>        df.columns.<span class="bu">str</span>.strip()</span>
-<span id="cb28-33"><a href="#cb28-33" aria-hidden="true" tabindex="-1"></a>                  .<span class="bu">str</span>.lower()</span>
-<span id="cb28-34"><a href="#cb28-34" aria-hidden="true" tabindex="-1"></a>                  .<span class="bu">str</span>.replace(<span class="vs">r"\s+"</span>, <span class="st">"_"</span>, regex<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb28-35"><a href="#cb28-35" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb28-36"><a href="#cb28-36" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb28-37"><a href="#cb28-37" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 3. 修复 ticker（补前导零至 6 位）</span></span>
-<span id="cb28-38"><a href="#cb28-38" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="st">"ticker"</span> <span class="kw">in</span> df.columns:</span>
-<span id="cb28-39"><a href="#cb28-39" aria-hidden="true" tabindex="-1"></a>        df[<span class="st">"ticker"</span>] <span class="op">=</span> df[<span class="st">"ticker"</span>].<span class="bu">str</span>.zfill(<span class="dv">6</span>)</span>
-<span id="cb28-40"><a href="#cb28-40" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb28-41"><a href="#cb28-41" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 4. 修复 date 列</span></span>
-<span id="cb28-42"><a href="#cb28-42" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="st">"date"</span> <span class="kw">in</span> df.columns:</span>
-<span id="cb28-43"><a href="#cb28-43" aria-hidden="true" tabindex="-1"></a>        df[<span class="st">"date"</span>] <span class="op">=</span> pd.to_datetime(df[<span class="st">"date"</span>], errors<span class="op">=</span><span class="st">"coerce"</span>)</span>
-<span id="cb28-44"><a href="#cb28-44" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb28-45"><a href="#cb28-45" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 5. 存为 Parquet</span></span>
-<span id="cb28-46"><a href="#cb28-46" aria-hidden="true" tabindex="-1"></a>    os.makedirs(os.path.dirname(output_path) <span class="kw">or</span> <span class="st">"."</span>, exist_ok<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb28-47"><a href="#cb28-47" aria-hidden="true" tabindex="-1"></a>    df.to_parquet(output_path, index<span class="op">=</span><span class="va">False</span>)</span>
-<span id="cb28-48"><a href="#cb28-48" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb28-49"><a href="#cb28-49" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 6. 记录元数据（lineage）</span></span>
-<span id="cb28-50"><a href="#cb28-50" aria-hidden="true" tabindex="-1"></a>    meta <span class="op">=</span> {</span>
-<span id="cb28-51"><a href="#cb28-51" aria-hidden="true" tabindex="-1"></a>        <span class="st">"source_file"</span>:  raw_path,</span>
-<span id="cb28-52"><a href="#cb28-52" aria-hidden="true" tabindex="-1"></a>        <span class="st">"output_file"</span>:  output_path,</span>
-<span id="cb28-53"><a href="#cb28-53" aria-hidden="true" tabindex="-1"></a>        <span class="st">"source_desc"</span>:  source_desc,</span>
-<span id="cb28-54"><a href="#cb28-54" aria-hidden="true" tabindex="-1"></a>        <span class="st">"created_at"</span>:   datetime.datetime.now().isoformat(),</span>
-<span id="cb28-55"><a href="#cb28-55" aria-hidden="true" tabindex="-1"></a>        <span class="st">"row_count"</span>:    <span class="bu">len</span>(df),</span>
-<span id="cb28-56"><a href="#cb28-56" aria-hidden="true" tabindex="-1"></a>        <span class="st">"columns"</span>:      <span class="bu">list</span>(df.columns),</span>
-<span id="cb28-57"><a href="#cb28-57" aria-hidden="true" tabindex="-1"></a>        <span class="st">"date_range"</span>:   (</span>
-<span id="cb28-58"><a href="#cb28-58" aria-hidden="true" tabindex="-1"></a>            <span class="ss">f"</span><span class="sc">{</span>df[<span class="st">'date'</span>]<span class="sc">.</span><span class="bu">min</span>()<span class="sc">.</span>date()<span class="sc">}</span><span class="ss"> ~ </span><span class="sc">{</span>df[<span class="st">'date'</span>]<span class="sc">.</span><span class="bu">max</span>()<span class="sc">.</span>date()<span class="sc">}</span><span class="ss">"</span></span>
-<span id="cb28-59"><a href="#cb28-59" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> <span class="st">"date"</span> <span class="kw">in</span> df.columns <span class="cf">else</span> <span class="st">"N/A"</span></span>
-<span id="cb28-60"><a href="#cb28-60" aria-hidden="true" tabindex="-1"></a>        ),</span>
-<span id="cb28-61"><a href="#cb28-61" aria-hidden="true" tabindex="-1"></a>        <span class="st">"null_counts"</span>:  df.isnull().<span class="bu">sum</span>().to_dict(),</span>
-<span id="cb28-62"><a href="#cb28-62" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb28-63"><a href="#cb28-63" aria-hidden="true" tabindex="-1"></a>    meta_path <span class="op">=</span> output_path.replace(<span class="st">".parquet"</span>, <span class="st">"_lineage.json"</span>)</span>
-<span id="cb28-64"><a href="#cb28-64" aria-hidden="true" tabindex="-1"></a>    <span class="cf">with</span> <span class="bu">open</span>(meta_path, <span class="st">"w"</span>, encoding<span class="op">=</span><span class="st">"utf-8"</span>) <span class="im">as</span> f:</span>
-<span id="cb28-65"><a href="#cb28-65" aria-hidden="true" tabindex="-1"></a>        json.dump(meta, f, ensure_ascii<span class="op">=</span><span class="va">False</span>, indent<span class="op">=</span><span class="dv">2</span>)</span>
-<span id="cb28-66"><a href="#cb28-66" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb28-67"><a href="#cb28-67" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"✓ 已保存：</span><span class="sc">{</span>output_path<span class="sc">}</span><span class="ss">"</span>)</span>
-<span id="cb28-68"><a href="#cb28-68" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"  行数：</span><span class="sc">{</span><span class="bu">len</span>(df)<span class="sc">:,}</span><span class="ss">，列数：</span><span class="sc">{</span><span class="bu">len</span>(df.columns)<span class="sc">}</span><span class="ss">"</span>)</span>
-<span id="cb28-69"><a href="#cb28-69" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"  元数据：</span><span class="sc">{</span>meta_path<span class="sc">}</span><span class="ss">"</span>)</span>
-<span id="cb28-70"><a href="#cb28-70" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb28-71"><a href="#cb28-71" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> df</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pyarrow <span class="im">as</span> pa</span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pyarrow.parquet <span class="im">as</span> pq</span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> json</span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> datetime</span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> clean_and_save(</span>
+<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a>    raw_path: <span class="bu">str</span>,</span>
+<span id="cb27-10"><a href="#cb27-10" aria-hidden="true" tabindex="-1"></a>    output_path: <span class="bu">str</span>,</span>
+<span id="cb27-11"><a href="#cb27-11" aria-hidden="true" tabindex="-1"></a>    source_desc: <span class="bu">str</span> <span class="op">=</span> <span class="st">""</span>,</span>
+<span id="cb27-12"><a href="#cb27-12" aria-hidden="true" tabindex="-1"></a>    na_values: <span class="bu">list</span> <span class="op">=</span> <span class="va">None</span>,</span>
+<span id="cb27-13"><a href="#cb27-13" aria-hidden="true" tabindex="-1"></a>) <span class="op">-&gt;</span> pd.DataFrame:</span>
+<span id="cb27-14"><a href="#cb27-14" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
+<span id="cb27-15"><a href="#cb27-15" aria-hidden="true" tabindex="-1"></a><span class="co">    标准化清洗流程：读取原始 CSV → 修复类型 → 存为 Parquet → 记录元数据</span></span>
+<span id="cb27-16"><a href="#cb27-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-17"><a href="#cb27-17" aria-hidden="true" tabindex="-1"></a><span class="co">    参数：</span></span>
+<span id="cb27-18"><a href="#cb27-18" aria-hidden="true" tabindex="-1"></a><span class="co">        raw_path    : 原始 CSV 文件路径</span></span>
+<span id="cb27-19"><a href="#cb27-19" aria-hidden="true" tabindex="-1"></a><span class="co">        output_path : 输出 Parquet 文件路径</span></span>
+<span id="cb27-20"><a href="#cb27-20" aria-hidden="true" tabindex="-1"></a><span class="co">        source_desc : 数据来源描述（写入元数据）</span></span>
+<span id="cb27-21"><a href="#cb27-21" aria-hidden="true" tabindex="-1"></a><span class="co">        na_values   : 额外的空值标记（如 Wind 的 "--"）</span></span>
+<span id="cb27-22"><a href="#cb27-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-23"><a href="#cb27-23" aria-hidden="true" tabindex="-1"></a><span class="co">    返回：</span></span>
+<span id="cb27-24"><a href="#cb27-24" aria-hidden="true" tabindex="-1"></a><span class="co">        清洗后的 DataFrame</span></span>
+<span id="cb27-25"><a href="#cb27-25" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb27-26"><a href="#cb27-26" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 1. 读取，识别空值</span></span>
+<span id="cb27-27"><a href="#cb27-27" aria-hidden="true" tabindex="-1"></a>    _na <span class="op">=</span> [<span class="st">"--"</span>, <span class="st">"N/A"</span>, <span class="st">"n/a"</span>, <span class="st">"#N/A"</span>] <span class="op">+</span> (na_values <span class="kw">or</span> [])</span>
+<span id="cb27-28"><a href="#cb27-28" aria-hidden="true" tabindex="-1"></a>    df <span class="op">=</span> pd.read_csv(raw_path, na_values<span class="op">=</span>_na, dtype<span class="op">=</span>{<span class="st">"ticker"</span>: <span class="bu">str</span>})</span>
+<span id="cb27-29"><a href="#cb27-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-30"><a href="#cb27-30" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 2. 统一列名（小写 + 下划线）</span></span>
+<span id="cb27-31"><a href="#cb27-31" aria-hidden="true" tabindex="-1"></a>    df.columns <span class="op">=</span> (</span>
+<span id="cb27-32"><a href="#cb27-32" aria-hidden="true" tabindex="-1"></a>        df.columns.<span class="bu">str</span>.strip()</span>
+<span id="cb27-33"><a href="#cb27-33" aria-hidden="true" tabindex="-1"></a>                  .<span class="bu">str</span>.lower()</span>
+<span id="cb27-34"><a href="#cb27-34" aria-hidden="true" tabindex="-1"></a>                  .<span class="bu">str</span>.replace(<span class="vs">r"\s+"</span>, <span class="st">"_"</span>, regex<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb27-35"><a href="#cb27-35" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb27-36"><a href="#cb27-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-37"><a href="#cb27-37" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 3. 修复 ticker（补前导零至 6 位）</span></span>
+<span id="cb27-38"><a href="#cb27-38" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="st">"ticker"</span> <span class="kw">in</span> df.columns:</span>
+<span id="cb27-39"><a href="#cb27-39" aria-hidden="true" tabindex="-1"></a>        df[<span class="st">"ticker"</span>] <span class="op">=</span> df[<span class="st">"ticker"</span>].<span class="bu">str</span>.zfill(<span class="dv">6</span>)</span>
+<span id="cb27-40"><a href="#cb27-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-41"><a href="#cb27-41" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 4. 修复 date 列</span></span>
+<span id="cb27-42"><a href="#cb27-42" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="st">"date"</span> <span class="kw">in</span> df.columns:</span>
+<span id="cb27-43"><a href="#cb27-43" aria-hidden="true" tabindex="-1"></a>        df[<span class="st">"date"</span>] <span class="op">=</span> pd.to_datetime(df[<span class="st">"date"</span>], errors<span class="op">=</span><span class="st">"coerce"</span>)</span>
+<span id="cb27-44"><a href="#cb27-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-45"><a href="#cb27-45" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 5. 存为 Parquet</span></span>
+<span id="cb27-46"><a href="#cb27-46" aria-hidden="true" tabindex="-1"></a>    os.makedirs(os.path.dirname(output_path) <span class="kw">or</span> <span class="st">"."</span>, exist_ok<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb27-47"><a href="#cb27-47" aria-hidden="true" tabindex="-1"></a>    df.to_parquet(output_path, index<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb27-48"><a href="#cb27-48" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-49"><a href="#cb27-49" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 6. 记录元数据（lineage）</span></span>
+<span id="cb27-50"><a href="#cb27-50" aria-hidden="true" tabindex="-1"></a>    meta <span class="op">=</span> {</span>
+<span id="cb27-51"><a href="#cb27-51" aria-hidden="true" tabindex="-1"></a>        <span class="st">"source_file"</span>:  raw_path,</span>
+<span id="cb27-52"><a href="#cb27-52" aria-hidden="true" tabindex="-1"></a>        <span class="st">"output_file"</span>:  output_path,</span>
+<span id="cb27-53"><a href="#cb27-53" aria-hidden="true" tabindex="-1"></a>        <span class="st">"source_desc"</span>:  source_desc,</span>
+<span id="cb27-54"><a href="#cb27-54" aria-hidden="true" tabindex="-1"></a>        <span class="st">"created_at"</span>:   datetime.datetime.now().isoformat(),</span>
+<span id="cb27-55"><a href="#cb27-55" aria-hidden="true" tabindex="-1"></a>        <span class="st">"row_count"</span>:    <span class="bu">len</span>(df),</span>
+<span id="cb27-56"><a href="#cb27-56" aria-hidden="true" tabindex="-1"></a>        <span class="st">"columns"</span>:      <span class="bu">list</span>(df.columns),</span>
+<span id="cb27-57"><a href="#cb27-57" aria-hidden="true" tabindex="-1"></a>        <span class="st">"date_range"</span>:   (</span>
+<span id="cb27-58"><a href="#cb27-58" aria-hidden="true" tabindex="-1"></a>            <span class="ss">f"</span><span class="sc">{</span>df[<span class="st">'date'</span>]<span class="sc">.</span><span class="bu">min</span>()<span class="sc">.</span>date()<span class="sc">}</span><span class="ss"> ~ </span><span class="sc">{</span>df[<span class="st">'date'</span>]<span class="sc">.</span><span class="bu">max</span>()<span class="sc">.</span>date()<span class="sc">}</span><span class="ss">"</span></span>
+<span id="cb27-59"><a href="#cb27-59" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> <span class="st">"date"</span> <span class="kw">in</span> df.columns <span class="cf">else</span> <span class="st">"N/A"</span></span>
+<span id="cb27-60"><a href="#cb27-60" aria-hidden="true" tabindex="-1"></a>        ),</span>
+<span id="cb27-61"><a href="#cb27-61" aria-hidden="true" tabindex="-1"></a>        <span class="st">"null_counts"</span>:  df.isnull().<span class="bu">sum</span>().to_dict(),</span>
+<span id="cb27-62"><a href="#cb27-62" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb27-63"><a href="#cb27-63" aria-hidden="true" tabindex="-1"></a>    meta_path <span class="op">=</span> output_path.replace(<span class="st">".parquet"</span>, <span class="st">"_lineage.json"</span>)</span>
+<span id="cb27-64"><a href="#cb27-64" aria-hidden="true" tabindex="-1"></a>    <span class="cf">with</span> <span class="bu">open</span>(meta_path, <span class="st">"w"</span>, encoding<span class="op">=</span><span class="st">"utf-8"</span>) <span class="im">as</span> f:</span>
+<span id="cb27-65"><a href="#cb27-65" aria-hidden="true" tabindex="-1"></a>        json.dump(meta, f, ensure_ascii<span class="op">=</span><span class="va">False</span>, indent<span class="op">=</span><span class="dv">2</span>)</span>
+<span id="cb27-66"><a href="#cb27-66" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-67"><a href="#cb27-67" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"✓ 已保存：</span><span class="sc">{</span>output_path<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb27-68"><a href="#cb27-68" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"  行数：</span><span class="sc">{</span><span class="bu">len</span>(df)<span class="sc">:,}</span><span class="ss">，列数：</span><span class="sc">{</span><span class="bu">len</span>(df.columns)<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb27-69"><a href="#cb27-69" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"  元数据：</span><span class="sc">{</span>meta_path<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb27-70"><a href="#cb27-70" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-71"><a href="#cb27-71" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> df</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>使用示例：</p>
-<div class="sourceCode" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>df_daily <span class="op">=</span> clean_and_save(</span>
-<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>    raw_path    <span class="op">=</span> <span class="st">"data/raw/wind_stock_daily_2023.csv"</span>,</span>
-<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>    output_path <span class="op">=</span> <span class="st">"data/processed/stock_daily_2023.parquet"</span>,</span>
-<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>    source_desc <span class="op">=</span> <span class="st">"Wind 金融终端，股票日线数据，2023年全年"</span>,</span>
-<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>df_daily <span class="op">=</span> clean_and_save(</span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>    raw_path    <span class="op">=</span> <span class="st">"data/raw/wind_stock_daily_2023.csv"</span>,</span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>    output_path <span class="op">=</span> <span class="st">"data/processed/stock_daily_2023.parquet"</span>,</span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>    source_desc <span class="op">=</span> <span class="st">"Wind 金融终端，股票日线数据，2023年全年"</span>,</span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
-<section id="从模拟数据到完整流程" class="level3" data-number="11.6.2">
-<h3 data-number="11.6.2" class="anchored" data-anchor-id="从模拟数据到完整流程"><span class="header-section-number">11.6.2</span> 从模拟数据到完整流程</h3>
+<section id="从模拟数据到完整流程" class="level3" data-number="11.7.2">
+<h3 data-number="11.7.2" class="anchored" data-anchor-id="从模拟数据到完整流程"><span class="header-section-number">11.7.2</span> 从模拟数据到完整流程</h3>
 <p>以下用模拟数据演示「获取 → 清洗 → 分析 → 输出」的完整流程：</p>
-<div class="sourceCode" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> duckdb</span>
-<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sqlite3</span>
-<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a><span class="co"># ── 第一步：生成模拟原始数据（模拟 Wind 导出） ──────────────────</span></span>
-<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>np.random.seed(<span class="dv">0</span>)</span>
-<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a>n_stocks, n_days <span class="op">=</span> <span class="dv">50</span>, <span class="dv">500</span></span>
-<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-8"><a href="#cb30-8" aria-hidden="true" tabindex="-1"></a>tickers <span class="op">=</span> [<span class="bu">str</span>(i).zfill(<span class="dv">6</span>) <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, n_stocks <span class="op">+</span> <span class="dv">1</span>)]</span>
-<span id="cb30-9"><a href="#cb30-9" aria-hidden="true" tabindex="-1"></a>dates   <span class="op">=</span> pd.date_range(<span class="st">"2022-01-01"</span>, periods<span class="op">=</span>n_days, freq<span class="op">=</span><span class="st">"B"</span>)  <span class="co"># 工作日</span></span>
-<span id="cb30-10"><a href="#cb30-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-11"><a href="#cb30-11" aria-hidden="true" tabindex="-1"></a>rows <span class="op">=</span> []</span>
-<span id="cb30-12"><a href="#cb30-12" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> t <span class="kw">in</span> tickers:</span>
-<span id="cb30-13"><a href="#cb30-13" aria-hidden="true" tabindex="-1"></a>    price <span class="op">=</span> <span class="fl">50.0</span></span>
-<span id="cb30-14"><a href="#cb30-14" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> d <span class="kw">in</span> dates:</span>
-<span id="cb30-15"><a href="#cb30-15" aria-hidden="true" tabindex="-1"></a>        price <span class="op">*=</span> np.random.uniform(<span class="fl">0.97</span>, <span class="fl">1.03</span>)</span>
-<span id="cb30-16"><a href="#cb30-16" aria-hidden="true" tabindex="-1"></a>        rows.append({</span>
-<span id="cb30-17"><a href="#cb30-17" aria-hidden="true" tabindex="-1"></a>            <span class="st">"date"</span>:   d.strftime(<span class="st">"%Y-%m-</span><span class="sc">%d</span><span class="st">"</span>),</span>
-<span id="cb30-18"><a href="#cb30-18" aria-hidden="true" tabindex="-1"></a>            <span class="st">"ticker"</span>: t,</span>
-<span id="cb30-19"><a href="#cb30-19" aria-hidden="true" tabindex="-1"></a>            <span class="st">"close"</span>:  <span class="bu">round</span>(price, <span class="dv">2</span>),</span>
-<span id="cb30-20"><a href="#cb30-20" aria-hidden="true" tabindex="-1"></a>            <span class="st">"volume"</span>: <span class="bu">int</span>(np.random.randint(<span class="dv">1_000_000</span>, <span class="dv">10_000_000</span>)),</span>
-<span id="cb30-21"><a href="#cb30-21" aria-hidden="true" tabindex="-1"></a>        })</span>
-<span id="cb30-22"><a href="#cb30-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-23"><a href="#cb30-23" aria-hidden="true" tabindex="-1"></a>pd.DataFrame(rows).to_csv(<span class="st">"data/raw/stock_daily_raw.csv"</span>, index<span class="op">=</span><span class="va">False</span>)</span>
-<span id="cb30-24"><a href="#cb30-24" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"原始数据已生成"</span>)</span>
-<span id="cb30-25"><a href="#cb30-25" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-26"><a href="#cb30-26" aria-hidden="true" tabindex="-1"></a><span class="co"># ── 第二步：清洗并存为 Parquet ──────────────────────────────────</span></span>
-<span id="cb30-27"><a href="#cb30-27" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> clean_and_save(</span>
-<span id="cb30-28"><a href="#cb30-28" aria-hidden="true" tabindex="-1"></a>    raw_path    <span class="op">=</span> <span class="st">"data/raw/stock_daily_raw.csv"</span>,</span>
-<span id="cb30-29"><a href="#cb30-29" aria-hidden="true" tabindex="-1"></a>    output_path <span class="op">=</span> <span class="st">"data/processed/stock_daily.parquet"</span>,</span>
-<span id="cb30-30"><a href="#cb30-30" aria-hidden="true" tabindex="-1"></a>    source_desc <span class="op">=</span> <span class="st">"模拟数据，用于演示"</span>,</span>
-<span id="cb30-31"><a href="#cb30-31" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb30-32"><a href="#cb30-32" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-33"><a href="#cb30-33" aria-hidden="true" tabindex="-1"></a><span class="co"># ── 第三步：用 DuckDB 计算动量因子 ──────────────────────────────</span></span>
-<span id="cb30-34"><a href="#cb30-34" aria-hidden="true" tabindex="-1"></a>df_momentum <span class="op">=</span> duckdb.execute(<span class="st">"""</span></span>
-<span id="cb30-35"><a href="#cb30-35" aria-hidden="true" tabindex="-1"></a><span class="st">    WITH base AS (</span></span>
-<span id="cb30-36"><a href="#cb30-36" aria-hidden="true" tabindex="-1"></a><span class="st">        SELECT</span></span>
-<span id="cb30-37"><a href="#cb30-37" aria-hidden="true" tabindex="-1"></a><span class="st">            ticker,</span></span>
-<span id="cb30-38"><a href="#cb30-38" aria-hidden="true" tabindex="-1"></a><span class="st">            date,</span></span>
-<span id="cb30-39"><a href="#cb30-39" aria-hidden="true" tabindex="-1"></a><span class="st">            close,</span></span>
-<span id="cb30-40"><a href="#cb30-40" aria-hidden="true" tabindex="-1"></a><span class="st">            -- 20 日前的收盘价（窗口函数）</span></span>
-<span id="cb30-41"><a href="#cb30-41" aria-hidden="true" tabindex="-1"></a><span class="st">            LAG(close, 20) OVER (</span></span>
-<span id="cb30-42"><a href="#cb30-42" aria-hidden="true" tabindex="-1"></a><span class="st">                PARTITION BY ticker</span></span>
-<span id="cb30-43"><a href="#cb30-43" aria-hidden="true" tabindex="-1"></a><span class="st">                ORDER BY date</span></span>
-<span id="cb30-44"><a href="#cb30-44" aria-hidden="true" tabindex="-1"></a><span class="st">            ) AS close_20d_ago</span></span>
-<span id="cb30-45"><a href="#cb30-45" aria-hidden="true" tabindex="-1"></a><span class="st">        FROM read_parquet('data/processed/stock_daily.parquet')</span></span>
-<span id="cb30-46"><a href="#cb30-46" aria-hidden="true" tabindex="-1"></a><span class="st">    )</span></span>
-<span id="cb30-47"><a href="#cb30-47" aria-hidden="true" tabindex="-1"></a><span class="st">    SELECT</span></span>
-<span id="cb30-48"><a href="#cb30-48" aria-hidden="true" tabindex="-1"></a><span class="st">        ticker,</span></span>
-<span id="cb30-49"><a href="#cb30-49" aria-hidden="true" tabindex="-1"></a><span class="st">        date,</span></span>
-<span id="cb30-50"><a href="#cb30-50" aria-hidden="true" tabindex="-1"></a><span class="st">        close,</span></span>
-<span id="cb30-51"><a href="#cb30-51" aria-hidden="true" tabindex="-1"></a><span class="st">        ROUND((close / close_20d_ago - 1) * 100, 2) AS momentum_20d</span></span>
-<span id="cb30-52"><a href="#cb30-52" aria-hidden="true" tabindex="-1"></a><span class="st">    FROM base</span></span>
-<span id="cb30-53"><a href="#cb30-53" aria-hidden="true" tabindex="-1"></a><span class="st">    WHERE close_20d_ago IS NOT NULL</span></span>
-<span id="cb30-54"><a href="#cb30-54" aria-hidden="true" tabindex="-1"></a><span class="st">    ORDER BY date, ticker</span></span>
-<span id="cb30-55"><a href="#cb30-55" aria-hidden="true" tabindex="-1"></a><span class="st">"""</span>).df()</span>
-<span id="cb30-56"><a href="#cb30-56" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-57"><a href="#cb30-57" aria-hidden="true" tabindex="-1"></a><span class="co"># ── 第四步：保存因子数据 ─────────────────────────────────────────</span></span>
-<span id="cb30-58"><a href="#cb30-58" aria-hidden="true" tabindex="-1"></a>df_momentum.to_parquet(<span class="st">"data/outputs/factor_momentum.parquet"</span>, index<span class="op">=</span><span class="va">False</span>)</span>
-<span id="cb30-59"><a href="#cb30-59" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-60"><a href="#cb30-60" aria-hidden="true" tabindex="-1"></a><span class="co"># ── 第五步：存入 SQLite，方便后续多表查询 ──────────────────────</span></span>
-<span id="cb30-61"><a href="#cb30-61" aria-hidden="true" tabindex="-1"></a>conn <span class="op">=</span> sqlite3.<span class="ex">connect</span>(<span class="st">"finance.db"</span>)</span>
-<span id="cb30-62"><a href="#cb30-62" aria-hidden="true" tabindex="-1"></a>df_momentum.to_sql(<span class="st">"factor_momentum"</span>, conn, if_exists<span class="op">=</span><span class="st">"replace"</span>, index<span class="op">=</span><span class="va">False</span>)</span>
-<span id="cb30-63"><a href="#cb30-63" aria-hidden="true" tabindex="-1"></a>conn.execute(<span class="st">"""</span></span>
-<span id="cb30-64"><a href="#cb30-64" aria-hidden="true" tabindex="-1"></a><span class="st">    CREATE INDEX IF NOT EXISTS idx_mom_ticker_date</span></span>
-<span id="cb30-65"><a href="#cb30-65" aria-hidden="true" tabindex="-1"></a><span class="st">    ON factor_momentum (ticker, date)</span></span>
-<span id="cb30-66"><a href="#cb30-66" aria-hidden="true" tabindex="-1"></a><span class="st">"""</span>)</span>
-<span id="cb30-67"><a href="#cb30-67" aria-hidden="true" tabindex="-1"></a>conn.commit()</span>
-<span id="cb30-68"><a href="#cb30-68" aria-hidden="true" tabindex="-1"></a>conn.close()</span>
-<span id="cb30-69"><a href="#cb30-69" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-70"><a href="#cb30-70" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">完整流程执行完毕"</span>)</span>
-<span id="cb30-71"><a href="#cb30-71" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"  因子数据：</span><span class="sc">{</span><span class="bu">len</span>(df_momentum)<span class="sc">:,}</span><span class="ss"> 行"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> duckdb</span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sqlite3</span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a><span class="co"># ── 第一步：生成模拟原始数据（模拟 Wind 导出） ──────────────────</span></span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a>np.random.seed(<span class="dv">0</span>)</span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a>n_stocks, n_days <span class="op">=</span> <span class="dv">50</span>, <span class="dv">500</span></span>
+<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a>tickers <span class="op">=</span> [<span class="bu">str</span>(i).zfill(<span class="dv">6</span>) <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, n_stocks <span class="op">+</span> <span class="dv">1</span>)]</span>
+<span id="cb29-9"><a href="#cb29-9" aria-hidden="true" tabindex="-1"></a>dates   <span class="op">=</span> pd.date_range(<span class="st">"2022-01-01"</span>, periods<span class="op">=</span>n_days, freq<span class="op">=</span><span class="st">"B"</span>)  <span class="co"># 工作日</span></span>
+<span id="cb29-10"><a href="#cb29-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-11"><a href="#cb29-11" aria-hidden="true" tabindex="-1"></a>rows <span class="op">=</span> []</span>
+<span id="cb29-12"><a href="#cb29-12" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> t <span class="kw">in</span> tickers:</span>
+<span id="cb29-13"><a href="#cb29-13" aria-hidden="true" tabindex="-1"></a>    price <span class="op">=</span> <span class="fl">50.0</span></span>
+<span id="cb29-14"><a href="#cb29-14" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> d <span class="kw">in</span> dates:</span>
+<span id="cb29-15"><a href="#cb29-15" aria-hidden="true" tabindex="-1"></a>        price <span class="op">*=</span> np.random.uniform(<span class="fl">0.97</span>, <span class="fl">1.03</span>)</span>
+<span id="cb29-16"><a href="#cb29-16" aria-hidden="true" tabindex="-1"></a>        rows.append({</span>
+<span id="cb29-17"><a href="#cb29-17" aria-hidden="true" tabindex="-1"></a>            <span class="st">"date"</span>:   d.strftime(<span class="st">"%Y-%m-</span><span class="sc">%d</span><span class="st">"</span>),</span>
+<span id="cb29-18"><a href="#cb29-18" aria-hidden="true" tabindex="-1"></a>            <span class="st">"ticker"</span>: t,</span>
+<span id="cb29-19"><a href="#cb29-19" aria-hidden="true" tabindex="-1"></a>            <span class="st">"close"</span>:  <span class="bu">round</span>(price, <span class="dv">2</span>),</span>
+<span id="cb29-20"><a href="#cb29-20" aria-hidden="true" tabindex="-1"></a>            <span class="st">"volume"</span>: <span class="bu">int</span>(np.random.randint(<span class="dv">1_000_000</span>, <span class="dv">10_000_000</span>)),</span>
+<span id="cb29-21"><a href="#cb29-21" aria-hidden="true" tabindex="-1"></a>        })</span>
+<span id="cb29-22"><a href="#cb29-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-23"><a href="#cb29-23" aria-hidden="true" tabindex="-1"></a>pd.DataFrame(rows).to_csv(<span class="st">"data/raw/stock_daily_raw.csv"</span>, index<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb29-24"><a href="#cb29-24" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"原始数据已生成"</span>)</span>
+<span id="cb29-25"><a href="#cb29-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-26"><a href="#cb29-26" aria-hidden="true" tabindex="-1"></a><span class="co"># ── 第二步：清洗并存为 Parquet ──────────────────────────────────</span></span>
+<span id="cb29-27"><a href="#cb29-27" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> clean_and_save(</span>
+<span id="cb29-28"><a href="#cb29-28" aria-hidden="true" tabindex="-1"></a>    raw_path    <span class="op">=</span> <span class="st">"data/raw/stock_daily_raw.csv"</span>,</span>
+<span id="cb29-29"><a href="#cb29-29" aria-hidden="true" tabindex="-1"></a>    output_path <span class="op">=</span> <span class="st">"data/processed/stock_daily.parquet"</span>,</span>
+<span id="cb29-30"><a href="#cb29-30" aria-hidden="true" tabindex="-1"></a>    source_desc <span class="op">=</span> <span class="st">"模拟数据，用于演示"</span>,</span>
+<span id="cb29-31"><a href="#cb29-31" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb29-32"><a href="#cb29-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-33"><a href="#cb29-33" aria-hidden="true" tabindex="-1"></a><span class="co"># ── 第三步：用 DuckDB 计算动量因子 ──────────────────────────────</span></span>
+<span id="cb29-34"><a href="#cb29-34" aria-hidden="true" tabindex="-1"></a>df_momentum <span class="op">=</span> duckdb.execute(<span class="st">"""</span></span>
+<span id="cb29-35"><a href="#cb29-35" aria-hidden="true" tabindex="-1"></a><span class="st">    WITH base AS (</span></span>
+<span id="cb29-36"><a href="#cb29-36" aria-hidden="true" tabindex="-1"></a><span class="st">        SELECT</span></span>
+<span id="cb29-37"><a href="#cb29-37" aria-hidden="true" tabindex="-1"></a><span class="st">            ticker,</span></span>
+<span id="cb29-38"><a href="#cb29-38" aria-hidden="true" tabindex="-1"></a><span class="st">            date,</span></span>
+<span id="cb29-39"><a href="#cb29-39" aria-hidden="true" tabindex="-1"></a><span class="st">            close,</span></span>
+<span id="cb29-40"><a href="#cb29-40" aria-hidden="true" tabindex="-1"></a><span class="st">            -- 20 日前的收盘价（窗口函数）</span></span>
+<span id="cb29-41"><a href="#cb29-41" aria-hidden="true" tabindex="-1"></a><span class="st">            LAG(close, 20) OVER (</span></span>
+<span id="cb29-42"><a href="#cb29-42" aria-hidden="true" tabindex="-1"></a><span class="st">                PARTITION BY ticker</span></span>
+<span id="cb29-43"><a href="#cb29-43" aria-hidden="true" tabindex="-1"></a><span class="st">                ORDER BY date</span></span>
+<span id="cb29-44"><a href="#cb29-44" aria-hidden="true" tabindex="-1"></a><span class="st">            ) AS close_20d_ago</span></span>
+<span id="cb29-45"><a href="#cb29-45" aria-hidden="true" tabindex="-1"></a><span class="st">        FROM read_parquet('data/processed/stock_daily.parquet')</span></span>
+<span id="cb29-46"><a href="#cb29-46" aria-hidden="true" tabindex="-1"></a><span class="st">    )</span></span>
+<span id="cb29-47"><a href="#cb29-47" aria-hidden="true" tabindex="-1"></a><span class="st">    SELECT</span></span>
+<span id="cb29-48"><a href="#cb29-48" aria-hidden="true" tabindex="-1"></a><span class="st">        ticker,</span></span>
+<span id="cb29-49"><a href="#cb29-49" aria-hidden="true" tabindex="-1"></a><span class="st">        date,</span></span>
+<span id="cb29-50"><a href="#cb29-50" aria-hidden="true" tabindex="-1"></a><span class="st">        close,</span></span>
+<span id="cb29-51"><a href="#cb29-51" aria-hidden="true" tabindex="-1"></a><span class="st">        ROUND((close / close_20d_ago - 1) * 100, 2) AS momentum_20d</span></span>
+<span id="cb29-52"><a href="#cb29-52" aria-hidden="true" tabindex="-1"></a><span class="st">    FROM base</span></span>
+<span id="cb29-53"><a href="#cb29-53" aria-hidden="true" tabindex="-1"></a><span class="st">    WHERE close_20d_ago IS NOT NULL</span></span>
+<span id="cb29-54"><a href="#cb29-54" aria-hidden="true" tabindex="-1"></a><span class="st">    ORDER BY date, ticker</span></span>
+<span id="cb29-55"><a href="#cb29-55" aria-hidden="true" tabindex="-1"></a><span class="st">"""</span>).df()</span>
+<span id="cb29-56"><a href="#cb29-56" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-57"><a href="#cb29-57" aria-hidden="true" tabindex="-1"></a><span class="co"># ── 第四步：保存因子数据 ─────────────────────────────────────────</span></span>
+<span id="cb29-58"><a href="#cb29-58" aria-hidden="true" tabindex="-1"></a>df_momentum.to_parquet(<span class="st">"data/outputs/factor_momentum.parquet"</span>, index<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb29-59"><a href="#cb29-59" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-60"><a href="#cb29-60" aria-hidden="true" tabindex="-1"></a><span class="co"># ── 第五步：存入 SQLite，方便后续多表查询 ──────────────────────</span></span>
+<span id="cb29-61"><a href="#cb29-61" aria-hidden="true" tabindex="-1"></a>conn <span class="op">=</span> sqlite3.<span class="ex">connect</span>(<span class="st">"finance.db"</span>)</span>
+<span id="cb29-62"><a href="#cb29-62" aria-hidden="true" tabindex="-1"></a>df_momentum.to_sql(<span class="st">"factor_momentum"</span>, conn, if_exists<span class="op">=</span><span class="st">"replace"</span>, index<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb29-63"><a href="#cb29-63" aria-hidden="true" tabindex="-1"></a>conn.execute(<span class="st">"""</span></span>
+<span id="cb29-64"><a href="#cb29-64" aria-hidden="true" tabindex="-1"></a><span class="st">    CREATE INDEX IF NOT EXISTS idx_mom_ticker_date</span></span>
+<span id="cb29-65"><a href="#cb29-65" aria-hidden="true" tabindex="-1"></a><span class="st">    ON factor_momentum (ticker, date)</span></span>
+<span id="cb29-66"><a href="#cb29-66" aria-hidden="true" tabindex="-1"></a><span class="st">"""</span>)</span>
+<span id="cb29-67"><a href="#cb29-67" aria-hidden="true" tabindex="-1"></a>conn.commit()</span>
+<span id="cb29-68"><a href="#cb29-68" aria-hidden="true" tabindex="-1"></a>conn.close()</span>
+<span id="cb29-69"><a href="#cb29-69" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-70"><a href="#cb29-70" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">完整流程执行完毕"</span>)</span>
+<span id="cb29-71"><a href="#cb29-71" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"  因子数据：</span><span class="sc">{</span><span class="bu">len</span>(df_momentum)<span class="sc">:,}</span><span class="ss"> 行"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
-<section id="常见坑与检查清单" class="level3" data-number="11.6.3">
-<h3 data-number="11.6.3" class="anchored" data-anchor-id="常见坑与检查清单"><span class="header-section-number">11.6.3</span> 常见坑与检查清单</h3>
+<section id="常见坑与检查清单" class="level3" data-number="11.7.3">
+<h3 data-number="11.7.3" class="anchored" data-anchor-id="常见坑与检查清单"><span class="header-section-number">11.7.3</span> 常见坑与检查清单</h3>
 <p>完成数据清洗后，用以下清单自查：</p>
-<div class="sourceCode" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> data_quality_check(df: pd.DataFrame, name: <span class="bu">str</span> <span class="op">=</span> <span class="st">"数据集"</span>):</span>
-<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""快速数据质量检查"""</span></span>
-<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="sc">{</span><span class="st">'='</span><span class="op">*</span><span class="dv">40</span><span class="sc">}</span><span class="ss">"</span>)</span>
-<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"  </span><span class="sc">{</span>name<span class="sc">}</span><span class="ss"> 质量报告"</span>)</span>
-<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span><span class="st">'='</span><span class="op">*</span><span class="dv">40</span><span class="sc">}</span><span class="ss">"</span>)</span>
-<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"  行数：</span><span class="sc">{</span><span class="bu">len</span>(df)<span class="sc">:,}</span><span class="ss">    列数：</span><span class="sc">{</span><span class="bu">len</span>(df.columns)<span class="sc">}</span><span class="ss">"</span>)</span>
-<span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">  列类型："</span>)</span>
-<span id="cb31-8"><a href="#cb31-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> col, dtype <span class="kw">in</span> df.dtypes.items():</span>
-<span id="cb31-9"><a href="#cb31-9" aria-hidden="true" tabindex="-1"></a>        null_n   <span class="op">=</span> df[col].isnull().<span class="bu">sum</span>()</span>
-<span id="cb31-10"><a href="#cb31-10" aria-hidden="true" tabindex="-1"></a>        null_pct <span class="op">=</span> null_n <span class="op">/</span> <span class="bu">len</span>(df) <span class="op">*</span> <span class="dv">100</span></span>
-<span id="cb31-11"><a href="#cb31-11" aria-hidden="true" tabindex="-1"></a>        flag     <span class="op">=</span> <span class="st">" ⚠️"</span> <span class="cf">if</span> null_pct <span class="op">&gt;</span> <span class="dv">5</span> <span class="cf">else</span> <span class="st">""</span></span>
-<span id="cb31-12"><a href="#cb31-12" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"    </span><span class="sc">{</span>col<span class="sc">:&lt;20}</span><span class="ss"> </span><span class="sc">{</span><span class="bu">str</span>(dtype)<span class="sc">:&lt;12}</span><span class="ss"> 空值：</span><span class="sc">{</span>null_pct<span class="sc">:.1f}</span><span class="ss">%</span><span class="sc">{</span>flag<span class="sc">}</span><span class="ss">"</span>)</span>
-<span id="cb31-13"><a href="#cb31-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb31-14"><a href="#cb31-14" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 检查 ticker 前导零</span></span>
-<span id="cb31-15"><a href="#cb31-15" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="st">"ticker"</span> <span class="kw">in</span> df.columns:</span>
-<span id="cb31-16"><a href="#cb31-16" aria-hidden="true" tabindex="-1"></a>        bad <span class="op">=</span> df[<span class="st">"ticker"</span>].dropna()</span>
-<span id="cb31-17"><a href="#cb31-17" aria-hidden="true" tabindex="-1"></a>        bad <span class="op">=</span> bad[bad.<span class="bu">str</span>.<span class="bu">len</span>() <span class="op">!=</span> <span class="dv">6</span>]</span>
-<span id="cb31-18"><a href="#cb31-18" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="bu">len</span>(bad) <span class="op">&gt;</span> <span class="dv">0</span>:</span>
-<span id="cb31-19"><a href="#cb31-19" aria-hidden="true" tabindex="-1"></a>            <span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">  ⚠️ ticker 长度不为 6 的记录：</span><span class="sc">{</span><span class="bu">len</span>(bad)<span class="sc">}</span><span class="ss"> 条"</span>)</span>
-<span id="cb31-20"><a href="#cb31-20" aria-hidden="true" tabindex="-1"></a>            <span class="bu">print</span>(<span class="ss">f"     示例：</span><span class="sc">{</span>bad<span class="sc">.</span>head(<span class="dv">3</span>)<span class="sc">.</span>tolist()<span class="sc">}</span><span class="ss">"</span>)</span>
-<span id="cb31-21"><a href="#cb31-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb31-22"><a href="#cb31-22" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 检查 date 列</span></span>
-<span id="cb31-23"><a href="#cb31-23" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="st">"date"</span> <span class="kw">in</span> df.columns <span class="kw">and</span> pd.api.types.is_datetime64_any_dtype(df[<span class="st">"date"</span>]):</span>
-<span id="cb31-24"><a href="#cb31-24" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">  日期范围：</span><span class="sc">{</span>df[<span class="st">'date'</span>]<span class="sc">.</span><span class="bu">min</span>()<span class="sc">.</span>date()<span class="sc">}</span><span class="ss"> ~ </span><span class="sc">{</span>df[<span class="st">'date'</span>]<span class="sc">.</span><span class="bu">max</span>()<span class="sc">.</span>date()<span class="sc">}</span><span class="ss">"</span>)</span>
-<span id="cb31-25"><a href="#cb31-25" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb31-26"><a href="#cb31-26" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 检查重复行</span></span>
-<span id="cb31-27"><a href="#cb31-27" aria-hidden="true" tabindex="-1"></a>    dup <span class="op">=</span> df.duplicated().<span class="bu">sum</span>()</span>
-<span id="cb31-28"><a href="#cb31-28" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> dup <span class="op">&gt;</span> <span class="dv">0</span>:</span>
-<span id="cb31-29"><a href="#cb31-29" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">  ⚠️ 重复行：</span><span class="sc">{</span>dup<span class="sc">}</span><span class="ss"> 条"</span>)</span>
-<span id="cb31-30"><a href="#cb31-30" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb31-31"><a href="#cb31-31" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span><span class="st">'='</span><span class="op">*</span><span class="dv">40</span><span class="sc">}</span><span class="ch">\n</span><span class="ss">"</span>)</span>
-<span id="cb31-32"><a href="#cb31-32" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb31-33"><a href="#cb31-33" aria-hidden="true" tabindex="-1"></a><span class="co"># 使用</span></span>
-<span id="cb31-34"><a href="#cb31-34" aria-hidden="true" tabindex="-1"></a>data_quality_check(df_momentum, <span class="st">"动量因子数据"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> data_quality_check(df: pd.DataFrame, name: <span class="bu">str</span> <span class="op">=</span> <span class="st">"数据集"</span>):</span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""快速数据质量检查"""</span></span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="sc">{</span><span class="st">'='</span><span class="op">*</span><span class="dv">40</span><span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"  </span><span class="sc">{</span>name<span class="sc">}</span><span class="ss"> 质量报告"</span>)</span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span><span class="st">'='</span><span class="op">*</span><span class="dv">40</span><span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"  行数：</span><span class="sc">{</span><span class="bu">len</span>(df)<span class="sc">:,}</span><span class="ss">    列数：</span><span class="sc">{</span><span class="bu">len</span>(df.columns)<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">  列类型："</span>)</span>
+<span id="cb30-8"><a href="#cb30-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> col, dtype <span class="kw">in</span> df.dtypes.items():</span>
+<span id="cb30-9"><a href="#cb30-9" aria-hidden="true" tabindex="-1"></a>        null_n   <span class="op">=</span> df[col].isnull().<span class="bu">sum</span>()</span>
+<span id="cb30-10"><a href="#cb30-10" aria-hidden="true" tabindex="-1"></a>        null_pct <span class="op">=</span> null_n <span class="op">/</span> <span class="bu">len</span>(df) <span class="op">*</span> <span class="dv">100</span></span>
+<span id="cb30-11"><a href="#cb30-11" aria-hidden="true" tabindex="-1"></a>        flag     <span class="op">=</span> <span class="st">" ⚠️"</span> <span class="cf">if</span> null_pct <span class="op">&gt;</span> <span class="dv">5</span> <span class="cf">else</span> <span class="st">""</span></span>
+<span id="cb30-12"><a href="#cb30-12" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"    </span><span class="sc">{</span>col<span class="sc">:&lt;20}</span><span class="ss"> </span><span class="sc">{</span><span class="bu">str</span>(dtype)<span class="sc">:&lt;12}</span><span class="ss"> 空值：</span><span class="sc">{</span>null_pct<span class="sc">:.1f}</span><span class="ss">%</span><span class="sc">{</span>flag<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb30-13"><a href="#cb30-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-14"><a href="#cb30-14" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 检查 ticker 前导零</span></span>
+<span id="cb30-15"><a href="#cb30-15" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="st">"ticker"</span> <span class="kw">in</span> df.columns:</span>
+<span id="cb30-16"><a href="#cb30-16" aria-hidden="true" tabindex="-1"></a>        bad <span class="op">=</span> df[<span class="st">"ticker"</span>].dropna()</span>
+<span id="cb30-17"><a href="#cb30-17" aria-hidden="true" tabindex="-1"></a>        bad <span class="op">=</span> bad[bad.<span class="bu">str</span>.<span class="bu">len</span>() <span class="op">!=</span> <span class="dv">6</span>]</span>
+<span id="cb30-18"><a href="#cb30-18" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="bu">len</span>(bad) <span class="op">&gt;</span> <span class="dv">0</span>:</span>
+<span id="cb30-19"><a href="#cb30-19" aria-hidden="true" tabindex="-1"></a>            <span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">  ⚠️ ticker 长度不为 6 的记录：</span><span class="sc">{</span><span class="bu">len</span>(bad)<span class="sc">}</span><span class="ss"> 条"</span>)</span>
+<span id="cb30-20"><a href="#cb30-20" aria-hidden="true" tabindex="-1"></a>            <span class="bu">print</span>(<span class="ss">f"     示例：</span><span class="sc">{</span>bad<span class="sc">.</span>head(<span class="dv">3</span>)<span class="sc">.</span>tolist()<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb30-21"><a href="#cb30-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-22"><a href="#cb30-22" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 检查 date 列</span></span>
+<span id="cb30-23"><a href="#cb30-23" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="st">"date"</span> <span class="kw">in</span> df.columns <span class="kw">and</span> pd.api.types.is_datetime64_any_dtype(df[<span class="st">"date"</span>]):</span>
+<span id="cb30-24"><a href="#cb30-24" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">  日期范围：</span><span class="sc">{</span>df[<span class="st">'date'</span>]<span class="sc">.</span><span class="bu">min</span>()<span class="sc">.</span>date()<span class="sc">}</span><span class="ss"> ~ </span><span class="sc">{</span>df[<span class="st">'date'</span>]<span class="sc">.</span><span class="bu">max</span>()<span class="sc">.</span>date()<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb30-25"><a href="#cb30-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-26"><a href="#cb30-26" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 检查重复行</span></span>
+<span id="cb30-27"><a href="#cb30-27" aria-hidden="true" tabindex="-1"></a>    dup <span class="op">=</span> df.duplicated().<span class="bu">sum</span>()</span>
+<span id="cb30-28"><a href="#cb30-28" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> dup <span class="op">&gt;</span> <span class="dv">0</span>:</span>
+<span id="cb30-29"><a href="#cb30-29" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">  ⚠️ 重复行：</span><span class="sc">{</span>dup<span class="sc">}</span><span class="ss"> 条"</span>)</span>
+<span id="cb30-30"><a href="#cb30-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-31"><a href="#cb30-31" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span><span class="st">'='</span><span class="op">*</span><span class="dv">40</span><span class="sc">}</span><span class="ch">\n</span><span class="ss">"</span>)</span>
+<span id="cb30-32"><a href="#cb30-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-33"><a href="#cb30-33" aria-hidden="true" tabindex="-1"></a><span class="co"># 使用</span></span>
+<span id="cb30-34"><a href="#cb30-34" aria-hidden="true" tabindex="-1"></a>data_quality_check(df_momentum, <span class="st">"动量因子数据"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -1436,8 +1453,8 @@ conn.commit()</code></pre>
 <hr>
 </section>
 </section>
-<section id="本章小结" class="level2" data-number="11.7">
-<h2 data-number="11.7" class="anchored" data-anchor-id="本章小结"><span class="header-section-number">11.7</span> 本章小结</h2>
+<section id="本章小结" class="level2" data-number="11.8">
+<h2 data-number="11.8" class="anchored" data-anchor-id="本章小结"><span class="header-section-number">11.8</span> 本章小结</h2>
 <table class="caption-top table">
 <colgroup>
 <col style="width: 16%">
