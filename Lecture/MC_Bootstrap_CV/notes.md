@@ -1,4 +1,6 @@
 
+- file:///D:/python-books/Kelly_2024_Computation_and_Simulation_for_Finance__An_Introduction_with_Python.pdf
+
 
 - `syndatakit`: Python package to generate synthetic tabular data calibrated to the statistical properties of real econometric and financial datasets
 

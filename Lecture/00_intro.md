@@ -62,7 +62,7 @@
 
 ### 小组作业 {.unnumbered}
 - 6-8 次，每个小组有 2 次展示机会 (每次 20mins)
-- 人数：每个小组 3 人 
+- 人数：每个小组 3-4 人 
 - 报告：需要用 VScode 或 Quarto 写报告
   - 用 [Marp]() 或其他基于 Markdown 语法的工具制作 Slides
   - 不建议使用 PowerPoint 幻灯片
@@ -77,7 +77,16 @@
   - A curated list of AI tools, libraries, and resources for economics research, teaching, and policy analysis.
 - Gábor Békés. (2026). **Doing Data Analysis with AI**. [Link](https://gabors-data-analysis.com/ai-course/).
 
+- [awesome-claude-code](https://github.com/jqueryscript/awesome-claude-code)
+  - A curated list of code examples and resources for using the Claude AI language model in various programming languages and applications.
+- [awesome-claude-skills](https://github.com/travisvn/awesome-claude-skills)
+  - A curated list of awesome Claude Skills, resources, and tools for customizing Claude AI workflows
 
+### 概率统计基础 
+
+- David Diez, Mine Çetinkaya-Rundel and Johanna Hardin. 2019. OpenIntro Statistics, 4E, [PDF](https://www.biostat.jhsph.edu/~iruczins/teaching/books/2019.openintro.statistics.pdf), [Link](https://open.umn.edu/opentextbooks/textbooks/60). [datasets](https://www.openintro.org/data/), [Slides](https://github.com/OpenIntroStat/openintro-statistics-slides), [中文版-Chp1-6](https://www.openintro.org/go/?id=os4_chinese_translation_ch1-6&referrer=/book/os/index.php)
+- Mine Çetinkaya-Rundel and Johanna Hardin, 2024. Introduction to Modern Statistics (2e). [Read Online](https://openintrostat.github.io/ims/), [github](https://github.com/openintrostat/ims)
+  
 ### Python 语言
 - Allen Downey, 2012. Think Python: How to Think Like a Computer Scientist. [-PDF-](https://greenteapress.com/thinkpython/thinkpython.pdf)
   - Python 入门，通俗易懂
@@ -128,6 +137,11 @@
   * Note: 深度学习基础读物，适合初学者建立整体框架；可作为神经网络、训练机制与常见模型结构的入门材料。
 * Goodfellow, I., Bengio, Y., & Courville, A. (2016). Deep Learning. MIT Press. [Link](http://www.deeplearningbook.org). [TensorFlow Exercises](https://www.tensorflow.org/tutorials?hl=zh-cn). [Slides](https://www.deeplearningbook.org/lecture_slides.html). [PDF1](http://alvarestech.com/temp/deep/Deep%20Learning%20by%20Ian%20Goodfellow,%20Yoshua%20Bengio,%20Aaron%20Courville%20%28z-lib.org%29.pdf). [PDF2](https://github.com/janishar/mit-deep-learning-book-pdf/blob/master/complete-book-pdf/Ian%20Goodfellow%2C%20Yoshua%20Bengio%2C%20Aaron%20Courville%20-%20Deep%20Learning%20%282017%2C%20MIT%29.pdf).
   * Note: 深度学习领域的代表性教材，系统覆盖前馈网络、卷积网络、序列模型、优化与概率图模型；配有官网、练习资源与课件。
+
+### 非参数估计方法
+
+- Wasserman (2006)《All of Nonparametric Statistics》, [PDF](https://www.stat.cmu.edu/~brian/valerie/617-2022/0%20-%20books/2006%20-%20Wasserman%20All%20Of%20Nonparametric%20Statistics.pdf)
+
 
 ### 其它
 

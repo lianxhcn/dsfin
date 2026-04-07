@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>19&nbsp; 数据可视化 – 金融数据分析与建模</title>
+<title>19&nbsp; 数据可视化：一些基本原则 – 金融数据分析与建模</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -148,7 +148,7 @@ window.Quarto = {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../Lecture/data_visual/graph_01_intro.html"><strong>可视化</strong></a></li><li class="breadcrumb-item"><a href="../../Lecture/data_visual/lec_visualization.html"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">数据可视化</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../Lecture/data_visual/graph_01_intro.html"><strong>可视化</strong></a></li><li class="breadcrumb-item"><a href="../../Lecture/data_visual/lec_visualization.html"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">数据可视化：一些基本原则</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -347,7 +347,7 @@ window.Quarto = {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../Lecture/data_visual/lec_visualization.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">数据可视化</span></span></a>
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">数据可视化：一些基本原则</span></span></a>
   </div>
 </li>
       </ul>
@@ -495,41 +495,46 @@ window.Quarto = {
   <ul class="collapse">
   <li><a href="#图形-vs-表格什么时候用哪个" id="toc-图形-vs-表格什么时候用哪个" class="nav-link" data-scroll-target="#图形-vs-表格什么时候用哪个"><span class="header-section-number">19.1.1</span> 图形 vs 表格：什么时候用哪个</a></li>
   <li><a href="#图形类型的选择按分析目的匹配" id="toc-图形类型的选择按分析目的匹配" class="nav-link" data-scroll-target="#图形类型的选择按分析目的匹配"><span class="header-section-number">19.1.2</span> 图形类型的选择：按分析目的匹配</a></li>
-  <li><a href="#数据墨水比简洁即美" id="toc-数据墨水比简洁即美" class="nav-link" data-scroll-target="#数据墨水比简洁即美"><span class="header-section-number">19.1.3</span> 数据墨水比：简洁即美</a></li>
-  <li><a href="#颜色功能配色方案与色盲友好" id="toc-颜色功能配色方案与色盲友好" class="nav-link" data-scroll-target="#颜色功能配色方案与色盲友好"><span class="header-section-number">19.1.4</span> 颜色：功能、配色方案与色盲友好</a></li>
-  <li><a href="#文字元素标题标签标注与图例" id="toc-文字元素标题标签标注与图例" class="nav-link" data-scroll-target="#文字元素标题标签标注与图例"><span class="header-section-number">19.1.5</span> 文字元素：标题、标签、标注与图例</a></li>
-  <li><a href="#坐标轴与可比性" id="toc-坐标轴与可比性" class="nav-link" data-scroll-target="#坐标轴与可比性"><span class="header-section-number">19.1.6</span> 坐标轴与可比性</a></li>
-  <li><a href="#诚实性财经媒体中的常见误导陷阱" id="toc-诚实性财经媒体中的常见误导陷阱" class="nav-link" data-scroll-target="#诚实性财经媒体中的常见误导陷阱"><span class="header-section-number">19.1.7</span> 诚实性：财经媒体中的常见误导陷阱</a></li>
-  <li><a href="#叙事性让图说话" id="toc-叙事性让图说话" class="nav-link" data-scroll-target="#叙事性让图说话"><span class="header-section-number">19.1.8</span> 叙事性：让图说话</a></li>
-  <li><a href="#小结" id="toc-小结" class="nav-link" data-scroll-target="#小结"><span class="header-section-number">19.1.9</span> 小结</a></li>
-  <li><a href="#延伸阅读" id="toc-延伸阅读" class="nav-link" data-scroll-target="#延伸阅读"><span class="header-section-number">19.1.10</span> 延伸阅读</a></li>
+  <li><a href="#提示词" id="toc-提示词" class="nav-link" data-scroll-target="#提示词"><span class="header-section-number">19.1.3</span> 提示词</a></li>
+  <li><a href="#数据墨水比简洁即美" id="toc-数据墨水比简洁即美" class="nav-link" data-scroll-target="#数据墨水比简洁即美"><span class="header-section-number">19.1.4</span> 数据墨水比：简洁即美</a></li>
+  <li><a href="#颜色功能配色方案与色盲友好" id="toc-颜色功能配色方案与色盲友好" class="nav-link" data-scroll-target="#颜色功能配色方案与色盲友好"><span class="header-section-number">19.1.5</span> 颜色：功能、配色方案与色盲友好</a></li>
+  <li><a href="#文字元素标题标签标注与图例" id="toc-文字元素标题标签标注与图例" class="nav-link" data-scroll-target="#文字元素标题标签标注与图例"><span class="header-section-number">19.1.6</span> 文字元素：标题、标签、标注与图例</a></li>
+  <li><a href="#坐标轴与可比性" id="toc-坐标轴与可比性" class="nav-link" data-scroll-target="#坐标轴与可比性"><span class="header-section-number">19.1.7</span> 坐标轴与可比性</a></li>
+  <li><a href="#诚实性财经媒体中的常见误导陷阱" id="toc-诚实性财经媒体中的常见误导陷阱" class="nav-link" data-scroll-target="#诚实性财经媒体中的常见误导陷阱"><span class="header-section-number">19.1.8</span> 诚实性：财经媒体中的常见误导陷阱</a></li>
   </ul></li>
-  <li><a href="#双变量与多变量关系的可视化" id="toc-双变量与多变量关系的可视化" class="nav-link" data-scroll-target="#双变量与多变量关系的可视化"><span class="header-section-number">19.2</span> 双变量与多变量关系的可视化</a>
+  <li><a href="#忽略基数只强调百分比变化" id="toc-忽略基数只强调百分比变化" class="nav-link" data-scroll-target="#忽略基数只强调百分比变化"><span class="header-section-number">19.2</span> 6. 忽略基数，只强调百分比变化</a></li>
+  <li><a href="#阅读财经图表时的基本检查清单" id="toc-阅读财经图表时的基本检查清单" class="nav-link" data-scroll-target="#阅读财经图表时的基本检查清单"><span class="header-section-number">19.3</span> 7. 阅读财经图表时的基本检查清单</a>
   <ul class="collapse">
-  <li><a href="#散点图与回归线" id="toc-散点图与回归线" class="nav-link" data-scroll-target="#散点图与回归线"><span class="header-section-number">19.2.1</span> 散点图与回归线</a></li>
-  <li><a href="#相关矩阵热力图" id="toc-相关矩阵热力图" class="nav-link" data-scroll-target="#相关矩阵热力图"><span class="header-section-number">19.2.2</span> 相关矩阵热力图</a></li>
-  <li><a href="#散点图矩阵pairs-plot" id="toc-散点图矩阵pairs-plot" class="nav-link" data-scroll-target="#散点图矩阵pairs-plot"><span class="header-section-number">19.2.3</span> 散点图矩阵（Pairs Plot）</a></li>
-  <li><a href="#综合案例多资产收益率的联动关系" id="toc-综合案例多资产收益率的联动关系" class="nav-link" data-scroll-target="#综合案例多资产收益率的联动关系"><span class="header-section-number">19.2.4</span> 综合案例：多资产收益率的联动关系</a></li>
+  <li><a href="#叙事性让图说话" id="toc-叙事性让图说话" class="nav-link" data-scroll-target="#叙事性让图说话"><span class="header-section-number">19.3.1</span> 叙事性：让图说话</a></li>
+  <li><a href="#小结" id="toc-小结" class="nav-link" data-scroll-target="#小结"><span class="header-section-number">19.3.2</span> 小结</a></li>
+  <li><a href="#延伸阅读" id="toc-延伸阅读" class="nav-link" data-scroll-target="#延伸阅读"><span class="header-section-number">19.3.3</span> 延伸阅读</a></li>
   </ul></li>
-  <li><a href="#时间序列的可视化" id="toc-时间序列的可视化" class="nav-link" data-scroll-target="#时间序列的可视化"><span class="header-section-number">19.3</span> 时间序列的可视化</a>
+  <li><a href="#双变量与多变量关系的可视化" id="toc-双变量与多变量关系的可视化" class="nav-link" data-scroll-target="#双变量与多变量关系的可视化"><span class="header-section-number">19.4</span> 双变量与多变量关系的可视化</a>
   <ul class="collapse">
-  <li><a href="#折线图的规范画法" id="toc-折线图的规范画法" class="nav-link" data-scroll-target="#折线图的规范画法"><span class="header-section-number">19.3.1</span> 折线图的规范画法</a></li>
-  <li><a href="#事件标注政策时间线与危机区间" id="toc-事件标注政策时间线与危机区间" class="nav-link" data-scroll-target="#事件标注政策时间线与危机区间"><span class="header-section-number">19.3.2</span> 事件标注：政策时间线与危机区间</a></li>
-  <li><a href="#对数坐标轴" id="toc-对数坐标轴" class="nav-link" data-scroll-target="#对数坐标轴"><span class="header-section-number">19.3.3</span> 对数坐标轴</a></li>
-  <li><a href="#多资产对比与不确定性" id="toc-多资产对比与不确定性" class="nav-link" data-scroll-target="#多资产对比与不确定性"><span class="header-section-number">19.3.4</span> 多资产对比与不确定性</a></li>
-  <li><a href="#k-线图mplfinance" id="toc-k-线图mplfinance" class="nav-link" data-scroll-target="#k-线图mplfinance"><span class="header-section-number">19.3.5</span> K 线图（mplfinance）</a></li>
+  <li><a href="#散点图与回归线" id="toc-散点图与回归线" class="nav-link" data-scroll-target="#散点图与回归线"><span class="header-section-number">19.4.1</span> 散点图与回归线</a></li>
+  <li><a href="#相关矩阵热力图" id="toc-相关矩阵热力图" class="nav-link" data-scroll-target="#相关矩阵热力图"><span class="header-section-number">19.4.2</span> 相关矩阵热力图</a></li>
+  <li><a href="#散点图矩阵pairs-plot" id="toc-散点图矩阵pairs-plot" class="nav-link" data-scroll-target="#散点图矩阵pairs-plot"><span class="header-section-number">19.4.3</span> 散点图矩阵（Pairs Plot）</a></li>
+  <li><a href="#综合案例多资产收益率的联动关系" id="toc-综合案例多资产收益率的联动关系" class="nav-link" data-scroll-target="#综合案例多资产收益率的联动关系"><span class="header-section-number">19.4.4</span> 综合案例：多资产收益率的联动关系</a></li>
   </ul></li>
-  <li><a href="#回归结果的可视化" id="toc-回归结果的可视化" class="nav-link" data-scroll-target="#回归结果的可视化"><span class="header-section-number">19.4</span> 回归结果的可视化</a>
+  <li><a href="#时间序列的可视化" id="toc-时间序列的可视化" class="nav-link" data-scroll-target="#时间序列的可视化"><span class="header-section-number">19.5</span> 时间序列的可视化</a>
   <ul class="collapse">
-  <li><a href="#系数图coefficient-plot" id="toc-系数图coefficient-plot" class="nav-link" data-scroll-target="#系数图coefficient-plot"><span class="header-section-number">19.4.1</span> 系数图（Coefficient Plot）</a></li>
-  <li><a href="#残差诊断图" id="toc-残差诊断图" class="nav-link" data-scroll-target="#残差诊断图"><span class="header-section-number">19.4.2</span> 残差诊断图</a></li>
-  <li><a href="#边际效应图与预测区间" id="toc-边际效应图与预测区间" class="nav-link" data-scroll-target="#边际效应图与预测区间"><span class="header-section-number">19.4.3</span> 边际效应图与预测区间</a></li>
+  <li><a href="#折线图的规范画法" id="toc-折线图的规范画法" class="nav-link" data-scroll-target="#折线图的规范画法"><span class="header-section-number">19.5.1</span> 折线图的规范画法</a></li>
+  <li><a href="#事件标注政策时间线与危机区间" id="toc-事件标注政策时间线与危机区间" class="nav-link" data-scroll-target="#事件标注政策时间线与危机区间"><span class="header-section-number">19.5.2</span> 事件标注：政策时间线与危机区间</a></li>
+  <li><a href="#对数坐标轴" id="toc-对数坐标轴" class="nav-link" data-scroll-target="#对数坐标轴"><span class="header-section-number">19.5.3</span> 对数坐标轴</a></li>
+  <li><a href="#多资产对比与不确定性" id="toc-多资产对比与不确定性" class="nav-link" data-scroll-target="#多资产对比与不确定性"><span class="header-section-number">19.5.4</span> 多资产对比与不确定性</a></li>
+  <li><a href="#k-线图mplfinance" id="toc-k-线图mplfinance" class="nav-link" data-scroll-target="#k-线图mplfinance"><span class="header-section-number">19.5.5</span> K 线图（mplfinance）</a></li>
   </ul></li>
-  <li><a href="#完整案例capm-beta-的可视化估计" id="toc-完整案例capm-beta-的可视化估计" class="nav-link" data-scroll-target="#完整案例capm-beta-的可视化估计"><span class="header-section-number">19.5</span> 完整案例：CAPM Beta 的可视化估计</a></li>
-  <li><a href="#图形导出与报告整合" id="toc-图形导出与报告整合" class="nav-link" data-scroll-target="#图形导出与报告整合"><span class="header-section-number">19.6</span> 图形导出与报告整合</a>
+  <li><a href="#回归结果的可视化" id="toc-回归结果的可视化" class="nav-link" data-scroll-target="#回归结果的可视化"><span class="header-section-number">19.6</span> 回归结果的可视化</a>
   <ul class="collapse">
-  <li><a href="#格式与分辨率" id="toc-格式与分辨率" class="nav-link" data-scroll-target="#格式与分辨率"><span class="header-section-number">19.6.1</span> 格式与分辨率</a></li>
-  <li><a href="#图注的写法规范" id="toc-图注的写法规范" class="nav-link" data-scroll-target="#图注的写法规范"><span class="header-section-number">19.6.2</span> 图注的写法规范</a></li>
+  <li><a href="#系数图coefficient-plot" id="toc-系数图coefficient-plot" class="nav-link" data-scroll-target="#系数图coefficient-plot"><span class="header-section-number">19.6.1</span> 系数图（Coefficient Plot）</a></li>
+  <li><a href="#残差诊断图" id="toc-残差诊断图" class="nav-link" data-scroll-target="#残差诊断图"><span class="header-section-number">19.6.2</span> 残差诊断图</a></li>
+  <li><a href="#边际效应图与预测区间" id="toc-边际效应图与预测区间" class="nav-link" data-scroll-target="#边际效应图与预测区间"><span class="header-section-number">19.6.3</span> 边际效应图与预测区间</a></li>
+  </ul></li>
+  <li><a href="#完整案例capm-beta-的可视化估计" id="toc-完整案例capm-beta-的可视化估计" class="nav-link" data-scroll-target="#完整案例capm-beta-的可视化估计"><span class="header-section-number">19.7</span> 完整案例：CAPM Beta 的可视化估计</a></li>
+  <li><a href="#图形导出与报告整合" id="toc-图形导出与报告整合" class="nav-link" data-scroll-target="#图形导出与报告整合"><span class="header-section-number">19.8</span> 图形导出与报告整合</a>
+  <ul class="collapse">
+  <li><a href="#格式与分辨率" id="toc-格式与分辨率" class="nav-link" data-scroll-target="#格式与分辨率"><span class="header-section-number">19.8.1</span> 格式与分辨率</a></li>
+  <li><a href="#图注的写法规范" id="toc-图注的写法规范" class="nav-link" data-scroll-target="#图注的写法规范"><span class="header-section-number">19.8.2</span> 图注的写法规范</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -537,9 +542,9 @@ window.Quarto = {
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../Lecture/data_visual/graph_01_intro.html"><strong>可视化</strong></a></li><li class="breadcrumb-item"><a href="../../Lecture/data_visual/lec_visualization.html"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">数据可视化</span></a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../Lecture/data_visual/graph_01_intro.html"><strong>可视化</strong></a></li><li class="breadcrumb-item"><a href="../../Lecture/data_visual/lec_visualization.html"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">数据可视化：一些基本原则</span></a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">数据可视化</span></h1>
+<h1 class="title"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">数据可视化：一些基本原则</span></h1>
 </div>
 
 
@@ -556,6 +561,38 @@ window.Quarto = {
 </header>
 
 
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+参考资料
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li>Luis Moneda, Data VisualizationPractices and examples. <a href="https://lgmoneda.github.io/resources/presentations/Data%20Visualization.pdf">Slides</a>.
+<ul>
+<li>作者提供了一些 Good Examples 和 Bad Examples 的对比，帮助我们理解什么样的图形设计是有效的，什么样的设计会误导读者。</li>
+</ul></li>
+<li><a href="https://datavizproject.com/">Data Viz Project</a>
+<ul>
+<li>提供各种数据可视化类型的示例和最佳实践，帮助选择合适的图形类型。</li>
+</ul></li>
+<li><a href="https://python-graph-gallery.com/best-python-chart-examples/">Best Python Chart Examples</a>
+<ul>
+<li>各类漂亮的 Python 图形示例，涵盖了各种图形类型和应用场景，可以作为我们设计图形时的灵感来源。</li>
+</ul></li>
+<li><a href="https://informationisbeautiful.net/">Information is Beautiful</a>
+<ul>
+<li>提供大量信息可视化的案例和工具，帮助理解如何将复杂数据转化为易于理解的图形。</li>
+</ul></li>
+<li>张蛟蛟, 2025, <a href="https://www.lianxh.cn/details/1572.html">从“能看”到“好懂”：科研图表设计的原则和建议</a>.</li>
+<li>肖蕊, 2022,&nbsp;<a href="https://www.lianxh.cn/details/977.html">Stata可视化：能用图形就不用表格</a>.</li>
+</ul>
+</div>
+</div>
 <hr>
 <section id="可视化的基本原则" class="level2" data-number="19.1">
 <h2 data-number="19.1" class="anchored" data-anchor-id="可视化的基本原则"><span class="header-section-number">19.1</span> 可视化的基本原则</h2>
@@ -584,6 +621,19 @@ window.Quarto = {
 <blockquote class="blockquote">
 <p>📌 <strong>原则</strong>：如果读者需要”读数”，用表格；如果读者需要”看趋势/模式”，用图形。</p>
 </blockquote>
+<p>学术论文中越来越多的学者开始使用图形来展示回归结果、分布特征和相关结构，甚至直接用图形替代传统的表格。这不仅提升了论文的可读性，也让研究发现更直观、更有说服力。</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://fig-lianxh.oss-cn-shenzhen.aliyuncs.com/20260407171457.png" class="img-fluid figure-img" style="width:90.0%"></p>
+<figcaption>20260407171457</figcaption>
+</figure>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://fig-lianxh.oss-cn-shenzhen.aliyuncs.com/20260407171548.png" class="img-fluid figure-img" style="width:90.0%"></p>
+<figcaption>20260407171548</figcaption>
+</figure>
+</div>
 <div class="callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -651,8 +701,48 @@ window.Quarto = {
 </tr>
 </tbody>
 </table>
+<p><strong>能用图就不用表格</strong>：</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://fig-lianxh.oss-cn-shenzhen.aliyuncs.com/20260407171241.png" class="img-fluid figure-img" style="width:90.0%"></p>
+<figcaption>20260407171241</figcaption>
+</figure>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://fig-lianxh.oss-cn-shenzhen.aliyuncs.com/20260407171257.png" class="img-fluid figure-img" style="width:90.0%"></p>
+<figcaption>20260407171257</figcaption>
+</figure>
+</div>
+<blockquote class="blockquote">
+<p>Source: 肖蕊, 2022, <a href="https://www.lianxh.cn/details/977.html">Stata可视化：能用图形就不用表格</a>.</p>
+</blockquote>
 <p><strong>关于饼图</strong>：饼图在经济/金融研究中几乎没有好的使用场景。人眼对角度的判断远不如对长度的判断准确，当类别超过 3–4 个时，读者根本无法比较各扇形的大小。绝大多数饼图都可以用<strong>横向柱状图</strong>替代，且信息传递更清晰。</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://fig-lianxh.oss-cn-shenzhen.aliyuncs.com/20260407165127.png" class="img-fluid figure-img" style="width:90.0%"></p>
+<figcaption>20260407165127</figcaption>
+</figure>
+</div>
+<blockquote class="blockquote">
+<p>Source: <a href="https://openintrostat.github.io/ims">Introduction to Modern Statistics (2e)</a>, <a href="https://openintrostat.github.io/ims/explore-categorical.html">chapter 4</a></p>
+</blockquote>
 <p><strong>关于 3D 图形</strong>：3D 效果几乎从不增加信息量，反而会造成视觉扭曲——靠近观察者的柱体看起来更高，远处的更低，读者无法准确读取数值。永远不要用 3D 柱状图或 3D 饼图。</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://fig-lianxh.oss-cn-shenzhen.aliyuncs.com/20260407170931.png" class="img-fluid figure-img" style="width:90.0%"></p>
+<figcaption>20260407170931</figcaption>
+</figure>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://fig-lianxh.oss-cn-shenzhen.aliyuncs.com/20260407170949.png" class="img-fluid figure-img" style="width:90.0%"></p>
+<figcaption>20260407170949</figcaption>
+</figure>
+</div>
+<blockquote class="blockquote">
+<p>Source: 张蛟蛟, 2025, <a href="https://www.lianxh.cn/details/1572.html">从“能看”到“好懂”：科研图表设计的原则和建议</a>.</p>
+</blockquote>
 <p><strong>金融场景举例</strong></p>
 <ul>
 <li>想展示沪深 300 过去 10 年的走势 → <strong>折线图</strong>（时间序列）</li>
@@ -660,6 +750,27 @@ window.Quarto = {
 <li>想看多个资产之间的相关性 → <strong>热力图</strong></li>
 <li>想看某只股票日收益率是否接近正态分布 → <strong>直方图 + KDE</strong></li>
 </ul>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://fig-lianxh.oss-cn-shenzhen.aliyuncs.com/20260407174339.png" class="img-fluid figure-img" style="width:100.0%"></p>
+<figcaption>20260407174339</figcaption>
+</figure>
+</div>
+<blockquote class="blockquote">
+<p>Source: <a href="https://lianxhcn.github.io/dsfin/Lecture/data_get_data/data_03_TS_SZ_index.html">Chap 上证指数的时序特征</a></p>
+</blockquote>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://fig-lianxh.oss-cn-shenzhen.aliyuncs.com/20260407174501.png" class="img-fluid figure-img" style="width:90.0%"></p>
+<figcaption>20260407174501</figcaption>
+</figure>
+</div>
+<blockquote class="blockquote">
+<p>Source: <a href="https://lianxhcn.github.io/dsfin/Lecture/data_get_data/data_03_TS_SZ_index.html">Chap 上证指数的时序特征</a></p>
+</blockquote>
+</section>
+<section id="提示词" class="level3" data-number="19.1.3">
+<h3 data-number="19.1.3" class="anchored" data-anchor-id="提示词"><span class="header-section-number">19.1.3</span> 提示词</h3>
 <blockquote class="blockquote">
 <p>参考：<a href="https://www.data-to-viz.com/#explore">data-to-viz.com</a> 提供了最全面的”数据类型 → 图形类型”决策树，遇到不确定的情况可以查阅。</p>
 </blockquote>
@@ -679,9 +790,9 @@ window.Quarto = {
 </div>
 <hr>
 </section>
-<section id="数据墨水比简洁即美" class="level3" data-number="19.1.3">
-<h3 data-number="19.1.3" class="anchored" data-anchor-id="数据墨水比简洁即美"><span class="header-section-number">19.1.3</span> 数据墨水比：简洁即美</h3>
-<p>爱德华·塔夫特（Edward Tufte）在《<a href="https://www.edwardtufte.com/tufte/books_vdqi">定量信息的视觉呈现</a>》中提出了 <strong>数据墨水比（Data-Ink Ratio）</strong>的概念：</p>
+<section id="数据墨水比简洁即美" class="level3" data-number="19.1.4">
+<h3 data-number="19.1.4" class="anchored" data-anchor-id="数据墨水比简洁即美"><span class="header-section-number">19.1.4</span> 数据墨水比：简洁即美</h3>
+<p>爱德华·塔夫特（Edward Tufte）在《<a href="https://www.edwardtufte.com/tufte/books_vdqi">定量信息的视觉呈现</a>》中提出了 <strong>数据墨水比（Data-Ink Ratio）</strong> 的概念：</p>
 <p><span class="math display">\[
 \text{数据墨水比} = \frac{\text{用于呈现数据的墨水量}}{\text{图形使用的全部墨水量}}
 \]</span></p>
@@ -695,6 +806,15 @@ window.Quarto = {
 <li><strong>重复的数据标签</strong>：坐标轴已经提供了数值信息，柱体上再标一遍是冗余</li>
 <li><strong>默认图例框</strong>：能直接在图上标注的，不需要图例</li>
 </ul>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://fig-lianxh.oss-cn-shenzhen.aliyuncs.com/20260407170137.png" class="img-fluid figure-img" style="width:90.0%"></p>
+<figcaption>20260407170137</figcaption>
+</figure>
+</div>
+<blockquote class="blockquote">
+<p><a href="https://lgmoneda.github.io/resources/presentations/Data%20Visualization.pdf">Sources</a></p>
+</blockquote>
 <p><strong>Before / After 对比</strong></p>
 <p>原始图（低数据墨水比）往往具有：蓝色背景、粗黑边框、深色网格线、3D 效果、渐变色填充。</p>
 <p>改进后的图：白色背景、去掉上/右边框、浅灰色辅助线（或无网格线）、单色填充、直接标注。</p>
@@ -721,8 +841,8 @@ window.Quarto = {
 </div>
 <hr>
 </section>
-<section id="颜色功能配色方案与色盲友好" class="level3" data-number="19.1.4">
-<h3 data-number="19.1.4" class="anchored" data-anchor-id="颜色功能配色方案与色盲友好"><span class="header-section-number">19.1.4</span> 颜色：功能、配色方案与色盲友好</h3>
+<section id="颜色功能配色方案与色盲友好" class="level3" data-number="19.1.5">
+<h3 data-number="19.1.5" class="anchored" data-anchor-id="颜色功能配色方案与色盲友好"><span class="header-section-number">19.1.5</span> 颜色：功能、配色方案与色盲友好</h3>
 <p>颜色是可视化中最容易被滥用的元素。使用颜色之前，先问：<strong>这个颜色在传递什么信息？</strong></p>
 <p><strong>颜色的三种功能</strong></p>
 <table class="caption-top table">
@@ -795,17 +915,17 @@ window.Quarto = {
 </div>
 <hr>
 </section>
-<section id="文字元素标题标签标注与图例" class="level3" data-number="19.1.5">
-<h3 data-number="19.1.5" class="anchored" data-anchor-id="文字元素标题标签标注与图例"><span class="header-section-number">19.1.5</span> 文字元素：标题、标签、标注与图例</h3>
+<section id="文字元素标题标签标注与图例" class="level3" data-number="19.1.6">
+<h3 data-number="19.1.6" class="anchored" data-anchor-id="文字元素标题标签标注与图例"><span class="header-section-number">19.1.6</span> 文字元素：标题、标签、标注与图例</h3>
 <p>文字元素是图形的”说明书”，设计得好能让图形自己说话，设计得差会让读者在图形和说明文字之间来回跳转。</p>
-<section id="标题描述性-vs-结论性" class="level4" data-number="19.1.5.1">
-<h4 data-number="19.1.5.1" class="anchored" data-anchor-id="标题描述性-vs-结论性"><span class="header-section-number">19.1.5.1</span> 标题：描述性 vs 结论性</h4>
+<section id="标题描述性-vs-结论性" class="level4" data-number="19.1.6.1">
+<h4 data-number="19.1.6.1" class="anchored" data-anchor-id="标题描述性-vs-结论性"><span class="header-section-number">19.1.6.1</span> 标题：描述性 vs 结论性</h4>
 <p><strong>描述性标题</strong>：告诉读者图里有什么数据。 &gt; “2010–2023 年中国 GDP 增速”</p>
 <p><strong>结论性标题</strong>：告诉读者图里的核心发现。 &gt; “金融危机后 GDP 增速系统性低于危机前水平”</p>
 <p>对于学术论文和研究报告，<strong>结论性标题</strong>通常更有力——它让读者在看图之前就知道该关注什么。探索性分析阶段用描述性标题即可。</p>
 </section>
-<section id="坐标轴标签单位不能省" class="level4" data-number="19.1.5.2">
-<h4 data-number="19.1.5.2" class="anchored" data-anchor-id="坐标轴标签单位不能省"><span class="header-section-number">19.1.5.2</span> 坐标轴标签：单位不能省</h4>
+<section id="坐标轴标签单位不能省" class="level4" data-number="19.1.6.2">
+<h4 data-number="19.1.6.2" class="anchored" data-anchor-id="坐标轴标签单位不能省"><span class="header-section-number">19.1.6.2</span> 坐标轴标签：单位不能省</h4>
 <p>坐标轴标签必须包含<strong>变量名</strong>和<strong>单位</strong>，缺一不可。</p>
 <ul>
 <li>❌ <code>"GDP"</code></li>
@@ -814,13 +934,13 @@ window.Quarto = {
 <li>✅ <code>"日收益率（%）"</code></li>
 </ul>
 </section>
-<section id="标注直接标在图上" class="level4" data-number="19.1.5.3">
-<h4 data-number="19.1.5.3" class="anchored" data-anchor-id="标注直接标在图上"><span class="header-section-number">19.1.5.3</span> 标注：直接标在图上</h4>
+<section id="标注直接标在图上" class="level4" data-number="19.1.6.3">
+<h4 data-number="19.1.6.3" class="anchored" data-anchor-id="标注直接标在图上"><span class="header-section-number">19.1.6.3</span> 标注：直接标在图上</h4>
 <p>能直接在图上标注的信息，不要放进图例。直接标注（direct labeling）有两个优点：读者不需要在图形和图例之间来回对应；标注的位置本身就传递信息（靠近数据点）。</p>
 <p>适合直接标注的情形：折线图末端直接写系列名称；散点图中标注关键数据点的名称；柱状图柱体顶端标注数值。</p>
 </section>
-<section id="字体与字号的层级感" class="level4" data-number="19.1.5.4">
-<h4 data-number="19.1.5.4" class="anchored" data-anchor-id="字体与字号的层级感"><span class="header-section-number">19.1.5.4</span> 字体与字号的层级感</h4>
+<section id="字体与字号的层级感" class="level4" data-number="19.1.6.4">
+<h4 data-number="19.1.6.4" class="anchored" data-anchor-id="字体与字号的层级感"><span class="header-section-number">19.1.6.4</span> 字体与字号的层级感</h4>
 <p>一张图中，文字元素应有清晰的视觉层级：</p>
 <table class="caption-top table">
 <thead>
@@ -881,16 +1001,25 @@ window.Quarto = {
 <hr>
 </section>
 </section>
-<section id="坐标轴与可比性" class="level3" data-number="19.1.6">
-<h3 data-number="19.1.6" class="anchored" data-anchor-id="坐标轴与可比性"><span class="header-section-number">19.1.6</span> 坐标轴与可比性</h3>
+<section id="坐标轴与可比性" class="level3" data-number="19.1.7">
+<h3 data-number="19.1.7" class="anchored" data-anchor-id="坐标轴与可比性"><span class="header-section-number">19.1.7</span> 坐标轴与可比性</h3>
 <p>坐标轴的设置直接决定读者对数据的感知，是最容易造成误导的技术细节。</p>
-<section id="y-轴是否从零开始" class="level4" data-number="19.1.6.1">
-<h4 data-number="19.1.6.1" class="anchored" data-anchor-id="y-轴是否从零开始"><span class="header-section-number">19.1.6.1</span> Y 轴是否从零开始</h4>
+<section id="y-轴是否从零开始" class="level4" data-number="19.1.7.1">
+<h4 data-number="19.1.7.1" class="anchored" data-anchor-id="y-轴是否从零开始"><span class="header-section-number">19.1.7.1</span> Y 轴是否从零开始</h4>
 <p><strong>柱状图必须从零开始</strong>。柱体的高度代表数值的绝对大小，截断 Y 轴会严重夸大差异。例如，两个分别为 520 和 500 的数值，Y 轴从 490 开始时看起来差异巨大，实际上只有 4% 的差距。</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://fig-lianxh.oss-cn-shenzhen.aliyuncs.com/20260407171818.png" class="img-fluid figure-img" style="width:90.0%"></p>
+<figcaption>20260407171818</figcaption>
+</figure>
+</div>
+<blockquote class="blockquote">
+<p><a href="https://lgmoneda.github.io/resources/presentations/Data%20Visualization.pdf">Sources</a></p>
+</blockquote>
 <p><strong>折线图不必须从零</strong>。折线图关注的是趋势和变化，适当截断 Y 轴可以让趋势更清晰。但应该在图中说明 Y 轴范围，让读者自行判断变化幅度。</p>
 </section>
-<section id="对数坐标轴的适用场景" class="level4" data-number="19.1.6.2">
-<h4 data-number="19.1.6.2" class="anchored" data-anchor-id="对数坐标轴的适用场景"><span class="header-section-number">19.1.6.2</span> 对数坐标轴的适用场景</h4>
+<section id="对数坐标轴的适用场景" class="level4" data-number="19.1.7.2">
+<h4 data-number="19.1.7.2" class="anchored" data-anchor-id="对数坐标轴的适用场景"><span class="header-section-number">19.1.7.2</span> 对数坐标轴的适用场景</h4>
 <p>当数据跨越多个数量级，或关注的是<strong>百分比变化</strong>（而非绝对变化）时，对数坐标轴更合适：</p>
 <ul>
 <li><strong>股价长期走势</strong>：线性坐标轴下，早期的波动几乎看不见；对数坐标轴下，相同的百分比涨跌在任何时期都占相同的视觉空间</li>
@@ -899,15 +1028,24 @@ window.Quarto = {
 </ul>
 <p>对数坐标轴的<strong>注意事项</strong>：数值不能为零或负数；需要在图中明确标注”对数坐标”，避免读者误读。</p>
 </section>
-<section id="多图并排时的一致性" class="level4" data-number="19.1.6.3">
-<h4 data-number="19.1.6.3" class="anchored" data-anchor-id="多图并排时的一致性"><span class="header-section-number">19.1.6.3</span> 多图并排时的一致性</h4>
+<section id="多图并排时的一致性" class="level4" data-number="19.1.7.3">
+<h4 data-number="19.1.7.3" class="anchored" data-anchor-id="多图并排时的一致性"><span class="header-section-number">19.1.7.3</span> 多图并排时的一致性</h4>
 <p>当多张图并排对比时（如不同时期、不同国家），<strong>坐标轴范围必须一致</strong>。否则，即使数值相近，图形呈现出来的视觉差异也会截然不同，读者会被误导。</p>
 </section>
-<section id="双-y-轴的规范使用" class="level4" data-number="19.1.6.4">
-<h4 data-number="19.1.6.4" class="anchored" data-anchor-id="双-y-轴的规范使用"><span class="header-section-number">19.1.6.4</span> 双 Y 轴的规范使用</h4>
+<section id="双-y-轴的规范使用" class="level4" data-number="19.1.7.4">
+<h4 data-number="19.1.7.4" class="anchored" data-anchor-id="双-y-轴的规范使用"><span class="header-section-number">19.1.7.4</span> 双 Y 轴的规范使用</h4>
 <p>双 Y 轴（twinx）是一个有争议的设计——它让两个量级不同的变量共享同一张图，但读者很难判断两条线的相对变化是否真实。</p>
 <p><strong>合理使用场景</strong>：两个变量在概念上密切相关，且读者对两者的单独走势都感兴趣（如股价与成交量）。</p>
 <p><strong>应避免的场景</strong>：用双 Y 轴制造虚假的视觉相关性——通过调整其中一个 Y 轴的范围，可以让两条任意的时间序列看起来高度同步。</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://fig-lianxh.oss-cn-shenzhen.aliyuncs.com/20260407181830.png" class="img-fluid figure-img" style="width:90.0%"></p>
+<figcaption>20260407181830</figcaption>
+</figure>
+</div>
+<blockquote class="blockquote">
+<p><a href="https://flowingdata.com/2017/02/09/how-to-spot-visualization-lies/">Source</a></p>
+</blockquote>
 <div class="callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -930,48 +1068,125 @@ window.Quarto = {
 <hr>
 </section>
 </section>
-<section id="诚实性财经媒体中的常见误导陷阱" class="level3" data-number="19.1.7">
-<h3 data-number="19.1.7" class="anchored" data-anchor-id="诚实性财经媒体中的常见误导陷阱"><span class="header-section-number">19.1.7</span> 诚实性：财经媒体中的常见误导陷阱</h3>
-<p>数据可视化的误导，有时是无意的（设计不规范），有时是刻意的（为了强化某个结论）。识别误导图形是数据素养的重要组成部分。</p>
-<p><strong>① 截断 Y 轴夸大差异</strong></p>
-<p>财经媒体和上市公司公告中最常见。某公司净利润从 100 亿增长到 103 亿，Y 轴从 98 亿开始，柱体看起来增长了 150%，实际只有 3%。判断方法：看 Y 轴的起点，问自己”如果 Y 轴从零开始，这个差异还显著吗？”</p>
-<p><strong>② 选择性时间窗口</strong></p>
-<p>选择对自己有利的起始和结束时间点。某产品宣称”过去三年累计收益 60%“，但恰好从市场底部算起。判断方法：拉长时间窗口，或选择多个不同起始点重新计算。</p>
-<p><strong>③ 面积/体积误用</strong></p>
-<p>用圆的面积代表数值大小时，有些图用<strong>半径</strong>而非<strong>面积</strong>对应数值——导致大值被严重夸大（面积 = π r²，半径翻倍则面积变为 4 倍）。</p>
-<p><strong>④ 用双 Y 轴制造虚假相关性</strong></p>
-<p>通过分别调整两个 Y 轴的范围，可以让任意两条时间序列看起来高度相关或完全无关。</p>
-<p><strong>⑤ 忽略基数的百分比变化</strong></p>
-<p>“同比增长 100%”可能是从 1 单位增长到 2 单位。绝对值和相对值应该同时呈现。</p>
-<blockquote class="blockquote">
-<p>📌 <strong>建议</strong>：在阅读财经报告、研究报告时，养成习惯——先看坐标轴范围，再看数据本身。</p>
-</blockquote>
-<div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-示例提示词
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<pre><code>请生成两张对比图，演示「截断 Y 轴」的误导效果：
-
-- 数据：5 个季度的营收数据，数值依次为 [100, 101, 102, 103, 104]（单位：亿元）
-- 左图：Y 轴从 0 开始（诚实版本）
-- 右图：Y 轴从 99 开始（误导版本）
-- 两张图使用相同的标题、颜色和样式，只有 Y 轴范围不同
-- 在图形下方添加说明文字，指出两图的视觉差异</code></pre>
-</div>
-</div>
-<hr>
+<section id="诚实性财经媒体中的常见误导陷阱" class="level3" data-number="19.1.8">
+<h3 data-number="19.1.8" class="anchored" data-anchor-id="诚实性财经媒体中的常见误导陷阱"><span class="header-section-number">19.1.8</span> 诚实性：财经媒体中的常见误导陷阱</h3>
+<p>数据可视化并不是一个“中性容器”。同一组数据，经过不同的坐标轴设定、时间窗口选择、比例映射方式和图形布局处理后，读者看到的“结论”可能完全不同。很多误导图形并没有篡改原始数据，但它们改变了数据到视觉元素之间的映射关系，从而影响了读者的判断。</p>
+<p>从形式上看，图表就是把数值 <span class="math inline">\(x\)</span> 映射为位置、长度、面积、角度、颜色或体积等视觉对象；如果这种映射关系不再保持可比性，那么图表即使“数据真实”，也可能“表达失真”。</p>
+<p><span class="math display">\[
+\text{visual impression} \neq \text{data magnitude}
+\]</span></p>
+<p>因此，阅读财经媒体、研究报告、券商研报和上市公司公告时，不能只看“图形长什么样”，还要看“图形是怎么画出来的”。</p>
+<section id="截断-y-轴夸大差异" class="level4" data-number="19.1.8.1">
+<h4 data-number="19.1.8.1" class="anchored" data-anchor-id="截断-y-轴夸大差异"><span class="header-section-number">19.1.8.1</span> 截断 Y 轴夸大差异</h4>
+<p>这是最常见的一类误导。比如，某公司净利润从 100 亿元增长到 103 亿元，真实增长率只有 3%。如果柱状图的纵轴从 98 而不是从 0 开始，那么柱体高度差会被明显放大，视觉上仿佛出现了“跳升”。</p>
+<p>这一问题的核心在于：柱状图所表达的主要信息是“长度差异”，而长度的比较通常默认以零点为基准。当零点被人为抬高后，视觉比例就被扭曲了。</p>
+<p>判断方法很简单：先看 Y 轴是否从 0 开始，然后问自己一句话：<strong>如果纵轴从 0 开始，这个差异还会显得如此巨大吗？</strong></p>
+<p>建议配图文件：</p>
+<p><img src="figs/fig01_truncated_y.png" class="img-fluid"></p>
 </section>
-<section id="叙事性让图说话" class="level3" data-number="19.1.8">
-<h3 data-number="19.1.8" class="anchored" data-anchor-id="叙事性让图说话"><span class="header-section-number">19.1.8</span> 叙事性：让图说话</h3>
+<section id="选择性时间窗口制造趋势" class="level4" data-number="19.1.8.2">
+<h4 data-number="19.1.8.2" class="anchored" data-anchor-id="选择性时间窗口制造趋势"><span class="header-section-number">19.1.8.2</span> 选择性时间窗口，制造“趋势”</h4>
+<p>同一条时间序列，只要起点和终点选得不同，叙事就可能完全改变。某产品如果恰好从低点开始计算，便很容易得到“过去三年累计收益率 60%”这样的醒目结论；但如果把时间窗口向前延长几年，读者就会发现，这可能只是一次从前期大跌中的恢复，而不是持续稳定的高回报。</p>
+<p>这一类误导并不一定来自虚构数据，而是来自<strong>选择对自己有利的样本区间</strong>。因此，时间序列图不能只看斜率和终点，更要看它的起点是如何被选定的。</p>
+<p>判断方法包括两条：</p>
+<ul>
+<li>把时间窗口适当拉长，看“漂亮结论”是否仍然成立；</li>
+<li>用多个起始点重复计算累计收益率、增长率或变化率，检查结论是否稳健。</li>
+</ul>
+<p>建议配图文件：</p>
+<p><img src="figs/fig02_time_window.png" class="img-fluid"></p>
+</section>
+<section id="不等距时间刻度制造伪趋势" class="level4" data-number="19.1.8.3">
+<h4 data-number="19.1.8.3" class="anchored" data-anchor-id="不等距时间刻度制造伪趋势"><span class="header-section-number">19.1.8.3</span> 不等距时间刻度，制造伪趋势</h4>
+<p>这类误导比截断 Y 轴更隐蔽。图上的横轴看起来像是按时间顺序均匀展开的，但实际上各区间长度并不相同，却被画成了相同宽度。这样一来，读者会自然地把最后一段的高低变化理解为与前面各段完全可比的趋势变化。</p>
+<p>你给出的 Nobel Prize 例子正属于这一类。前面若干区间都是 10 年，而最后一个区间只有 4 年，但图上却占据了和前面相同的宽度，于是读者会误以为最近一期出现了显著下降。问题不在于最后一个数据点一定错误，而在于<strong>它与前面的区间并不可直接比较</strong>。</p>
+<p>因此，时间序列图除了要求“有年份标签”之外，还要求“时间分组可比”。如果每个组的时间跨度不同，那么图上的斜率、拐点和跌幅都可能带有误导性。</p>
+<p>你提供的图片可以保留在这里，图注建议改为：</p>
+<blockquote class="blockquote">
+<p>图：不等距时间分组会制造虚假的趋势变化。左图将仅有 4 年的数据区间画成与前面多个 10 年区间相同的宽度，从而造成明显下降的视觉错觉；右图改为完整且可比的时间区间后，趋势判断随之改变。</p>
+</blockquote>
+<p>建议配图文件：</p>
+<p><img src="figs/fig03_irregular_scale.png" class="img-fluid"></p>
+</section>
+<section id="面积或体积误用" class="level4" data-number="19.1.8.4">
+<h4 data-number="19.1.8.4" class="anchored" data-anchor-id="面积或体积误用"><span class="header-section-number">19.1.8.4</span> 面积或体积误用</h4>
+<p>当图中用圆、球、图标大小来代表数值时，最容易出现的错误是：设计者让<strong>半径</strong>直接对应数值，而读者实际感受到的却是<strong>面积</strong>甚至<strong>体积</strong>。这样一来，大值会被严重夸大。</p>
+<p>如果用圆面积表示数值 <span class="math inline">\(v\)</span>，那么正确关系应满足</p>
+<p><span class="math display">\[
+A \propto v
+\]</span></p>
+<p>而圆面积满足</p>
+<p><span class="math display">\[
+A = \pi r^2
+\]</span></p>
+<p>因此半径应当满足</p>
+<p><span class="math display">\[
+r \propto \sqrt{v}
+\]</span></p>
+<p>如果错误地令 <span class="math inline">\(r \propto v\)</span>，那么就会导致</p>
+<p><span class="math display">\[
+A \propto v^2
+\]</span></p>
+<p>也就是说，数值翻倍，面积会变成 4 倍；数值变为 4 倍，面积会膨胀为 16 倍。很多“气泡图很震撼”的来源，其实不是数据本身，而是比例映射出了问题。</p>
+<p>建议配图文件：</p>
+<p><img src="figs/fig04_area_misuse.png" class="img-fluid"></p>
+</section>
+<section id="用双-y-轴制造虚假相关性" class="level4" data-number="19.1.8.5">
+<h4 data-number="19.1.8.5" class="anchored" data-anchor-id="用双-y-轴制造虚假相关性"><span class="header-section-number">19.1.8.5</span> 用双 Y 轴制造虚假相关性</h4>
+<p>双 Y 轴图形的危险之处在于：两个变量虽然单位不同，但通过分别调整左轴和右轴的上下界，可以让两条曲线看起来“高度同步”，也可以让它们看起来“几乎无关”。也就是说，视觉相关性在很大程度上取决于坐标轴设定，而不完全取决于数据本身。</p>
+<p>设两个序列分别为 <span class="math inline">\(x_t\)</span> 和 <span class="math inline">\(y_t\)</span>。图形绘制时，常常实际展示的是它们经过线性变换后的结果：</p>
+<p><span class="math display">\[
+x_t^\ast = a_1 + b_1 x_t,\qquad
+y_t^\ast = a_2 + b_2 y_t
+\]</span></p>
+<p>只要适当选择 <span class="math inline">\(a_1, b_1, a_2, b_2\)</span>，两条线的视觉形状就可能明显靠拢，或者被人为拉开。于是，读者很容易从“走势接近”推断出“存在强相关甚至因果关系”，这在实证分析中是非常危险的。</p>
+<p>更稳妥的做法包括：</p>
+<ul>
+<li>把两个序列统一转换为指数形式，例如都以起点记为 100；</li>
+<li>或者分别作图；</li>
+<li>或者直接报告相关系数、回归结果，而不是只依赖视觉印象。</li>
+</ul>
+<p>建议配图文件：</p>
+<p><img src="figs/fig05_dual_axis.png" class="img-fluid"></p>
+</section>
+</section>
+</section>
+<section id="忽略基数只强调百分比变化" class="level2" data-number="19.2">
+<h2 data-number="19.2" class="anchored" data-anchor-id="忽略基数只强调百分比变化"><span class="header-section-number">19.2</span> 6. 忽略基数，只强调百分比变化</h2>
+<p>财经媒体中经常出现“同比增长 100%”“环比翻倍”之类的说法，但如果不同时报告基数，这类表述很容易误导。因为增长率定义为</p>
+<p><span class="math display">\[
+g = \frac{y_1 - y_0}{y_0}\times 100%
+\]</span></p>
+<p>当 <span class="math inline">\(y_0\)</span> 很小时，即使绝对变化极小，也可能得到惊人的增长率。</p>
+<p>例如，从 1 增加到 2，增长率是 100%；而从 100 增加到 101，增长率只有 1%。但前者的绝对增量只有 1，后者的绝对增量同样也是 1。只看百分比，不看基数，就会让读者把“小基数上的正常波动”误认为“重大增长”。</p>
+<p>因此，涉及增长率、同比、环比、收益率时，最好同时呈现：</p>
+<ul>
+<li>初始水平；</li>
+<li>变化后的水平；</li>
+<li>绝对增量；</li>
+<li>相对增幅。</li>
+</ul>
+<p>建议配图文件：</p>
+<p><img src="figs/fig06_percentage_base.png" class="img-fluid"></p>
+</section>
+<section id="阅读财经图表时的基本检查清单" class="level2" data-number="19.3">
+<h2 data-number="19.3" class="anchored" data-anchor-id="阅读财经图表时的基本检查清单"><span class="header-section-number">19.3</span> 7. 阅读财经图表时的基本检查清单</h2>
+<p>面对一张图表，至少应依次检查以下问题：</p>
+<ul>
+<li><p>坐标轴的起点是否合理，尤其是柱状图的 Y 轴是否被截断；</p></li>
+<li><p>时间窗口是如何选择的，是否只截取了对结论有利的区间；</p></li>
+<li><p>横轴分组是否等距，时间跨度是否可比；</p></li>
+<li><p>面积、体积、气泡大小是否与数据保持正确比例；</p></li>
+<li><p>双 Y 轴是否被用来强化某种“同步性”叙事；</p></li>
+<li><p>百分比变化是否同时报告了对应的基数和绝对量。</p></li>
+</ul>
+<p>很多图形的问题不在于“数据造假”，而在于“视觉编码不诚实”。对数据分析者而言，关键不只是会画图，更是能够判断一张图是否忠实地表达了数据。</p>
+<hr>
+<section id="叙事性让图说话" class="level3" data-number="19.3.1">
+<h3 data-number="19.3.1" class="anchored" data-anchor-id="叙事性让图说话"><span class="header-section-number">19.3.1</span> 叙事性：让图说话</h3>
 <p>一张好的图形应该能独立传递一个清晰的信息，不依赖大段文字解释。这需要<strong>叙事设计</strong>：在画图之前，先想清楚”这张图的核心结论是什么”，然后围绕这个结论做所有设计决策。</p>
-<section id="一张图一个核心结论" class="level4" data-number="19.1.8.1">
-<h4 data-number="19.1.8.1" class="anchored" data-anchor-id="一张图一个核心结论"><span class="header-section-number">19.1.8.1</span> 一张图，一个核心结论</h4>
+<section id="一张图一个核心结论" class="level4" data-number="19.3.1.1">
+<h4 data-number="19.3.1.1" class="anchored" data-anchor-id="一张图一个核心结论"><span class="header-section-number">19.3.1.1</span> 一张图，一个核心结论</h4>
 <p>如果一张图试图同时说明三件事，读者通常什么都记不住。把复杂信息拆成多张图，每张聚焦一个核心发现。</p>
 <p><strong>如何围绕核心结论设计图形</strong></p>
 <ul>
@@ -981,8 +1196,8 @@ window.Quarto = {
 <li><strong>坐标轴范围</strong>：让最重要的变化在视觉上占据足够空间</li>
 </ul>
 </section>
-<section id="图形在报告论文中的位置逻辑" class="level4" data-number="19.1.8.2">
-<h4 data-number="19.1.8.2" class="anchored" data-anchor-id="图形在报告论文中的位置逻辑"><span class="header-section-number">19.1.8.2</span> 图形在报告/论文中的位置逻辑</h4>
+<section id="图形在报告论文中的位置逻辑" class="level4" data-number="19.3.1.2">
+<h4 data-number="19.3.1.2" class="anchored" data-anchor-id="图形在报告论文中的位置逻辑"><span class="header-section-number">19.3.1.2</span> 图形在报告/论文中的位置逻辑</h4>
 <ul>
 <li>图形应紧跟相关文字，而非集中放在文末</li>
 <li>正文中要引用图形编号，并用一两句话说明读者应该从图中注意什么</li>
@@ -998,25 +1213,25 @@ window.Quarto = {
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<div class="sourceCode" id="cb7"><pre class="sourceCode md code-with-copy"><code class="sourceCode markdown"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>我想用一张图说明这个结论：</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>"2015年股灾期间，小盘股的跌幅显著大于大盘股"</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>请帮我设计这张图：</span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>数据：用模拟数据，两条时间序列分别代表大盘股指数和小盘股指数，</span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>  在某个时间段内小盘股跌幅更大</span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>小盘股用深红色实线，大盘股用浅灰色实线</span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>在跌幅最大的时间点标注两者的跌幅数值</span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>在股灾期间（约 3 个月）加灰色背景色块</span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>结论性标题："股灾期间小盘股跌幅约为大盘股的 2 倍"</span>
-<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>图例直接标在线条末端</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode md code-with-copy"><code class="sourceCode markdown"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>我想用一张图说明这个结论：</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>"2015年股灾期间，小盘股的跌幅显著大于大盘股"</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>请帮我设计这张图：</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>数据：用模拟数据，两条时间序列分别代表大盘股指数和小盘股指数，</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>  在某个时间段内小盘股跌幅更大</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>小盘股用深红色实线，大盘股用浅灰色实线</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>在跌幅最大的时间点标注两者的跌幅数值</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>在股灾期间（约 3 个月）加灰色背景色块</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>结论性标题："股灾期间小盘股跌幅约为大盘股的 2 倍"</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>图例直接标在线条末端</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
 <hr>
 </section>
 </section>
-<section id="小结" class="level3" data-number="19.1.9">
-<h3 data-number="19.1.9" class="anchored" data-anchor-id="小结"><span class="header-section-number">19.1.9</span> 小结</h3>
+<section id="小结" class="level3" data-number="19.3.2">
+<h3 data-number="19.3.2" class="anchored" data-anchor-id="小结"><span class="header-section-number">19.3.2</span> 小结</h3>
 <table class="caption-top table">
 <colgroup>
 <col style="width: 21%">
@@ -1075,8 +1290,8 @@ window.Quarto = {
 </table>
 <hr>
 </section>
-<section id="延伸阅读" class="level3" data-number="19.1.10">
-<h3 data-number="19.1.10" class="anchored" data-anchor-id="延伸阅读"><span class="header-section-number">19.1.10</span> 延伸阅读</h3>
+<section id="延伸阅读" class="level3" data-number="19.3.3">
+<h3 data-number="19.3.3" class="anchored" data-anchor-id="延伸阅读"><span class="header-section-number">19.3.3</span> 延伸阅读</h3>
 <ul>
 <li>Schwabish, J. A. (2014). An Economist’s Guide to Visualizing Data. <em>Journal of Economic Perspectives</em>, 28(1), 209–234. <a href="https://www.aeaweb.org/articles?id=10.1257/jep.28.1.209">Link</a>, <a href="https://www.aeaweb.org/articles/pdf/10.1257/jep.28.1.209">PDF</a></li>
 <li>Tufte, E. R. (2001). <em>The Visual Display of Quantitative Information</em>. <a href="https://www.edwardtufte.com/tufte/books_vdqi">Link</a>.</li>
@@ -1087,13 +1302,13 @@ window.Quarto = {
 <hr>
 </section>
 </section>
-<section id="双变量与多变量关系的可视化" class="level2" data-number="19.2">
-<h2 data-number="19.2" class="anchored" data-anchor-id="双变量与多变量关系的可视化"><span class="header-section-number">19.2</span> 双变量与多变量关系的可视化</h2>
+<section id="双变量与多变量关系的可视化" class="level2" data-number="19.4">
+<h2 data-number="19.4" class="anchored" data-anchor-id="双变量与多变量关系的可视化"><span class="header-section-number">19.4</span> 双变量与多变量关系的可视化</h2>
 <blockquote class="blockquote">
 <p><strong>本节数据</strong>：使用 <code>codes_data_china.ipynb</code> 中的 <code>ret_wide</code>（五只股票日收益率宽表）</p>
 </blockquote>
-<section id="散点图与回归线" class="level3" data-number="19.2.1">
-<h3 data-number="19.2.1" class="anchored" data-anchor-id="散点图与回归线"><span class="header-section-number">19.2.1</span> 散点图与回归线</h3>
+<section id="散点图与回归线" class="level3" data-number="19.4.1">
+<h3 data-number="19.4.1" class="anchored" data-anchor-id="散点图与回归线"><span class="header-section-number">19.4.1</span> 散点图与回归线</h3>
 <p>散点图是探索两个连续变量之间关系的最基本工具。单独的散点图只能”看到”数据点的分布，加上回归线后才能量化关系的方向和强度。</p>
 <p><strong>散点图的三个层次</strong>：</p>
 <table class="caption-top table">
@@ -1145,8 +1360,8 @@ window.Quarto = {
 </div>
 </div>
 </section>
-<section id="相关矩阵热力图" class="level3" data-number="19.2.2">
-<h3 data-number="19.2.2" class="anchored" data-anchor-id="相关矩阵热力图"><span class="header-section-number">19.2.2</span> 相关矩阵热力图</h3>
+<section id="相关矩阵热力图" class="level3" data-number="19.4.2">
+<h3 data-number="19.4.2" class="anchored" data-anchor-id="相关矩阵热力图"><span class="header-section-number">19.4.2</span> 相关矩阵热力图</h3>
 <p>当变量数量超过 2 个时，散点图矩阵变得拥挤，相关矩阵热力图是更紧凑的替代方案。</p>
 <p><strong>设计要点</strong>：</p>
 <ul>
@@ -1176,8 +1391,8 @@ window.Quarto = {
 </div>
 </div>
 </section>
-<section id="散点图矩阵pairs-plot" class="level3" data-number="19.2.3">
-<h3 data-number="19.2.3" class="anchored" data-anchor-id="散点图矩阵pairs-plot"><span class="header-section-number">19.2.3</span> 散点图矩阵（Pairs Plot）</h3>
+<section id="散点图矩阵pairs-plot" class="level3" data-number="19.4.3">
+<h3 data-number="19.4.3" class="anchored" data-anchor-id="散点图矩阵pairs-plot"><span class="header-section-number">19.4.3</span> 散点图矩阵（Pairs Plot）</h3>
 <p>散点图矩阵同时展示所有变量的两两关系：<strong>对角线</strong>显示每个变量的分布（直方图或 KDE），<strong>非对角线</strong>显示两两散点图。</p>
 <p>适用场景：变量数量在 3–7 个之间，需要同时探索分布和关系。变量过多时图形会过于拥挤，建议换用相关矩阵热力图。</p>
 <p><code>seaborn.pairplot()</code> 的关键参数：<code>hue</code> 按类别变量着色；<code>corner=True</code> 只显示下三角；<code>diag_kind='kde'</code> 对角线用 KDE 替代直方图。</p>
@@ -1191,17 +1406,17 @@ window.Quarto = {
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<div class="sourceCode" id="cb10"><pre class="sourceCode md code-with-copy"><code class="sourceCode markdown"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>我有 5 只股票的日收益率数据，请用 seaborn.pairplot 画散点图矩阵：</span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>只显示下三角（corner=True）</span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>对角线显示 KDE 曲线</span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>非对角线的散点半透明（alpha=0.3），加 OLS 回归线</span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>颜色使用 colorblind palette，图形整体尺寸约 (10, 10)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode md code-with-copy"><code class="sourceCode markdown"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>我有 5 只股票的日收益率数据，请用 seaborn.pairplot 画散点图矩阵：</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>只显示下三角（corner=True）</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>对角线显示 KDE 曲线</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>非对角线的散点半透明（alpha=0.3），加 OLS 回归线</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>颜色使用 colorblind palette，图形整体尺寸约 (10, 10)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
 </section>
-<section id="综合案例多资产收益率的联动关系" class="level3" data-number="19.2.4">
-<h3 data-number="19.2.4" class="anchored" data-anchor-id="综合案例多资产收益率的联动关系"><span class="header-section-number">19.2.4</span> 综合案例：多资产收益率的联动关系</h3>
+<section id="综合案例多资产收益率的联动关系" class="level3" data-number="19.4.4">
+<h3 data-number="19.4.4" class="anchored" data-anchor-id="综合案例多资产收益率的联动关系"><span class="header-section-number">19.4.4</span> 综合案例：多资产收益率的联动关系</h3>
 <div class="callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -1212,26 +1427,26 @@ window.Quarto = {
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<div class="sourceCode" id="cb11"><pre class="sourceCode md code-with-copy"><code class="sourceCode markdown"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>使用 codes_data_china.ipynb 中的 ret_wide 数据（五只A股股票日收益率），</span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>完成以下分析并用一张多子图展示：</span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>左图：相关矩阵热力图（下三角，RdBu_r 配色）</span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>右图：贵州茅台 vs 宁德时代的散点图（两者行业差异大），</span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>  叠加 OLS 回归线，图内标注相关系数和 Beta 值</span>
-<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>总标题："消费与新能源龙头股收益率相关性较低，适合组合配置"</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode md code-with-copy"><code class="sourceCode markdown"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>使用 codes_data_china.ipynb 中的 ret_wide 数据（五只A股股票日收益率），</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>完成以下分析并用一张多子图展示：</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>左图：相关矩阵热力图（下三角，RdBu_r 配色）</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>右图：贵州茅台 vs 宁德时代的散点图（两者行业差异大），</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>  叠加 OLS 回归线，图内标注相关系数和 Beta 值</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>总标题："消费与新能源龙头股收益率相关性较低，适合组合配置"</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
 <hr>
 </section>
 </section>
-<section id="时间序列的可视化" class="level2" data-number="19.3">
-<h2 data-number="19.3" class="anchored" data-anchor-id="时间序列的可视化"><span class="header-section-number">19.3</span> 时间序列的可视化</h2>
+<section id="时间序列的可视化" class="level2" data-number="19.5">
+<h2 data-number="19.5" class="anchored" data-anchor-id="时间序列的可视化"><span class="header-section-number">19.5</span> 时间序列的可视化</h2>
 <blockquote class="blockquote">
 <p><strong>本节数据</strong>：<code>index_close</code> / <code>index_norm</code>（四大指数）、<code>cpi_df</code> / <code>gdp_df</code>（宏观数据）</p>
 </blockquote>
 <p>时间序列是金融数据最常见的形态。除了基本的折线图，金融时序可视化有几个独特的设计元素。</p>
-<section id="折线图的规范画法" class="level3" data-number="19.3.1">
-<h3 data-number="19.3.1" class="anchored" data-anchor-id="折线图的规范画法"><span class="header-section-number">19.3.1</span> 折线图的规范画法</h3>
+<section id="折线图的规范画法" class="level3" data-number="19.5.1">
+<h3 data-number="19.5.1" class="anchored" data-anchor-id="折线图的规范画法"><span class="header-section-number">19.5.1</span> 折线图的规范画法</h3>
 <p>时序折线图的几个容易忽略的规范：</p>
 <ul>
 <li><strong>X 轴刻度</strong>：使用 <code>matplotlib.dates</code> 格式化，避免出现 <code>2020-01-01 00:00:00</code> 这样的冗余时间戳</li>
@@ -1240,8 +1455,8 @@ window.Quarto = {
 <li><strong>Y 轴起点</strong>：折线图不需要从零开始，但要在轴标签中注明数值含义</li>
 </ul>
 </section>
-<section id="事件标注政策时间线与危机区间" class="level3" data-number="19.3.2">
-<h3 data-number="19.3.2" class="anchored" data-anchor-id="事件标注政策时间线与危机区间"><span class="header-section-number">19.3.2</span> 事件标注：政策时间线与危机区间</h3>
+<section id="事件标注政策时间线与危机区间" class="level3" data-number="19.5.2">
+<h3 data-number="19.5.2" class="anchored" data-anchor-id="事件标注政策时间线与危机区间"><span class="header-section-number">19.5.2</span> 事件标注：政策时间线与危机区间</h3>
 <p>金融时序图中，<strong>事件标注</strong>往往比数据本身更有叙事价值。</p>
 <p><strong>竖线 + 文字</strong>（<code>ax.axvline</code> + <code>ax.text</code>）：适合标注单一时间点，如政策发布日、上市日期。</p>
 <p><strong>背景色块</strong>（<code>ax.axvspan</code>）：适合标注持续一段时间的事件区间，如经济衰退期、疫情管控期。</p>
@@ -1283,12 +1498,12 @@ window.Quarto = {
 </tbody>
 </table>
 </section>
-<section id="对数坐标轴" class="level3" data-number="19.3.3">
-<h3 data-number="19.3.3" class="anchored" data-anchor-id="对数坐标轴"><span class="header-section-number">19.3.3</span> 对数坐标轴</h3>
+<section id="对数坐标轴" class="level3" data-number="19.5.3">
+<h3 data-number="19.5.3" class="anchored" data-anchor-id="对数坐标轴"><span class="header-section-number">19.5.3</span> 对数坐标轴</h3>
 <p><strong>典型应用</strong>：展示沪深 300 自 2005 年以来的长期走势。线性坐标下，2007 年和 2015 年的牛市在早期几乎看不出波动；对数坐标下，早期的涨跌与近期的涨跌在视觉比例上保持一致。</p>
 </section>
-<section id="多资产对比与不确定性" class="level3" data-number="19.3.4">
-<h3 data-number="19.3.4" class="anchored" data-anchor-id="多资产对比与不确定性"><span class="header-section-number">19.3.4</span> 多资产对比与不确定性</h3>
+<section id="多资产对比与不确定性" class="level3" data-number="19.5.4">
+<h3 data-number="19.5.4" class="anchored" data-anchor-id="多资产对比与不确定性"><span class="header-section-number">19.5.4</span> 多资产对比与不确定性</h3>
 <p><strong>滚动统计</strong>：金融时序中经常需要展示滚动均值、滚动标准差（波动率）。<code>pandas</code> 的 <code>.rolling(window).mean()</code> 和 <code>.rolling(window).std()</code> 提供简洁的实现。</p>
 <p><strong>置信带</strong>：<code>ax.fill_between(x, y_lower, y_upper)</code> 绘制置信区间或预测区间的阴影带。</p>
 <div class="callout callout-style-default callout-tip callout-titled">
@@ -1301,21 +1516,21 @@ window.Quarto = {
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<div class="sourceCode" id="cb12"><pre class="sourceCode md code-with-copy"><code class="sourceCode markdown"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>使用 index_norm 数据（四大指数归一化走势），画一张完整的时序对比图：</span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>四条线，颜色+线型双重编码，线条末端直接标注指数名称</span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>在以下时间节点加事件标注：</span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>2015-06 ~ 2015-09：红色色块，标注"2015股灾"</span>
-<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>2020-01 ~ 2020-03：灰色色块，标注"新冠冲击"</span>
-<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>2018-01 ~ 2018-12：橙色色块，标注"去杠杆"</span>
-<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Y 轴用对数刻度（semilogy），标注"归一化指数（对数刻度，基期=100）"</span>
-<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>结论性标题："创业板指长期弹性最大，但经历了更剧烈的波动"</span>
-<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>图形尺寸 (12, 5)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode md code-with-copy"><code class="sourceCode markdown"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>使用 index_norm 数据（四大指数归一化走势），画一张完整的时序对比图：</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>四条线，颜色+线型双重编码，线条末端直接标注指数名称</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>在以下时间节点加事件标注：</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>2015-06 ~ 2015-09：红色色块，标注"2015股灾"</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>2020-01 ~ 2020-03：灰色色块，标注"新冠冲击"</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>2018-01 ~ 2018-12：橙色色块，标注"去杠杆"</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Y 轴用对数刻度（semilogy），标注"归一化指数（对数刻度，基期=100）"</span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>结论性标题："创业板指长期弹性最大，但经历了更剧烈的波动"</span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>图形尺寸 (12, 5)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
 </section>
-<section id="k-线图mplfinance" class="level3" data-number="19.3.5">
-<h3 data-number="19.3.5" class="anchored" data-anchor-id="k-线图mplfinance"><span class="header-section-number">19.3.5</span> K 线图（mplfinance）</h3>
+<section id="k-线图mplfinance" class="level3" data-number="19.5.5">
+<h3 data-number="19.5.5" class="anchored" data-anchor-id="k-线图mplfinance"><span class="header-section-number">19.5.5</span> K 线图（mplfinance）</h3>
 <p>K 线图（蜡烛图）是股票技术分析的标准图形，由<strong>开盘价、收盘价、最高价、最低价</strong>四个数值构成。</p>
 <p><strong>K 线的基本规则</strong>（中国 A 股惯例）：</p>
 <ul>
@@ -1337,28 +1552,28 @@ window.Quarto = {
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<div class="sourceCode" id="cb13"><pre class="sourceCode md code-with-copy"><code class="sourceCode markdown"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>使用 kline_df 数据（贵州茅台日K线，含 open/high/low/close/volume），</span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>用 mplfinance 画一张专业K线图：</span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>取最近 60 个交易日</span>
-<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>颜色：红涨（#d7191c）蓝跌（#2166ac），符合A股惯例</span>
-<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>叠加 MA20（橙色实线）和 MA60（蓝色虚线）</span>
-<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>下方显示成交量柱状图，白色背景，去掉多余边框</span>
-<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>图形标题包含股票名称和时间范围</span>
-<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>注意：mplfinance 需要列名为 Open/High/Low/Close/Volume（首字母大写）</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode md code-with-copy"><code class="sourceCode markdown"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>使用 kline_df 数据（贵州茅台日K线，含 open/high/low/close/volume），</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>用 mplfinance 画一张专业K线图：</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>取最近 60 个交易日</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>颜色：红涨（#d7191c）蓝跌（#2166ac），符合A股惯例</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>叠加 MA20（橙色实线）和 MA60（蓝色虚线）</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>下方显示成交量柱状图，白色背景，去掉多余边框</span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>图形标题包含股票名称和时间范围</span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>注意：mplfinance 需要列名为 Open/High/Low/Close/Volume（首字母大写）</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
 <hr>
 </section>
 </section>
-<section id="回归结果的可视化" class="level2" data-number="19.4">
-<h2 data-number="19.4" class="anchored" data-anchor-id="回归结果的可视化"><span class="header-section-number">19.4</span> 回归结果的可视化</h2>
+<section id="回归结果的可视化" class="level2" data-number="19.6">
+<h2 data-number="19.6" class="anchored" data-anchor-id="回归结果的可视化"><span class="header-section-number">19.6</span> 回归结果的可视化</h2>
 <blockquote class="blockquote">
 <p><strong>衔接说明</strong>：本节是可视化与计量分析的接口。本章只讲”怎么画”，回归本身的理论在后续计量章节中展开。</p>
 </blockquote>
-<section id="系数图coefficient-plot" class="level3" data-number="19.4.1">
-<h3 data-number="19.4.1" class="anchored" data-anchor-id="系数图coefficient-plot"><span class="header-section-number">19.4.1</span> 系数图（Coefficient Plot）</h3>
+<section id="系数图coefficient-plot" class="level3" data-number="19.6.1">
+<h3 data-number="19.6.1" class="anchored" data-anchor-id="系数图coefficient-plot"><span class="header-section-number">19.6.1</span> 系数图（Coefficient Plot）</h3>
 <p>当需要比较多个模型的同一系数时（如加入不同控制变量后系数的稳健性），可以将多组系数并排绘制：每个变量对应一行，不同模型用不同颜色/形状的点表示。</p>
 <p>这种图在实证论文中被称为<strong>稳健性检验图</strong>，比在文中写”系数在加入控制变量后基本不变”更直观。</p>
 <div class="callout callout-style-default callout-tip callout-titled">
@@ -1382,8 +1597,8 @@ window.Quarto = {
 </div>
 </div>
 </section>
-<section id="残差诊断图" class="level3" data-number="19.4.2">
-<h3 data-number="19.4.2" class="anchored" data-anchor-id="残差诊断图"><span class="header-section-number">19.4.2</span> 残差诊断图</h3>
+<section id="残差诊断图" class="level3" data-number="19.6.2">
+<h3 data-number="19.6.2" class="anchored" data-anchor-id="残差诊断图"><span class="header-section-number">19.6.2</span> 残差诊断图</h3>
 <p>OLS 回归有四个核心假设，每个假设对应一种诊断图：</p>
 <table class="caption-top table">
 <thead>
@@ -1439,8 +1654,8 @@ window.Quarto = {
 </div>
 </div>
 </section>
-<section id="边际效应图与预测区间" class="level3" data-number="19.4.3">
-<h3 data-number="19.4.3" class="anchored" data-anchor-id="边际效应图与预测区间"><span class="header-section-number">19.4.3</span> 边际效应图与预测区间</h3>
+<section id="边际效应图与预测区间" class="level3" data-number="19.6.3">
+<h3 data-number="19.6.3" class="anchored" data-anchor-id="边际效应图与预测区间"><span class="header-section-number">19.6.3</span> 边际效应图与预测区间</h3>
 <p>回归系数是线性模型的”全局”斜率，但在非线性模型（Logit、Probit、含交互项的 OLS）中，<strong>边际效应</strong>随其他变量的取值而变化，必须用图形展示。</p>
 <ul>
 <li><strong>含交互项的 OLS</strong>：<span class="math inline">\(y = \beta_0 + \beta_1 x_1 + \beta_2 x_2 + \beta_3 x_1 x_2\)</span>，<span class="math inline">\(x_1\)</span> 对 <span class="math inline">\(y\)</span> 的边际效应为 <span class="math inline">\(\beta_1 + \beta_3 x_2\)</span>，随 <span class="math inline">\(x_2\)</span> 变化</li>
@@ -1469,8 +1684,8 @@ window.Quarto = {
 <hr>
 </section>
 </section>
-<section id="完整案例capm-beta-的可视化估计" class="level2" data-number="19.5">
-<h2 data-number="19.5" class="anchored" data-anchor-id="完整案例capm-beta-的可视化估计"><span class="header-section-number">19.5</span> 完整案例：CAPM Beta 的可视化估计</h2>
+<section id="完整案例capm-beta-的可视化估计" class="level2" data-number="19.7">
+<h2 data-number="19.7" class="anchored" data-anchor-id="完整案例capm-beta-的可视化估计"><span class="header-section-number">19.7</span> 完整案例：CAPM Beta 的可视化估计</h2>
 <p><strong>模型</strong>：<span class="math inline">\(r_i - r_f = \alpha + \beta (r_m - r_f) + \varepsilon\)</span></p>
 <p>用个股超额收益率对市场超额收益率回归，<span class="math inline">\(\beta\)</span> 衡量系统性风险。可视化流程：散点图（个股 vs 市场超额收益率）→ OLS 回归线 + 置信带 → 图内标注 <span class="math inline">\(\hat{\alpha}\)</span>、<span class="math inline">\(\hat{\beta}\)</span>、<span class="math inline">\(R^2\)</span> → 残差 QQ 图（检验正态性）。</p>
 <div class="callout callout-style-default callout-tip callout-titled">
@@ -1505,10 +1720,10 @@ window.Quarto = {
 </div>
 <hr>
 </section>
-<section id="图形导出与报告整合" class="level2" data-number="19.6">
-<h2 data-number="19.6" class="anchored" data-anchor-id="图形导出与报告整合"><span class="header-section-number">19.6</span> 图形导出与报告整合</h2>
-<section id="格式与分辨率" class="level3" data-number="19.6.1">
-<h3 data-number="19.6.1" class="anchored" data-anchor-id="格式与分辨率"><span class="header-section-number">19.6.1</span> 格式与分辨率</h3>
+<section id="图形导出与报告整合" class="level2" data-number="19.8">
+<h2 data-number="19.8" class="anchored" data-anchor-id="图形导出与报告整合"><span class="header-section-number">19.8</span> 图形导出与报告整合</h2>
+<section id="格式与分辨率" class="level3" data-number="19.8.1">
+<h3 data-number="19.8.1" class="anchored" data-anchor-id="格式与分辨率"><span class="header-section-number">19.8.1</span> 格式与分辨率</h3>
 <table class="caption-top table">
 <thead>
 <tr class="header">
@@ -1546,13 +1761,13 @@ window.Quarto = {
 </tbody>
 </table>
 <p>PDF 是论文投稿的首选：矢量格式，无论放大多少倍都不模糊；文件体积也通常小于高分辨率 PNG。</p>
-<div class="sourceCode" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>fig.savefig(<span class="st">'fig.pdf'</span>, bbox_inches<span class="op">=</span><span class="st">'tight'</span>, facecolor<span class="op">=</span><span class="st">'white'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>fig.savefig(<span class="st">'fig.pdf'</span>, bbox_inches<span class="op">=</span><span class="st">'tight'</span>, facecolor<span class="op">=</span><span class="st">'white'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <blockquote class="blockquote">
 <p>📌 <code>bbox_inches='tight'</code> 是必须加的参数，否则图形边缘容易被裁切。<code>facecolor='white'</code> 防止透明背景在某些 PDF 阅读器中显示为黑色。</p>
 </blockquote>
 </section>
-<section id="图注的写法规范" class="level3" data-number="19.6.2">
-<h3 data-number="19.6.2" class="anchored" data-anchor-id="图注的写法规范"><span class="header-section-number">19.6.2</span> 图注的写法规范</h3>
+<section id="图注的写法规范" class="level3" data-number="19.8.2">
+<h3 data-number="19.8.2" class="anchored" data-anchor-id="图注的写法规范"><span class="header-section-number">19.8.2</span> 图注的写法规范</h3>
 <p>学术论文中，<strong>图注（Figure Caption）</strong>必须让图形能独立于正文被理解。规范写法包含：图形编号、标题、数据说明（样本范围、时间区间、数据来源）、变量定义、统计显著性标记说明。</p>
 <p><strong>示例</strong>： &gt; <strong>图 3</strong> 五只 A 股股票日收益率的分布比较（2020–2024 年）。箱体上下边缘分别为 25% 和 75% 分位数，中线为中位数，须为 1.5 倍 IQR 范围，超出范围的点为离群值。收益率为前复权日对数收益率（%）。数据来源：akshare，原始数据来自上交所和深交所。</p>
 <div class="callout callout-style-default callout-tip callout-titled">
@@ -1565,13 +1780,13 @@ window.Quarto = {
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<div class="sourceCode" id="cb19"><pre class="sourceCode md code-with-copy"><code class="sourceCode markdown"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>我完成了一张图形（多股票收益率分布的分组箱线图），</span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>请帮我写一段规范的学术图注（中英文各一版），包含：</span>
-<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>图形编号（Figure 1 / 图1）、描述性标题</span>
-<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>数据说明：5只A股股票，2020-2024年，前复权日对数收益率</span>
-<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>变量定义：箱线图的各元素含义，数据来源：akshare</span>
-<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>字数控制在 80 字以内（中文）/ 120 words 以内（英文）</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb18"><pre class="sourceCode md code-with-copy"><code class="sourceCode markdown"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>我完成了一张图形（多股票收益率分布的分组箱线图），</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>请帮我写一段规范的学术图注（中英文各一版），包含：</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>图形编号（Figure 1 / 图1）、描述性标题</span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>数据说明：5只A股股票，2020-2024年，前复权日对数收益率</span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>变量定义：箱线图的各元素含义，数据来源：akshare</span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>字数控制在 80 字以内（中文）/ 120 words 以内（英文）</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
 

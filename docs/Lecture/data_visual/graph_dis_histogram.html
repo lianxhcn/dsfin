@@ -347,7 +347,7 @@ window.Quarto = {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../Lecture/data_visual/lec_visualization.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">数据可视化</span></span></a>
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">数据可视化：一些基本原则</span></span></a>
   </div>
 </li>
       </ul>
@@ -495,18 +495,6 @@ window.Quarto = {
   <li><a href="#一个简单的例子" id="toc-一个简单的例子" class="nav-link" data-scroll-target="#一个简单的例子"><span class="header-section-number">15.2</span> 一个简单的例子</a></li>
   <li><a href="#频数频率与密度" id="toc-频数频率与密度" class="nav-link" data-scroll-target="#频数频率与密度"><span class="header-section-number">15.3</span> 频数、频率与密度</a></li>
   <li><a href="#直方图的绘制" id="toc-直方图的绘制" class="nav-link" data-scroll-target="#直方图的绘制"><span class="header-section-number">15.4</span> 直方图的绘制</a></li>
-  <li><a href="#更为严谨的表述" id="toc-更为严谨的表述" class="nav-link" data-scroll-target="#更为严谨的表述"><span class="header-section-number">15.5</span> 更为严谨的表述</a></li>
-  <li><a href="#python-实操" id="toc-python-实操" class="nav-link" data-scroll-target="#python-实操"><span class="header-section-number">15.6</span> Python 实操</a>
-  <ul class="collapse">
-  <li><a href="#plt.hist-函数详解" id="toc-plt.hist-函数详解" class="nav-link" data-scroll-target="#plt.hist-函数详解"><span class="header-section-number">15.6.1</span> plt.hist() 函数详解</a></li>
-  </ul></li>
-  <li><a href="#注意事项" id="toc-注意事项" class="nav-link" data-scroll-target="#注意事项"><span class="header-section-number">15.7</span> 注意事项</a></li>
-  <li><a href="#扩展阅读" id="toc-扩展阅读" class="nav-link" data-scroll-target="#扩展阅读"><span class="header-section-number">15.8</span> 扩展阅读</a>
-  <ul class="collapse">
-  <li><a href="#直方图实例" id="toc-直方图实例" class="nav-link" data-scroll-target="#直方图实例"><span class="header-section-number">15.8.1</span> 直方图实例</a></li>
-  <li><a href="#python" id="toc-python" class="nav-link" data-scroll-target="#python"><span class="header-section-number">15.8.2</span> Python</a></li>
-  <li><a href="#stata" id="toc-stata" class="nav-link" data-scroll-target="#stata"><span class="header-section-number">15.8.3</span> Stata</a></li>
-  </ul></li>
   </ul>
 </nav>
     </div>
@@ -552,7 +540,7 @@ h = \frac{\max(r) - \min(r)}{K}
 </section>
 <section id="一个简单的例子" class="level2" data-number="15.2">
 <h2 data-number="15.2" class="anchored" data-anchor-id="一个简单的例子"><span class="header-section-number">15.2</span> 一个简单的例子</h2>
-<p>为了理解直方图的用途，我们先看一个简单的例子。某学习小组包括 10 名学生，年龄介于 16 岁到 26 岁之间。</p>
+<p>为了理解直方图的用途，我们先从柱状图开始，通过一个简单的例子理解「分布」的含义。某学习小组包括 10 名学生，年龄介于 16 岁到 26 岁之间。</p>
 <div id="48430017" class="cell" data-execution_count="124">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -722,29 +710,36 @@ f_k = \sum_{j=1}^{N} I(b_k \leq x_j &lt; b_{k+1}) \quad \text{for } k = 1, 2, \l
 </blockquote>
 <p>绘制直方图时，将每个区间的频数 <span class="math inline">\(n_k\)</span> 作为柱状图的高度。对于区间 <span class="math inline">\([b_k, b_{k+1})\)</span>，其对应的柱状图高度为 <span class="math inline">\(n_k\)</span>，宽度为 <span class="math inline">\(h\)</span>。</p>
 <p>当然，也可以根据需要用频率 (<span class="math inline">\(p_k\)</span>) 或密度 (<span class="math inline">\(f_k\)</span>) 来绘制直方图。</p>
-</section>
-<section id="更为严谨的表述" class="level2" data-number="15.5">
-<h2 data-number="15.5" class="anchored" data-anchor-id="更为严谨的表述"><span class="header-section-number">15.5</span> 更为严谨的表述</h2>
-<!---Source: https://en.wikipedia.org/wiki/Histogram--->
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+提示词
+</div>
+</div>
+<section id="更为严谨的表述" class="level1 callout-body-container callout-body" data-number="16">
+<h1 data-number="16"><span class="header-section-number">16</span> 更为严谨的表述</h1>
 <blockquote class="blockquote">
-<p>Source: Wasserman-2006-all_of_nonparametric_statistics.pdf, Section 6.2 Histograms.</p>
+<p>资料来源：Wasserman (2006)《All of Nonparametric Statistics》, <a href="https://www.stat.cmu.edu/~brian/valerie/617-2022/0%20-%20books/2006%20-%20Wasserman%20All%20Of%20Nonparametric%20Statistics.pdf">PDF</a>，第6.2节 直方图</p>
 </blockquote>
-<p>Perhaps the simplest nonparametric density estimator is the histogram. Suppose <span class="math inline">\(f\)</span> has its support on some interval which, without loss of generality, we take to be <span class="math inline">\([0,1]\)</span>. Let <span class="math inline">\(m\)</span> be an integer and define bins</p>
+<p>直方图是最简单的非参数密度估计方法。假设密度函数 <span class="math inline">\(f\)</span> 的支撑集为某一区间，不失一般性，取该区间为 <span class="math inline">\([0,1]\)</span>。设 <span class="math inline">\(m\)</span> 为整数，并定义分组区间：</p>
 <p><span class="math display">\[
-B_1=\left[0, \frac{1}{m}\right), \quad B_2=\left[\frac{1}{m}, \frac{2}{m}\right), \quad \ldots, \quad B_m=\left[\frac{m-1}{m}, 1\right] .
+B_1=\left[0, \frac{1}{m}\right), \quad B_2=\left[\frac{1}{m}, \frac{2}{m}\right), \quad \ldots, \quad B_m=\left[\frac{m-1}{m}, 1\right]
 \]</span></p>
-<p>Define the binwidth <span class="math inline">\(h=1 / m\)</span>, let <span class="math inline">\(Y_j\)</span> be the number of observations in <span class="math inline">\(B_j\)</span>, let <span class="math inline">\(\widehat{p}_j=Y_j / n\)</span> and let <span class="math inline">\(p_j=\int_{B_j} f(u) d u\)</span>.</p>
-<p>The histogram estimator is defined by</p>
+<p>定义组距 <span class="math inline">\(h=1/m\)</span>，记 <span class="math inline">\(Y_j\)</span> 为落入 <span class="math inline">\(B_j\)</span> 中的观测个数，<span class="math inline">\(\widehat{p}_j=Y_j/n\)</span>，<span class="math inline">\(p_j=\int_{B_j} f(u) d u\)</span>。</p>
+<p>直方图估计量定义为：</p>
 <p><span class="math display">\[
 \widehat{f}_n(x)=\sum_{j=1}^m \frac{\widehat{p}_j}{h} I\left(x \in B_j\right)
 \]</span></p>
-<p>To understand the motivation for this estimator, note that, for <span class="math inline">\(x \in B_j\)</span> and <span class="math inline">\(h\)</span> small,</p>
+<p>为理解该估计量的构造思想，注意到当 <span class="math inline">\(x \in B_j\)</span> 且 <span class="math inline">\(h\)</span> 较小时，有：</p>
 <p><span class="math display">\[
-\mathbb{E}\left(\widehat{f}_n(x)\right)=\frac{\mathbb{E}\left(\widehat{p}_j\right)}{h}=\frac{p_j}{h}=\frac{\int_{B_j} f(u) d u}{h} \approx \frac{f(x) h}{h}=f(x) .
+\mathbb{E}\left(\widehat{f}_n(x)\right)=\frac{\mathbb{E}\left(\widehat{p}_j\right)}{h}=\frac{p_j}{h}=\frac{\int_{B_j} f(u) d u}{h} \approx \frac{f(x) h}{h}=f(x)
 \]</span></p>
-</section>
-<section id="python-实操" class="level2" data-number="15.6">
-<h2 data-number="15.6" class="anchored" data-anchor-id="python-实操"><span class="header-section-number">15.6</span> Python 实操</h2>
+<p>这是后续估计核密度函数的重要思想：通过局部平均来估计密度函数的值。</p>
+<section id="python-实操" class="level2" data-number="16.1">
+<h2 data-number="16.1" class="anchored" data-anchor-id="python-实操"><span class="header-section-number">16.1</span> Python 实操</h2>
 <div id="99514055" class="cell" data-execution_count="137">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co">'''</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="co">**提示词**</span></span>
@@ -813,8 +808,8 @@ B_1=\left[0, \frac{1}{m}\right), \quad B_2=\left[\frac{1}{m}, \frac{2}{m}\right)
 <li><p>为了增加对比对，我们设定了 <code>axes[i].set_yticks(range(0, 32, 5))</code>。可以看出，当我们划分的组数较多时 (<code>bins</code> 值较大)，落入每个区间的数据点数量自然会相对变少，导致直方图的高度不均匀，且可能出现一些区间的高度为 0 的情况。因此，过大的 <code>bins</code> 值虽然能够提供更精细的分布信息，但也可能导致我们「只见树木，不见森林」。</p></li>
 </ul>
 <p>多数情况下，我们都无需手动指定 <code>bins</code> 和 <code>rwidth</code> 参数，直接使用 <code>plt.hist()</code> 函数自动选择的最优值即可。</p>
-<section id="plt.hist-函数详解" class="level3" data-number="15.6.1">
-<h3 data-number="15.6.1" class="anchored" data-anchor-id="plt.hist-函数详解"><span class="header-section-number">15.6.1</span> plt.hist() 函数详解</h3>
+<section id="plt.hist-函数详解" class="level3" data-number="16.1.1">
+<h3 data-number="16.1.1" class="anchored" data-anchor-id="plt.hist-函数详解"><span class="header-section-number">16.1.1</span> plt.hist() 函数详解</h3>
 <p><code>plt.hist()</code> 函数是 <code>matplotlib</code> 库中用于绘制直方图的函数。其基本语法如下：</p>
 <div class="sourceCode" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>plt.hist(x, bins<span class="op">=</span><span class="va">None</span>, <span class="bu">range</span><span class="op">=</span><span class="va">None</span>, density<span class="op">=</span><span class="va">False</span>, </span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>         weights<span class="op">=</span><span class="va">None</span>, cumulative<span class="op">=</span><span class="va">False</span>, bottom<span class="op">=</span><span class="va">None</span>, </span>
@@ -843,8 +838,8 @@ B_1=\left[0, \frac{1}{m}\right), \quad B_2=\left[\frac{1}{m}, \frac{2}{m}\right)
 </ul>
 </section>
 </section>
-<section id="注意事项" class="level2" data-number="15.7">
-<h2 data-number="15.7" class="anchored" data-anchor-id="注意事项"><span class="header-section-number">15.7</span> 注意事项</h2>
+<section id="注意事项" class="level2" data-number="16.2">
+<h2 data-number="16.2" class="anchored" data-anchor-id="注意事项"><span class="header-section-number">16.2</span> 注意事项</h2>
 <p>在比较直方图时，为了便于观察差异，建议将直方图垂直排列，以便更直观地观察横向变化。例如，尝试比较图中顶部的两个直方图。若将两个直方图水平排列，通常会因横向偏移而难以识别它们之间的差异。</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
@@ -856,26 +851,26 @@ B_1=\left[0, \frac{1}{m}\right), \quad B_2=\left[\frac{1}{m}, \frac{2}{m}\right)
 <p>图：当排列直方图以便于比较时，建议垂直对齐以观察横向变化。</p>
 </blockquote>
 </section>
-<section id="扩展阅读" class="level2" data-number="15.8">
-<h2 data-number="15.8" class="anchored" data-anchor-id="扩展阅读"><span class="header-section-number">15.8</span> 扩展阅读</h2>
-<section id="直方图实例" class="level3" data-number="15.8.1">
-<h3 data-number="15.8.1" class="anchored" data-anchor-id="直方图实例"><span class="header-section-number">15.8.1</span> 直方图实例</h3>
+<section id="扩展阅读" class="level2" data-number="16.3">
+<h2 data-number="16.3" class="anchored" data-anchor-id="扩展阅读"><span class="header-section-number">16.3</span> 扩展阅读</h2>
+<section id="直方图实例" class="level3" data-number="16.3.1">
+<h3 data-number="16.3.1" class="anchored" data-anchor-id="直方图实例"><span class="header-section-number">16.3.1</span> 直方图实例</h3>
 <p>This Python code creates a&nbsp;<strong>histogram</strong>&nbsp;using the&nbsp;<a href="https://python-graph-gallery.com/matplotlib/">Matplotlib</a>&nbsp;library to visualize data about&nbsp;<em>salaries in France</em>. It was originally produced by the&nbsp;<a href="https://www.insee.fr/fr/accueil">INSEE</a>.</p>
 <p><img style="width: 500px" src="https://fig-lianxh.oss-cn-shenzhen.aliyuncs.com/20250511114743.png"></p>
 <blockquote class="blockquote">
 <p>Source: <a href="https://python-graph-gallery.com/web-histogram-with-annotations/">Histogram with custom style and annotations</a></p>
 </blockquote>
 </section>
-<section id="python" class="level3" data-number="15.8.2">
-<h3 data-number="15.8.2" class="anchored" data-anchor-id="python"><span class="header-section-number">15.8.2</span> Python</h3>
+<section id="python" class="level3" data-number="16.3.2">
+<h3 data-number="16.3.2" class="anchored" data-anchor-id="python"><span class="header-section-number">16.3.2</span> Python</h3>
 <ul>
 <li><a href="https://matplotlib.org/stable/gallery/statistics/histogram_normalization.html">matplotlib - Histogram bins, density, and weight</a>。详细介绍了 bins 的选择对直方图形状的影响，以及密度的概念。</li>
 <li><a href="https://matplotlib.org/stable/gallery/lines_bars_and_markers/scatter_hist.html#sphx-glr-gallery-lines-bars-and-markers-scatter-hist-py">Scatter plot with histograms</a></li>
 <li><a href="https://seaborn.pydata.org/tutorial/distributions.html">seaborn - distribution</a></li>
 </ul>
 </section>
-<section id="stata" class="level3" data-number="15.8.3">
-<h3 data-number="15.8.3" class="anchored" data-anchor-id="stata"><span class="header-section-number">15.8.3</span> Stata</h3>
+<section id="stata" class="level3" data-number="16.3.3">
+<h3 data-number="16.3.3" class="anchored" data-anchor-id="stata"><span class="header-section-number">16.3.3</span> Stata</h3>
 <ul>
 <li><a href="https://www.lianxh.cn/search.html?s=万莉">万莉</a>, 2020, <a href="https://www.lianxh.cn/details/34.html">Stata绘图全解：绘图语法-条形图-箱型图-散点图-矩阵图-直方图-点图-饼图</a>, 连享会 No.34.</li>
 <li><a href="https://www.lianxh.cn/search.html?s=万莉">万莉</a>, 2020, <a href="https://www.lianxh.cn/details/479.html">Stata：读懂直方图</a>, 连享会 No.479.</li>
@@ -889,6 +884,9 @@ B_1=\left[0, \frac{1}{m}\right), \quad B_2=\left[\frac{1}{m}, \frac{2}{m}\right)
 
 
 </section>
+</section>
+</section>
+</div>
 </section>
 
 </main> <!-- /main -->
