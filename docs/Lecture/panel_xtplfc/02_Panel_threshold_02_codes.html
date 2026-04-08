@@ -1,0 +1,2342 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.6.39">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>26&nbsp; 静态面板门槛模型：Stata 实操 – 金融数据分析与建模</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script><script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../Lecture/panel_xtplfc/04_xtplfc的直观解读及xthreg实现.html" rel="next">
+<link href="../../Lecture/panel_xtplfc/01_Panel_threshold_01_theory.html" rel="prev">
+<link href="../../images/book-logo.png" rel="icon" type="image/png">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-e8fb9d25728d58bfeac61b497e4a6629.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark-57a92833092fd6dc0d7710b6bdfff9c5.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-7ef202e96c563d31d9e5226e4d6cabf9.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark-490ba4e843cb1303a232ed0c676384f2.min.css" rel="prefetch" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
+
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../Lecture/panel_xtplfc/01_Panel_threshold_01_theory.html"><strong>面板变系数模型</strong></a></li><li class="breadcrumb-item"><a href="../../Lecture/panel_xtplfc/02_Panel_threshold_02_codes.html"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">静态面板门槛模型：Stata 实操</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header sidebar-header-stacked">
+      <a href="https://lianxhcn.github.io/dsfin/" class="sidebar-logo-link">
+      <img src="../../images/book-logo.png" alt="" class="sidebar-logo py-0 d-lg-inline d-none">
+      </a>
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../../">DS Finance</a> 
+        <div class="sidebar-tools-main tools-wide">
+    <a href="https://github.com/lianxhcn/dsfin" title="" class="quarto-navigation-tool px-1" aria-label=""><i class="bi bi-github"></i></a>
+    <a href="https://www.lianxh.cn" title="" class="quarto-navigation-tool px-1" aria-label=""><i class="bi bi-house-fill"></i></a>
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">封面</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/00_intro.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">📚课程资料</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/00_setup.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">📌课件使用指南</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/01_homework.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">🚀作业</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text"><strong>环境配置</strong></span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/00-setup/01_00_coding_with_AI.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">借助 AI 写代码</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/00-setup/01_01_install_anaconda.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Python：安装和环境配置</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/00-setup/01_02_jupyter_notebook.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Jupyter Notebook 的使用</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/00-setup/01_03_install_FAQs.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Python 安装常见问题</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/00-setup/01_04_markdown.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Markdown</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/00-setup/01_06_conda_env.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">虚拟环境管理</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
+ <span class="menu-text"><strong>数据分析</strong></span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/data_get_data/lecture_get_data.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">金融数据获取</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/data_get_data/data_02_get_data_GMD.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">获取数据：GMD</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/data_get_data/data_03_TS_SZ_index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">上证指数的时序特征</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/data_store_structure/lecture_data_management_organization.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">数据管理与组织</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/data_manage/lecture_data_management.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">数据管理：格式、存储与工作流</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/data_clean/lecture_data_clean.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">数据清洗</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true">
+ <span class="menu-text"><strong>可视化</strong></span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/data_visual/graph_01_intro.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Python 可视化：简介</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/data_visual/graph_dis_box_violin.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">箱型图和小提琴图</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/data_visual/graph_dis_histogram.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">直方图</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/data_visual/graph_dis_kdensity.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">核密度函数图</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/data_visual/lec_distribution.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">数据分布：原理与可视化</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/data_visual/lec_distribution_codes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">数据分布：原理与可视化 — 配套代码</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/data_visual/lec_visualization.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">数据可视化：一些基本原则</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true">
+ <span class="menu-text"><strong>数据爬取</strong></span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/crawing/craw_01_introduction.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">网络爬虫简介</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/crawing/craw_02_sec01_lingnan_prompt.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">实例-提示词模式：爬取岭南学院教师名录</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/crawing/craw_02_sec02_lingnan_dialog.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">实例-对话模式：爬取岭南学院教师名录</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true">
+ <span class="menu-text"><strong>面板模型：固定效应</strong></span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/panel_fe/panel_HDFE.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">HDFE：多维固定效应</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/panel_fe/panel_IntFE.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">交互固定效应模型</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="true">
+ <span class="menu-text"><strong>面板变系数模型</strong></span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/panel_xtplfc/01_Panel_threshold_01_theory.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">静态面板门槛模型：理论与方法</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/panel_xtplfc/02_Panel_threshold_02_codes.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">静态面板门槛模型：Stata 实操</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/panel_xtplfc/04_xtplfc的直观解读及xthreg实现.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">变系数模型</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/panel_xtplfc/05_解读xtplfc的原理_样条基函数.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">样条基函数与变系数模型：Stata 实操</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/panel_xtplfc/Du_2021_EE_中文精要.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">非线性调节效应怎么做？部分线性函数型面板数据模型</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="true">
+ <span class="menu-text"><strong>文本分析</strong></span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/text_analysis/lecture_text_01_ailn.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">30</span>&nbsp; <span class="chapter-title">金融文本分析（上）——从文本到结构化数据</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/text_analysis/lecture_text_02_ailn.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">31</span>&nbsp; <span class="chapter-title">金融文本分析（下）——情感分析与文本建模</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/text_analysis/lecture_text_analysis_01_claude.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">32</span>&nbsp; <span class="chapter-title">文本数据处理基础</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/text_analysis/lecture_text_analysis_02_claude.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">33</span>&nbsp; <span class="chapter-title">文本分析：情感分析与主题建模</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" role="navigation" aria-expanded="true">
+ <span class="menu-text"><strong>附录：Python 提示词</strong></span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-8" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../appendix_python/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">概览</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../appendix_python/a1_setup.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">A1. 环境配置</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../appendix_python/a2_project.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">A2. 项目规划与版本控制</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../appendix_python/a3_concepts.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">A3. 提示词核心词汇</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../appendix_python/a4_data.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">A4. 数据获取与清洗</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../appendix_python/a5_visualization.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">A5. 数据可视化</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../appendix_python/a6_modeling.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">A6. 统计建模</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../appendix_python/a7_results.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">A7. 结果呈现与表格美化</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../appendix_python/a8_workflow.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">A8. 上下文管理与调试</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#stata-实操xthreg-命令" id="toc-stata-实操xthreg-命令" class="nav-link active" data-scroll-target="#stata-实操xthreg-命令"><span class="header-section-number">26.1</span> Stata 实操：xthreg 命令</a>
+  <ul class="collapse">
+  <li><a href="#命令安装" id="toc-命令安装" class="nav-link" data-scroll-target="#命令安装"><span class="header-section-number">26.1.1</span> 命令安装</a></li>
+  <li><a href="#命令语法" id="toc-命令语法" class="nav-link" data-scroll-target="#命令语法"><span class="header-section-number">26.1.2</span> 命令语法</a></li>
+  </ul></li>
+  <li><a href="#模拟数据实例" id="toc-模拟数据实例" class="nav-link" data-scroll-target="#模拟数据实例"><span class="header-section-number">26.2</span> 模拟数据实例</a>
+  <ul class="collapse">
+  <li><a href="#单一门槛模型的模拟" id="toc-单一门槛模型的模拟" class="nav-link" data-scroll-target="#单一门槛模型的模拟"><span class="header-section-number">26.2.1</span> 单一门槛模型的模拟</a></li>
+  <li><a href="#初步探索性分析" id="toc-初步探索性分析" class="nav-link" data-scroll-target="#初步探索性分析"><span class="header-section-number">26.2.2</span> 初步探索性分析</a></li>
+  <li><a href="#如何识别门槛值" id="toc-如何识别门槛值" class="nav-link" data-scroll-target="#如何识别门槛值"><span class="header-section-number">26.2.3</span> 如何识别门槛值？</a></li>
+  <li><a href="#进一步搜索门槛值" id="toc-进一步搜索门槛值" class="nav-link" data-scroll-target="#进一步搜索门槛值"><span class="header-section-number">26.2.4</span> 进一步搜索门槛值</a></li>
+  <li><a href="#网格搜索结构突变点" id="toc-网格搜索结构突变点" class="nav-link" data-scroll-target="#网格搜索结构突变点"><span class="header-section-number">26.2.5</span> 网格搜索结构突变点</a></li>
+  <li><a href="#模拟数据分析小结" id="toc-模拟数据分析小结" class="nav-link" data-scroll-target="#模拟数据分析小结"><span class="header-section-number">26.2.6</span> 模拟数据分析小结</a></li>
+  </ul></li>
+  <li><a href="#案例-1融资约束与投资-现金流敏感性-hansen-1999" id="toc-案例-1融资约束与投资-现金流敏感性-hansen-1999" class="nav-link" data-scroll-target="#案例-1融资约束与投资-现金流敏感性-hansen-1999"><span class="header-section-number">26.3</span> 案例 1：融资约束与投资-现金流敏感性 (Hansen, 1999)</a>
+  <ul class="collapse">
+  <li><a href="#问题背景为什么需要阈值视角" id="toc-问题背景为什么需要阈值视角" class="nav-link" data-scroll-target="#问题背景为什么需要阈值视角"><span class="header-section-number">26.3.1</span> 问题背景：为什么需要“阈值”视角</a></li>
+  <li><a href="#数据与门槛变量选择" id="toc-数据与门槛变量选择" class="nav-link" data-scroll-target="#数据与门槛变量选择"><span class="header-section-number">26.3.2</span> 数据与门槛变量选择</a></li>
+  <li><a href="#stata-实操" id="toc-stata-实操" class="nav-link" data-scroll-target="#stata-实操"><span class="header-section-number">26.3.3</span> Stata 实操</a></li>
+  </ul></li>
+  <li><a href="#案例-2du-et-al.-2021---环境规制与绿色创新" id="toc-案例-2du-et-al.-2021---环境规制与绿色创新" class="nav-link" data-scroll-target="#案例-2du-et-al.-2021---环境规制与绿色创新"><span class="header-section-number">26.4</span> 案例 2：Du et al.&nbsp;(2021) - 环境规制与绿色创新</a>
+  <ul class="collapse">
+  <li><a href="#补充门槛值的-lr-检验图示" id="toc-补充门槛值的-lr-检验图示" class="nav-link" data-scroll-target="#补充门槛值的-lr-检验图示"><span class="header-section-number">26.4.1</span> 补充：门槛值的 LR 检验图示</a></li>
+  <li><a href="#稳健性检验" id="toc-稳健性检验" class="nav-link" data-scroll-target="#稳健性检验"><span class="header-section-number">26.4.2</span> 稳健性检验</a></li>
+  </ul></li>
+  <li><a href="#参考文献" id="toc-参考文献" class="nav-link" data-scroll-target="#参考文献"><span class="header-section-number">26.5</span> 参考文献</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../Lecture/panel_xtplfc/01_Panel_threshold_01_theory.html"><strong>面板变系数模型</strong></a></li><li class="breadcrumb-item"><a href="../../Lecture/panel_xtplfc/02_Panel_threshold_02_codes.html"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">静态面板门槛模型：Stata 实操</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">静态面板门槛模型：Stata 实操</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p> </p>
+<blockquote class="blockquote">
+<p><strong>作者：</strong> 连玉君 (中山大学)<br>
+<strong>邮箱：</strong> <a href="mailto:arlionn@163.com" class="email">arlionn@163.com</a></p>
+</blockquote>
+<p>Update: <code>2025.1.26</code></p>
+<p> </p>
+<p><strong>Keywords</strong>: 面板门槛模型, Hansen, xthreg, 非线性关系, Bootstrap, 门槛效应检验</p>
+<p> </p>
+<div id="4e7ba65a" class="cell" data-execution_count="11">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode stata code-with-copy"><code class="sourceCode stata"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>*-settings</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="kw">global</span> root <span class="st">"`c(sysdir_personal)'PX_B_2026a/B1_hetPanel"</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="kw">global</span> <span class="kw">data</span> <span class="st">"$root/data"</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="kw">set</span> <span class="dv">scheme</span> tufte</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>cd <span class="ot">$data</span> </span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>*-install packages</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>cap which xthreg </span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="kw">if</span> <span class="dt">_rc</span>{</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>    net install st0373.pkg, <span class="kw">replace</span> from(http:<span class="co">//www.stata-journal.com/software/sj15-1)</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>D:\stata\personal\PX_B_2026a\B1_hetPanel\data</code></pre>
+</div>
+</div>
+<section id="stata-实操xthreg-命令" class="level2" data-number="26.1">
+<h2 data-number="26.1" class="anchored" data-anchor-id="stata-实操xthreg-命令"><span class="header-section-number">26.1</span> Stata 实操：xthreg 命令</h2>
+<section id="命令安装" class="level3" data-number="26.1.1">
+<h3 data-number="26.1.1" class="anchored" data-anchor-id="命令安装"><span class="header-section-number">26.1.1</span> 命令安装</h3>
+<p>Wang (2015) 编写的 <code>xthreg</code> 命令实现了 Hansen (1999) 的面板门槛模型：</p>
+<blockquote class="blockquote">
+<p>Wang, Q. (2015). Fixed-Effect Panel Threshold Model using Stata. <em>The Stata Journal</em>, 15(1), 121–134. <a href="https://doi.org/10.1177/1536867X1501500108">Link</a>, <a href="https://journals.sagepub.com/doi/pdf/10.1177/1536867X1501500108">PDF</a>, <a href="https://scholar.google.com/scholar?q=Fixed-Effect+Panel+Threshold+Model+using+Stata">Google Scholar</a>.</p>
+</blockquote>
+</section>
+<section id="命令语法" class="level3" data-number="26.1.2">
+<h3 data-number="26.1.2" class="anchored" data-anchor-id="命令语法"><span class="header-section-number">26.1.2</span> 命令语法</h3>
+<div class="sourceCode" id="cb3"><pre class="sourceCode stata code-with-copy"><code class="sourceCode stata"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">help</span> xthreg</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode stata code-with-copy"><code class="sourceCode stata"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>xthreg depvar [indepvars] [<span class="kw">if</span>] [<span class="kw">in</span>] , <span class="co">///</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    rx(varname) qx(varname) <span class="co">///</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    [thnum(#) <span class="kw">trim</span>(#) <span class="bn">grid</span>(#) <span class="kw">bs</span>(#) <span class="kw">nolog</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><strong>主要选项说明：</strong></p>
+<ul>
+<li><code>rx(varname)</code>：指定区间依赖变量（regime-dependent variables），即系数会随门槛变化的变量</li>
+<li><code>qx(varname)</code>：指定门槛变量（threshold variable）</li>
+<li><code>thnum(#)</code>：指定门槛个数，默认为 1</li>
+<li><code>trim(#)</code>：门槛值搜索时的修剪百分比，默认为 0.15（即保留 15%-85% 分位数之间的值）</li>
+<li><code>grid(#)</code>：网格搜索点数，默认为 400</li>
+<li><code>bs(#)</code>：Bootstrap 重复次数，用于门槛效应检验</li>
+<li><code>nolog</code>：不显示迭代过程</li>
+</ul>
+<p><strong>重要说明：</strong></p>
+<ol type="1">
+<li>在使用 <code>xthreg</code> 之前，必须先用 <code>xtset</code> 声明面板数据结构</li>
+<li><code>rx()</code> 选项中指定的变量的系数会在不同区间（regime）中不同</li>
+<li><code>indepvars</code> 中的变量系数在所有区间中保持不变</li>
+<li>Bootstrap 检验（<code>bs()</code> 选项）非常耗时，建议在初步分析时先不使用</li>
+</ol>
+</section>
+</section>
+<section id="模拟数据实例" class="level2" data-number="26.2">
+<h2 data-number="26.2" class="anchored" data-anchor-id="模拟数据实例"><span class="header-section-number">26.2</span> 模拟数据实例</h2>
+<p>为了更好地理解面板门槛模型的特性，我们首先使用模拟数据进行演示。这可以帮助我们：</p>
+<ol type="1">
+<li>直观理解门槛效应的含义</li>
+<li>验证估计方法的有效性</li>
+<li>了解不同估计方法的优劣</li>
+</ol>
+<section id="单一门槛模型的模拟" class="level3" data-number="26.2.1">
+<h3 data-number="26.2.1" class="anchored" data-anchor-id="单一门槛模型的模拟"><span class="header-section-number">26.2.1</span> 单一门槛模型的模拟</h3>
+<p>我们生成一个简单的门槛模型数据：</p>
+<p><span class="math display">\[
+y = \begin{cases}
+1 + 2x + \varepsilon &amp; \text{若 } t \le 50 \\
+1 - 2x + \varepsilon &amp; \text{若 } t &gt; 50
+\end{cases}
+\]</span></p>
+<p>其中 <span class="math inline">\(\varepsilon \sim N(0,1)\)</span>，<span class="math inline">\(x \sim N(0,9)\)</span>。</p>
+<div id="simulate-data-cell" class="cell" data-execution_count="12">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode stata code-with-copy"><code class="sourceCode stata"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>* 生成模拟数据</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="kw">clear</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="kw">set</span> <span class="kw">obs</span> 100</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="kw">set</span> <span class="dv">seed</span> 123456</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="kw">gen</span> <span class="fu">e</span> = rnormal()          <span class="co">// 误差项 e ~ N(0,1)</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="kw">gen</span> x = rnormal(0, 3)      <span class="co">// 解释变量 x ~ N(0, 9)</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="kw">gen</span> t = <span class="dt">_n</span>                 <span class="co">// 时间变量 t = 1,2,...,100</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>* 生成因变量 y（在 t=50 处存在门槛）</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a><span class="kw">gen</span> <span class="fu">y</span> = .</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a><span class="kw">tsset</span> t</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a><span class="kw">replace</span> <span class="fu">y</span> = 1 + 2*x + <span class="fu">e</span></span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a><span class="kw">replace</span> <span class="fu">y</span> = 1 - 2*x + <span class="fu">e</span> <span class="kw">if</span> t &gt; 50</span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>* 保存数据</span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a><span class="kw">save</span> <span class="st">"xthreg_sim1.dta"</span>, <span class="kw">replace</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Number of observations (_N) was 0, now 100.
+(100 missing values generated)
+
+Time variable: t, 1 to 100
+        Delta: 1 unit
+(100 real changes made)
+(50 real changes made)
+file xthreg_sim1.dta saved</code></pre>
+</div>
+</div>
+</section>
+<section id="初步探索性分析" class="level3" data-number="26.2.2">
+<h3 data-number="26.2.2" class="anchored" data-anchor-id="初步探索性分析"><span class="header-section-number">26.2.2</span> 初步探索性分析</h3>
+<p>对于一个不知道上述数据生成过程 (DGP) 的研究者而言，由于样本中只有三个变量：<span class="math inline">\(y\)</span>、<span class="math inline">\(x\)</span> 和 <span class="math inline">\(t\)</span>。为了探究变量之间的关系，他可能会先绘制 <span class="math inline">\(y\)</span> 和 <span class="math inline">\(t\)</span> 以及 <span class="math inline">\(x\)</span> 之间的散点图，以期初步分析变量之间的关系</p>
+<div id="explore-cell" class="cell" data-execution_count="13">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode stata code-with-copy"><code class="sourceCode stata"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>* 绘制散点图</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="kw">use</span> <span class="st">"xthreg_sim1.dta"</span>, <span class="kw">clear</span> </span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="kw">scatter</span> <span class="fu">y</span> t, <span class="co">///</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    <span class="bn">xline</span>(50, lp(<span class="kw">dash</span>) lcolor(<span class="kw">red</span>)) <span class="co">///</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    <span class="bn">title</span>(<span class="st">"图 1：y 与 t 的散点图"</span>) <span class="co">///</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    <span class="kw">note</span>(<span class="st">"真实门槛值为 t = 50"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="02_Panel_threshold_02_codes_files/figure-html/cell-4-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<div id="ac3fc93d" class="cell" data-execution_count="14">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode stata code-with-copy"><code class="sourceCode stata"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="kw">scatter</span> <span class="fu">y</span> x, <span class="bn">title</span>(<span class="st">"图 2：y 与 x 的散点图"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="02_Panel_threshold_02_codes_files/figure-html/cell-5-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>从上面的图形中可以看出，<span class="math inline">\(y\)</span> 与 <span class="math inline">\(t\)</span> 之间似乎不存在明显的线性关系，而 <span class="math inline">\(y\)</span> 与 <span class="math inline">\(x\)</span> 之间则呈现出某种非线性关系。有如下两点说明：</p>
+<ul>
+<li>从 DGP 来看，<span class="math inline">\(y\)</span> 与 <span class="math inline">\(t\)</span> 之间确实没有直接关系。<span class="math inline">\(y\)</span> 与 <span class="math inline">\(x\)</span> 之间的关系则受到门槛变量 <span class="math inline">\(t\)</span> 的影响，在 <span class="math inline">\(t \le 50\)</span> 时，<span class="math inline">\(y\)</span> 随 <span class="math inline">\(x\)</span> 增加而增加；而在 <span class="math inline">\(t &gt; 50\)</span> 时，<span class="math inline">\(y\)</span> 随 <span class="math inline">\(x\)</span> 增加而减少。</li>
+<li>很多读者在执行 <code>twoway scatter y x</code> 之前，预期看到的图形是一个 <code>V 字形</code>，而不是上图中呈现的 <code>X 字形</code>。这是因为，调节 <span class="math inline">\(y\)</span> 和 <span class="math inline">\(x\)</span> 之间的关系的变量是 <span class="math inline">\(t\)</span>，而不是 <span class="math inline">\(x\)</span> 本身。这也是此类问题的复杂之处所在。因此，在使用门槛模型进行分析之前，要对问题的背景有充分的理解，并从理论上确定可能的门槛变量。</li>
+</ul>
+</section>
+<section id="如何识别门槛值" class="level3" data-number="26.2.3">
+<h3 data-number="26.2.3" class="anchored" data-anchor-id="如何识别门槛值"><span class="header-section-number">26.2.3</span> 如何识别门槛值？</h3>
+<p>假如我们只知道 <span class="math inline">\(t\)</span> 是门槛变量，它会影响 <span class="math inline">\(y\)</span> 和 <span class="math inline">\(x\)</span> 之间的关系，但并不清楚具体的门槛值是多少。此时，我们可以借助 Chow 检验的思想来初步识别门槛值。</p>
+<p>基本思路是「让数据说话」：我们可以在 <span class="math inline">\(t\)</span> 的取值范围内，尝试不同的切分点，将样本划分为两组，然后引入交叉项来刻画结构变化，进而通过比较模型的拟合效果 (如 RSS) 来识别最佳切分点。</p>
+<p>在正式开始搜索之前，先举个简单的例子。假设我们分析后认为门槛值可能是 <span class="math inline">\(t=40\)</span>，我们可以先进行三次回归，分别对应「全样本回归」、「左侧区间回归 (<span class="math inline">\(t \le 40\)</span>)」和「右侧区间回归 (<span class="math inline">\(t &gt; 40\)</span>)」，以便后续比较。具体代码如下：</p>
+<div id="naive-reg-code" class="cell" data-execution_count="15">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode stata code-with-copy"><code class="sourceCode stata"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="kw">use</span> <span class="st">"xthreg_sim1.dta"</span>, <span class="kw">clear</span> </span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>* (1) 全样本回归 - 忽略门槛效应</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="kw">qui</span> <span class="kw">reg</span> <span class="fu">y</span> x</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="kw">est</span> <span class="kw">store</span> full</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>* (2) 左侧区间回归 (t &lt;= 40)</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="kw">qui</span> <span class="kw">reg</span> <span class="fu">y</span> x <span class="kw">if</span> t &lt;= 40</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a><span class="kw">est</span> <span class="kw">store</span> left</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>* (3) 右侧区间回归 (t &gt; 40)</span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a><span class="kw">qui</span> <span class="kw">reg</span> <span class="fu">y</span> x <span class="kw">if</span> t &gt; 40</span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a><span class="kw">est</span> <span class="kw">store</span> right</span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>* 比较回归结果</span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>esttab full left right, mtitle(<span class="st">"全样本"</span> <span class="st">"t&lt;=40"</span> <span class="st">"t&gt;40"</span>) <span class="co">///</span></span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a>    <span class="fu">s</span>(<span class="kw">N</span> r2 rss) b(%6.3f) se(%6.3f) <span class="co">///</span></span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a>    <span class="kw">star</span>(* 0.1 ** 0.05 *** 0.01) </span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a>   </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+------------------------------------------------------------
+                      (1)             (2)             (3)   
+                   全样本           t&lt;=40            t&gt;40   
+------------------------------------------------------------
+x                   0.053           2.065***       -1.418***
+                  (0.207)         (0.047)         (0.187)   
+
+_cons               1.376**         1.067***        2.039***
+                  (0.684)         (0.158)         (0.610)   
+------------------------------------------------------------
+N                 100.000          40.000          60.000   
+r2                  0.001           0.981           0.496   
+rss              4587.379          38.029        1292.581   
+------------------------------------------------------------
+Standard errors in parentheses
+* p&lt;0.1, ** p&lt;0.05, *** p&lt;0.01</code></pre>
+</div>
+</div>
+<p>可以看出，使用全样本进行回归时，拟合效果非常差，<code>r2</code> 仅为 0.001，说明模型几乎没有解释力。相比之下，分区间回归的拟合效果明显提升，<code>r2</code> 分别为 0.981 (左侧) 和 0.496 (右侧)。这意味着，存在结构变化，且 <span class="math inline">\(t=40\)</span> 是一个有助于改善模型拟合的门槛值。</p>
+<p>我们也注意到，上述估计结果中 <code>rss</code> (残差平方和) 也有类似的表现，而且其数值变化非常灵敏。因此，在后续的门槛值搜索过程中，我们可以重点关注 <code>rss</code> 指标。之所以不使用 <code>r2</code>，是因为其取值基本上介于 0 和 1 之间，变化范围有限，在密集搜素过程中灵敏度不足。</p>
+</section>
+<section id="进一步搜索门槛值" class="level3" data-number="26.2.4">
+<h3 data-number="26.2.4" class="anchored" data-anchor-id="进一步搜索门槛值"><span class="header-section-number">26.2.4</span> 进一步搜索门槛值</h3>
+<p>沿着上述分析思路，我们可以在 <span class="math inline">\(t\)</span> 的取值范围内，尝试不同的切分点 (如从 10 到 90，每隔 1 个单位取一个点)，然后计算每个切分点对应的 <code>rss</code>，最终选择 <code>rss</code> 最小的切分点作为门槛值。</p>
+<p>为了将所有观察值都纳入分析，我们在模型中引入虚拟变量 <code>d</code> (用以区分不同区间)，以及 <code>d</code> 与 <span class="math inline">\(x\)</span> 的交叉项，从而构建如下模型 (本例中截距项没有发生变化，故省去 <code>d</code>)：</p>
+<p><span class="math display">\[
+y = \beta_0 + \beta_1 x + \beta_2 (x \times d) + \varepsilon
+\]</span></p>
+<p>其中 <span class="math inline">\(d = I(t &gt; \gamma)\)</span> 是指示变量。</p>
+<div id="dummy-code" class="cell" data-execution_count="16">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode stata code-with-copy"><code class="sourceCode stata"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="kw">use</span> <span class="st">"xthreg_sim1.dta"</span>, <span class="kw">clear</span> </span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>* 如果不知道断点，尝试不同的假设断点</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>dropvars <span class="kw">d</span>* xd*</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="kw">qui</span>{</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>    <span class="kw">gen</span> <span class="kw">d</span> = .</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>    <span class="kw">gen</span> xd = .</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>    <span class="kw">replace</span> <span class="kw">d</span> = (t &gt; 10)</span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>    <span class="kw">replace</span> xd = x * <span class="kw">d</span></span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>    <span class="kw">reg</span> <span class="fu">y</span> x xd</span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>    <span class="kw">est</span> <span class="kw">store</span> t10</span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>    <span class="kw">replace</span> <span class="kw">d</span> = (t &gt; 30)</span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>    <span class="kw">replace</span> xd = x * <span class="kw">d</span></span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a>    <span class="kw">reg</span> <span class="fu">y</span> x xd</span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a>    <span class="kw">est</span> <span class="kw">store</span> t30</span>
+<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a>    <span class="kw">replace</span> <span class="kw">d</span> = (t &gt; 50)</span>
+<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a>    <span class="kw">replace</span> xd = x * <span class="kw">d</span></span>
+<span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a>    <span class="kw">reg</span> <span class="fu">y</span> x xd</span>
+<span id="cb11-22"><a href="#cb11-22" aria-hidden="true" tabindex="-1"></a>    <span class="kw">est</span> <span class="kw">store</span> t50    </span>
+<span id="cb11-23"><a href="#cb11-23" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb11-24"><a href="#cb11-24" aria-hidden="true" tabindex="-1"></a>    <span class="kw">replace</span> <span class="kw">d</span> = (t &gt; 60)</span>
+<span id="cb11-25"><a href="#cb11-25" aria-hidden="true" tabindex="-1"></a>    <span class="kw">replace</span> xd = x * <span class="kw">d</span></span>
+<span id="cb11-26"><a href="#cb11-26" aria-hidden="true" tabindex="-1"></a>    <span class="kw">reg</span> <span class="fu">y</span> x xd</span>
+<span id="cb11-27"><a href="#cb11-27" aria-hidden="true" tabindex="-1"></a>    <span class="kw">est</span> <span class="kw">store</span> t60</span>
+<span id="cb11-28"><a href="#cb11-28" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Unable to drop d* xd*</code></pre>
+</div>
+</div>
+<div id="2866dc87" class="cell" data-execution_count="9">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode stata code-with-copy"><code class="sourceCode stata"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>* 比较不同断点假设下的结果</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>esttab full t10 t30 t50 t60, <span class="co">///</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>    mtitle(<span class="st">"全样本"</span> <span class="st">"t=10"</span> <span class="st">"t=30"</span> <span class="st">"t=50"</span> <span class="st">"t=60"</span>) <span class="co">///</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">s</span>(r2 rss) b(2) <span class="kw">not</span> nogap <span class="kw">compress</span> <span class="kw">star</span>(* 0.05)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+-----------------------------------------------------------------
+                 (1)        (2)        (3)        (4)        (5) 
+              全样本       t=10       t=30       t=50       t=60 
+-----------------------------------------------------------------
+x               0.05       2.19*      2.10*      2.07*      1.41*
+xd                        -2.31*     -2.96*     -4.05*     -3.42*
+_cons           1.38*      1.54*      1.92*      0.95*      1.26*
+-----------------------------------------------------------------
+r2              0.00       0.09       0.44       0.98       0.67 
+rss          4587.38    4197.44    2557.83     107.69    1520.84 
+-----------------------------------------------------------------
+* p&lt;0.05</code></pre>
+</div>
+</div>
+</section>
+<section id="网格搜索结构突变点" class="level3" data-number="26.2.5">
+<h3 data-number="26.2.5" class="anchored" data-anchor-id="网格搜索结构突变点"><span class="header-section-number">26.2.5</span> 网格搜索结构突变点</h3>
+<p>虚拟变量法的结果表明，在真实断点 <span class="math inline">\(t=50\)</span> 处，残差平方和最小，R方和对数似然最大。这启发我们可以通过<strong>网格搜索</strong>的方法来找到最优断点。</p>
+<div id="grid-search-code" class="cell" data-execution_count="17">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode stata code-with-copy"><code class="sourceCode stata"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="kw">use</span> <span class="st">"xthreg_sim1.dta"</span>, <span class="kw">clear</span> </span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>* 网格搜索：在 t = 5 到 t = 95 之间搜索最优断点</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="kw">gen</span> rss = .</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="kw">forvalues</span> i = 5/95 {</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>    <span class="kw">gen</span> <span class="kw">di</span> = (t &gt; <span class="ot">`i'</span>)</span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>    <span class="kw">gen</span> xdi = x * <span class="kw">di</span></span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>    <span class="kw">qui</span> <span class="kw">reg</span> <span class="fu">y</span> x xdi</span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>    <span class="kw">qui</span> <span class="kw">replace</span> rss = <span class="fu">e</span>(rss) <span class="kw">in</span> <span class="ot">`i'</span></span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>    <span class="kw">drop</span> <span class="kw">di</span> xdi</span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a>* 查看 RSS 最小的前 5 个时点</span>
+<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a><span class="kw">sort</span> rss</span>
+<span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a><span class="ot">list</span> rss t <span class="kw">in</span> 1/5</span>
+<span id="cb15-16"><a href="#cb15-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-17"><a href="#cb15-17" aria-hidden="true" tabindex="-1"></a>* 绘制 RSS 随时间变化的曲线</span>
+<span id="cb15-18"><a href="#cb15-18" aria-hidden="true" tabindex="-1"></a><span class="kw">line</span> rss t, <span class="co">///</span></span>
+<span id="cb15-19"><a href="#cb15-19" aria-hidden="true" tabindex="-1"></a>    lw(*1.5) <span class="kw">xlabel</span>(0(10)100) <span class="kw">sort</span> <span class="co">///</span></span>
+<span id="cb15-20"><a href="#cb15-20" aria-hidden="true" tabindex="-1"></a>    <span class="bn">xline</span>(50, lp(<span class="kw">dash</span>) lw(*1.2) lcolor(<span class="kw">red</span>)) <span class="co">///</span></span>
+<span id="cb15-21"><a href="#cb15-21" aria-hidden="true" tabindex="-1"></a>    <span class="bn">title</span>(<span class="st">"图 3：残差平方和随断点位置的变化"</span>) <span class="co">///</span></span>
+<span id="cb15-22"><a href="#cb15-22" aria-hidden="true" tabindex="-1"></a>    <span class="kw">note</span>(<span class="st">"红色虚线表示真实门槛值 t=50"</span>) <span class="co">///</span></span>
+<span id="cb15-23"><a href="#cb15-23" aria-hidden="true" tabindex="-1"></a>    <span class="bn">ytitle</span>(<span class="st">"残差平方和"</span>) <span class="co">///</span></span>
+<span id="cb15-24"><a href="#cb15-24" aria-hidden="true" tabindex="-1"></a>    <span class="bn">xtitle</span>(<span class="st">"假设的门槛值"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>(100 missing values generated)
+
+     +----------------+
+     |       rss    t |
+     |----------------|
+  1. | 107.68875   50 |
+  2. | 183.23571   51 |
+  3. | 404.06021   49 |
+  4. | 468.19032   48 |
+  5. | 564.77645   47 |
+     +----------------+</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="02_Panel_threshold_02_codes_files/figure-html/cell-9-output-2.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="模拟数据分析小结" class="level3" data-number="26.2.6">
+<h3 data-number="26.2.6" class="anchored" data-anchor-id="模拟数据分析小结"><span class="header-section-number">26.2.6</span> 模拟数据分析小结</h3>
+<p>通过模拟数据分析，我们得到以下重要结论：</p>
+<ol type="1">
+<li><p><strong>全样本回归严重偏误</strong>：忽略门槛效应会导致 <span class="math inline">\(x\)</span> 的系数接近 0，完全无法反映真实关系</p></li>
+<li><p><strong>错误断点导致偏差</strong>：在 <span class="math inline">\(t \ne 50\)</span> 处进行分组回归，模型的参数估计偏差很大，意味着传统的估计方法可能存在严重偏误</p></li>
+<li><p><strong>网格搜索有效</strong>：在 <span class="math inline">\(t=50\)</span> 处，RSS 最小，这对建模有重要启示</p></li>
+<li><p><strong>大样本费时问题</strong>：对于大样本而言，逐点搜索仍然非常耗时</p></li>
+</ol>
+<p><strong>Hansen (1999, p.349) 的建议：</strong></p>
+<ul>
+<li>只搜索门槛变量 <span class="math inline">\(q_{it}\)</span> 中的非重复值</li>
+<li>对这些非重复值排序，在 [1%, 99%] 区间内搜索</li>
+<li>如果需要搜索的格点仍然很多，可以在上述区间内仅搜索特定的百分位数</li>
+</ul>
+</section>
+</section>
+<section id="案例-1融资约束与投资-现金流敏感性-hansen-1999" class="level2" data-number="26.3">
+<h2 data-number="26.3" class="anchored" data-anchor-id="案例-1融资约束与投资-现金流敏感性-hansen-1999"><span class="header-section-number">26.3</span> 案例 1：融资约束与投资-现金流敏感性 (Hansen, 1999)</h2>
+<p>本节演示 Hansen (1999) 在提出面板门槛模型的经典论文中展示的一个实证应用。</p>
+<p>中，我们将使用一个实际的面板数据来演示 <code>xthreg</code> 命令的使用。我们使用 Hansen (1999) 原文中的数据，研究投资与融资约束的关系。</p>
+<blockquote class="blockquote">
+<p>Hansen, B. E. (1999). Threshold effects in non-dynamic panels: Estimation, testing, and inference. <em>Journal of Econometrics</em>, 93(2), 345–368. <a href="https://doi.org/10.1016/S0304-4076%2899%2900025-1">Link</a>, <a href="http://sci-hub.ren/10.1016/S0304-4076%2899%2900025-1">PDF</a>, <a href="https://scholar.google.com/scholar?q=Threshold%20effects%20in%20non-dynamic%20panels:%20Estimation,%20testing,%20and%20inference">Google</a>.</p>
+</blockquote>
+<section id="问题背景为什么需要阈值视角" class="level3" data-number="26.3.1">
+<h3 data-number="26.3.1" class="anchored" data-anchor-id="问题背景为什么需要阈值视角"><span class="header-section-number">26.3.1</span> 问题背景：为什么需要“阈值”视角</h3>
+<p>在经典的完美资本市场框架下，企业的投资支出应主要由投资机会决定。这意味着若我们估计如下投资模型，<span class="math inline">\(cflow\)</span> (内部现金流) 的系数应不显著：</p>
+<p><span class="math display">\[I_{it} = \alpha_i + \beta Q_{i,t-1} + \gamma cflow_{i,t-1} + e_{it}\]</span></p>
+<p>然而，以 Fazzari et al.&nbsp;(1988, 简称 FHP) 为代表的一系列实证研究发现，<span class="math inline">\(cflow\)</span> 对投资支出的影响显著且正向，这一现象被称为 “投资-现金流敏感性” (investment-cash flow sensitivity)。他们用「融资约束假说」来解释这一现象：融资约束导致企业的外部融资成本高于内部融资成本，从而使企业的投资决策受到内部现金流的限制。</p>
+<blockquote class="blockquote">
+<p>Fazzari, S. M., Hubbard, R. G., &amp; Petersen, B. C. (1988). Financing Constraints and Corporate Investment. <em>Brookings Papers on Economic Activity</em>, 1988(1), 141–206. <a href="https://doi.org/10.2307/2534426">Link</a>, <a href="http://sci-hub.ren/10.2307/2534426">PDF</a>, <a href="https://scholar.google.com/scholar?q=Financing%20Constraints%20and%20Corporate%20Investment">Google</a>.</p>
+</blockquote>
+<p>Fazzari et al.&nbsp;(1988) 的检验策略非常直白：他们将企业按 “股利支付占收入之比 (dividend-to-income ratio)” 分组，将持续支付高股利的企业视为「非融资约束组 (NFC)」，将那些长期不支付股利的企业视为「融资约束组 (FC)」，进而分别估计两组的「投资-现金流敏感系数 (<span class="math inline">\(\hat{\gamma}\)</span>)」。基本的理论预期是 <span class="math inline">\(\hat{\gamma}_{FC} &gt; \hat{\gamma}_{NFC}\)</span>。</p>
+<p>这一检验策略的好处在于，即使存在衡量偏误或遗漏偏误等问题，但只要假设 FC 组和 NFC 组的偏误程度相近，那么两组系数的差异仍然可以反映融资约束对投资行为的影响。后续大量研究都延续了这一检验思路。</p>
+<p>Hansen (1999) 指出 FHP 方案存在两个潜在问题：</p>
+<ul>
+<li>他们将股利占比当作外生阈值变量 (用以衡量融资约束程度)，但理论上股利是企业决策变量 (潜在内生)，可能导致阈值分组偏误。</li>
+<li>阈值水平 (如 0.1 和 0.2) 由研究者任意指定，而不是由样本估计得到的。</li>
+</ul>
+<p>对于第一个问题，Hansen (1999) 选用「公司负债率 (<span class="math inline">\(D_{it}\)</span>)」作为阈值变量。他的主要贡献在在于使用面板门槛模型来解决第二个问题，通过搜索让数据自己决定阈值水平。</p>
+</section>
+<section id="数据与门槛变量选择" class="level3" data-number="26.3.2">
+<h3 data-number="26.3.2" class="anchored" data-anchor-id="数据与门槛变量选择"><span class="header-section-number">26.3.2</span> 数据与门槛变量选择</h3>
+<p>Hansen (1999) 的样本包含 565 家美国制造业企业，时间跨度为 1973-1987 年，共计 15 年的面板数据。他认为 “长期负债/资产比 (<span class="math inline">\(D\)</span>)” 具有一定的外生性，更适用作为「融资约束程度」的衡量指标：<span class="math inline">\(D\)</span> 越大则融资约束越严重。这对应面板门槛模型中的门槛变量。模型设定如下：</p>
+<p><span class="math display">\[
+\begin{align}
+I_{it} =\ &amp; \mu_i
++\theta_1 Q_{i,t-1}+\theta_2 Q_{i,t-1}^2+\theta_3 Q_{i,t-1}^3
++\theta_4 D_{i,t-1}+\theta_5 Q_{i,t-1}D_{i,t-1} \\
+&amp; + \beta_1 CF_{i,t-1} I(D_{i,t-1}\le \gamma_1) \\
+&amp; + \beta_2 CF_{i,t-1} I(\gamma_1&lt;D_{i,t-1}\le \gamma_2) \\
+&amp; + \beta_3 CF_{i,t-1} I(\gamma_2&lt;D_{i,t-1})
++e_{it}.
+\end{align}
+\]</span></p>
+<p>变量记号在文中定义为 ：</p>
+<ul>
+<li><span class="math inline">\(I_{it}\)</span>：investment-to-capital ratio；</li>
+<li><span class="math inline">\(Q_{it}\)</span>：total market value / assets；</li>
+<li><span class="math inline">\(CF_{it}\)</span>：cash flow / assets；</li>
+<li><span class="math inline">\(D_{it}\)</span>：long-term debt / assets。</li>
+</ul>
+<p>融融资约束假说成立，则可以预期 <span class="math inline">\(\beta_1 &lt; \beta_2 &lt; \beta_3\)</span>，或者至少 <span class="math inline">\(\beta_1 &lt; \beta_3\)</span>。</p>
+</section>
+<section id="stata-实操" class="level3" data-number="26.3.3">
+<h3 data-number="26.3.3" class="anchored" data-anchor-id="stata-实操"><span class="header-section-number">26.3.3</span> Stata 实操</h3>
+<div id="load-data-cell" class="cell" data-execution_count="34">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode stata code-with-copy"><code class="sourceCode stata"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>*-download <span class="kw">data</span>, <span class="fu">get</span> 'hansen1999.dta'</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>net <span class="fu">get</span> st0373.pkg, <span class="kw">replace</span> from(http:<span class="co">//www.stata-journal.com/software/sj15-1)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>checking st0373 consistency and verifying not already installed...
+all files already exist and are up to date.</code></pre>
+</div>
+</div>
+<div id="91200a2c" class="cell" data-execution_count="18">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode stata code-with-copy"><code class="sourceCode stata"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>* 加载数据</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">use</span> <span class="st">"hansen1999.dta"</span>, <span class="kw">clear</span></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>* 声明面板数据结构</span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>  xtset id <span class="fu">year</span></span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>* 查看数据结构</span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>  <span class="kw">describe</span> i <span class="fu">q</span> c <span class="kw">d</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>(The Value and Performance of U.S.Corporations (B.H.Hall &amp; R.E.Hall, 1993))
+
+Panel variable: id (strongly balanced)
+ Time variable: year, 1974 to 1987
+         Delta: 1 year
+
+Variable      Storage   Display    Value
+    name         type    format    label      Variable label
+-------------------------------------------------------------------------------
+i               double  %10.0g                investments/assets
+q               double  %10.0g                Tobin Q
+c               double  %10.0g                crash flow/asset
+d               double  %10.0g                debt/assets</code></pre>
+</div>
+</div>
+<p><strong>主要变量说明：</strong></p>
+<ul>
+<li><code>i</code>：投资率 (investment rate)，定义为投资支出与期初资本存量的比值</li>
+<li><code>q1</code>：托宾 Q 值 (Tobin’s Q)，衡量企业的市场价值与重置成本之比</li>
+<li><code>c1</code>：现金流 (cash flow)，标准化后的值</li>
+<li><code>d1</code>：债务权益比 (debt-to-equity ratio)，作为门槛变量</li>
+<li><code>id</code>：企业标识</li>
+<li><code>year</code>：年份</li>
+</ul>
+<div id="e1b04547" class="cell" data-execution_count="19">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode stata code-with-copy"><code class="sourceCode stata"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>*-Table 1: Summary <span class="kw">statistics</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>  fsum i q1 c1 d1, <span class="fu">s</span>(<span class="kw">mean</span> <span class="fu">sd</span> <span class="fu">min</span> p25 p50 p75 <span class="fu">max</span>) <span class="co">///</span></span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>          <span class="kw">format</span>(%8.3f) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+ Variable |       N    Mean      SD     P25  Median     P75     Min     Max                                                                                        
+----------+----------------------------------------------------------------
+        i |    7910   0.089   0.062   0.049   0.076   0.113   0.001   1.655  
+       q1 |    7910   1.195   2.862   0.371   0.675   1.308   0.021 111.796  
+       c1 |    7910   0.252   0.310   0.124   0.216   0.321  -0.937   8.707  
+       d1 |    7910   0.234   0.218   0.089   0.206   0.320   0.000   4.673  </code></pre>
+</div>
+</div>
+<div id="b9ca268c" class="cell" data-execution_count="37">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode stata code-with-copy"><code class="sourceCode stata"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>*-Estimating</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a> *-单一门槛模型 (可选)</span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a> xthreg i q1 q2 q3 d1 qd1, <span class="co">///</span></span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>        rx(c1) qx(d1) <span class="co">///</span></span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>        thnum(1) <span class="co">/// </span></span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>        <span class="kw">trim</span>(0.05) <span class="co">///</span></span>
+<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a>        <span class="bn">grid</span>(400) <span class="co">///</span></span>
+<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a>        <span class="kw">bs</span>(300)</span>
+<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a> </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Estimating  the  threshold  parameters:   1st ......  Done
+Boostrap for single threshold
+.................................................. +   50
+.................................................. +  100
+.................................................. +  150
+.................................................. +  200
+.................................................. +  250
+.................................................. +  300
+
+Threshold estimator (level = 95):
+-----------------------------------------------------
+     model |    Threshold         Lower         Upper
+-----------+-----------------------------------------
+      Th-1 |       0.0158        0.0141        0.0169
+-----------------------------------------------------
+
+Threshold effect test (bootstrap = 300):
+-------------------------------------------------------------------------------
+ Threshold |       RSS        MSE      Fstat    Prob   Crit10    Crit5    Crit1
+-----------+-------------------------------------------------------------------
+    Single |   17.7855     0.0023      33.56  0.0000  12.9241  15.8154  21.2564
+-------------------------------------------------------------------------------
+
+Fixed-effects (within) regression               Number of obs     =      7,910
+Group variable: id                              Number of groups  =        565
+
+R-squared:                                      Obs per group:
+     Within  = 0.0949                                         min =         14
+     Between = 0.0687                                         avg =       14.0
+     Overall = 0.0656                                         max =         14
+
+                                                F(7, 7338)        =     109.97
+corr(u_i, Xb) = -0.3989                         Prob &gt; F          =     0.0000
+
+------------------------------------------------------------------------------
+           i | Coefficient  Std. err.      t    P&gt;|t|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+          q1 |      0.011      0.001    11.84   0.000        0.009       0.012
+          q2 |     -0.020      0.003    -7.94   0.000       -0.025      -0.015
+          q3 |      0.001      0.000     5.54   0.000        0.001       0.001
+          d1 |     -0.023      0.004    -5.41   0.000       -0.031      -0.015
+         qd1 |      0.001      0.001     0.53   0.596       -0.002       0.004
+             |
+   _cat#c.c1 |
+          0  |      0.056      0.005    10.44   0.000        0.045       0.066
+          1  |      0.086      0.005    16.51   0.000        0.076       0.096
+             |
+       _cons |      0.063      0.002    37.07   0.000        0.060       0.066
+-------------+----------------------------------------------------------------
+     sigma_u |  .03985181
+     sigma_e |  .04923164
+         rho |  .39586195   (fraction of variance due to u_i)
+------------------------------------------------------------------------------
+F test that all u_i=0: F(564, 7338) = 6.90                   Prob &gt; F = 0.0000</code></pre>
+</div>
+</div>
+<p>实际分析中，我们预先并不知晓数据生成过程，自然也就不知道到底有几个门槛值。这就需要通过假设检验来确定门槛的个数。这本质上属于模型设定的过程，因为一旦明确了门槛的个数，就很容易通过网格搜索确定门槛值。随后的分析无非就是使用 OLS 估计包含一个或多个交互项的线性模型而已。</p>
+<p>虽然从理论上来讲可能存在多个门槛值，但多数应用中以一个或两个门槛值为主。因此，我们从较为一般化的三重门槛模型开始分析。</p>
+<p>由于当前的主要目的是采用 Bootstrap 方法检验门槛的个数，在如下命令中使用了 <code>noreg</code> 选项来屏蔽冗长的回归输出；同时，添加了 <code>nobslog</code> 选项以屏蔽 Bootstrap 过程中在屏幕上打印小黑点。</p>
+<div id="f11aabb8" class="cell">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode stata code-with-copy"><code class="sourceCode stata"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>*-估计三重门槛模型, 检验门槛个数</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a> xthreg i q1 q2 q3 d1 qd1, rx(c1) qx(d1) thnum(3) <span class="co">/// </span></span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>        <span class="kw">trim</span>(0.01 0.01 0.05) <span class="bn">grid</span>(400) <span class="kw">bs</span>(300 300 300) <span class="co">///</span></span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>        noreg nobslog </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Estimating  the  threshold  parameters:   1st ......  2nd ......  3rd ......  D
+&gt; one
+Boostrapping for threshold effect test:   1st ......  2nd ......  3rd ......  D
+&gt; one
+
+Threshold estimator (level = 95):
+-----------------------------------------------------
+     model |    Threshold         Lower         Upper
+-----------+-----------------------------------------
+      Th-1 |       0.0154        0.0141        0.0167
+     Th-21 |       0.0154        0.0141        0.0167
+     Th-22 |       0.5418        0.5268        0.5473
+      Th-3 |       0.4778        0.4755        0.4823
+-----------------------------------------------------
+
+Threshold effect test (bootstrap = 300 300 300):
+-------------------------------------------------------------------------------
+ Threshold |       RSS        MSE      Fstat    Prob   Crit10    Crit5    Crit1
+-----------+-------------------------------------------------------------------
+    Single |   17.7818     0.0023      35.20  0.0000  11.6018  14.1678  20.2240
+    Double |   17.7258     0.0022      24.97  0.0100  11.2504  14.1483  24.5926
+    Triple |   17.7119     0.0022       6.20  0.5700  14.2193  18.6148  27.9711
+-------------------------------------------------------------------------------</code></pre>
+</div>
+</div>
+<section id="门槛值的解释" class="level4" data-number="26.3.3.1">
+<h4 data-number="26.3.3.1" class="anchored" data-anchor-id="门槛值的解释"><span class="header-section-number">26.3.3.1</span> 门槛值的解释</h4>
+<p>解释 <code>Th-1</code>，<code>Th-21</code>，<code>Th-22</code> 和 <code>Th-3</code> 的含义：</p>
+<ul>
+<li>第一轮搜索：假设只有一个门槛，此时估计的是单一门槛模型，得到的门槛估计值为 <code>Th-1</code></li>
+<li>第二轮搜索：假设有两个门槛，此时估计的是双重门槛模型，得到的两个门槛估计值分别为 <code>Th-21</code> 和 <code>Th-22</code>。说明如下：
+<ul>
+<li>有些情况下，这两个门槛值非常接近，本质上等价于单一门槛模型。此时，可以将 <code>trim()</code> 选项中的值调大一些，强制要求每个区间内有足够的样本量。</li>
+<li><code>Th-21</code> 和 <code>Th-22</code> 不必然按大小排序。因为 Hansen 是基于参数更新法获得门槛估计值的，即先估计第一个门槛 (<span class="math inline">\(\hat{\gamma}_{21}\)</span>)，然后将其视为固定值 (基于 <span class="math inline">\(\hat{\gamma}_{21}\)</span> 生成虚拟变量和交乘项，并作为控制变量加入模型)，继续采用单一门槛模型的估计方法搜索第二个门槛 <span class="math inline">\(\hat{\gamma}_{22}\)</span>。</li>
+</ul></li>
+<li>第三轮搜索：假设有三个门槛，此时估计的是三重门槛模型，得到的门槛估计值为 <code>Th-3</code>。估计方法为：固定第二轮搜索得到的两个门槛值，继续采用单一门槛模型的估计方法搜索第三个门槛 <span class="math inline">\(\hat{\gamma}_{3}\)</span>。</li>
+</ul>
+<p>就本例而言，<span class="math inline">\(\hat{\gamma}_{21}\)</span> 和 <span class="math inline">\(\hat{\gamma}_{22}\)</span> 分别为 <span class="math inline">\(0.0154\)</span> 和 <span class="math inline">\(0.5418\)</span>，具有明显的区分度。注意，此处的门槛变量为 <code>d1</code> (负债率)，其样本均值为 0.234，最小值为 0，最大值为 4.673。</p>
+</section>
+<section id="门槛效应检验" class="level4" data-number="26.3.3.2">
+<h4 data-number="26.3.3.2" class="anchored" data-anchor-id="门槛效应检验"><span class="header-section-number">26.3.3.2</span> 门槛效应检验</h4>
+<p>「Threshold effect test」是指对门槛效应的显著性进行检验，这是我们确定模型设定形式的重要依据。我们重点关注 F 统计量(<code>Fstat</code>)及其对应的 p 值(<code>Prob</code>)。结合输出结果，可以按“逐步检验”的思路解读：</p>
+<ul>
+<li><strong>Single threshold</strong>: <code>Fstat = 35.20</code>，<code>Prob = 0.0000</code>，且 <code>Fstat</code> 明显大于 <code>Crit10/Crit5/Crit1</code>。因此，我们可以<strong>拒绝</strong>“无门槛效应(线性模型)”的原假设，说明数据支持<strong>至少存在 1 个门槛</strong>。</li>
+<li><strong>Double threshold</strong>: <code>Fstat = 24.97</code>，<code>Prob = 0.0100</code>，且 <code>Fstat</code> 大于 <code>Crit10</code> 和 <code>Crit5</code>(但略高于或接近 <code>Crit1</code> 的判断不必过度强调)。因此，我们同样可以在 5% 乃至 10% 的显著性水平下<strong>拒绝</strong>“只有 1 个门槛”的原假设，说明在单门槛的基础上，模型进一步支持<strong>存在 2 个门槛</strong>。</li>
+<li><strong>Triple threshold</strong>: <code>Fstat = 6.20</code>，<code>Prob = 0.5700</code>，且 <code>Fstat</code> 小于所有临界值(<code>Crit10/Crit5/Crit1</code>)。因此，我们<strong>无法拒绝</strong>“只有 2 个门槛”的原假设，数据并不支持再加入第 3 个门槛。</li>
+</ul>
+<p>综合以上三步检验，一个自然的结论是：该样本更支持 <strong>Double threshold model(双门槛, 三个 regime)</strong>。换言之，阈值变量将样本划分为三个区间，在不同区间内，核心解释变量(通常是 <code>rx()</code> 中指定的变量)的边际效应存在显著差异。</p>
+<p>需要说明的是，这里的结果是基于 300 次 Bootstrap 重复得到的。实际应用中，建议使用更多的重复次数(如 1000 次或更多)，以获得更稳定的结果。</p>
+</section>
+<section id="估计双重门槛模型" class="level4" data-number="26.3.3.3">
+<h4 data-number="26.3.3.3" class="anchored" data-anchor-id="估计双重门槛模型"><span class="header-section-number">26.3.3.3</span> 估计双重门槛模型</h4>
+<p>既然上述检验结果支持双重门槛模型，我们可以进一步估计该模型的参数。具体命令如下：</p>
+<div id="9afa3074" class="cell" data-execution_count="46">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode stata code-with-copy"><code class="sourceCode stata"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a> *-确认为双重门槛模型, 估计之</span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>   xthreg i q1 q2 q3 d1 qd1, rx(c1) qx(d1) thnum(2) <span class="co">/// </span></span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>        <span class="kw">trim</span>(0.05 0.05) <span class="bn">grid</span>(400) <span class="kw">bs</span>(500 500) nobslog</span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>   </span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a>   * <span class="kw">trim</span>(0.05)  调高了</span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a>   * <span class="kw">bs</span>(500 500)  增加了 <span class="kw">bootstrap</span> 次数</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Estimating  the  threshold  parameters:   1st ......  2nd ......  Done
+Boostrapping for threshold effect test:   1st ......  2nd ......  Done
+
+Threshold estimator (level = 95):
+-----------------------------------------------------
+     model |    Threshold         Lower         Upper
+-----------+-----------------------------------------
+      Th-1 |       0.0158        0.0141        0.0169
+     Th-21 |       0.0158        0.0141        0.0169
+     Th-22 |       0.1396        0.1080        0.1406
+-----------------------------------------------------
+
+Threshold effect test (bootstrap = 500 500):
+-------------------------------------------------------------------------------
+ Threshold |       RSS        MSE      Fstat    Prob   Crit10    Crit5    Crit1
+-----------+-------------------------------------------------------------------
+    Single |   17.7855     0.0023      33.56  0.0000  10.7373  13.7479  19.4979
+    Double |   17.7686     0.0023       7.53  0.2340  10.1193  13.1697  18.9219
+-------------------------------------------------------------------------------
+
+Fixed-effects (within) regression               Number of obs     =      7,910
+Group variable: id                              Number of groups  =        565
+
+R-squared:                                      Obs per group:
+     Within  = 0.0957                                         min =         14
+     Between = 0.0668                                         avg =       14.0
+     Overall = 0.0645                                         max =         14
+
+                                                F(8, 7337)        =      97.08
+corr(u_i, Xb) = -0.4090                         Prob &gt; F          =     0.0000
+
+------------------------------------------------------------------------------
+           i | Coefficient  Std. err.      t    P&gt;|t|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+          q1 |      0.010      0.001    11.54   0.000        0.009       0.012
+          q2 |     -0.020      0.003    -7.76   0.000       -0.025      -0.015
+          q3 |      0.001      0.000     5.42   0.000        0.001       0.001
+          d1 |     -0.021      0.004    -4.77   0.000       -0.029      -0.012
+         qd1 |      0.001      0.001     0.68   0.498       -0.002       0.004
+             |
+   _cat#c.c1 |
+          0  |      0.058      0.005    10.71   0.000        0.047       0.068
+          1  |      0.094      0.006    15.44   0.000        0.082       0.106
+          2  |      0.079      0.006    13.67   0.000        0.068       0.091
+             |
+       _cons |      0.063      0.002    36.98   0.000        0.059       0.066
+-------------+----------------------------------------------------------------
+     sigma_u |  .04013541
+     sigma_e |  .04921394
+         rho |  .39943115   (fraction of variance due to u_i)
+------------------------------------------------------------------------------
+F test that all u_i=0: F(564, 7337) = 6.91                   Prob &gt; F = 0.0000</code></pre>
+</div>
+</div>
+<div id="7d5bba38" class="cell" data-execution_count="48">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode stata code-with-copy"><code class="sourceCode stata"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>esttab, nogap</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+----------------------------
+                      (1)   
+                        i   
+----------------------------
+q1                 0.0103***
+                  (11.54)   
+q2                -0.0199***
+                  (-7.76)   
+q3                0.00106***
+                   (5.42)   
+d1                -0.0207***
+                  (-4.77)   
+qd1              0.000970   
+                   (0.68)   
+0._cat#c.c1        0.0577***
+                  (10.71)   
+1._cat#c.c1        0.0937***
+                  (15.44)   
+2._cat#c.c1        0.0794***
+                  (13.67)   
+_cons              0.0627***
+                  (36.98)   
+----------------------------
+N                    7910   
+----------------------------
+t statistics in parentheses
+* p&lt;0.05, ** p&lt;0.01, *** p&lt;0.001</code></pre>
+</div>
+</div>
+</section>
+<section id="图示门槛值及检验结果" class="level4" data-number="26.3.3.4">
+<h4 data-number="26.3.3.4" class="anchored" data-anchor-id="图示门槛值及检验结果"><span class="header-section-number">26.3.3.4</span> 图示门槛值及检验结果</h4>
+<div id="390b320e" class="cell">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode stata code-with-copy"><code class="sourceCode stata"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>*-提取门槛值, 后续回归分析中会使用</span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>  <span class="co">//ereturn list</span></span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>    mat <span class="ot">list</span> <span class="fu">e</span>(Thrss)</span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a>    mat <span class="fu">s</span> = <span class="fu">e</span>(Thrss)  <span class="co">//记录门槛值的矩阵</span></span>
+<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a>    <span class="kw">global</span> q1 = <span class="fu">s</span>[2,1]      <span class="co">//保存估计出的第一个门槛值,以备后用 </span></span>
+<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a>    <span class="kw">global</span> q2 = <span class="fu">s</span>[3,1]      <span class="co">//保存第二个门槛值      </span></span>
+<span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb31-8"><a href="#cb31-8" aria-hidden="true" tabindex="-1"></a>*-Graphing</span>
+<span id="cb31-9"><a href="#cb31-9" aria-hidden="true" tabindex="-1"></a>   </span>
+<span id="cb31-10"><a href="#cb31-10" aria-hidden="true" tabindex="-1"></a>  *-第一个门槛值的 LR 图形</span>
+<span id="cb31-11"><a href="#cb31-11" aria-hidden="true" tabindex="-1"></a>   cap <span class="kw">graph</span> <span class="kw">drop</span> LR21</span>
+<span id="cb31-12"><a href="#cb31-12" aria-hidden="true" tabindex="-1"></a>   <span class="kw">_matplot</span> <span class="fu">e</span>(LR21), <span class="kw">columns</span>(1 2) <span class="kw">yline</span>(7.35, lpattern(<span class="kw">dash</span>))  <span class="co">///</span></span>
+<span id="cb31-13"><a href="#cb31-13" aria-hidden="true" tabindex="-1"></a>     <span class="kw">connect</span>(direct) msize(small) mlabp(0) mlabs(<span class="bn">zero</span>)         <span class="co">///</span></span>
+<span id="cb31-14"><a href="#cb31-14" aria-hidden="true" tabindex="-1"></a>     <span class="bn">ytitle</span>(<span class="st">"LR Statistics"</span>) <span class="bn">xtitle</span>(<span class="st">"First Threshold"</span>)         <span class="co">///</span></span>
+<span id="cb31-15"><a href="#cb31-15" aria-hidden="true" tabindex="-1"></a>     <span class="kw">recast</span>(<span class="kw">line</span>) <span class="bn">name</span>(LR21) </span>
+<span id="cb31-16"><a href="#cb31-16" aria-hidden="true" tabindex="-1"></a>   <span class="kw">graph</span> <span class="kw">export</span> <span class="st">"$Out/Hansen_Fig01.png"</span>, <span class="kw">replace</span> <span class="co">//保存图片</span></span>
+<span id="cb31-17"><a href="#cb31-17" aria-hidden="true" tabindex="-1"></a>   </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+e(Thrss)[3,5]
+       Threshold        RSS   Location      Lower      Upper
+ Th-1     .01582  17.785507         19     .01409     .01688
+Th-21     .01582  17.768564         19     .01409     .01688
+Th-22     .13956  17.768564         87     .10801     .14059</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="02_Panel_threshold_02_codes_files/figure-html/cell-17-output-2.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<div id="5e60e5f8" class="cell" data-execution_count="52">
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode stata code-with-copy"><code class="sourceCode stata"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>  *-第二个门槛值的 LR 图形   </span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>   cap <span class="kw">graph</span> <span class="kw">drop</span> LR22   </span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>   <span class="kw">_matplot</span> <span class="fu">e</span>(LR22), <span class="kw">columns</span>(1 2) <span class="kw">yline</span>(7.35, lpattern(<span class="kw">dash</span>))  <span class="co">///</span></span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a>     <span class="kw">connect</span>(direct) msize(small) mlabp(0) mlabs(<span class="bn">zero</span>)         <span class="co">///</span></span>
+<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a>     <span class="bn">ytitle</span>(<span class="st">"LR Statistics"</span>) <span class="bn">xtitle</span>(<span class="st">"Second Threshold"</span>)        <span class="co">///</span></span>
+<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a>     <span class="kw">recast</span>(<span class="kw">line</span>) <span class="bn">name</span>(LR22) </span>
+<span id="cb33-7"><a href="#cb33-7" aria-hidden="true" tabindex="-1"></a>   <span class="kw">graph</span> <span class="kw">export</span> <span class="st">"$Out/Hansen_Fig02.png"</span>, <span class="kw">replace</span> <span class="co">//保存图片      </span></span>
+<span id="cb33-8"><a href="#cb33-8" aria-hidden="true" tabindex="-1"></a>   </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>(file /Hansen_Fig02.png not found)
+file /Hansen_Fig02.png written in PNG format</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="02_Panel_threshold_02_codes_files/figure-html/cell-18-output-2.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<div id="df86248f" class="cell">
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode stata code-with-copy"><code class="sourceCode stata"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>  *-第三个门槛值的 LR 图形 (Note: 估计完三重门槛模型后才有)  </span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>      cap <span class="kw">graph</span> <span class="kw">drop</span> LR3     </span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>   <span class="kw">_matplot</span> <span class="fu">e</span>(LR3), <span class="kw">columns</span>(1 2) <span class="kw">yline</span>(7.35, lpattern(<span class="kw">dash</span>))   <span class="co">///</span></span>
+<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a>     <span class="kw">connect</span>(direct) msize(small) mlabp(0) mlabs(<span class="bn">zero</span>)         <span class="co">///</span></span>
+<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a>     <span class="bn">ytitle</span>(<span class="st">"LR Statistics"</span>) <span class="bn">xtitle</span>(<span class="st">"Third Threshold"</span>)         <span class="co">///</span></span>
+<span id="cb35-6"><a href="#cb35-6" aria-hidden="true" tabindex="-1"></a>     <span class="kw">recast</span>(<span class="kw">line</span>) <span class="bn">name</span>(LR3) </span>
+<span id="cb35-7"><a href="#cb35-7" aria-hidden="true" tabindex="-1"></a>   <span class="kw">graph</span> <span class="kw">export</span> <span class="st">"$Out/Hansen_Fig03.png"</span>, <span class="kw">replace</span> <span class="co">//保存图片</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><strong>几点说明</strong>：</p>
+<ol type="1">
+<li>当样本数较大时，需要慎重设定 <code>xthreg</code> 命令中的 <code>trim()</code> 选项，以保证每个区间内都有较多的样本可参与估计， 否则搜索出的门槛值将位于两端；同时，可以通过改变该选项中的数值，来检验结果的稳健性；</li>
+<li>在初步分析过程中，可以不设定 <code>bs()</code> 选项，以便节省时间，等模型设定稳定后，再设定该选项以便检验门槛效应</li>
+<li>对于准备投稿的论文，一定要先设定 <code>set seed #</code>，即种子值，如 <code>set seed 123</code>。这才能保证结果可重现。</li>
+<li>门槛变量也可以出现在解释变量中，即 <code>rx()</code> 和 <code>qx()</code> 选项中可以是相同的变量。例如，<code>rx(age)</code> 和 <code>qx(age)</code>。</li>
+</ol>
+<p>虽然从理论上来讲可能存在多个门槛值，但多数应用中以一个或两个门槛值为主。</p>
+<blockquote class="blockquote">
+<p>Notes:</p>
+<ul>
+<li>一个门槛值模型已经足够捕捉大部分的非线性关系，比如，<code>V 型</code>，<code>L 型</code> 等等；</li>
+<li>若是模型中包含两个门槛值，样本就会被分为三个区间，能够捕捉的非线性关系也更为多样化，比如，<code>U 型</code>，<code>S 型</code> 等等。</li>
+</ul>
+</blockquote>
+<p>由于实证分析中总会衡量偏误、抽样偏差、遗漏变量偏误等问题。如果单靠数据驱动和假设检验来确定门槛模型，必然存在很大的不确定性。因此，在估计和检验之前，一定要充分讨论问题背景，结合相关理论和文献提出研究假设，以及可能的门槛变量和门槛个数，并尽可能细致地讨论他们的潜在经济含义。</p>
+</section>
+</section>
+</section>
+<section id="案例-2du-et-al.-2021---环境规制与绿色创新" class="level2" data-number="26.4">
+<h2 data-number="26.4" class="anchored" data-anchor-id="案例-2du-et-al.-2021---环境规制与绿色创新"><span class="header-section-number">26.4</span> 案例 2：Du et al.&nbsp;(2021) - 环境规制与绿色创新</h2>
+<p>在这案例中，我们使用 Du et al.&nbsp;(2021) 文中的数据来估计面板门槛模型，研究环境规制 (<span class="math inline">\(X\)</span>) 对城市绿色创新 (<span class="math inline">\(Y\)</span>) 的影响。二者的关系受到经济发展水平 (<span class="math inline">\(Z\)</span>) 的调节。</p>
+<blockquote class="blockquote">
+<p>Du, K., Cheng, Y., &amp; Yao, X. (2021). Environmental regulation, green technology innovation, and industrial structure upgrading: The road to the green transformation of Chinese cities. <strong>Energy Economics</strong>, 98, 105247. <a href="https://doi.org/10.1016/j.eneco.2021.105247">Link</a> (rep), <a href="http://sci-hub.ren/10.1016/j.eneco.2021.105247">PDF</a>, <a href="https://ars.els-cdn.com/content/image/1-s2.0-S0140988321001523-mmc1.zip">-Replication-</a>, <a href="https://scholar.google.com/scholar?q=Environmental%20regulation,%20green%20technology%20innovation,%20and%20industrial%20structure%20upgrading:%20The%20road%20to%20the%20green%20transformation%20of%20Chinese%20cities">Google</a>.</p>
+</blockquote>
+<p>该文研究了环境规制 (<span class="math inline">\(Z\)</span>) 对城市绿色转型 (<span class="math inline">\(Y\)</span>) 的影响，调节变量为城市人均 GDP (<span class="math inline">\(U\)</span>)。</p>
+<p><span class="math display">\[
+Y_{it}=\gamma\left(U_{i t-1}\right) Z_{i t-1}+\beta^{\prime} X_{i t-1}+\delta_i+\mu_{it} \tag{13}
+\]</span></p>
+<ul>
+<li><span class="math inline">\(Y_{it}\)</span>：下列两个变量之一：
+<ul>
+<li><strong>InGTI</strong>：“绿色技术创新” 或 <strong>InIS</strong>：“产业结构升级”</li>
+</ul></li>
+<li><span class="math inline">\(Z_{it-1}\)</span>：第 <span class="math inline">\(i\)</span> 个城市在 <span class="math inline">\(t-1\)</span> 时刻的环境管制水平 (<strong>ER</strong>)</li>
+<li><span class="math inline">\(U_{it-1}\)</span>：经济发展水平，用人均 GDP 的对数衡量 (<strong>lnGDP</strong>)</li>
+</ul>
+<div id="4fa9dd03" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode stata code-with-copy"><code class="sourceCode stata"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="kw">clear</span> <span class="ot">all</span></span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a><span class="kw">use</span> <span class="st">"https://github.com/lianxhcn/data/raw/refs/heads/main/stata/Du2021EE_ERdata.dta"</span>, <span class="kw">clear</span></span>
+<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a><span class="kw">est</span> <span class="kw">clear</span></span>
+<span id="cb36-6"><a href="#cb36-6" aria-hidden="true" tabindex="-1"></a>eststo <span class="kw">clear</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Running D:\stata19/profile.do ...</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<style>div.jp-Notebook .datagrid-container {min-height: 448px; }</style>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>(Du et al. (2021, EE) https://doi.org/10.1016/j.eneco.2021.105247)</code></pre>
+</div>
+</div>
+<div id="f7128fb4" class="cell" data-execution_count="2">
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode stata code-with-copy"><code class="sourceCode stata"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>xtset </span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a><span class="kw">codebook</span> cityno <span class="fu">year</span> gti er gdp lngti lngdp, compact</span>
+<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a><span class="kw">des</span> gti er gdp</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Panel variable: cityno (strongly balanced)
+ Time variable: year, 2002 to 2015
+         Delta: 1 unit
+
+Variable    Obs Unique      Mean       Min       Max  Label
+-------------------------------------------------------------------------------
+cityno     1470    105        53         1       105  City ID (105 environme...
+year       1470     14    2008.5      2002      2015  Year
+gti        1470    549  382.1381         0     13712  Green technology paten...
+er         1470   1460  .0829945   .023842   .446886  ER: environmental regu...
+gdp        1470   1456  29835.04   3347.96    127586  Real GDP per capita (2...
+lngti      1470    548  4.322056         0  9.526027  lnGTI = ln(gti)
+lngdp      1470   1456  10.08827  8.116106  11.75655  lnGDP = ln(gdp)
+-------------------------------------------------------------------------------
+
+Variable      Storage   Display    Value
+    name         type    format    label      Variable label
+-------------------------------------------------------------------------------
+gti             int     %10.0g                Green technology patents
+                                                (authorized, by application
+                                                date)
+er              double  %10.0g                ER: environmental regulation
+                                                index (entropy-weight
+                                                composite)
+gdp             double  %10.0g                Real GDP per capita (2001
+                                                constant prices)</code></pre>
+</div>
+</div>
+<p>这里使用 Hansen (1999) 提出的面板门槛模型来估计上述变系数面板数据模型。Stata 中可以使用 <code>xthreg</code> 命令来实现。</p>
+<p>对应于 Du et al.&nbsp;(2021) 的问题背景，我们可以将单重面板门槛模型设定如下：</p>
+<p><span class="math display">\[Y_{it} = \alpha_i
+        + Z_{it}^{\prime} {\gamma}_1 \cdot I\left(U_{it} \leq \lambda\right)
+        + Z_{it}^{\prime} {\gamma}_2 \cdot I\left(U_{it}&gt;\lambda\right)
+        + X_{it}\beta
+        +\varepsilon_{it} \tag{1}
+\]</span></p>
+<p>双重门槛模型包含两个门槛值：<span class="math inline">\(\lambda_1\)</span> 和 <span class="math inline">\(\lambda_2\)</span>，设定如下：</p>
+<p><span class="math display">\[
+Y_{it} = \alpha_i
+        + Z_{it}^{\prime} {\gamma}_1 \cdot I\left(U_{it} \leq \lambda_1\right)
+        + Z_{it}^{\prime} {\gamma}_2 \cdot I\left(\lambda_1 &lt; U_{it} \ge \lambda_2\right)
+        + Z_{it}^{\prime} {\gamma}_3 \cdot I\left(U_{it} &lt; \lambda_2\right)
+        + X_{it}\beta
+        +\varepsilon_{it} \tag{1}
+\]</span></p>
+<div id="d2d7654c" class="cell" data-execution_count="3">
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode stata code-with-copy"><code class="sourceCode stata"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="kw">set</span> <span class="dv">seed</span> 12345</span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a><span class="kw">local</span> xlist <span class="st">"lnrd lnpop lnhc lninv lnfdi"</span></span>
+<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a>xthreg lngti <span class="ot">`xlist'</span>, <span class="co">///</span></span>
+<span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a>       rx(er) qx(lngdp) <span class="co">///</span></span>
+<span id="cb41-5"><a href="#cb41-5" aria-hidden="true" tabindex="-1"></a>       thnum(2) <span class="kw">trim</span>(0.10 0.10) <span class="kw">bs</span>(500 500) <span class="co">///</span></span>
+<span id="cb41-6"><a href="#cb41-6" aria-hidden="true" tabindex="-1"></a>       nobslog <span class="co">//noreg</span></span>
+<span id="cb41-7"><a href="#cb41-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-8"><a href="#cb41-8" aria-hidden="true" tabindex="-1"></a><span class="kw">est</span> <span class="kw">store</span> Du2021_2thres</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Estimating  the  threshold  parameters:   1st ......  2nd ......  Done
+Boostrapping for threshold effect test:   1st ......  2nd ......  Done
+
+Threshold estimator (level = 95):
+-----------------------------------------------------
+     model |    Threshold         Lower         Upper
+-----------+-----------------------------------------
+      Th-1 |      10.3718       10.3260       10.3801
+     Th-21 |      10.3718       10.3260       10.3801
+     Th-22 |       9.3856        9.3739        9.3911
+-----------------------------------------------------
+
+Threshold effect test (bootstrap = 500 500):
+-------------------------------------------------------------------------------
+ Threshold |       RSS        MSE      Fstat    Prob   Crit10    Crit5    Crit1
+-----------+-------------------------------------------------------------------
+    Single |  386.0885     0.2652      62.21  0.0040  32.6886  38.7691  54.4945
+    Double |  364.9414     0.2506      84.37  0.0000  21.2641  23.9729  33.6676
+-------------------------------------------------------------------------------
+
+Fixed-effects (within) regression               Number of obs     =      1,470
+Group variable: cityno                          Number of groups  =        105
+
+R-squared:                                      Obs per group:
+     Within  = 0.8071                                         min =         14
+     Between = 0.7448                                         avg =       14.0
+     Overall = 0.7190                                         max =         14
+
+                                                F(8, 1357)        =     709.49
+corr(u_i, Xb) = -0.7395                         Prob &gt; F          =     0.0000
+
+------------------------------------------------------------------------------
+       lngti | Coefficient  Std. err.      t    P&gt;|t|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+        lnrd |      0.900      0.052    17.17   0.000        0.797       1.003
+       lnpop |      2.220      0.188    11.82   0.000        1.852       2.589
+        lnhc |      0.650      0.061    10.71   0.000        0.531       0.769
+       lninv |      0.593      0.066     8.94   0.000        0.463       0.723
+       lnfdi |     -0.082      0.022    -3.76   0.000       -0.124      -0.039
+             |
+   _cat#c.er |
+          0  |     -5.941      1.076    -5.52   0.000       -8.053      -3.829
+          1  |      1.572      0.710     2.22   0.027        0.180       2.964
+          2  |      5.830      0.696     8.38   0.000        4.464       7.195
+             |
+       _cons |    -14.485      1.136   -12.75   0.000      -16.713     -12.257
+-------------+----------------------------------------------------------------
+     sigma_u |  1.2954211
+     sigma_e |  .51868209
+         rho |  .86183318   (fraction of variance due to u_i)
+------------------------------------------------------------------------------
+F test that all u_i=0: F(104, 1357) = 16.38                  Prob &gt; F = 0.0000</code></pre>
+</div>
+</div>
+<div id="637035af" class="cell" data-execution_count="27">
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode stata code-with-copy"><code class="sourceCode stata"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>*-列表呈现估计结果</span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>esttab Du2021_2thres, nogap</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+----------------------------
+                      (1)   
+                    lngti   
+----------------------------
+lnrd                0.900***
+                  (17.17)   
+lnpop               2.220***
+                  (11.82)   
+lnhc                0.650***
+                  (10.71)   
+lninv               0.593***
+                   (8.94)   
+lnfdi             -0.0816***
+                  (-3.76)   
+0._cat#c.er        -5.941***
+                  (-5.52)   
+1._cat#c.er         1.572*  
+                   (2.22)   
+2._cat#c.er         5.830***
+                   (8.38)   
+_cons              -14.48***
+                 (-12.75)   
+----------------------------
+N                    1470   
+----------------------------
+t statistics in parentheses
+* p&lt;0.05, ** p&lt;0.01, *** p&lt;0.001</code></pre>
+</div>
+</div>
+<div id="dedd9133" class="cell">
+<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode stata code-with-copy"><code class="sourceCode stata"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a>eret <span class="ot">list</span>   <span class="co">// 查看返回值，需要执行时去掉前面的 * 即可</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="7cc2c951" class="cell" data-execution_count="4">
+<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode stata code-with-copy"><code class="sourceCode stata"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a>mat lambda = <span class="fu">e</span>(Thrss)  <span class="co">//存储门槛值的矩阵</span></span>
+<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a>mat <span class="ot">list</span> lambda</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+lambda[3,5]
+       Threshold        RSS   Location      Lower      Upper
+ Th-1  10.371793  386.08846        234  10.326015  10.380104
+Th-21  10.371793  364.94139        178  10.326015  10.380104
+Th-22  9.3856125  364.94139         26  9.3738585  9.3910856</code></pre>
+</div>
+</div>
+<div id="d538eeae" class="cell" data-execution_count="5">
+<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode stata code-with-copy"><code class="sourceCode stata"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a>*-记录门槛值 λ1 和 λ2</span>
+<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a><span class="kw">local</span> lambda_1 = lambda[3,1]   <span class="co">// Th-22</span></span>
+<span id="cb48-3"><a href="#cb48-3" aria-hidden="true" tabindex="-1"></a><span class="kw">local</span> lambda_2 = lambda[2,1]   <span class="co">// Th-21</span></span>
+<span id="cb48-4"><a href="#cb48-4" aria-hidden="true" tabindex="-1"></a><span class="kw">global</span> lambda_1: dis %3.2f <span class="ot">`lambda_1'</span>  <span class="co">// 保留两位小数存储</span></span>
+<span id="cb48-5"><a href="#cb48-5" aria-hidden="true" tabindex="-1"></a><span class="kw">global</span> lambda_2: dis %3.2f <span class="ot">`lambda_2'</span>  <span class="co">// 保留两位小数存储</span></span>
+<span id="cb48-6"><a href="#cb48-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-7"><a href="#cb48-7" aria-hidden="true" tabindex="-1"></a>dis _skip(20) <span class="st">"门槛值：λ1 = ${lambda_1} , λ2 = ${lambda_2}"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                    门槛值：λ1 = 9.39 , λ2 = 10.37</code></pre>
+</div>
+</div>
+<div id="70ad08dc" class="cell" data-execution_count="6">
+<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode stata code-with-copy"><code class="sourceCode stata"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a>*-记录系数估计值 γ1, γ2, γ3</span>
+<span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb50-3"><a href="#cb50-3" aria-hidden="true" tabindex="-1"></a><span class="kw">global</span> gamma_1: dis %3.2f _b[0._cat#c.er]</span>
+<span id="cb50-4"><a href="#cb50-4" aria-hidden="true" tabindex="-1"></a><span class="kw">global</span> gamma_2: dis %3.2f _b[1._cat#c.er]</span>
+<span id="cb50-5"><a href="#cb50-5" aria-hidden="true" tabindex="-1"></a><span class="kw">global</span> gamma_3: dis %3.2f _b[2._cat#c.er]</span>
+<span id="cb50-6"><a href="#cb50-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb50-7"><a href="#cb50-7" aria-hidden="true" tabindex="-1"></a>dis _skip(20) <span class="st">"系数估计值：γ1 = ${gamma_1} , γ2 = ${gamma_2} , γ3 = ${gamma_3}"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                    系数估计值：γ1 = -5.94 , γ2 = 1.57 , γ3 = 5.83</code></pre>
+</div>
+</div>
+<p>为了更直观地理解面板门槛模型的系数含义，下面对三个区间的估计系数进行可视化展示。</p>
+<p>我们先绘制面板门槛模型的估计结果，步骤如下：</p>
+<ol type="1">
+<li>提取面板门槛模型的估计结果，包括边际效应的点估计和置信区间。边际效应 (<span class="math inline">\(\hat{\gamma}_1, \hat{\gamma}_2, \hat{\gamma}_3\)</span>) 在三个区间内的估计值均为常数；置信区间也为常数，计算公式为 <span class="math inline">\(\hat{\gamma}_j \pm 1.96 \times SE(\hat{\gamma}_j)\)</span>，其中 <span class="math inline">\(j=1,2,3\)</span>。</li>
+<li>绘制边际效应随调节变量变化的图形。横轴为调节变量 <span class="math inline">\(U\)</span>，纵轴为边际效应 <span class="math inline">\(\gamma(U)\)</span>。在每个区间内绘制水平线表示边际效应的点估计，并用阴影区域表示置信区间。此外，在图中标注门槛值 <span class="math inline">\(\lambda_1\)</span> 和 <span class="math inline">\(\lambda_2\)</span> 以显示不同区间的分界点。</li>
+</ol>
+<div id="5c04c02a" class="cell" data-execution_count="7">
+<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode stata code-with-copy"><code class="sourceCode stata"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a>*-三个区间的系数估计值</span>
+<span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a>dropvars <span class="kw">gamma</span>* <span class="kw">gamma</span>*_lb <span class="kw">gamma</span>*_ub</span>
+<span id="cb52-3"><a href="#cb52-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-4"><a href="#cb52-4" aria-hidden="true" tabindex="-1"></a><span class="kw">local</span> <span class="kw">qui</span> <span class="st">"quietly"</span></span>
+<span id="cb52-5"><a href="#cb52-5" aria-hidden="true" tabindex="-1"></a><span class="ot">`qui'</span> <span class="kw">gen</span> gamma1 = _b[0._cat#c.er] <span class="kw">if</span> <span class="fu">inrange</span>(lngdp, ., <span class="ot">$lambda_1</span>)</span>
+<span id="cb52-6"><a href="#cb52-6" aria-hidden="true" tabindex="-1"></a><span class="ot">`qui'</span> <span class="kw">gen</span> gamma2 = _b[1._cat#c.er] <span class="kw">if</span> <span class="fu">inrange</span>(lngdp, <span class="ot">$lambda_1</span>, <span class="ot">$lambda_2</span>)</span>
+<span id="cb52-7"><a href="#cb52-7" aria-hidden="true" tabindex="-1"></a><span class="ot">`qui'</span> <span class="kw">gen</span> gamma3 = _b[2._cat#c.er] <span class="kw">if</span> <span class="fu">inrange</span>(lngdp, <span class="ot">$lambda_2</span>, .)</span>
+<span id="cb52-8"><a href="#cb52-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-9"><a href="#cb52-9" aria-hidden="true" tabindex="-1"></a>*-计算置信区间 = 估计值 ± 1.96*标准误</span>
+<span id="cb52-10"><a href="#cb52-10" aria-hidden="true" tabindex="-1"></a><span class="ot">`qui'</span> <span class="kw">gen</span> gamma1_lb = gamma1 - 1.96 * _se[0._cat#c.er]</span>
+<span id="cb52-11"><a href="#cb52-11" aria-hidden="true" tabindex="-1"></a><span class="ot">`qui'</span> <span class="kw">gen</span> gamma1_ub = gamma1 + 1.96 * _se[0._cat#c.er]</span>
+<span id="cb52-12"><a href="#cb52-12" aria-hidden="true" tabindex="-1"></a><span class="ot">`qui'</span> <span class="kw">gen</span> gamma2_lb = gamma2 - 1.96 * _se[1._cat#c.er]</span>
+<span id="cb52-13"><a href="#cb52-13" aria-hidden="true" tabindex="-1"></a><span class="ot">`qui'</span> <span class="kw">gen</span> gamma2_ub = gamma2 + 1.96 * _se[1._cat#c.er]</span>
+<span id="cb52-14"><a href="#cb52-14" aria-hidden="true" tabindex="-1"></a><span class="ot">`qui'</span> <span class="kw">gen</span> gamma3_lb = gamma3 - 1.96 * _se[2._cat#c.er]</span>
+<span id="cb52-15"><a href="#cb52-15" aria-hidden="true" tabindex="-1"></a><span class="ot">`qui'</span> <span class="kw">gen</span> gamma3_ub = gamma3 + 1.96 * _se[2._cat#c.er]</span>
+<span id="cb52-16"><a href="#cb52-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-17"><a href="#cb52-17" aria-hidden="true" tabindex="-1"></a>*----- 绘图</span>
+<span id="cb52-18"><a href="#cb52-18" aria-hidden="true" tabindex="-1"></a><span class="kw">twoway</span> (rarea gamma1_lb gamma1_ub lngdp, <span class="kw">color</span>(<span class="kw">red</span>%20)   <span class="kw">sort</span>) <span class="co">///</span></span>
+<span id="cb52-19"><a href="#cb52-19" aria-hidden="true" tabindex="-1"></a>       (rarea gamma2_lb gamma2_ub lngdp, <span class="kw">color</span>(<span class="kw">green</span>%20) <span class="kw">sort</span>) <span class="co">///</span></span>
+<span id="cb52-20"><a href="#cb52-20" aria-hidden="true" tabindex="-1"></a>       (rarea gamma3_lb gamma3_ub lngdp, <span class="kw">color</span>(<span class="bn">blue</span>%20)  <span class="kw">sort</span>) <span class="co">///</span></span>
+<span id="cb52-21"><a href="#cb52-21" aria-hidden="true" tabindex="-1"></a>       (<span class="kw">line</span>  gamma1 lngdp, lc(<span class="kw">red</span>)   lp(solid) lw(*2) <span class="kw">sort</span>) <span class="co">///</span></span>
+<span id="cb52-22"><a href="#cb52-22" aria-hidden="true" tabindex="-1"></a>       (<span class="kw">line</span>  gamma2 lngdp, lc(<span class="kw">green</span>) lp(solid) lw(*2) <span class="kw">sort</span>) <span class="co">///</span></span>
+<span id="cb52-23"><a href="#cb52-23" aria-hidden="true" tabindex="-1"></a>       (<span class="kw">line</span>  gamma3 lngdp, lc(<span class="bn">blue</span>)  lp(solid) lw(*2) <span class="kw">sort</span>) <span class="co">///</span></span>
+<span id="cb52-24"><a href="#cb52-24" aria-hidden="true" tabindex="-1"></a>       , <span class="co">///</span></span>
+<span id="cb52-25"><a href="#cb52-25" aria-hidden="true" tabindex="-1"></a>       <span class="kw">yline</span>(0, lc(<span class="bn">black</span>) lp(<span class="kw">dash</span>)) <span class="co">///</span></span>
+<span id="cb52-26"><a href="#cb52-26" aria-hidden="true" tabindex="-1"></a>       <span class="bn">xtitle</span>(<span class="st">"人均 GDP（对数）"</span>) <span class="co">///</span></span>
+<span id="cb52-27"><a href="#cb52-27" aria-hidden="true" tabindex="-1"></a>       <span class="bn">ytitle</span>(<span class="st">"边际效应 γ(lngdp)"</span>) <span class="co">///</span></span>
+<span id="cb52-28"><a href="#cb52-28" aria-hidden="true" tabindex="-1"></a>       <span class="bn">xline</span>(<span class="ot">${lambda_1}</span> <span class="ot">${lambda_2}</span>, lc(<span class="bn">gray</span>) lp(<span class="kw">dash</span>) lw(*0.4)) <span class="co">///</span></span>
+<span id="cb52-29"><a href="#cb52-29" aria-hidden="true" tabindex="-1"></a>       <span class="kw">xlabel</span>(8 9 <span class="st">" "</span> <span class="ot">${lambda_1}</span> 10 <span class="st">" "</span> <span class="ot">${lambda_2}</span> 11 12) <span class="co">///</span></span>
+<span id="cb52-30"><a href="#cb52-30" aria-hidden="true" tabindex="-1"></a>       <span class="bn">legend</span>(<span class="kw">order</span>(1 <span class="st">"γ1 95% CI"</span> 2 <span class="st">"γ2 95% CI"</span> 3 <span class="st">"γ3 95% CI"</span>) <span class="co">///</span></span>
+<span id="cb52-31"><a href="#cb52-31" aria-hidden="true" tabindex="-1"></a>              <span class="bn">ring</span>(0) pos(5) c(1)) <span class="co">///</span></span>
+<span id="cb52-32"><a href="#cb52-32" aria-hidden="true" tabindex="-1"></a>       <span class="dv">scheme</span>(s2mono)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Unable to drop gamma* gamma*_lb gamma*_ub</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="02_Panel_threshold_02_codes_files/figure-html/cell-28-output-2.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>该图显示了环境规制对绿色技术创新的边际效应随经济发展水平的变化情况。可以看出：</p>
+<ul>
+<li>当人均 GDP 较低时 (<span class="math inline">\(\ln GDP &lt; \hat{\lambda}_1 (9.39)\)</span>)，环境规制对绿色技术创新的边际效应为负且显著，说明对于经济发展水平较低的城市或在经济发展初期，环境规制非但不会促进绿色技术创新，反而可能抑制绿色技术创新。</li>
+<li>当人均 GDP 处于中等水平时 (<span class="math inline">\(\hat{\lambda}_1 &lt; \ln GDP \le \hat{\lambda}_2 (10.38)\)</span>)，环境规制对绿色技术创新的边际效应转为正值，但不显著，说明在这一阶段，环境规制对绿色技术创新的促进作用尚不明显。</li>
+<li>当人均 GDP 较高时 (<span class="math inline">\(\ln GDP &gt; \hat{\lambda}_2\)</span>)，环境规制对绿色技术创新的边际效应显著为正，表明在经济发展水平较高的城市，环境规制能够有效促进绿色技术创新。</li>
+</ul>
+<p>一个直观的解释是，随着经济的发展，城市具备了更强的资源和能力来应对环境规制带来的挑战，从而能够将环境规制转化为推动绿色技术创新的动力。这一发现对于政策制定者具有重要意义，表明在制定环境政策时，应考虑城市的经济发展水平，以实现环境保护与经济增长的双赢目标。</p>
+<section id="补充门槛值的-lr-检验图示" class="level3" data-number="26.4.1">
+<h3 data-number="26.4.1" class="anchored" data-anchor-id="补充门槛值的-lr-检验图示"><span class="header-section-number">26.4.1</span> 补充：门槛值的 LR 检验图示</h3>
+<p>这里给出两个门槛值的 LR 图形，以便读者理解门槛值的确定过程。</p>
+<div id="0d3eb008" class="cell" data-execution_count="8">
+<div class="sourceCode cell-code" id="cb54"><pre class="sourceCode stata code-with-copy"><code class="sourceCode stata"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a>*-提取门槛值, 后续回归分析中会使用</span>
+<span id="cb54-2"><a href="#cb54-2" aria-hidden="true" tabindex="-1"></a>  <span class="co">//ereturn list</span></span>
+<span id="cb54-3"><a href="#cb54-3" aria-hidden="true" tabindex="-1"></a>    mat <span class="ot">list</span> <span class="fu">e</span>(Thrss)</span>
+<span id="cb54-4"><a href="#cb54-4" aria-hidden="true" tabindex="-1"></a>    mat <span class="fu">s</span> = <span class="fu">e</span>(Thrss)  <span class="co">//记录门槛值的矩阵</span></span>
+<span id="cb54-5"><a href="#cb54-5" aria-hidden="true" tabindex="-1"></a>    <span class="kw">global</span> q1 = <span class="fu">s</span>[2,1]      <span class="co">//保存估计出的第一个门槛值,以备后用 </span></span>
+<span id="cb54-6"><a href="#cb54-6" aria-hidden="true" tabindex="-1"></a>    <span class="kw">global</span> q2 = <span class="fu">s</span>[3,1]      <span class="co">//保存第二个门槛值      </span></span>
+<span id="cb54-7"><a href="#cb54-7" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb54-8"><a href="#cb54-8" aria-hidden="true" tabindex="-1"></a>*-Graphing</span>
+<span id="cb54-9"><a href="#cb54-9" aria-hidden="true" tabindex="-1"></a>   </span>
+<span id="cb54-10"><a href="#cb54-10" aria-hidden="true" tabindex="-1"></a>  *-第一个门槛值的 LR 图形</span>
+<span id="cb54-11"><a href="#cb54-11" aria-hidden="true" tabindex="-1"></a>   cap <span class="kw">graph</span> <span class="kw">drop</span> LR21</span>
+<span id="cb54-12"><a href="#cb54-12" aria-hidden="true" tabindex="-1"></a>   <span class="kw">_matplot</span> <span class="fu">e</span>(LR21), <span class="kw">columns</span>(1 2) <span class="kw">yline</span>(7.35, lpattern(<span class="kw">dash</span>))  <span class="co">///</span></span>
+<span id="cb54-13"><a href="#cb54-13" aria-hidden="true" tabindex="-1"></a>     <span class="kw">connect</span>(direct) msize(small) mlabp(0) mlabs(<span class="bn">zero</span>)         <span class="co">///</span></span>
+<span id="cb54-14"><a href="#cb54-14" aria-hidden="true" tabindex="-1"></a>     <span class="bn">ytitle</span>(<span class="st">"LR Statistics"</span>) <span class="bn">xtitle</span>(<span class="st">"First Threshold"</span>)         <span class="co">///</span></span>
+<span id="cb54-15"><a href="#cb54-15" aria-hidden="true" tabindex="-1"></a>     <span class="kw">recast</span>(<span class="kw">line</span>) <span class="bn">name</span>(LR21) </span>
+<span id="cb54-16"><a href="#cb54-16" aria-hidden="true" tabindex="-1"></a>   <span class="kw">qui</span> <span class="kw">graph</span> <span class="kw">export</span> <span class="st">"$Out/Du-2021-xthreg-Fig01.png"</span>, <span class="kw">replace</span> <span class="co">//保存图片</span></span>
+<span id="cb54-17"><a href="#cb54-17" aria-hidden="true" tabindex="-1"></a>   </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+e(Thrss)[3,5]
+       Threshold        RSS   Location      Lower      Upper
+ Th-1  10.371793  386.08846        234  10.326015  10.380104
+Th-21  10.371793  364.94139        178  10.326015  10.380104
+Th-22  9.3856125  364.94139         26  9.3738585  9.3910856</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="02_Panel_threshold_02_codes_files/figure-html/cell-29-output-2.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<div id="ee041246" class="cell" data-execution_count="9">
+<div class="sourceCode cell-code" id="cb56"><pre class="sourceCode stata code-with-copy"><code class="sourceCode stata"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a>  *-第二个门槛值的 LR 图形   </span>
+<span id="cb56-2"><a href="#cb56-2" aria-hidden="true" tabindex="-1"></a>   cap <span class="kw">graph</span> <span class="kw">drop</span> LR22   </span>
+<span id="cb56-3"><a href="#cb56-3" aria-hidden="true" tabindex="-1"></a>   <span class="kw">_matplot</span> <span class="fu">e</span>(LR22), <span class="kw">columns</span>(1 2) <span class="kw">yline</span>(7.35, lpattern(<span class="kw">dash</span>))  <span class="co">///</span></span>
+<span id="cb56-4"><a href="#cb56-4" aria-hidden="true" tabindex="-1"></a>     <span class="kw">connect</span>(direct) msize(small) mlabp(0) mlabs(<span class="bn">zero</span>)         <span class="co">///</span></span>
+<span id="cb56-5"><a href="#cb56-5" aria-hidden="true" tabindex="-1"></a>     <span class="bn">ytitle</span>(<span class="st">"LR Statistics"</span>) <span class="bn">xtitle</span>(<span class="st">"Second Threshold"</span>)        <span class="co">///</span></span>
+<span id="cb56-6"><a href="#cb56-6" aria-hidden="true" tabindex="-1"></a>     <span class="kw">recast</span>(<span class="kw">line</span>) <span class="bn">name</span>(LR22) </span>
+<span id="cb56-7"><a href="#cb56-7" aria-hidden="true" tabindex="-1"></a>   <span class="kw">graph</span> <span class="kw">export</span> <span class="st">"$Out/Du-2021-xthreg-Fig02.png"</span>, <span class="kw">replace</span> <span class="co">//保存图片      </span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>(file /Du-2021-xthreg-Fig02.png not found)
+file /Du-2021-xthreg-Fig02.png written in PNG format</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="02_Panel_threshold_02_codes_files/figure-html/cell-30-output-2.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="稳健性检验" class="level3" data-number="26.4.2">
+<h3 data-number="26.4.2" class="anchored" data-anchor-id="稳健性检验"><span class="header-section-number">26.4.2</span> 稳健性检验</h3>
+<p>实证研究中常见的稳健性检验包括：</p>
+<ol type="1">
+<li><strong>更换门槛变量</strong>：尝试其他可能的门槛变量</li>
+<li><strong>调整修剪比例</strong>：<code>trim(0.10)</code> 或 <code>trim(0.20)</code></li>
+<li><strong>子样本分析</strong>：按行业、规模等分组</li>
+<li><strong>控制变量</strong>：增加更多控制变量</li>
+<li><strong>内生性处理</strong>：使用工具变量（需要动态面板门槛模型）</li>
+</ol>
+</section>
+</section>
+<section id="参考文献" class="level2" data-number="26.5">
+<h2 data-number="26.5" class="anchored" data-anchor-id="参考文献"><span class="header-section-number">26.5</span> 参考文献</h2>
+<ul>
+<li><strong>核心文献</strong>
+<ul>
+<li>Hansen, B. E. (1999). Threshold effects in non-dynamic panels: Estimation, testing, and inference. <em>Journal of Econometrics</em>, 93(2), 345–368. <a href="https://doi.org/10.1016/S0304-4076(99)00025-1">Link</a>, <a href="http://sci-hub.ren/10.1016/S0304-4076(99)00025-1">PDF</a>, <a href="https://scholar.google.com/scholar?q=Threshold+effects+in+non-dynamic+panels">Google Scholar</a>.</li>
+<li>Wang, Q. (2015). Fixed-effect panel threshold model using Stata. <em>The Stata Journal</em>, 15(1), 121–134. <a href="https://doi.org/10.1177/1536867X1501500108">Link</a>, <a href="https://journals.sagepub.com/doi/pdf/10.1177/1536867X1501500108">PDF</a>, <a href="https://scholar.google.com/scholar?q=Fixed-Effect+Panel+Threshold+Model+using+Stata">Google Scholar</a>.</li>
+<li>Fazzari, S. M., Hubbard, R. G., &amp; Petersen, B. C. (1988). Financing Constraints and Corporate Investment. <em>Brookings Papers on Economic Activity</em>, 1988(1), 141–206. <a href="https://doi.org/10.2307/2534426">Link</a>, <a href="http://sci-hub.ren/10.2307/2534426">PDF</a>, <a href="https://scholar.google.com/scholar?q=Financing%20Constraints%20and%20Corporate%20Investment">Google</a>.</li>
+<li>Du , K., Cheng, Y., &amp; Yao, X. (2021). Environmental regulation, green technology innovation, and industrial structure upgrading: The road to the green transformation of Chinese cities. <em>Energy Economics</em>, 98, 105247. <a href="https://doi.org/10.1016/j.eneco.2021.105247">Link</a>, <a href="http://sci-hub.ren/10.1016/j.eneco.2021.105247),%20%5BGoogle%20Scholar%5D(https://scholar.google.com/scholar?q=Environmental+regulation,+green+technology+innovation,+and+industrial+structure+upgrading:+The+road+to+the+green+transformation+of+Chinese+cities">PDF</a>.</li>
+</ul></li>
+<li><strong>理论基础和估计方法</strong>
+<ul>
+<li>Chan, K. S. (1993). Consistency and limiting distribution of the least squares estimator of a threshold autoregressive model. <em>The Annals of Statistics</em>, 21(1), 520–533. <a href="https://doi.org/10.1214/aos/1176349040">Link</a>, <a href="https://scholar.google.com/scholar?q=Chan+1993+threshold+autoregressive">Google Scholar</a>.</li>
+<li>Davies, R. B. (1987). Hypothesis testing when a nuisance parameter is present only under the alternative. <em>Biometrika</em>, 74(1), 33–43. <a href="https://doi.org/10.1093/biomet/74.1.33">Link</a>.</li>
+<li>Bai, J. (1997). Estimation of a change point in multiple regression models. <em>Review of Economics and Statistics</em>, 79(4), 551–563. <a href="https://doi.org/10.1162/003465397557132">Link</a>.</li>
+<li>Bai, J., &amp; Perron, P. (1998). Estimating and testing linear models with multiple structural changes. <em>Econometrica</em>, 66(1), 47–78. <a href="https://doi.org/10.2307/2998540">Link</a>.</li>
+<li>Chong, T. T. L. (1994). Consistency of change-point estimators. <em>Econometric Theory</em>, 10(1), 28–51. <a href="https://doi.org/10.1017/S0266466600008215">Link</a>.</li>
+</ul></li>
+<li><strong>应用文献</strong>
+<ul>
+<li>Adam, C. S., &amp; Bevan, D. L. (2005). Fiscal deficits and growth in developing countries. <em>Journal of Public Economics</em>, 89(4), 571–597. <a href="https://doi.org/10.1016/j.jpubeco.2004.02.006">Link</a>.</li>
+<li>Cecchetti, S. G., Mohanty, M. S., &amp; Zampolli, F. (2011). The real effects of debt. BIS Working Papers No.&nbsp;352. <a href="https://www.bis.org/publ/work352.pdf">PDF</a>.</li>
+<li>Fazzari, S. M., Hubbard, R. G., &amp; Petersen, B. C. (1988). Financing constraints and corporate investment. <em>Brookings Papers on Economic Activity</em>, 1988(1), 141–206. <a href="http://people.stern.nyu.edu/eofek/PhD/papers/FHP_Financing_BPEA.pdf">PDF</a>.</li>
+<li>Girma, S. (2005). Absorptive capacity and productivity spillovers from FDI: A threshold regression analysis. <em>Oxford Bulletin of Economics and Statistics</em>, 67(3), 281–306. <a href="https://doi.org/10.1111/j.1468-0084.2005.00120.x">Link</a>.</li>
+<li>Khan, M. S., &amp; Senhadji, A. S. (2001). Threshold effects in the relationship between inflation and growth. <em>IMF Staff Papers</em>, 48(1), 1–21. <a href="https://doi.org/10.2307/3872479">Link</a>.</li>
+<li>Kremer, S., Bick, A., &amp; Nautz, D. (2013). Inflation and growth: New evidence from a dynamic panel threshold analysis. <em>Empirical Economics</em>, 44(2), 861–878. <a href="https://doi.org/10.1007/s00181-012-0553-9">Link</a>.</li>
+</ul></li>
+<li><strong>中文文献</strong>
+<ul>
+<li>连玉君, 程建 (2006). 不同成长机会下资本结构与经营绩效之关系研究. <em>当代经济科学</em>, (2), 1–9.</li>
+<li>胡援成, 肖德勇 (2007). 经济发展门槛与自然资源诅咒——基于我国省际层面的面板数据实证研究. <em>管理世界</em>, (4), 15–23.</li>
+<li>李平, 许家云 (2011). 国际智力回流的技术扩散效应研究——基于中国地区差异及门槛回归的实证分析. <em>经济学(季刊)</em>, (3), 1181–1202.</li>
+<li>李梅, 柳士昌 (2012). 对外直接投资逆向技术溢出的地区差异和门槛效应. <em>管理世界</em>, (1), 21–32.</li>
+<li>王永水, 朱平芳 (2016). 中国经济增长中的人力资本门槛效应研究. <em>统计研究</em>, 33(1), 13–19.</li>
+<li>郭桂霞, 彭艳 (2016). 我国资本账户开放的门槛效应研究. <em>金融研究</em>, (3), 42–58.</li>
+</ul></li>
+</ul>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const disableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'prefetch';
+    }
+  }
+  const enableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'stylesheet';
+    }
+  }
+  const manageTransitions = (selector, allowTransitions) => {
+    const els = window.document.querySelectorAll(selector);
+    for (let i=0; i < els.length; i++) {
+      const el = els[i];
+      if (allowTransitions) {
+        el.classList.remove('notransition');
+      } else {
+        el.classList.add('notransition');
+      }
+    }
+  }
+  const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+    const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+    const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+    let newTheme = '';
+    if(darkModeDefault) {
+      newTheme = isAlternate ? baseTheme : alternateTheme;
+    } else {
+      newTheme = isAlternate ? alternateTheme : baseTheme;
+    }
+    const changeGiscusTheme = () => {
+      // From: https://github.com/giscus/giscus/issues/336
+      const sendMessage = (message) => {
+        const iframe = document.querySelector('iframe.giscus-frame');
+        if (!iframe) return;
+        iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+      }
+      sendMessage({
+        setConfig: {
+          theme: newTheme
+        }
+      });
+    }
+    const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+    if (isGiscussLoaded) {
+      changeGiscusTheme();
+    }
+  }
+  const toggleColorMode = (alternate) => {
+    // Switch the stylesheets
+    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+    manageTransitions('#quarto-margin-sidebar .nav-link', false);
+    if (alternate) {
+      enableStylesheet(alternateStylesheets);
+      for (const sheetNode of alternateStylesheets) {
+        if (sheetNode.id === "quarto-bootstrap") {
+          toggleBodyColorMode(sheetNode);
+        }
+      }
+    } else {
+      disableStylesheet(alternateStylesheets);
+      toggleBodyColorPrimary();
+    }
+    manageTransitions('#quarto-margin-sidebar .nav-link', true);
+    // Switch the toggles
+    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+    for (let i=0; i < toggles.length; i++) {
+      const toggle = toggles[i];
+      if (toggle) {
+        if (alternate) {
+          toggle.classList.add("alternate");     
+        } else {
+          toggle.classList.remove("alternate");
+        }
+      }
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455)
+    if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+      manageTransitions("body", false);
+      window.scrollTo(0, 1);
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        manageTransitions("body", true);
+      }, 40);  
+    }
+  }
+  const isFileUrl = () => { 
+    return window.location.protocol === 'file:';
+  }
+  const hasAlternateSentinel = () => {  
+    let styleSentinel = getColorSchemeSentinel();
+    if (styleSentinel !== null) {
+      return styleSentinel === "alternate";
+    } else {
+      return false;
+    }
+  }
+  const setStyleSentinel = (alternate) => {
+    const value = alternate ? "alternate" : "default";
+    if (!isFileUrl()) {
+      window.localStorage.setItem("quarto-color-scheme", value);
+    } else {
+      localAlternateSentinel = value;
+    }
+  }
+  const getColorSchemeSentinel = () => {
+    if (!isFileUrl()) {
+      const storageValue = window.localStorage.getItem("quarto-color-scheme");
+      return storageValue != null ? storageValue : localAlternateSentinel;
+    } else {
+      return localAlternateSentinel;
+    }
+  }
+  const darkModeDefault = false;
+  let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+  // Dark / light mode switch
+  window.quartoToggleColorScheme = () => {
+    // Read the current dark / light value 
+    let toAlternate = !hasAlternateSentinel();
+    toggleColorMode(toAlternate);
+    setStyleSentinel(toAlternate);
+    toggleGiscusIfUsed(toAlternate, darkModeDefault);
+  };
+  // Ensure there is a toggle, if there isn't float one in the top right
+  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+    const a = window.document.createElement('a');
+    a.classList.add('top-right');
+    a.classList.add('quarto-color-scheme-toggle');
+    a.href = "";
+    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+    const i = window.document.createElement("i");
+    i.classList.add('bi');
+    a.appendChild(i);
+    window.document.body.appendChild(a);
+  }
+  // Switch to dark mode if need be
+  if (hasAlternateSentinel()) {
+    toggleColorMode(true);
+  } else {
+    toggleColorMode(false);
+  }
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp("https:\/\/lianxhcn\.github\.io\/dsfin\/");
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+          // target, if specified
+          link.setAttribute("target", "_blank");
+          if (link.getAttribute("rel") === null) {
+            link.setAttribute("rel", "noopener");
+          }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../../Lecture/panel_xtplfc/01_Panel_threshold_01_theory.html" class="pagination-link" aria-label="静态面板门槛模型：理论与方法">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">静态面板门槛模型：理论与方法</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../../Lecture/panel_xtplfc/04_xtplfc的直观解读及xthreg实现.html" class="pagination-link" aria-label="变系数模型">
+        <span class="nav-page-text"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">变系数模型</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+      &nbsp;
+    </div>   
+    <div class="nav-footer-center">
+<p><a href="https://www.lianxh.cn">lianxh.cn</a></p>
+</div>
+    <div class="nav-footer-right">
+<p>Support: <a href="https://lianxhcn.github.io/quarto_book/">Quarto</a></p>
+</div>
+  </div>
+</footer>
+
+
+
+
+</body></html>

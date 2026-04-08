@@ -1,0 +1,9 @@
+# 参考文献
+
+- Du, K., Cheng, Y., & Yao, X. (2021). Environmental regulation, green technology innovation, and industrial structure upgrading: The road to the green transformation of Chinese cities. **Energy Economics**, 98, 105247. [Link](https://doi.org/10.1016/j.eneco.2021.105247) (rep), [PDF](http://sci-hub.ren/10.1016/j.eneco.2021.105247), [-Replication-](https://ars.els-cdn.com/content/image/1-s2.0-S0140988321001523-mmc1.zip), [Google](<https://scholar.google.com/scholar?q=Environmental regulation, green technology innovation, and industrial structure upgrading: The road to the green transformation of Chinese cities>). 
+- Du, C., et al. (2024). Does manufacturing agglomeration promote green productivity growth in China? **Energy Economics**. [Link](https://doi.org/10.1016/j.eneco.2024.107352), [PDF](https://file-lianxh.oss-cn-shenzhen.aliyuncs.com/Refs/refs_common/Du_2024_EE-Does_manufacturing_agglomeration.pdf), [Replication](https://ars.els-cdn.com/content/image/1-s2.0-S0140988324000604-mmc1.zip)
+- Hansen, B. E. (**1999**). Threshold effects in non-dynamic panels: Estimation, testing, and inference. **Journal of Econometrics**, 93(2), 345–368. [Link](https://doi.org/10.1016/S0304-4076(99)00025-1), [-PDF-](http://sci-hub.ren/10.1016/S0304-4076(99)00025-1), [Google](https://scholar.google.com/scholar?q=Threshold+effects+in+non-dynamic+panels).
+- Wang, Q. **2015**. Fixed-Effect Panel Threshold Model using Stata. **The Stata Journal**, 15(1), 121–134. [Link](https://journals.sagepub.com/doi/10.1177/1536867X1501500108), [PDF](https://journals.sagepub.com/doi/pdf/10.1177/1536867X1501500108), [Google](<https://scholar.google.com/scholar?q=Fixed-Effect Panel Threshold Model using Stata>).
+
+
+  

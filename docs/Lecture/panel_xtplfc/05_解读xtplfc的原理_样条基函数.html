@@ -1,0 +1,1872 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.6.39">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>28&nbsp; 样条基函数与变系数模型：Stata 实操 – 金融数据分析与建模</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script><script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../Lecture/panel_xtplfc/Du_2021_EE_中文精要.html" rel="next">
+<link href="../../Lecture/panel_xtplfc/04_xtplfc的直观解读及xthreg实现.html" rel="prev">
+<link href="../../images/book-logo.png" rel="icon" type="image/png">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-e8fb9d25728d58bfeac61b497e4a6629.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark-57a92833092fd6dc0d7710b6bdfff9c5.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-7ef202e96c563d31d9e5226e4d6cabf9.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark-490ba4e843cb1303a232ed0c676384f2.min.css" rel="prefetch" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
+
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../Lecture/panel_xtplfc/01_Panel_threshold_01_theory.html"><strong>面板变系数模型</strong></a></li><li class="breadcrumb-item"><a href="../../Lecture/panel_xtplfc/05_解读xtplfc的原理_样条基函数.html"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">样条基函数与变系数模型：Stata 实操</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header sidebar-header-stacked">
+      <a href="https://lianxhcn.github.io/dsfin/" class="sidebar-logo-link">
+      <img src="../../images/book-logo.png" alt="" class="sidebar-logo py-0 d-lg-inline d-none">
+      </a>
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../../">DS Finance</a> 
+        <div class="sidebar-tools-main tools-wide">
+    <a href="https://github.com/lianxhcn/dsfin" title="" class="quarto-navigation-tool px-1" aria-label=""><i class="bi bi-github"></i></a>
+    <a href="https://www.lianxh.cn" title="" class="quarto-navigation-tool px-1" aria-label=""><i class="bi bi-house-fill"></i></a>
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">封面</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/00_intro.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">📚课程资料</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/00_setup.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">📌课件使用指南</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/01_homework.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">🚀作业</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text"><strong>环境配置</strong></span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/00-setup/01_00_coding_with_AI.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">借助 AI 写代码</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/00-setup/01_01_install_anaconda.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Python：安装和环境配置</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/00-setup/01_02_jupyter_notebook.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Jupyter Notebook 的使用</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/00-setup/01_03_install_FAQs.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Python 安装常见问题</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/00-setup/01_04_markdown.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Markdown</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/00-setup/01_06_conda_env.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">虚拟环境管理</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
+ <span class="menu-text"><strong>数据分析</strong></span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/data_get_data/lecture_get_data.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">金融数据获取</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/data_get_data/data_02_get_data_GMD.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">获取数据：GMD</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/data_get_data/data_03_TS_SZ_index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">上证指数的时序特征</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/data_store_structure/lecture_data_management_organization.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">数据管理与组织</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/data_manage/lecture_data_management.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">数据管理：格式、存储与工作流</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/data_clean/lecture_data_clean.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">数据清洗</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true">
+ <span class="menu-text"><strong>可视化</strong></span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/data_visual/graph_01_intro.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Python 可视化：简介</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/data_visual/graph_dis_box_violin.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">箱型图和小提琴图</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/data_visual/graph_dis_histogram.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">直方图</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/data_visual/graph_dis_kdensity.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">核密度函数图</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/data_visual/lec_distribution.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">数据分布：原理与可视化</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/data_visual/lec_distribution_codes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">数据分布：原理与可视化 — 配套代码</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/data_visual/lec_visualization.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">数据可视化：一些基本原则</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true">
+ <span class="menu-text"><strong>数据爬取</strong></span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/crawing/craw_01_introduction.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">网络爬虫简介</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/crawing/craw_02_sec01_lingnan_prompt.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">实例-提示词模式：爬取岭南学院教师名录</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/crawing/craw_02_sec02_lingnan_dialog.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">实例-对话模式：爬取岭南学院教师名录</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true">
+ <span class="menu-text"><strong>面板模型：固定效应</strong></span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/panel_fe/panel_HDFE.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">HDFE：多维固定效应</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/panel_fe/panel_IntFE.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">交互固定效应模型</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="true">
+ <span class="menu-text"><strong>面板变系数模型</strong></span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/panel_xtplfc/01_Panel_threshold_01_theory.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">静态面板门槛模型：理论与方法</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/panel_xtplfc/02_Panel_threshold_02_codes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">静态面板门槛模型：Stata 实操</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/panel_xtplfc/04_xtplfc的直观解读及xthreg实现.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">变系数模型</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/panel_xtplfc/05_解读xtplfc的原理_样条基函数.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">样条基函数与变系数模型：Stata 实操</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/panel_xtplfc/Du_2021_EE_中文精要.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">非线性调节效应怎么做？部分线性函数型面板数据模型</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="true">
+ <span class="menu-text"><strong>文本分析</strong></span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/text_analysis/lecture_text_01_ailn.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">30</span>&nbsp; <span class="chapter-title">金融文本分析（上）——从文本到结构化数据</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/text_analysis/lecture_text_02_ailn.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">31</span>&nbsp; <span class="chapter-title">金融文本分析（下）——情感分析与文本建模</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/text_analysis/lecture_text_analysis_01_claude.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">32</span>&nbsp; <span class="chapter-title">文本数据处理基础</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/text_analysis/lecture_text_analysis_02_claude.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">33</span>&nbsp; <span class="chapter-title">文本分析：情感分析与主题建模</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" role="navigation" aria-expanded="true">
+ <span class="menu-text"><strong>附录：Python 提示词</strong></span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-8" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../appendix_python/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">概览</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../appendix_python/a1_setup.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">A1. 环境配置</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../appendix_python/a2_project.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">A2. 项目规划与版本控制</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../appendix_python/a3_concepts.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">A3. 提示词核心词汇</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../appendix_python/a4_data.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">A4. 数据获取与清洗</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../appendix_python/a5_visualization.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">A5. 数据可视化</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../appendix_python/a6_modeling.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">A6. 统计建模</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../appendix_python/a7_results.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">A7. 结果呈现与表格美化</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../appendix_python/a8_workflow.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">A8. 上下文管理与调试</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#数据准备" id="toc-数据准备" class="nav-link active" data-scroll-target="#数据准备"><span class="header-section-number">28.1</span> 数据准备</a></li>
+  <li><a href="#手动构造样条基函数" id="toc-手动构造样条基函数" class="nav-link" data-scroll-target="#手动构造样条基函数"><span class="header-section-number">28.2</span> 手动构造样条基函数</a>
+  <ul class="collapse">
+  <li><a href="#step-1-确定样条结点位置" id="toc-step-1-确定样条结点位置" class="nav-link" data-scroll-target="#step-1-确定样条结点位置"><span class="header-section-number">28.2.1</span> Step 1: 确定样条结点位置</a></li>
+  <li><a href="#step-2-构造三次样条基函数" id="toc-step-2-构造三次样条基函数" class="nav-link" data-scroll-target="#step-2-构造三次样条基函数"><span class="header-section-number">28.2.2</span> 2.2 Step 2: 构造三次样条基函数</a></li>
+  <li><a href="#step-3-构造交互项-z-h" id="toc-step-3-构造交互项-z-h" class="nav-link" data-scroll-target="#step-3-构造交互项-z-h"><span class="header-section-number">28.2.3</span> Step 3: 构造交互项 (Z × h)</a></li>
+  </ul></li>
+  <li><a href="#估计模型手动方法" id="toc-估计模型手动方法" class="nav-link" data-scroll-target="#估计模型手动方法"><span class="header-section-number">28.3</span> 估计模型（手动方法）</a></li>
+  <li><a href="#计算边际效应-γu" id="toc-计算边际效应-γu" class="nav-link" data-scroll-target="#计算边际效应-γu"><span class="header-section-number">28.4</span> 计算边际效应 γ(U)</a></li>
+  <li><a href="#结果可视化" id="toc-结果可视化" class="nav-link" data-scroll-target="#结果可视化"><span class="header-section-number">28.5</span> 结果可视化</a>
+  <ul class="collapse">
+  <li><a href="#基本散点图-置信区间" id="toc-基本散点图-置信区间" class="nav-link" data-scroll-target="#基本散点图-置信区间"><span class="header-section-number">28.5.1</span> 基本散点图 + 置信区间</a></li>
+  <li><a href="#分段绘制展示样条的分段特性" id="toc-分段绘制展示样条的分段特性" class="nav-link" data-scroll-target="#分段绘制展示样条的分段特性"><span class="header-section-number">28.5.2</span> 分段绘制（展示样条的分段特性）</a></li>
+  </ul></li>
+  <li><a href="#使用-xtplfc-命令" id="toc-使用-xtplfc-命令" class="nav-link" data-scroll-target="#使用-xtplfc-命令"><span class="header-section-number">28.6</span> 使用 xtplfc 命令</a>
+  <ul class="collapse">
+  <li><a href="#模型设定" id="toc-模型设定" class="nav-link" data-scroll-target="#模型设定"><span class="header-section-number">28.6.1</span> 模型设定</a></li>
+  <li><a href="#对比两种方法的结果" id="toc-对比两种方法的结果" class="nav-link" data-scroll-target="#对比两种方法的结果"><span class="header-section-number">28.6.2</span> 对比两种方法的结果</a></li>
+  </ul></li>
+  <li><a href="#稳健性检验" id="toc-稳健性检验" class="nav-link" data-scroll-target="#稳健性检验"><span class="header-section-number">28.7</span> 稳健性检验</a>
+  <ul class="collapse">
+  <li><a href="#改变结点数量" id="toc-改变结点数量" class="nav-link" data-scroll-target="#改变结点数量"><span class="header-section-number">28.7.1</span> 改变结点数量</a></li>
+  <li><a href="#使用不同的样条类型" id="toc-使用不同的样条类型" class="nav-link" data-scroll-target="#使用不同的样条类型"><span class="header-section-number">28.7.2</span> 使用不同的样条类型</a></li>
+  </ul></li>
+  <li><a href="#结果解释示例" id="toc-结果解释示例" class="nav-link" data-scroll-target="#结果解释示例"><span class="header-section-number">28.8</span> 结果解释示例</a>
+  <ul class="collapse">
+  <li><a href="#如何解读边际效应曲线" id="toc-如何解读边际效应曲线" class="nav-link" data-scroll-target="#如何解读边际效应曲线"><span class="header-section-number">28.8.1</span> 如何解读边际效应曲线？</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../Lecture/panel_xtplfc/01_Panel_threshold_01_theory.html"><strong>面板变系数模型</strong></a></li><li class="breadcrumb-item"><a href="../../Lecture/panel_xtplfc/05_解读xtplfc的原理_样条基函数.html"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">样条基函数与变系数模型：Stata 实操</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">样条基函数与变系数模型：Stata 实操</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<blockquote class="blockquote">
+<p><strong>课程</strong>：部分线性函数型面板数据模型 (PLFC)</p>
+<p><strong>数据来源</strong>：Du et al.&nbsp;(2021), Energy Economics</p>
+<p><strong>目标</strong>：理解样条基函数如何逼近未知的函数系数 γ(U)</p>
+</blockquote>
+<hr>
+<section id="数据准备" class="level2" data-number="28.1">
+<h2 data-number="28.1" class="anchored" data-anchor-id="数据准备"><span class="header-section-number">28.1</span> 数据准备</h2>
+<p>使用 Du et al.&nbsp;(2021) 的中国城市面板数据。</p>
+<div id="cell-2" class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode stata code-with-copy"><code class="sourceCode stata"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>*----- 载入数据</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="kw">use</span> <span class="st">"https://github.com/lianxhcn/data/raw/refs/heads/main/stata/Du2021EE_ERdata.dta"</span>, <span class="kw">clear</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>*----- 设定面板结构</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>xtset cityno <span class="fu">year</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>(Du et al. (2021, EE) https://doi.org/10.1016/j.eneco.2021.105247)
+
+Panel variable: cityno (strongly balanced)
+ Time variable: year, 2002 to 2015
+         Delta: 1 unit</code></pre>
+</div>
+</div>
+<div id="cell-3" class="cell" data-execution_count="124">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode stata code-with-copy"><code class="sourceCode stata"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>*----- 查看主要变量</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="kw">describe</span> gti er gdp rd pop hc <span class="fu">inv</span> fdi</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Variable      Storage   Display    Value
+    name         type    format    label      Variable label
+-------------------------------------------------------------------------------
+gti             int     %10.0g                Green technology patents
+                                                (authorized, by application
+                                                date)
+er              double  %10.0g                ER: environmental regulation
+                                                index (entropy-weight
+                                                composite)
+gdp             double  %10.0g                Real GDP per capita (2001
+                                                constant prices)
+rd              double  %10.0g                Fiscal exp. on tech &amp; education /
+                                                GDP
+pop             double  %10.0g                Population (10,000 persons)
+hc              double  %10.0g                High school students (1,000
+                                                persons)
+inv             double  %10.0g                Fixed-asset investment / GDP
+fdi             double  %10.0g                FDI / GDP</code></pre>
+</div>
+</div>
+<div id="cell-4" class="cell" data-execution_count="10">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode stata code-with-copy"><code class="sourceCode stata"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>*----- 描述性统计</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="kw">tabstat</span> lngti er lngdp lnrd lnpop lnhc lninv lnfdi, <span class="co">///</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>        f(%4.2f) <span class="fu">s</span>(n <span class="kw">mean</span> <span class="fu">sd</span> <span class="fu">min</span> <span class="fu">max</span>) c(<span class="fu">s</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Variable |         N      Mean        SD       Min       Max
+-------------+--------------------------------------------------
+       lngti |   1470.00      4.32      1.89      0.00      9.53
+          er |   1470.00      0.08      0.04      0.02      0.45
+       lngdp |   1470.00     10.09      0.67      8.12     11.76
+        lnrd |   1470.00     -0.06      0.61     -1.84      1.65
+       lnpop |   1470.00      6.11      0.72      3.31      8.01
+        lnhc |   1470.00      4.29      1.36     -0.27      6.95
+       lninv |   1470.00      3.95      0.42      2.46      5.10
+       lnfdi |   1470.00      0.47      1.19     -6.01      3.00
+----------------------------------------------------------------</code></pre>
+</div>
+</div>
+<p><strong>变量说明</strong>： - <code>lngti</code>: 绿色技术创新（对数） - <code>er</code>: 环境规制强度 - <code>lngdp</code>: 人均 GDP（对数）—— 调节变量 U - <code>lnrd</code>: 科技与教育经费投入 - <code>lnpop</code>: 城市规模 - <code>lnhc</code>: 人力资本 - <code>lninv</code>: 固定资产投资 - <code>lnfdi</code>: 经济开放度</p>
+</section>
+<section id="手动构造样条基函数" class="level2" data-number="28.2">
+<h2 data-number="28.2" class="anchored" data-anchor-id="手动构造样条基函数"><span class="header-section-number">28.2</span> 手动构造样条基函数</h2>
+<p>为了深入理解 <code>xtplfc</code> 的工作原理，我们先手动构造三次样条基函数。</p>
+<section id="step-1-确定样条结点位置" class="level3" data-number="28.2.1">
+<h3 data-number="28.2.1" class="anchored" data-anchor-id="step-1-确定样条结点位置"><span class="header-section-number">28.2.1</span> Step 1: 确定样条结点位置</h3>
+<p>选择 lngdp 的 30% 和 60% 分位点作为结点。</p>
+<div id="cell-8" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode stata code-with-copy"><code class="sourceCode stata"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">use</span> <span class="st">"https://github.com/lianxhcn/data/raw/refs/heads/main/stata/Du2021EE_ERdata.dta"</span>, <span class="kw">clear</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>*----- 计算分位点作为结点</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>_pctile lngdp, <span class="kw">p</span>(30 60)</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="kw">global</span> knot1: dis %6.3f <span class="fu">r</span>(r1) </span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="kw">global</span> knot2: dis %6.3f <span class="fu">r</span>(r2) </span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="kw">display</span> <span class="st">"Knot 1 (30th percentile): "</span> <span class="ot">$knot1</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="kw">display</span> <span class="st">"Knot 2 (60th percentile): "</span> <span class="ot">$knot2</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Running D:\stata19/profile.do ...</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<style>div.jp-Notebook .datagrid-container {min-height: 448px; }</style>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>(Du et al. (2021, EE) https://doi.org/10.1016/j.eneco.2021.105247)
+Knot 1 (30th percentile): 9.716
+Knot 2 (60th percentile): 10.281</code></pre>
+</div>
+</div>
+<div id="cell-9" class="cell" data-execution_count="2">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode stata code-with-copy"><code class="sourceCode stata"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>*----- 可视化结点位置</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="kw">kdensity</span> lngdp, <span class="co">///</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>    <span class="bn">xline</span>(<span class="ot">$knot1</span>, lcolor(<span class="kw">red</span>)  lpattern(<span class="kw">dash</span>)) <span class="co">///</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>    <span class="bn">xline</span>(<span class="ot">$knot2</span>, lcolor(<span class="bn">blue</span>) lpattern(<span class="kw">dash</span>)) <span class="co">///</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>    <span class="bn">xtitle</span>(<span class="st">"人均GDP（对数）"</span>) <span class="co">///</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>    <span class="bn">ytitle</span>(<span class="st">"频数"</span>) <span class="co">///</span></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>    <span class="bn">title</span>(<span class="st">"lngdp 分布与样条结点"</span>) <span class="co">///</span></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>    <span class="kw">note</span>(<span class="st">"红线: κ₁ = $knot1 (30%); 蓝线: κ₂ = $knot2 (60%)"</span>) <span class="co">///</span></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>    <span class="dv">scheme</span>(s2mono)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="05_解读xtplfc的原理_样条基函数_files/figure-html/cell-6-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="step-2-构造三次样条基函数" class="level3" data-number="28.2.2">
+<h3 data-number="28.2.2" class="anchored" data-anchor-id="step-2-构造三次样条基函数"><span class="header-section-number">28.2.2</span> 2.2 Step 2: 构造三次样条基函数</h3>
+<p>构造 6 个基函数： - h1 = 1 (常数项) - h2 = U (线性项) - h3 = U² (二次项) - h4 = U³ (三次项) - h5 = (U - κ₁)³₊ (第一个样条调整项) - h6 = (U - κ₂)³₊ (第二个样条调整项)</p>
+<div id="cell-11" class="cell" data-execution_count="3">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode stata code-with-copy"><code class="sourceCode stata"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>*----- 基函数 h1 到 h4：多项式项</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>*<span class="kw">gen</span> h1 = 1    <span class="co">// Stata 会自动加入常数项，因此不需要这一项</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="kw">gen</span> h2 = lngdp</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="kw">gen</span> h3 = lngdp^2</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="kw">gen</span> h4 = lngdp^3</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>*----- 基函数 h5 和 h6：样条调整项（截断幂函数）</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="kw">gen</span> h5 = (lngdp - <span class="ot">$knot1</span>)^3 <span class="kw">if</span> lngdp &gt; <span class="ot">$knot1</span></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a><span class="kw">replace</span> h5 = 0 <span class="kw">if</span> lngdp &lt;= <span class="ot">$knot1</span></span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a><span class="kw">gen</span> h6 = (lngdp - <span class="ot">$knot2</span>)^3 <span class="kw">if</span> lngdp &gt; <span class="ot">$knot2</span></span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a><span class="kw">replace</span> h6 = 0 <span class="kw">if</span> lngdp &lt;= <span class="ot">$knot2</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>(441 missing values generated)
+(441 real changes made)
+(884 missing values generated)
+(884 real changes made)</code></pre>
+</div>
+</div>
+<div id="cell-12" class="cell" data-execution_count="129">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode stata code-with-copy"><code class="sourceCode stata"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>*----- 检查基函数的分布</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="kw">summarize</span> h2-h6</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Variable |        Obs        Mean    Std. dev.       Min        Max
+-------------+---------------------------------------------------------
+          h2 |      1,470    10.08827    .6711921   8.116106   11.75655
+          h3 |      1,470    102.2234    13.49979   65.87118   138.2164
+          h4 |      1,470    1040.305    204.7095   534.6175   1624.947
+          h5 |      1,470    .5914555    1.111614          0   8.496483
+          h6 |      1,470    .1070663     .308674          0   3.212612</code></pre>
+</div>
+</div>
+</section>
+<section id="step-3-构造交互项-z-h" class="level3" data-number="28.2.3">
+<h3 data-number="28.2.3" class="anchored" data-anchor-id="step-3-构造交互项-z-h"><span class="header-section-number">28.2.3</span> Step 3: 构造交互项 (Z × h)</h3>
+<p>将环境规制（er）与每个基函数相乘，得到 6 个交互项。</p>
+<p><strong>核心思想</strong>：原模型 <span class="math inline">\(Y=\gamma(U) Z+\beta X+\alpha\)</span> ，其中 <span class="math inline">\(\gamma(U) \approx \sum \theta_j {\color{blue}{h_j(U)}}\)</span></p>
+<p>因此，</p>
+<p><span class="math display">\[Y \approx \sum \theta_j\left[Z \cdot {\color{blue}{h_j(U)}}\right]+\beta X+\alpha\]</span></p>
+<p>即 <span class="math inline">\(Z \cdot {\color{blue}{h_j(U)}}\)</span> 成为新的解释变量。</p>
+<div id="cell-14" class="cell" data-execution_count="4">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode stata code-with-copy"><code class="sourceCode stata"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>*----- 构造交互项（从 h2 开始，以防止完全共线性）</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="kw">forvalues</span> j = 2/6 {</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">gen</span> h<span class="ot">`j'</span>_er = h<span class="ot">`j'</span> * er</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a><span class="kw">ds</span> <span class="kw">h</span>*_er</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>h2_er  h3_er  h4_er  h5_er  h6_er</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="估计模型手动方法" class="level2" data-number="28.3">
+<h2 data-number="28.3" class="anchored" data-anchor-id="估计模型手动方法"><span class="header-section-number">28.3</span> 估计模型（手动方法）</h2>
+<p>使用 <code>reghdfe</code> 吸收城市固定效应，等价于先一阶差分再 OLS。</p>
+<div id="cell-16" class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode stata code-with-copy"><code class="sourceCode stata"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>*----- 安装 reghdfe（如未安装）</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>* <span class="kw">ssc</span> install reghdfe, <span class="kw">replace</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cell-17" class="cell" data-execution_count="5">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode stata code-with-copy"><code class="sourceCode stata"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>*----- 估计模型</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>reghdfe lngti h2_er h3_er h4_er h5_er h6_er <span class="co">///</span></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>        lnrd lnpop lnhc lninv lnfdi, <span class="co">///</span></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>        absorb(cityno) <span class="kw">vce</span>(<span class="kw">cluster</span> cityno)</span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a><span class="kw">est</span> <span class="kw">store</span> manual_est  <span class="co">// 存结果</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>(MWFE estimator converged in 1 iterations)
+
+HDFE Linear regression                            Number of obs   =      1,470
+Absorbing 1 HDFE group                            F(  10,    104) =     138.27
+Statistics robust to heteroskedasticity           Prob &gt; F        =     0.0000
+                                                  R-squared       =     0.9354
+                                                  Adj R-squared   =     0.9299
+                                                  Within R-sq.    =     0.8211
+Number of clusters (cityno)  =        105         Root MSE        =     0.4998
+
+                               (Std. err. adjusted for 105 clusters in cityno)
+------------------------------------------------------------------------------
+             |               Robust
+       lngti | Coefficient  std. err.      t    P&gt;|t|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+       h2_er |   -111.508     35.145    -3.17   0.002     -181.201     -41.814
+       h3_er |     21.648      7.176     3.02   0.003        7.417      35.878
+       h4_er |     -1.050      0.367    -2.86   0.005       -1.777      -0.323
+       h5_er |      7.731      4.230     1.83   0.071       -0.658      16.120
+       h6_er |     -9.640      6.283    -1.53   0.128      -22.099       2.819
+        lnrd |      0.785      0.129     6.10   0.000        0.530       1.041
+       lnpop |      2.231      0.390     5.72   0.000        1.458       3.004
+        lnhc |      0.453      0.150     3.02   0.003        0.155       0.751
+       lninv |      0.461      0.156     2.95   0.004        0.151       0.771
+       lnfdi |     -0.052      0.034    -1.54   0.126       -0.119       0.015
+       _cons |    -13.037      2.120    -6.15   0.000      -17.241      -8.832
+------------------------------------------------------------------------------
+
+Absorbed degrees of freedom:
+-----------------------------------------------------+
+ Absorbed FE | Categories  - Redundant  = Num. Coefs |
+-------------+---------------------------------------|
+      cityno |       105         105           0    *|
+-----------------------------------------------------+
+* = FE nested within cluster; treated as redundant for DoF computation</code></pre>
+</div>
+</div>
+<p><strong>结果解读</strong>： - <code>h2_er</code> 到 <code>h6_er</code> 的系数即为 <span class="math inline">\(\theta_2\)</span> 到 <span class="math inline">\(\theta_6\)</span> - 这些系数本身不直接解释，需要组合成 <span class="math inline">\(\gamma(U)\)</span></p>
+</section>
+<section id="计算边际效应-γu" class="level2" data-number="28.4">
+<h2 data-number="28.4" class="anchored" data-anchor-id="计算边际效应-γu"><span class="header-section-number">28.4</span> 计算边际效应 γ(U)</h2>
+<p>由于模型中包含了拐点项，即 <span class="math inline">\((U - \kappa_k)^3_+\)</span>，我们无法使用 <code>margins</code> 命令计算边际效应。此时，需要借助 <code>predictnl</code> 命令来计算每个观测点的边际效应，即</p>
+<p><span class="math display">\[\hat{\gamma}(U_i) = \sum_{j=2}^{6} \hat{\theta}_j h_j(U_i)\]</span></p>
+<p>标准误可以使用 <code>predictnl</code> 的 <code>se()</code> 选项计算，详情参见 <a href="https://www.stata.com/manuals/rpredictnl.pdf"><strong>[R]</strong> predictnl</a>。</p>
+<div id="cell-20" class="cell" data-execution_count="7">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode stata code-with-copy"><code class="sourceCode stata"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>*----- 计算 γ̂(U) = θ̂₂h₂(U) + θ̂₃h₃(U) + ... + θ̂₆h₆(U)</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>cap <span class="kw">drop</span> gamma_hat </span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>cap <span class="kw">drop</span> gamma_se</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a><span class="kw">predictnl</span> gamma_hat = _b[h2_er] * lngdp <span class="co">///</span></span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>                    + _b[h3_er] * lngdp^2 <span class="co">///</span></span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>                    + _b[h4_er] * lngdp^3 <span class="co">///</span></span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>                    + _b[h5_er] * <span class="fu">max</span>(lngdp - <span class="ot">$knot1</span>, 0)^3 <span class="co">///</span></span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>                    + _b[h6_er] * <span class="fu">max</span>(lngdp - <span class="ot">$knot2</span>, 0)^3, <span class="co">///</span></span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>                    se(gamma_se)</span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a>*----- 构造 95% 置信区间</span>
+<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a><span class="kw">gen</span> gamma_lb = gamma_hat - 1.96 * gamma_se</span>
+<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a><span class="kw">gen</span> gamma_ub = gamma_hat + 1.96 * gamma_se</span>
+<span id="cb20-14"><a href="#cb20-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-15"><a href="#cb20-15" aria-hidden="true" tabindex="-1"></a><span class="kw">label</span> <span class="kw">var</span> gamma_hat <span class="st">"ER 对 GTI 的边际效应"</span></span>
+<span id="cb20-16"><a href="#cb20-16" aria-hidden="true" tabindex="-1"></a><span class="kw">label</span> <span class="kw">var</span> gamma_lb <span class="st">"95% CI 下界"</span></span>
+<span id="cb20-17"><a href="#cb20-17" aria-hidden="true" tabindex="-1"></a><span class="kw">label</span> <span class="kw">var</span> gamma_ub <span class="st">"95% CI 上界"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cell-21" class="cell" data-execution_count="8">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode stata code-with-copy"><code class="sourceCode stata"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>*----- 查看边际效应的分布</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="kw">summarize</span> gamma_hat gamma_se gamma_lb gamma_ub</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Variable |        Obs        Mean    Std. dev.       Min        Max
+-------------+---------------------------------------------------------
+   gamma_hat |      1,470   -.9434624     7.80896  -40.47254   9.881587
+    gamma_se |      1,470    1.705248    .9714625   1.120716   9.403664
+    gamma_lb |      1,470   -4.285748    9.511348  -58.90372   6.931313
+    gamma_ub |      1,470    2.398824    6.224541  -22.04136    13.4857</code></pre>
+</div>
+</div>
+</section>
+<section id="结果可视化" class="level2" data-number="28.5">
+<h2 data-number="28.5" class="anchored" data-anchor-id="结果可视化"><span class="header-section-number">28.5</span> 结果可视化</h2>
+<section id="基本散点图-置信区间" class="level3" data-number="28.5.1">
+<h3 data-number="28.5.1" class="anchored" data-anchor-id="基本散点图-置信区间"><span class="header-section-number">28.5.1</span> 基本散点图 + 置信区间</h3>
+<div id="cell-24" class="cell" data-execution_count="9">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode stata code-with-copy"><code class="sourceCode stata"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>*----- 绘制边际效应曲线</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="kw">twoway</span> (rarea gamma_lb gamma_ub lngdp, <span class="kw">color</span>(<span class="bn">blue</span>*0.2) <span class="kw">sort</span>) <span class="co">///</span></span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>       (<span class="kw">scatter</span> gamma_hat lngdp, msize(tiny) mcolor(<span class="kw">red</span>%30)) <span class="co">///</span></span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>       (lpoly gamma_hat lngdp, lcolor(<span class="bn">blue</span>%60) lwidth(thick) degree(3)), <span class="co">///</span></span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>       <span class="kw">yline</span>(0, lcolor(<span class="bn">gray</span>) lp(<span class="kw">dash</span>)) <span class="co">///</span></span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>       <span class="bn">xtitle</span>(<span class="st">"ln(人均 GDP)，滞后 1 期）"</span>, <span class="kw">size</span>(medium)) <span class="co">///</span></span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>       <span class="bn">ytitle</span>(<span class="st">"环境规制的边际效应 γ(lngdp)"</span>, <span class="kw">size</span>(medium)) <span class="co">///</span></span>
+<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a>       <span class="bn">title</span>(<span class="st">"ER 对绿色技术创新的变系数效应"</span>, <span class="kw">size</span>(large)) <span class="co">///</span></span>
+<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a>       <span class="bn">subtitle</span>(<span class="st">"手动构造样条基函数"</span>, <span class="kw">size</span>(medium)) <span class="co">///</span></span>
+<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a>       <span class="bn">legend</span>(<span class="kw">order</span>(1 <span class="st">"95% 置信区间"</span> 2 <span class="st">"预测值"</span> 3 <span class="st">"平滑曲线"</span>) <span class="co">///</span></span>
+<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a>              <span class="bn">ring</span>(0) pos(5) <span class="bn">cols</span>(1)) <span class="co">///</span></span>
+<span id="cb23-12"><a href="#cb23-12" aria-hidden="true" tabindex="-1"></a>       <span class="kw">note</span>(<span class="st">"结点位置: κ₁ = $knot1, κ₂ = $knot2"</span>, <span class="kw">size</span>(*1.3)) <span class="co">///</span></span>
+<span id="cb23-13"><a href="#cb23-13" aria-hidden="true" tabindex="-1"></a>       <span class="dv">scheme</span>(s2mono)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="05_解读xtplfc的原理_样条基函数_files/figure-html/cell-14-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p><a href="https://file.lianxh.cn/Refs/refs_common/Du_2021_EE_xtplfc.pdf">原文</a> 结果：</p>
+<p><img src="https://fig-lianxh.oss-cn-shenzhen.aliyuncs.com/20260125170333.png" width="600" alt="20260125170333"></p>
+</section>
+<section id="分段绘制展示样条的分段特性" class="level3" data-number="28.5.2">
+<h3 data-number="28.5.2" class="anchored" data-anchor-id="分段绘制展示样条的分段特性"><span class="header-section-number">28.5.2</span> 分段绘制（展示样条的分段特性）</h3>
+<div id="cell-27" class="cell" data-execution_count="11">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode stata code-with-copy"><code class="sourceCode stata"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>*----- 创建临时数据用于分段绘图</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="kw">preserve</span></span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">collapse</span> (<span class="kw">mean</span>) gamma_hat gamma_lb gamma_ub, <span class="kw">by</span>(lngdp)</span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>    *----- 定义发展水平分组</span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>    <span class="kw">gen</span> region = 1 <span class="kw">if</span> lngdp &lt;= <span class="ot">$knot1</span></span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>    <span class="kw">replace</span> region = 2 <span class="kw">if</span> lngdp &gt; <span class="ot">$knot1</span> &amp; lngdp &lt;= <span class="ot">$knot2</span></span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a>    <span class="kw">replace</span> region = 3 <span class="kw">if</span> lngdp &gt; <span class="ot">$knot2</span></span>
+<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a>    <span class="kw">label</span> <span class="kw">define</span> region_lab 1 <span class="st">"低发展水平"</span> 2 <span class="st">"中等发展水平"</span> 3 <span class="st">"高发展水平"</span></span>
+<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a>    <span class="kw">label</span> <span class="kw">values</span> region region_lab</span>
+<span id="cb24-12"><a href="#cb24-12" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb24-13"><a href="#cb24-13" aria-hidden="true" tabindex="-1"></a>    *----- 分段绘图</span>
+<span id="cb24-14"><a href="#cb24-14" aria-hidden="true" tabindex="-1"></a>    <span class="kw">twoway</span> (<span class="kw">line</span> gamma_hat lngdp <span class="kw">if</span> region==1, lw(*2.5) lc(<span class="kw">red</span>)   ) <span class="co">///</span></span>
+<span id="cb24-15"><a href="#cb24-15" aria-hidden="true" tabindex="-1"></a>           (<span class="kw">line</span> gamma_hat lngdp <span class="kw">if</span> region==2, lw(*2.5) lc(<span class="bn">blue</span>)) <span class="co">///</span></span>
+<span id="cb24-16"><a href="#cb24-16" aria-hidden="true" tabindex="-1"></a>           (<span class="kw">line</span> gamma_hat lngdp <span class="kw">if</span> region==3, lw(*2.5) lc(<span class="kw">green</span>) ) <span class="co">///</span></span>
+<span id="cb24-17"><a href="#cb24-17" aria-hidden="true" tabindex="-1"></a>           (rarea gamma_lb gamma_ub lngdp, <span class="kw">color</span>(<span class="bn">black</span>*0.5%40)), <span class="co">///</span></span>
+<span id="cb24-18"><a href="#cb24-18" aria-hidden="true" tabindex="-1"></a>           <span class="kw">yline</span>(0, lc(<span class="bn">black</span>*0.6) lp(<span class="kw">dash</span>) lw(*0.6)) <span class="co">///</span></span>
+<span id="cb24-19"><a href="#cb24-19" aria-hidden="true" tabindex="-1"></a>           <span class="bn">xline</span>(<span class="ot">$knot1</span> <span class="ot">$knot2</span>, lcolor(<span class="bn">black</span>*0.6) lp(<span class="kw">dash</span>) lw(*0.6)) <span class="co">///</span></span>
+<span id="cb24-20"><a href="#cb24-20" aria-hidden="true" tabindex="-1"></a>           <span class="bn">xtitle</span>(<span class="st">"人均 GDP（对数）"</span>) <span class="co">///</span></span>
+<span id="cb24-21"><a href="#cb24-21" aria-hidden="true" tabindex="-1"></a>           <span class="bn">ytitle</span>(<span class="st">"边际效应 γ(lngdp)"</span>) <span class="co">///</span></span>
+<span id="cb24-22"><a href="#cb24-22" aria-hidden="true" tabindex="-1"></a>           <span class="bn">title</span>(<span class="st">"样条函数的分段特性"</span>) <span class="co">///</span></span>
+<span id="cb24-23"><a href="#cb24-23" aria-hidden="true" tabindex="-1"></a>           <span class="bn">legend</span>(<span class="kw">order</span>(1 <span class="st">"低发展区域"</span> 2 <span class="st">"中等发展区域"</span> 3 <span class="st">"高发展区域"</span>) <span class="co">///</span></span>
+<span id="cb24-24"><a href="#cb24-24" aria-hidden="true" tabindex="-1"></a>                  pos(5) <span class="fu">r</span>(1) ) <span class="co">///</span></span>
+<span id="cb24-25"><a href="#cb24-25" aria-hidden="true" tabindex="-1"></a>           <span class="dv">scheme</span>(scientific)</span>
+<span id="cb24-26"><a href="#cb24-26" aria-hidden="true" tabindex="-1"></a><span class="kw">restore</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>(Note: Below code run with echo to enable preserve/restore functionality.)
+
+
+
+(1,016 missing values generated)
+
+(438 real changes made)
+
+(578 real changes made)
+
+
+
+
+
+</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="05_解读xtplfc的原理_样条基函数_files/figure-html/cell-15-output-2.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="使用-xtplfc-命令" class="level2" data-number="28.6">
+<h2 data-number="28.6" class="anchored" data-anchor-id="使用-xtplfc-命令"><span class="header-section-number">28.6</span> 使用 xtplfc 命令</h2>
+<p>现在我们使用 <code>xtplfc</code> 命令重新估计，并与手动结果对比。</p>
+<div id="cell-29" class="cell">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode stata code-with-copy"><code class="sourceCode stata"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>*----- 安装 xtplfc（如未安装）</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>* net install st0624.pkg, <span class="ot">all</span> <span class="kw">replace</span> from(http:<span class="co">//www.stata-journal.com/software/sj20-4)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="模型设定" class="level3" data-number="28.6.1">
+<h3 data-number="28.6.1" class="anchored" data-anchor-id="模型设定"><span class="header-section-number">28.6.1</span> 模型设定</h3>
+<p>由前文介绍可知，函数系数模型的一般形式为：</p>
+<p><span class="math display">\[Y = \gamma(U) Z + \beta X + \alpha + \epsilon\]</span></p>
+<p>我们关心的是 <span class="math inline">\(Z\)</span> 对 <span class="math inline">\(Y\)</span> 的边际影响 <span class="math inline">\(\gamma(U)\)</span>，尤其是 <span class="math inline">\(\gamma(U)\)</span> 随调节变量 <span class="math inline">\(U\)</span> 的变化情况。</p>
+<p>Du et al.&nbsp;(2021) 中的模型设定为：</p>
+<p><span class="math display">\[lngti_{it} = \gamma(lngdp_{it-1}) er_{it} + \beta X_{it} + \alpha_i + \epsilon_{it}\]</span></p>
+<p>对应关系为：<span class="math inline">\(Y = lngti_{it}\)</span>，<span class="math inline">\(U = lngdp_{it-1}\)</span>，<span class="math inline">\(Z = er_{it}\)</span></p>
+<div id="cell-31" class="cell" data-execution_count="149">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode stata code-with-copy"><code class="sourceCode stata"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>*----- 使用 xtplfc 估计</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>cap <span class="kw">drop</span> fcoe_gti*  </span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a><span class="kw">local</span> controls <span class="st">"lnrd lnpop lnhc lninv lnfdi"</span></span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>xtplfc lngti <span class="ot">`controls'</span>, <span class="co">///</span></span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>       zvars(er) <span class="co">///</span></span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a>       uvar(lngdp) <span class="co">///</span></span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a>       <span class="kw">gen</span>(fcoe_gti) <span class="co">///</span></span>
+<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a>       power(3)  nknots(2)  <span class="kw">quantile</span> <span class="co">///          </span></span>
+<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a>       brep(200)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Computing the bootstrap standard errors...
+.................................................50
+.................................................100
+.................................................150
+.................................................200
+
+Partially linear functional-coefficient panel data model.
+Fixed-effect series semiparametric estimation.
+Estimation results: linear part                 Number of obs        =    1365
+                                                Within R-squared     =  0.1754
+                                                Adj Within R-squared =  0.1693
+                                                Root MSE             =  0.4291
+------------------------------------------------------------------------------
+       lngti | Coefficient  Std. err.      z    P&gt;|z|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+        lnrd |      0.089      0.048     1.84   0.066       -0.006       0.184
+       lnpop |      1.637      0.232     7.06   0.000        1.183       2.091
+        lnhc |      0.216      0.076     2.86   0.004        0.068       0.364
+       lninv |      0.392      0.078     5.00   0.000        0.238       0.546
+       lnfdi |      0.015      0.018     0.81   0.419       -0.021       0.050
+------------------------------------------------------------------------------
+Estimated functional coefficient(s) are saved in the data.</code></pre>
+</div>
+</div>
+<p><strong>注</strong>：上述命令中的关键选项说明如下：</p>
+<ul>
+<li><code>gen(fcoe_gti)</code>：指定变量名前缀，用于存储 及其标准误。程序会自动生成以下变量：
+<ul>
+<li><code>fcoe_gti_1</code>：<span class="math inline">\(\gamma(U)\)</span> 的估计值 <span class="math inline">\(\hat{\gamma}(U)\)</span></li>
+<li><code>fcoe_gti_1_sd</code>：<span class="math inline">\(\gamma(U)\)</span> 的标准误 <span class="math inline">\(se(\hat{\gamma}(U))\)</span>（通过 Bootstrap 得到）</li>
+</ul></li>
+<li><code>brep(200)</code>：指定 Bootstrap 重抽样次数为 200 次，以估计 <span class="math inline">\(\hat{\gamma}(U)\)</span> 的标准误 (后面绘图时会用到)。
+<ul>
+<li>本例中为了节省运行时间，将抽样次数设为 200，实际应用时建议设为 1000 次或更多。</li>
+</ul></li>
+</ul>
+<div id="cell-33" class="cell" data-execution_count="150">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode stata code-with-copy"><code class="sourceCode stata"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>*----- 构造置信区间</span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a><span class="kw">gen</span> fcoe_lb = fcoe_gti_1 - 1.96 * fcoe_gti_1_sd</span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a><span class="kw">gen</span> fcoe_ub = fcoe_gti_1 + 1.96 * fcoe_gti_1_sd</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="对比两种方法的结果" class="level3" data-number="28.6.2">
+<h3 data-number="28.6.2" class="anchored" data-anchor-id="对比两种方法的结果"><span class="header-section-number">28.6.2</span> 对比两种方法的结果</h3>
+<div id="cell-35" class="cell" data-execution_count="151">
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode stata code-with-copy"><code class="sourceCode stata"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>*----- 计算相关系数</span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>correlate gamma_hat fcoe_gti_1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>(obs=1,470)
+
+             | gamma_~t fcoe_g~1
+-------------+------------------
+   gamma_hat |   1.0000
+  fcoe_gti_1 |   0.9843   1.0000
+</code></pre>
+</div>
+</div>
+<div id="cell-36" class="cell" data-execution_count="153">
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode stata code-with-copy"><code class="sourceCode stata"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>*----- 绘制对比图</span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a><span class="kw">twoway</span> (rarea gamma_lb gamma_ub lngdp, <span class="kw">color</span>(<span class="kw">red</span>%20) <span class="kw">sort</span>) <span class="co">///</span></span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>       (<span class="kw">line</span> gamma_hat lngdp, lcolor(<span class="kw">red</span>) lwidth(medium) <span class="kw">sort</span>) <span class="co">///</span></span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a>       (rarea fcoe_lb fcoe_ub lngdp, <span class="kw">color</span>(<span class="bn">blue</span>%20) <span class="kw">sort</span>) <span class="co">///</span></span>
+<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a>       (<span class="kw">line</span> fcoe_gti_1 lngdp, lcolor(<span class="bn">blue</span>) lwidth(medium) lpattern(<span class="kw">dash</span>) <span class="kw">sort</span>), <span class="co">///</span></span>
+<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a>       <span class="kw">yline</span>(0, lcolor(<span class="bn">black</span>)) <span class="co">///</span></span>
+<span id="cb32-7"><a href="#cb32-7" aria-hidden="true" tabindex="-1"></a>       <span class="bn">xtitle</span>(<span class="st">"人均 GDP（对数）"</span>) <span class="co">///</span></span>
+<span id="cb32-8"><a href="#cb32-8" aria-hidden="true" tabindex="-1"></a>       <span class="bn">ytitle</span>(<span class="st">"边际效应 γ(lngdp)"</span>) <span class="co">///</span></span>
+<span id="cb32-9"><a href="#cb32-9" aria-hidden="true" tabindex="-1"></a>       <span class="bn">title</span>(<span class="st">"两种估计方法的对比"</span>) <span class="co">///</span></span>
+<span id="cb32-10"><a href="#cb32-10" aria-hidden="true" tabindex="-1"></a>       <span class="bn">legend</span>(<span class="kw">order</span>(2 <span class="st">"手动构造"</span> 4 <span class="st">"xtplfc 命令"</span>) <span class="co">///</span></span>
+<span id="cb32-11"><a href="#cb32-11" aria-hidden="true" tabindex="-1"></a>              <span class="bn">ring</span>(0) pos(5) c(1)) <span class="co">///</span></span>
+<span id="cb32-12"><a href="#cb32-12" aria-hidden="true" tabindex="-1"></a>       <span class="kw">note</span>(<span class="st">"红色：手动构造样条基函数; 蓝色：xtplfc 命令"</span>) <span class="co">///</span></span>
+<span id="cb32-13"><a href="#cb32-13" aria-hidden="true" tabindex="-1"></a>       <span class="dv">scheme</span>(s2mono)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="05_解读xtplfc的原理_样条基函数_files/figure-html/cell-20-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="稳健性检验" class="level2" data-number="28.7">
+<h2 data-number="28.7" class="anchored" data-anchor-id="稳健性检验"><span class="header-section-number">28.7</span> 稳健性检验</h2>
+<p>有些读者可能会担心，样条基函数的选择（如结点位置、次数等）会不会对结果产生较大影响。为此，我们可以尝试不同的结点位置和次数，观察估计结果的稳定性。</p>
+<p>对比结果显示，无论是改变节点数 (使用 3 个节点和 4 个节点)，还是改变次数 (使用二次和三次样条)，得到的结果与上文基本设定下的结果都不存在显著差异。这说明，估计结果对样条基函数的选择较为稳健。这也是样条方法的一个重要优点。</p>
+<section id="改变结点数量" class="level3" data-number="28.7.1">
+<h3 data-number="28.7.1" class="anchored" data-anchor-id="改变结点数量"><span class="header-section-number">28.7.1</span> 改变结点数量</h3>
+<div id="cell-39" class="cell" data-execution_count="62">
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode stata code-with-copy"><code class="sourceCode stata"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>*----- 使用 3 个结点（25%, 50%, 75% 分位点）</span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>cap <span class="kw">drop</span> fcoe_3knots*</span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>xtplfc lngti lnrd lnpop lnhc lninv lnfdi, <span class="co">///</span></span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a>       zvars(er) uvar(lngdp) <span class="co">///</span></span>
+<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a>       <span class="kw">gen</span>(fcoe_3knots) <span class="co">///</span></span>
+<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a>       nknots(3) <span class="kw">quantile</span> brep(10)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Computing the bootstrap standard errors...
+..........
+Partially linear functional-coefficient panel data model.
+Fixed-effect series semiparametric estimation.
+Estimation results: linear part                 Number of obs        =    1365
+                                                Within R-squared     =  0.1749
+                                                Adj Within R-squared =  0.1682
+                                                Root MSE             =  0.4294
+------------------------------------------------------------------------------
+       lngti | Coefficient  Std. err.      z    P&gt;|z|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+        lnrd |      0.088      0.025     3.51   0.000        0.039       0.138
+       lnpop |      1.630      0.271     6.01   0.000        1.098       2.163
+        lnhc |      0.217      0.080     2.73   0.006        0.061       0.373
+       lninv |      0.396      0.102     3.89   0.000        0.196       0.595
+       lnfdi |      0.015      0.018     0.80   0.426       -0.021       0.050
+------------------------------------------------------------------------------
+Estimated functional coefficient(s) are saved in the data.</code></pre>
+</div>
+</div>
+<div id="cell-40" class="cell" data-execution_count="64">
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode stata code-with-copy"><code class="sourceCode stata"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>*----- 使用 4 个结点</span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>cap <span class="kw">drop</span> fcoe_4knots*</span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>xtplfc lngti lnrd lnpop lnhc lninv lnfdi, <span class="co">///</span></span>
+<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a>       zvars(er) uvar(lngdp) <span class="co">///</span></span>
+<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a>       <span class="kw">gen</span>(fcoe_4knots) <span class="co">///</span></span>
+<span id="cb35-6"><a href="#cb35-6" aria-hidden="true" tabindex="-1"></a>       nknots(4) <span class="kw">quantile</span> brep(100)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Computing the bootstrap standard errors...
+.................................................50
+.................................................100
+
+Partially linear functional-coefficient panel data model.
+Fixed-effect series semiparametric estimation.
+Estimation results: linear part                 Number of obs        =    1365
+                                                Within R-squared     =  0.1771
+                                                Adj Within R-squared =  0.1698
+                                                Root MSE             =  0.4289
+------------------------------------------------------------------------------
+       lngti | Coefficient  Std. err.      z    P&gt;|z|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+        lnrd |      0.090      0.047     1.93   0.054       -0.001       0.182
+       lnpop |      1.670      0.267     6.26   0.000        1.147       2.193
+        lnhc |      0.210      0.081     2.60   0.009        0.052       0.369
+       lninv |      0.388      0.077     5.06   0.000        0.238       0.539
+       lnfdi |      0.015      0.018     0.84   0.398       -0.020       0.050
+------------------------------------------------------------------------------
+Estimated functional coefficient(s) are saved in the data.</code></pre>
+</div>
+</div>
+<div id="cell-41" class="cell">
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode stata code-with-copy"><code class="sourceCode stata"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>*----- 对比不同结点数的结果</span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a><span class="kw">twoway</span> (<span class="kw">line</span> fcoe_gti_1    lngdp, lc(<span class="bn">black</span>) lwidth(medium) <span class="kw">sort</span>) <span class="co">///</span></span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>       (<span class="kw">line</span> fcoe_3knots_1 lngdp, lc(<span class="bn">blue</span>)  lpattern(<span class="kw">dash</span>) <span class="kw">sort</span>) <span class="co">///</span></span>
+<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a>       (<span class="kw">line</span> fcoe_4knots_1 lngdp, lc(<span class="kw">red</span>)   lpattern(<span class="bn">dot</span>) <span class="kw">sort</span>), <span class="co">///</span></span>
+<span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a>       <span class="kw">yline</span>(0, lcolor(<span class="bn">gray</span>)) <span class="co">///</span></span>
+<span id="cb37-6"><a href="#cb37-6" aria-hidden="true" tabindex="-1"></a>       <span class="bn">xtitle</span>(<span class="st">"人均 GDP（对数）"</span>) <span class="co">///</span></span>
+<span id="cb37-7"><a href="#cb37-7" aria-hidden="true" tabindex="-1"></a>       <span class="bn">ytitle</span>(<span class="st">"边际效应 γ(lngdp)"</span>) <span class="co">///</span></span>
+<span id="cb37-8"><a href="#cb37-8" aria-hidden="true" tabindex="-1"></a>       <span class="bn">title</span>(<span class="st">"不同结点数的对比"</span>) <span class="co">///</span></span>
+<span id="cb37-9"><a href="#cb37-9" aria-hidden="true" tabindex="-1"></a>       <span class="bn">legend</span>(<span class="kw">order</span>(1 <span class="st">"2 个结点"</span> 2 <span class="st">"3 个结点"</span> 3 <span class="st">"4 个结点"</span>) <span class="co">///</span></span>
+<span id="cb37-10"><a href="#cb37-10" aria-hidden="true" tabindex="-1"></a>              <span class="bn">ring</span>(0) pos(5) c(1)) <span class="co">///</span></span>
+<span id="cb37-11"><a href="#cb37-11" aria-hidden="true" tabindex="-1"></a>       <span class="dv">scheme</span>(s2mono)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="05_解读xtplfc的原理_样条基函数_files/figure-html/cell-23-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="使用不同的样条类型" class="level3" data-number="28.7.2">
+<h3 data-number="28.7.2" class="anchored" data-anchor-id="使用不同的样条类型"><span class="header-section-number">28.7.2</span> 使用不同的样条类型</h3>
+<div id="cell-43" class="cell" data-execution_count="155">
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode stata code-with-copy"><code class="sourceCode stata"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>*----- 二次样条</span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>xtplfc lngti lnrd lnpop lnhc lninv lnfdi, <span class="co">///</span></span>
+<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a>       zvars(er) uvar(lngdp) <span class="co">///</span></span>
+<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a>       <span class="kw">gen</span>(fcoe_quad) <span class="co">///</span></span>
+<span id="cb38-5"><a href="#cb38-5" aria-hidden="true" tabindex="-1"></a>       power(2) nknots(2) <span class="kw">quantile</span> brep(100)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Computing the bootstrap standard errors...
+.................................................50
+.................................................100
+
+Partially linear functional-coefficient panel data model.
+Fixed-effect series semiparametric estimation.
+Estimation results: linear part                 Number of obs        =    1365
+                                                Within R-squared     =  0.1726
+                                                Adj Within R-squared =  0.1671
+                                                Root MSE             =  0.4297
+------------------------------------------------------------------------------
+       lngti | Coefficient  Std. err.      z    P&gt;|z|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+        lnrd |      0.086      0.055     1.57   0.116       -0.021       0.194
+       lnpop |      1.604      0.235     6.82   0.000        1.143       2.065
+        lnhc |      0.227      0.068     3.34   0.001        0.094       0.360
+       lninv |      0.406      0.082     4.92   0.000        0.244       0.567
+       lnfdi |      0.015      0.019     0.79   0.431       -0.022       0.051
+------------------------------------------------------------------------------
+Estimated functional coefficient(s) are saved in the data.</code></pre>
+</div>
+</div>
+<div id="cell-44" class="cell" data-execution_count="156">
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode stata code-with-copy"><code class="sourceCode stata"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>*----- 对比二次样条和三次样条</span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a><span class="kw">twoway</span> (<span class="kw">line</span> fcoe_gti_1 lngdp, lcolor(<span class="bn">blue</span>) lwidth(medium) <span class="kw">sort</span>) <span class="co">///</span></span>
+<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a>       (<span class="kw">line</span> fcoe_quad_1 lngdp, lcolor(<span class="kw">red</span>) lpattern(<span class="kw">dash</span>) <span class="kw">sort</span>), <span class="co">///</span></span>
+<span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a>       <span class="kw">yline</span>(0, lcolor(<span class="bn">gray</span>)) <span class="co">///</span></span>
+<span id="cb40-5"><a href="#cb40-5" aria-hidden="true" tabindex="-1"></a>       <span class="bn">xtitle</span>(<span class="st">"人均 GDP（对数）"</span>) <span class="co">///</span></span>
+<span id="cb40-6"><a href="#cb40-6" aria-hidden="true" tabindex="-1"></a>       <span class="bn">ytitle</span>(<span class="st">"边际效应 γ(lngdp)"</span>) <span class="co">///</span></span>
+<span id="cb40-7"><a href="#cb40-7" aria-hidden="true" tabindex="-1"></a>       <span class="bn">title</span>(<span class="st">"二次样条 vs 三次样条"</span>) <span class="co">///</span></span>
+<span id="cb40-8"><a href="#cb40-8" aria-hidden="true" tabindex="-1"></a>       <span class="bn">legend</span>(<span class="kw">order</span>(1 <span class="st">"三次样条"</span> 2 <span class="st">"二次样条"</span>) <span class="co">///</span></span>
+<span id="cb40-9"><a href="#cb40-9" aria-hidden="true" tabindex="-1"></a>              <span class="bn">ring</span>(0) pos(5) c(1)) <span class="co">///</span></span>
+<span id="cb40-10"><a href="#cb40-10" aria-hidden="true" tabindex="-1"></a>       <span class="dv">scheme</span>(s2mono)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="05_解读xtplfc的原理_样条基函数_files/figure-html/cell-25-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="结果解释示例" class="level2" data-number="28.8">
+<h2 data-number="28.8" class="anchored" data-anchor-id="结果解释示例"><span class="header-section-number">28.8</span> 结果解释示例</h2>
+<section id="如何解读边际效应曲线" class="level3" data-number="28.8.1">
+<h3 data-number="28.8.1" class="anchored" data-anchor-id="如何解读边际效应曲线"><span class="header-section-number">28.8.1</span> 如何解读边际效应曲线？</h3>
+<p><strong>横轴（lngdp）</strong>： - 城市的经济发展水平（人均 GDP 的对数） - 范围通常在 8-12 之间</p>
+<p><strong>纵轴（γ(lngdp)）</strong>： - ER 对 GTI 的边际效应 - 正值：ER 促进 GTI - 负值：ER 抑制 GTI - 接近 0：ER 无显著影响</p>
+<p><strong>置信区间（灰色阴影）</strong>： - 包含 0：边际效应不显著 - 不包含 0：边际效应显著</p>
+<p><strong>典型模式</strong>： 1. <strong>lngdp &lt; 9</strong>：边际效应为负 → 经济欠发达地区，ER 抑制 GTI 2. <strong>9 &lt; lngdp &lt; 10</strong>：边际效应接近 0 → 过渡阶段 3. <strong>lngdp &gt; 10</strong>：边际效应为正且增强 → 经济发达地区，ER 促进 GTI</p>
+<div id="cell-46" class="cell" data-execution_count="157">
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode stata code-with-copy"><code class="sourceCode stata"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>*----- 生成显著性指示变量</span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a><span class="kw">gen</span> significant = 0</span>
+<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a><span class="kw">replace</span> significant = 1 <span class="kw">if</span> fcoe_lb &gt; 0  <span class="co">// 显著为正</span></span>
+<span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a><span class="kw">replace</span> significant = -1 <span class="kw">if</span> fcoe_ub &lt; 0 <span class="co">// 显著为负</span></span>
+<span id="cb41-5"><a href="#cb41-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-6"><a href="#cb41-6" aria-hidden="true" tabindex="-1"></a><span class="kw">label</span> <span class="kw">define</span> sig_lab -1 <span class="st">"显著为负"</span> 0 <span class="st">"不显著"</span> 1 <span class="st">"显著为正"</span></span>
+<span id="cb41-7"><a href="#cb41-7" aria-hidden="true" tabindex="-1"></a><span class="kw">label</span> <span class="kw">values</span> significant sig_lab</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>(630 real changes made)
+(557 real changes made)</code></pre>
+</div>
+</div>
+<div id="cell-47" class="cell" data-execution_count="161">
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode stata code-with-copy"><code class="sourceCode stata"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>*----- 按显著性分段绘图</span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a><span class="kw">twoway</span> (<span class="kw">line</span> fcoe_gti_1 lngdp <span class="kw">if</span> significant==1, lcolor(<span class="kw">green</span>) lwidth(thick) <span class="kw">sort</span>) <span class="co">///</span></span>
+<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a>       (<span class="kw">line</span> fcoe_gti_1 lngdp <span class="kw">if</span> significant==-1, lcolor(<span class="kw">red</span>) lwidth(thick) <span class="kw">sort</span>) <span class="co">///</span></span>
+<span id="cb43-4"><a href="#cb43-4" aria-hidden="true" tabindex="-1"></a>       (<span class="kw">line</span> fcoe_gti_1 lngdp <span class="kw">if</span> significant==0, lcolor(<span class="bn">gray</span>) lpattern(<span class="kw">dash</span>) <span class="kw">sort</span>) <span class="co">///</span></span>
+<span id="cb43-5"><a href="#cb43-5" aria-hidden="true" tabindex="-1"></a>       (rarea fcoe_lb fcoe_ub lngdp, <span class="kw">color</span>(<span class="bn">blue</span>%15) <span class="kw">sort</span>), <span class="co">///</span></span>
+<span id="cb43-6"><a href="#cb43-6" aria-hidden="true" tabindex="-1"></a>       <span class="kw">yline</span>(0, lcolor(<span class="bn">black</span>)) <span class="co">///</span></span>
+<span id="cb43-7"><a href="#cb43-7" aria-hidden="true" tabindex="-1"></a>       <span class="bn">xtitle</span>(<span class="st">"人均 GDP（对数）"</span>) <span class="co">///</span></span>
+<span id="cb43-8"><a href="#cb43-8" aria-hidden="true" tabindex="-1"></a>       <span class="bn">ytitle</span>(<span class="st">"边际效应 γ(lngdp)"</span>) <span class="co">///</span></span>
+<span id="cb43-9"><a href="#cb43-9" aria-hidden="true" tabindex="-1"></a>       <span class="bn">title</span>(<span class="st">"边际效应的显著性分布"</span>) <span class="co">///</span></span>
+<span id="cb43-10"><a href="#cb43-10" aria-hidden="true" tabindex="-1"></a>       <span class="bn">legend</span>(<span class="kw">order</span>(1 <span class="st">"显著为正"</span> 2 <span class="st">"显著为负"</span> 3 <span class="st">"不显著"</span> 4 <span class="st">"95% CI"</span>) <span class="co">///</span></span>
+<span id="cb43-11"><a href="#cb43-11" aria-hidden="true" tabindex="-1"></a>              <span class="bn">ring</span>(0) pos(5) c(1)) <span class="co">///</span></span>
+<span id="cb43-12"><a href="#cb43-12" aria-hidden="true" tabindex="-1"></a>       <span class="dv">scheme</span>(s2mono)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="05_解读xtplfc的原理_样条基函数_files/figure-html/cell-27-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<div id="cell-48" class="cell" data-execution_count="162">
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode stata code-with-copy"><code class="sourceCode stata"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a>*----- 统计不同显著性区间的样本比例</span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a><span class="kw">tab</span> significant, <span class="fu">missing</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+significant |      Freq.     Percent        Cum.
+------------+-----------------------------------
+   显著为负 |        557       37.89       37.89
+     不显著 |        283       19.25       57.14
+   显著为正 |        630       42.86      100.00
+------------+-----------------------------------
+      Total |      1,470      100.00</code></pre>
+</div>
+</div>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const disableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'prefetch';
+    }
+  }
+  const enableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'stylesheet';
+    }
+  }
+  const manageTransitions = (selector, allowTransitions) => {
+    const els = window.document.querySelectorAll(selector);
+    for (let i=0; i < els.length; i++) {
+      const el = els[i];
+      if (allowTransitions) {
+        el.classList.remove('notransition');
+      } else {
+        el.classList.add('notransition');
+      }
+    }
+  }
+  const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+    const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+    const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+    let newTheme = '';
+    if(darkModeDefault) {
+      newTheme = isAlternate ? baseTheme : alternateTheme;
+    } else {
+      newTheme = isAlternate ? alternateTheme : baseTheme;
+    }
+    const changeGiscusTheme = () => {
+      // From: https://github.com/giscus/giscus/issues/336
+      const sendMessage = (message) => {
+        const iframe = document.querySelector('iframe.giscus-frame');
+        if (!iframe) return;
+        iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+      }
+      sendMessage({
+        setConfig: {
+          theme: newTheme
+        }
+      });
+    }
+    const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+    if (isGiscussLoaded) {
+      changeGiscusTheme();
+    }
+  }
+  const toggleColorMode = (alternate) => {
+    // Switch the stylesheets
+    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+    manageTransitions('#quarto-margin-sidebar .nav-link', false);
+    if (alternate) {
+      enableStylesheet(alternateStylesheets);
+      for (const sheetNode of alternateStylesheets) {
+        if (sheetNode.id === "quarto-bootstrap") {
+          toggleBodyColorMode(sheetNode);
+        }
+      }
+    } else {
+      disableStylesheet(alternateStylesheets);
+      toggleBodyColorPrimary();
+    }
+    manageTransitions('#quarto-margin-sidebar .nav-link', true);
+    // Switch the toggles
+    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+    for (let i=0; i < toggles.length; i++) {
+      const toggle = toggles[i];
+      if (toggle) {
+        if (alternate) {
+          toggle.classList.add("alternate");     
+        } else {
+          toggle.classList.remove("alternate");
+        }
+      }
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455)
+    if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+      manageTransitions("body", false);
+      window.scrollTo(0, 1);
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        manageTransitions("body", true);
+      }, 40);  
+    }
+  }
+  const isFileUrl = () => { 
+    return window.location.protocol === 'file:';
+  }
+  const hasAlternateSentinel = () => {  
+    let styleSentinel = getColorSchemeSentinel();
+    if (styleSentinel !== null) {
+      return styleSentinel === "alternate";
+    } else {
+      return false;
+    }
+  }
+  const setStyleSentinel = (alternate) => {
+    const value = alternate ? "alternate" : "default";
+    if (!isFileUrl()) {
+      window.localStorage.setItem("quarto-color-scheme", value);
+    } else {
+      localAlternateSentinel = value;
+    }
+  }
+  const getColorSchemeSentinel = () => {
+    if (!isFileUrl()) {
+      const storageValue = window.localStorage.getItem("quarto-color-scheme");
+      return storageValue != null ? storageValue : localAlternateSentinel;
+    } else {
+      return localAlternateSentinel;
+    }
+  }
+  const darkModeDefault = false;
+  let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+  // Dark / light mode switch
+  window.quartoToggleColorScheme = () => {
+    // Read the current dark / light value 
+    let toAlternate = !hasAlternateSentinel();
+    toggleColorMode(toAlternate);
+    setStyleSentinel(toAlternate);
+    toggleGiscusIfUsed(toAlternate, darkModeDefault);
+  };
+  // Ensure there is a toggle, if there isn't float one in the top right
+  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+    const a = window.document.createElement('a');
+    a.classList.add('top-right');
+    a.classList.add('quarto-color-scheme-toggle');
+    a.href = "";
+    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+    const i = window.document.createElement("i");
+    i.classList.add('bi');
+    a.appendChild(i);
+    window.document.body.appendChild(a);
+  }
+  // Switch to dark mode if need be
+  if (hasAlternateSentinel()) {
+    toggleColorMode(true);
+  } else {
+    toggleColorMode(false);
+  }
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp("https:\/\/lianxhcn\.github\.io\/dsfin\/");
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+          // target, if specified
+          link.setAttribute("target", "_blank");
+          if (link.getAttribute("rel") === null) {
+            link.setAttribute("rel", "noopener");
+          }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../../Lecture/panel_xtplfc/04_xtplfc的直观解读及xthreg实现.html" class="pagination-link" aria-label="变系数模型">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">变系数模型</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../../Lecture/panel_xtplfc/Du_2021_EE_中文精要.html" class="pagination-link" aria-label="非线性调节效应怎么做？部分线性函数型面板数据模型">
+        <span class="nav-page-text"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">非线性调节效应怎么做？部分线性函数型面板数据模型</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+      &nbsp;
+    </div>   
+    <div class="nav-footer-center">
+<p><a href="https://www.lianxh.cn">lianxh.cn</a></p>
+</div>
+    <div class="nav-footer-right">
+<p>Support: <a href="https://lianxhcn.github.io/quarto_book/">Quarto</a></p>
+</div>
+  </div>
+</footer>
+
+
+
+
+</body></html>

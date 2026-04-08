@@ -1,0 +1,1589 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.6.39">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>23&nbsp; HDFE：多维固定效应 – 金融数据分析与建模</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../Lecture/panel_fe/panel_IntFE.html" rel="next">
+<link href="../../Lecture/crawing/craw_02_sec02_lingnan_dialog.html" rel="prev">
+<link href="../../images/book-logo.png" rel="icon" type="image/png">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-e8fb9d25728d58bfeac61b497e4a6629.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark-57a92833092fd6dc0d7710b6bdfff9c5.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-7ef202e96c563d31d9e5226e4d6cabf9.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark-490ba4e843cb1303a232ed0c676384f2.min.css" rel="prefetch" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../Lecture/panel_fe/panel_HDFE.html"><strong>面板模型：固定效应</strong></a></li><li class="breadcrumb-item"><a href="../../Lecture/panel_fe/panel_HDFE.html"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">HDFE：多维固定效应</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header sidebar-header-stacked">
+      <a href="https://lianxhcn.github.io/dsfin/" class="sidebar-logo-link">
+      <img src="../../images/book-logo.png" alt="" class="sidebar-logo py-0 d-lg-inline d-none">
+      </a>
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../../">DS Finance</a> 
+        <div class="sidebar-tools-main tools-wide">
+    <a href="https://github.com/lianxhcn/dsfin" title="" class="quarto-navigation-tool px-1" aria-label=""><i class="bi bi-github"></i></a>
+    <a href="https://www.lianxh.cn" title="" class="quarto-navigation-tool px-1" aria-label=""><i class="bi bi-house-fill"></i></a>
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">封面</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/00_intro.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">📚课程资料</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/00_setup.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">📌课件使用指南</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/01_homework.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">🚀作业</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text"><strong>环境配置</strong></span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/00-setup/01_00_coding_with_AI.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">借助 AI 写代码</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/00-setup/01_01_install_anaconda.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Python：安装和环境配置</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/00-setup/01_02_jupyter_notebook.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Jupyter Notebook 的使用</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/00-setup/01_03_install_FAQs.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Python 安装常见问题</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/00-setup/01_04_markdown.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Markdown</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/00-setup/01_06_conda_env.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">虚拟环境管理</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
+ <span class="menu-text"><strong>数据分析</strong></span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/data_get_data/lecture_get_data.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">金融数据获取</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/data_get_data/data_02_get_data_GMD.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">获取数据：GMD</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/data_get_data/data_03_TS_SZ_index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">上证指数的时序特征</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/data_store_structure/lecture_data_management_organization.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">数据管理与组织</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/data_manage/lecture_data_management.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">数据管理：格式、存储与工作流</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/data_clean/lecture_data_clean.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">数据清洗</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true">
+ <span class="menu-text"><strong>可视化</strong></span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/data_visual/graph_01_intro.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Python 可视化：简介</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/data_visual/graph_dis_box_violin.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">箱型图和小提琴图</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/data_visual/graph_dis_histogram.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">直方图</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/data_visual/graph_dis_kdensity.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">核密度函数图</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/data_visual/lec_distribution.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">数据分布：原理与可视化</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/data_visual/lec_distribution_codes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">数据分布：原理与可视化 — 配套代码</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/data_visual/lec_visualization.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">数据可视化：一些基本原则</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true">
+ <span class="menu-text"><strong>数据爬取</strong></span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/crawing/craw_01_introduction.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">网络爬虫简介</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/crawing/craw_02_sec01_lingnan_prompt.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">实例-提示词模式：爬取岭南学院教师名录</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/crawing/craw_02_sec02_lingnan_dialog.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">实例-对话模式：爬取岭南学院教师名录</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true">
+ <span class="menu-text"><strong>面板模型：固定效应</strong></span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/panel_fe/panel_HDFE.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">HDFE：多维固定效应</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/panel_fe/panel_IntFE.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">交互固定效应模型</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="true">
+ <span class="menu-text"><strong>面板变系数模型</strong></span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/panel_xtplfc/01_Panel_threshold_01_theory.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">静态面板门槛模型：理论与方法</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/panel_xtplfc/02_Panel_threshold_02_codes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">静态面板门槛模型：Stata 实操</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/panel_xtplfc/04_xtplfc的直观解读及xthreg实现.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">变系数模型</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/panel_xtplfc/05_解读xtplfc的原理_样条基函数.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">样条基函数与变系数模型：Stata 实操</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/panel_xtplfc/Du_2021_EE_中文精要.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">非线性调节效应怎么做？部分线性函数型面板数据模型</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="true">
+ <span class="menu-text"><strong>文本分析</strong></span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/text_analysis/lecture_text_01_ailn.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">30</span>&nbsp; <span class="chapter-title">金融文本分析（上）——从文本到结构化数据</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/text_analysis/lecture_text_02_ailn.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">31</span>&nbsp; <span class="chapter-title">金融文本分析（下）——情感分析与文本建模</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/text_analysis/lecture_text_analysis_01_claude.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">32</span>&nbsp; <span class="chapter-title">文本数据处理基础</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/text_analysis/lecture_text_analysis_02_claude.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">33</span>&nbsp; <span class="chapter-title">文本分析：情感分析与主题建模</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" role="navigation" aria-expanded="true">
+ <span class="menu-text"><strong>附录：Python 提示词</strong></span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-8" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../appendix_python/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">概览</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../appendix_python/a1_setup.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">A1. 环境配置</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../appendix_python/a2_project.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">A2. 项目规划与版本控制</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../appendix_python/a3_concepts.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">A3. 提示词核心词汇</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../appendix_python/a4_data.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">A4. 数据获取与清洗</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../appendix_python/a5_visualization.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">A5. 数据可视化</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../appendix_python/a6_modeling.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">A6. 统计建模</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../appendix_python/a7_results.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">A7. 结果呈现与表格美化</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../appendix_python/a8_workflow.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">A8. 上下文管理与调试</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#简介" id="toc-简介" class="nav-link active" data-scroll-target="#简介"><span class="header-section-number">23.1</span> 简介</a></li>
+  <li><a href="#frisch-waugh-lovell-定理" id="toc-frisch-waugh-lovell-定理" class="nav-link" data-scroll-target="#frisch-waugh-lovell-定理"><span class="header-section-number">23.2</span> Frisch-Waugh-Lovell 定理</a>
+  <ul class="collapse">
+  <li><a href="#简介-1" id="toc-简介-1" class="nav-link" data-scroll-target="#简介-1"><span class="header-section-number">23.2.1</span> 简介</a></li>
+  <li><a href="#fwl-定理的含义和直观解释" id="toc-fwl-定理的含义和直观解释" class="nav-link" data-scroll-target="#fwl-定理的含义和直观解释"><span class="header-section-number">23.2.2</span> FWL 定理的含义和直观解释</a></li>
+  <li><a href="#fwl-定理的简单证明" id="toc-fwl-定理的简单证明" class="nav-link" data-scroll-target="#fwl-定理的简单证明"><span class="header-section-number">23.2.3</span> FWL 定理的简单证明</a></li>
+  </ul></li>
+  <li><a href="#回顾组内估计量-fe" id="toc-回顾组内估计量-fe" class="nav-link" data-scroll-target="#回顾组内估计量-fe"><span class="header-section-number">23.3</span> 回顾：组内估计量 (FE)</a>
+  <ul class="collapse">
+  <li><a href="#stata-实操和启示" id="toc-stata-实操和启示" class="nav-link" data-scroll-target="#stata-实操和启示"><span class="header-section-number">23.3.1</span> Stata 实操和启示</a></li>
+  </ul></li>
+  <li><a href="#twfe二维固定效应模型" id="toc-twfe二维固定效应模型" class="nav-link" data-scroll-target="#twfe二维固定效应模型"><span class="header-section-number">23.4</span> TWFE：二维固定效应模型</a></li>
+  <li><a href="#hdfe高维固定效应模型" id="toc-hdfe高维固定效应模型" class="nav-link" data-scroll-target="#hdfe高维固定效应模型"><span class="header-section-number">23.5</span> HDFE：高维固定效应模型</a>
+  <ul class="collapse">
+  <li><a href="#双边固定效应" id="toc-双边固定效应" class="nav-link" data-scroll-target="#双边固定效应"><span class="header-section-number">23.5.1</span> 双边固定效应</a></li>
+  <li><a href="#hdfe高维及更一般的设定" id="toc-hdfe高维及更一般的设定" class="nav-link" data-scroll-target="#hdfe高维及更一般的设定"><span class="header-section-number">23.5.2</span> HDFE：高维及更一般的设定</a></li>
+  </ul></li>
+  <li><a href="#参考文献" id="toc-参考文献" class="nav-link" data-scroll-target="#参考文献"><span class="header-section-number">23.6</span> 参考文献</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../Lecture/panel_fe/panel_HDFE.html"><strong>面板模型：固定效应</strong></a></li><li class="breadcrumb-item"><a href="../../Lecture/panel_fe/panel_HDFE.html"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">HDFE：多维固定效应</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">HDFE：多维固定效应</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="简介" class="level2" data-number="23.1">
+<h2 data-number="23.1" class="anchored" data-anchor-id="简介"><span class="header-section-number">23.1</span> 简介</h2>
+<p>自从 <a href="https://www.sciencedirect.com/science/article/pii/S0927537119300922#bib0001">Abowd et al.&nbsp;(1999)</a> 提出双向固定效应模型 (TWFE) 以来，包含多个固定效应的模型被广泛应用于各个领域，如 <a href="https://www.sciencedirect.com/topics/economics-econometrics-and-finance/labour-market-theory">劳动经济学</a> (参见 <a href="https://www.sciencedirect.com/science/article/pii/S0927537119300922#bib0004">Abowd et al., 2008</a> 的综述)，教育 (e.g.&nbsp;<a href="https://www.sciencedirect.com/science/article/pii/S0927537119300922#bib0024">Jacob and Lefgren, 2008</a>, <a href="https://www.sciencedirect.com/science/article/pii/S0927537119300922#bib0030">Kramarz et al., 2008</a>, <a href="https://www.sciencedirect.com/science/article/pii/S0927537119300922#bib0023">Jackson, 2013</a>)，健康 (e.g.&nbsp;<a href="https://www.sciencedirect.com/science/article/pii/S0927537119300922#bib0007">Bennett et al., 2015</a>)，以及移民 (<a href="https://www.sciencedirect.com/science/article/pii/S0927537119300922#bib0019">Grogger and Hanson, 2011</a>)。匹配效应模型 (match effecs) 则是在 TWFE 中进一步加入了两个固定效应的交互项。例如，在国际贸易中，进口国 (<span class="math inline">\(i\)</span>) 和出口国 (<span class="math inline">\(j\)</span>) 的匹配常常是研究的一个兴趣点，此时在模型中加入交互项 <span class="math inline">\(\alpha_i \times \alpha_j\)</span> 能够很好地捕捉这种匹配效应。同理，劳动经济学中「雇主-员工」的匹配也往往与他们各自的特征 (固定效应) 密切相关 (如， <a href="https://www.sciencedirect.com/science/article/pii/S0927537119300922#bib0027">Jovanovic, 1979</a>, <a href="https://www.sciencedirect.com/science/article/pii/S0927537119300922#bib0032">Mortensen, 1978</a>)，因此模型中同行会加入公司和个人个体效应的交互项 (两组虚拟变量的交乘项)。</p>
+<p>显然，引入高维固定效应以及它们的交互项，会增加计算难度。本章介绍的方法包含很多巧妙、有效的算法，<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> 理论基础均源于 FWL 定理。</p>
+<p>有关各类 HDFE 模型的介绍，参见 Matyas ( <a href="https://link.springer.com/book/10.1007/978-3-319-60783-2">2017</a>, <a href="https://link.springer.com/content/pdf/10.1007%2F978-3-319-60783-2.pdf">PDF</a>)，涉及内生性问题、空间计量，引力模型，以及 HDFE 在国际贸易、移民、消费者行为、房地产经济等领域的应用。<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a></p>
+<p>本章介绍的各类模型都可以使用 <code>reghdfe</code> 命令来实现，详情参见 <code>help reghdfe</code>，<a href="http://scorreia.com/software/reghdfe/">Correia - reghdfe 主页</a>，以及 <a href="https://gitee.com/arlionn/stata/wikis/%E9%9D%A2%E6%9D%BF/reghdfe-%E7%AC%94%E8%AE%B0.md?sort_id=5530587">连玉君-<code>reghdfe</code> 笔记</a>。若对高维固定效应的矩阵运算感兴趣，可以参考 Revesz (<a href="http://www.personal.ceu.hu/staff/repec/pdf/stata-program_document-dofile.pdf">2013</a>)。</p>
+<p>在 Google 学术中检索 <a href="https://xs2.dailyheadlines.cc/scholar?hl=zh-CN&amp;as_sdt=0%2C5&amp;as_ylo=2018&amp;q=%22High+Dimensional%22+%22Fixed+E%EF%AC%80ects%22&amp;btnG=">“High Dimensional” “Fixed Eﬀects”</a>，可以发现高维固定效应模型在各个领域都得到的广泛的应用。</p>
+</section>
+<section id="frisch-waugh-lovell-定理" class="level2" data-number="23.2">
+<h2 data-number="23.2" class="anchored" data-anchor-id="frisch-waugh-lovell-定理"><span class="header-section-number">23.2</span> Frisch-Waugh-Lovell 定理</h2>
+<section id="简介-1" class="level3" data-number="23.2.1">
+<h3 data-number="23.2.1" class="anchored" data-anchor-id="简介-1"><span class="header-section-number">23.2.1</span> 简介</h3>
+<p>在多元线性回归中，借助「部分回归 」 的思想可以更为深入地理解系数的含义。 「部分回归 」 的基本思想是，当引入控制变量后，若想探究解释变量 <span class="math inline">\(x_1\)</span> 与被解释变量 <span class="math inline">\(y\)</span> 的「干净关系」(在控制了其他因素的前提下，二者的关系)，那么就需要先 「剔除」(partial out) 控制变量 (<span class="math inline">\(x_2, x_3, \cdots\)</span>) 对 <span class="math inline">\(y\)</span> 和 <span class="math inline">\(x_1\)</span> 的影响，进而用「剩余部分」的 <span class="math inline">\(y\)</span> 对剩余部分的 <span class="math inline">\(x_1\)</span> 做回归。此类分析的理论基础是著名的 <strong>FWL 定理</strong>。</p>
+<p>Frisch-Waugh-Lovell 定理 (简称 FWL 定理) 由 Frisch and Waugh (1933) 和 Lovell (1963) 提出，它阐释了 OLS 回归的一个重要性质，为理解多元回归的系数含义，高效地估计高维固定效应提供了一个重要的理论基础。<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a>在 Stata 中，<code>reghdfe</code> 等处理高维固定效应的命令基本原理便是 FWL 定理。此外，在 <code>ivreg2</code>, <code>lasso2</code> 等命令中经常出现的 <code>partial()</code> 选项也是以 FWL 定理为基础的。用于可视化展示多元回归结果的部分回归图命令 <code>avplot</code>, <code>reganat</code>, <code>avciplot</code>, <code>avciplots</code> 等也都基于 FWL 定理。<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a></p>
+<p>我们先介绍一下 FWL 定理产生的背景。在早期的时间序列回归模型中常常包含时间趋势项：<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a></p>
+<p><span class="math display">\[
+y_{t} = \alpha + x_{1t}\beta_1 + x_{2t}\beta_2 + \theta t + u_{t} \tag{1}
+\]</span></p>
+<p>通常有两种处理方法，一种是直接估计 (1)，即 <code>reg y x1 x2 c.t</code>；另一种是分别对 <span class="math inline">\(y\)</span>, <span class="math inline">\(x_1\)</span> 和 <span class="math inline">\(x_2\)</span> 执行「去时间趋势」处理，<a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a> 分别记为 <span class="math inline">\(\tilde{y}\)</span>, <span class="math inline">\(\tilde{x}_1\)</span> 和 <span class="math inline">\(\tilde{x}_2\)</span>，然后用 <span class="math inline">\(\tilde{y}\)</span> 和 <span class="math inline">\(\tilde{x}_1\)</span> 和 <span class="math inline">\(\tilde{x}_2\)</span> 执行 OLS 估计，此时不再包含时间趋势项。Frisch and Waugh (1933) 采用分块矩阵的方式证实了上述两种方式的等价性。Stata 实操对比结果如下：</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode stata code-with-copy"><code class="sourceCode stata"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>*-时间趋势项 - FWL 定理</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>      <span class="kw">webuse</span> <span class="st">"lutkepohl2.dta"</span>, <span class="kw">clear</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>      <span class="kw">gen</span> t = <span class="dt">_n</span>        <span class="co">// Time trend</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>      <span class="kw">rename</span> (ln_inc ln_consump ln_inv) (<span class="fu">y</span> x1 <span class="kw">x2</span>)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>      *-method 1: Pooled OLS</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>      <span class="kw">reg</span> <span class="fu">y</span> x1 <span class="kw">x2</span> c.t   <span class="co">// c.t 表示时间趋势项</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>      <span class="kw">est</span> <span class="kw">store</span> full</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>      *-method 2: FWL partial OLS</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>      <span class="kw">reg</span> <span class="fu">y</span>  c.t</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>          <span class="kw">predict</span> e_y , residual  <span class="co">// 残差，去除时间趋势后的 y</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>      <span class="kw">reg</span> x1 c.t</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>          <span class="kw">predict</span> e_x1, res       <span class="co">// 去除时间趋势后的 x1</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>      <span class="kw">reg</span> <span class="kw">x2</span> c.t</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>          <span class="kw">predict</span> e_x2, res       <span class="co">// 去除时间趋势后的 x2</span></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>      <span class="kw">reg</span> e_y e_x1 e_x2           <span class="co">// 不包含 c.t</span></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>      <span class="kw">est</span> <span class="kw">store</span> FWL</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>      esttab full FWL, nogap</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>--------------------------------------------</span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>                      (1)             (2)</span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>                        <span class="fu">y</span>             e_y</span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>--------------------------------------------</span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>x1                  0.964***</span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>                  (19.58)</span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a><span class="kw">x2</span>                 0.0544**</span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>                   (2.67)</span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>t                0.000423</span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>                   (0.47)</span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>e_x1                                0.964***</span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>                                  (19.69)</span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>e_x2                               0.0544**</span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>                                   (2.69)</span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a><span class="dt">_cons</span>              0.0454       -1.26e-16</span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a>                   (0.17)         (-0.00)</span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a>--------------------------------------------</span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a><span class="kw">N</span>                      92              92</span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a>--------------------------------------------</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>将此问题进行扩展，常见的应用包括如下几种情形：</p>
+<p>其一，若模型中包含 <span class="math inline">\(K\)</span> 个行业虚拟变量，则直接执行 <code>reg y x i.industry</code> 与执行 <code>reg c_y c_x</code> 是等价的，其中，<code>c_y</code> 表示 <span class="math inline">\(y_i\)</span> 与第 <span class="math inline">\(i\)</span> 家公司所在的行业均值的差值，<code>c_x</code> 的定义与之相似。<a href="#fn7" class="footnote-ref" id="fnref7" role="doc-noteref"><sup>7</sup></a> 当 <span class="math inline">\(K\)</span> 很大时，前者存在计算困难，而后者则不存在这个问题。</p>
+<p>其二，当模型中同时包含多组虚拟变量，如 <code>i.industry i.firm i.year</code> 时，我们可以多次使用 FWL 定理，逐个击破，这也是 <code>areg</code>, <code>reghdfe</code>, <code>ivreg2hdfe</code>, <code>regintfe</code> 等命令估计高维固定效应的基本思路。<a href="#fn8" class="footnote-ref" id="fnref8" role="doc-noteref"><sup>8</sup></a> 同时，类似的处理思路也可以应用于非线性模型的估计中，如 <code>ppmlhdfe</code> 命令——用于估计包含高维固定效应的泊松模型 (Correia et al., <a href="https://journals.sagepub.com/doi/pdf/10.1177/1536867X20909691">2020</a>)；以及广义线性模型 (GLM)，如 Stammann (2018, <a href="https://arxiv.org/pdf/1707.01815v2.pdf">PDF</a>)。</p>
+<p>其三，在机器学习和惩罚回归中，需要应对数以百千的变量，FWL 定理也是计算过程中的一个重要工具，详情参见 Yamada (<a href="http://dx.doi.org/10.1080/03610926.2016.1252403">2017</a>, <a href="https://sci-hub.ee/10.1080/03610926.2016.1252403">PDF</a>)。<a href="#fn9" class="footnote-ref" id="fnref9" role="doc-noteref"><sup>9</sup></a></p>
+</section>
+<section id="fwl-定理的含义和直观解释" class="level3" data-number="23.2.2">
+<h3 data-number="23.2.2" class="anchored" data-anchor-id="fwl-定理的含义和直观解释"><span class="header-section-number">23.2.2</span> FWL 定理的含义和直观解释</h3>
+<p>FWL 定理可以用于任何包含两个以上的解释变量的模型中。我们可以解释变量分成两组：</p>
+<p><span class="math display">\[
+\boldsymbol{y}=\boldsymbol{X}_{1} \boldsymbol{\beta}_{1}+\boldsymbol{X}_{2} \boldsymbol{\beta}_{2}+\text { residuals } \tag{2}
+\]</span></p>
+<p>其中，<span class="math inline">\(\boldsymbol{X}_{1}\)</span> 为 <span class="math inline">\(n \times k_{1}\)</span> 维矩阵，<span class="math inline">\(\boldsymbol{X}_{2}\)</span> 为 <span class="math inline">\(n \times k_{2}\)</span>，且 <span class="math inline">\(\boldsymbol{X} \equiv\left[\begin{array}{ll}\boldsymbol{X}_{1} &amp; \boldsymbol{X}_{2}\end{array}\right]\)</span>，<span class="math inline">\(k=k_{1}+k_{2}\)</span>。</p>
+<p>例如，<span class="math inline">\(\boldsymbol{X}_{1}\)</span> 可以是一组年度虚拟变量，时间趋势变量，或反映公司个体效应的虚拟变量，等等。<span class="math inline">\(\boldsymbol{X}_{2}\)</span> 为其他有明确含义的解释变量。多数情况下，<span class="math inline">\(\boldsymbol{X}_{1}\)</span> 中的变量个数数量庞大，并非我们关注的重点，但又不得不控制它们，否则便会导致遗漏变量偏误。</p>
+<p>FWL 定理的基本结论是：直接对 (2) 执行 OLS 回归得到的 <span class="math inline">\(\widehat{\boldsymbol{\beta}}_2\)</span> 与采用如下 Partial 回归得到的 <span class="math inline">\(\tilde{\boldsymbol{\beta}}_{2}\)</span> 是等价的。同时，两种方法得到的残差向量也是相同的。</p>
+<ol type="1">
+<li>用 <span class="math inline">\(y\)</span> 对 <span class="math inline">\(X_{1}\)</span> 执行 OLS 回归，得到残差 <span class="math inline">\(e_{y}\)</span>。</li>
+<li>用 <span class="math inline">\(X_{2}\)</span> 对 <span class="math inline">\(X_{1}\)</span> 执行 OLS 回归，得到残差向量 <span class="math inline">\(e_{X_{2}}\)</span>。说明：如果 <span class="math inline">\(k_2&gt;1\)</span>，则执行 <span class="math inline">\(k_2\)</span> 次回归，即用 <span class="math inline">\(X_{2}\)</span> 中的每个变量分别作为被解释变量进行估计。此时，<span class="math inline">\(e_{X_{2}}\)</span> 包含 <span class="math inline">\(k_2\)</span> 列。</li>
+<li>用 <span class="math inline">\(e_{y}\)</span> 对 <span class="math inline">\(e_{X_{2}}\)</span> 执行 OLS 回归，得到系数向量 <span class="math inline">\(\tilde{\beta}_{2}\)</span>.</li>
+</ol>
+<p>上述过程和基本思想可以通过图 1 加以直观解释。</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://fig-lianxh.oss-cn-shenzhen.aliyuncs.com/OLS-venn-01.png" class="img-fluid figure-img" style="width:50.0%"></p>
+<figcaption>OLS-venn-01</figcaption>
+</figure>
+</div>
+<p>下面的 Stata 代码与图 1 一一对应。</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode stata code-with-copy"><code class="sourceCode stata"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">sysuse</span> <span class="st">"auto.dta"</span>, <span class="kw">clear</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="kw">rename</span> (price <span class="fu">length</span> <span class="kw">weight</span>) (Y X1 X2)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="kw">reg</span>    Y X1 X2                         <span class="co">// [1]</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="kw">reg</span> Y X2</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="kw">predict</span> e_y, res  <span class="co">//韦恩图: A+B</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="kw">reg</span> X1 X2</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="kw">predict</span> e_x, res  <span class="co">//韦恩图: B   or B+F</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="kw">reg</span> e_y e_x       <span class="co">//韦恩图: B          // [2]</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="fwl-定理的简单证明" class="level3" data-number="23.2.3">
+<h3 data-number="23.2.3" class="anchored" data-anchor-id="fwl-定理的简单证明"><span class="header-section-number">23.2.3</span> FWL 定理的简单证明</h3>
+<p>下面给出 FWL 定理的简要证明。更为正式的证明和分析参见 Davidson and MacKinnon (<a href="http://qed.econ.queensu.ca/pub/faculty/mackinnon/econ850/">2004</a>, <a href="http://qed.econ.queensu.ca/ETM/ETM-davidson-mackinnon-2021.pdf">PDF</a>, pp.&nbsp;62–75)，以及 Lovell (2008)。</p>
+<p>假设线性回归方程为：</p>
+<p><span class="math display">\[
+\mathrm{y}=\mathrm{X} \beta+\varepsilon \tag{3}
+\]</span></p>
+<p>其中，<span class="math inline">\(\beta\)</span> 为 <span class="math inline">\(K \times 1\)</span> 的系数向量，<span class="math inline">\(\varepsilon\)</span> 为 <span class="math inline">\(n \times 1\)</span> 的干扰项向量。OLS 估计量 <span class="math inline">\(b\)</span> 满足下式：</p>
+<p><span class="math display">\[
+X'Xb = X'y \tag{4}
+\]</span></p>
+<p>为了便于解释，我们可以把 <span class="math inline">\(X\)</span> 分割为 <span class="math inline">\(X = [x_1, X_2]\)</span>，其中 <span class="math inline">\(X_2 = [x_2, ..., x_k]\)</span>。 此时，(4) 可以重新表述如下：</p>
+<p><span class="math display">\[
+\left[\begin{array}{cc}
+x_1^{\prime} x_1 &amp; x_1^{\prime} X_2 \\
+X_2^{\prime} x_1 &amp; X_2^{\prime} X_2
+\end{array}\right]\left[\begin{array}{l}
+b_1 \\
+b_2
+\end{array}\right]=\left[\begin{array}{l}
+x_1^{\prime} y \\
+X_2^{\prime} y
+\end{array}\right]
+\]</span></p>
+<p>其中，</p>
+<p><span class="math display">\[
+X^{\prime} X=\left[\begin{array}{cc}
+x_1^{\prime} x_1 &amp; x_1^{\prime} X_2 \\
+X_2^{\prime} x_1 &amp; X_2^{\prime} X_2
+\end{array}\right], \quad X^{\prime} y=\left[\begin{array}{c}
+X_1^{\prime} y \\
+X_2^{\prime} y
+\end{array}\right], \quad b=\left[\begin{array}{c}
+b_1 \\
+b_2
+\end{array}\right]
+\]</span></p>
+<p>由此可以得到如下两个式子：</p>
+<p><span class="math display">\[
+\begin{gathered}
+x_{1}^{\prime} x_{1} b_{1}+x_{1}^{\prime} X_{2} b_{2}=x_{1}^{\prime} y \\
+X_{2}^{\prime} x_{1} b_{1}+X_{2}^{\prime} X_{2} b_{2}=X_{2}^{\prime} y
+\end{gathered} \tag{6}
+\]</span></p>
+<p>也就是说，<a href="#fn10" class="footnote-ref" id="fnref10" role="doc-noteref"><sup>10</sup></a></p>
+<p><span class="math display">\[
+b_2 = (X_2'X_2)^{-1}X_2'(y-x_1b_1) \tag{7}
+\]</span></p>
+<p>联想 OLS 估计量的表达式 <span class="math inline">\(b= (X'X^{-1})X'y\)</span>，我们可以把 <span class="math inline">\(b_2\)</span> 理解为 用 <span class="math inline">\((y-x_1b_1)\)</span> 对 <span class="math inline">\(X_2\)</span> 做回归后得到的 <span class="math inline">\(X_2\)</span> 的系数。</p>
+<p>经过一些简单的推导，也可以得到 <span class="math inline">\(b_1\)</span> 的估计式：</p>
+<p><span class="math display">\[
+b_1 = (X_1'M_2X_1)^{-1}X_1'M_2y \tag{8}
+\]</span></p>
+<p>其中，<span class="math inline">\(M_2 = I-X_2(X_2'X_2)^{-1}X_2'\)</span>。由于 <span class="math inline">\(M_2\)</span> 是对称 (symmetric) 且幂等 (idempotent) 的，因此 <span class="math inline">\(b_1\)</span> 可以重新表述为：</p>
+<p><span class="math display">\[
+b_1 = (x_1'M_2'M_2x_1)^{-1}x_1'M_2'M_2y=(e_{x1}'e_{x1})^{-1}e_{x1}'e_y \tag{9}
+\]</span></p>
+<p>其中，<span class="math inline">\(e_{x1}=M_2x_1\)</span>，<span class="math inline">\(e_y=M_2y\)</span>。事实上，<span class="math inline">\(e_y=M_2y\)</span> 是 <span class="math inline">\(y\)</span> 对 <span class="math inline">\(X_2\)</span> 做回归后的残差向量，而 <span class="math inline">\(e_{x1}\)</span> 则是 <span class="math inline">\(x_1\)</span> 对 <span class="math inline">\(X_2\)</span> 做回归后的残差的向量。</p>
+<p>换个角度来看，<span class="math inline">\(e_y\)</span> 和 <span class="math inline">\(e_{x1}\)</span> 也理解为：剔除了 <span class="math inline">\(X_2\)</span> 影响之后的 <span class="math inline">\(y\)</span> 和 <span class="math inline">\(x_1\)</span>。因此，用 <span class="math inline">\(e_y\)</span> 与 <span class="math inline">\(e_{x_1}\)</span> 回归，得到的 <span class="math inline">\(e_{x_1}\)</span> 的系数即可反映「当控制了 <span class="math inline">\(X_2\)</span> 之后」， <span class="math inline">\(x_1\)</span> 与 <span class="math inline">\(y\)</span> 的关系。我们也可以绘制 <span class="math inline">\(e_y\)</span> 与 <span class="math inline">\(e_{x_1}\)</span> 之间的散点图，以直观地呈现二者的「干净」关系，相应的 Stata 命令为 <code>avplot</code>，``。</p>
+<!-- ::: {.callout-note}
+### 扩展：多个变量的情形
+
+> Source: Hastie, T., R. J. Tibshirani, J. Friedman. The elements of statistical learning: Data mining, inference, and prediction[M]. 2013. [PDF](https://hastie.su.domains/Papers/ESLII.pdf).
+
+1. Initialize $\mathbf{z}_{0}=\mathbf{x}_{0}=\mathbf{1}$.
+2. For $j=1,2, \ldots, p$
+Regress $\mathbf{x}_{j}$ on $\mathbf{z}_{0}, \mathbf{z}_{1}, \ldots,, \mathbf{z}_{j-1}$ to produce coefficients $\hat{\gamma}_{\ell j}=$ $\left\langle\mathbf{z}_{\ell}, \mathbf{x}_{j}\right\rangle /\left\langle\mathbf{z}_{\ell}, \mathbf{z}_{\ell}\right\rangle, \ell=0, \ldots, j-1$ and residual vector $\mathbf{z}_{j}=$ $\mathbf{x}_{j}-\sum_{k=0}^{j-1} \hat{\gamma}_{k j} \mathbf{z}_{k} .$
+3. Regress $\mathbf{y}$ on the residual $\mathbf{z}_{p}$ to give the estimate $\hat{\beta}_{p}$.
+::: -->
+</section>
+</section>
+<section id="回顾组内估计量-fe" class="level2" data-number="23.3">
+<h2 data-number="23.3" class="anchored" data-anchor-id="回顾组内估计量-fe"><span class="header-section-number">23.3</span> 回顾：组内估计量 (FE)</h2>
+<p>我们先回顾一下一维固定效应模型的估计方法，继而扩展至 TWFE 和多维 FE 模型。</p>
+<p>考虑如下一维固定效应模型：</p>
+<p><span class="math display">\[
+y_{it} = \alpha_{i} + \mathbf{x}_{it}'\boldsymbol{\beta} + \varepsilon_{it} \tag{10}
+\]</span></p>
+<p>其组内均值为：</p>
+<p><span class="math display">\[
+\bar{y}_{i} = \alpha_i + \bar{\mathbf{x}}_i\boldsymbol{\beta} + \bar{\varepsilon}_i \tag{11}
+\]</span></p>
+<p>其中，<span class="math inline">\(\bar{y}_i=(1/T_i)\sum_{t=1}^{T_i}y_{it}\)</span>，<span class="math inline">\(T_i\)</span> 表示第 <span class="math inline">\(i\)</span> 个个体的观察期数。<span class="math inline">\(\bar{\mathbf{x}}_i\)</span> 和 <span class="math inline">\(\bar{\varepsilon}_i\)</span> 的定义方式与此相同。</p>
+<p>用 (10) 与 (11) 相减，可去除个体效应 <span class="math inline">\(\alpha_i\)</span>：</p>
+<p><span class="math display">\[
+(y_{it}-\bar{y}_i)=(\mathbf{x}_{it}-\bar{\mathbf{x}}_i)'\boldsymbol{\beta} + (\varepsilon_{it}-\bar{\varepsilon}_i) \tag{12}
+\]</span></p>
+<p>若设定 <span class="math inline">\(\dot{y}_{it}=(y_{it}-\bar{y}_i)\)</span>, <span class="math inline">\(\dot{\mathbf{x}}_{it}= (\mathbf{x}_{it}-\bar{\mathbf{x}}_i)\)</span>，以及 <span class="math inline">\(\dot{\varepsilon}_{it}= (\varepsilon_{it}-\bar{\varepsilon}_i)\)</span>，则我们只需对如下模型执行 OLS 估计即可得到 <span class="math inline">\(\boldsymbol{\beta}\)</span> 的估计值：</p>
+<p><span class="math display">\[
+\dot{y}_{it} = \dot{\mathbf{x}}_{it}'\boldsymbol{\beta} + \dot{\varepsilon}_{it} \tag{13}
+\]</span></p>
+<p>简言之，要得到固定效应模型 (10) 的估计系数，只需从原始数据中减去其组内平均值，进而对变换后的组内差分模型 (13) 执行 OLS 估计即可。显然，上述「组内去心」变换便是 FWL 定理的一个典型应用。<a href="#fn11" class="footnote-ref" id="fnref11" role="doc-noteref"><sup>11</sup></a></p>
+<section id="stata-实操和启示" class="level3" data-number="23.3.1">
+<h3 data-number="23.3.1" class="anchored" data-anchor-id="stata-实操和启示"><span class="header-section-number">23.3.1</span> Stata 实操和启示</h3>
+<p>在 Stata 中，有诸多命令都可以实现上述估计过程，如 <code>areg</code>, <code>xtreg</code>, <code>reghdfe</code> 等：</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode stata code-with-copy"><code class="sourceCode stata"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>. xtset id <span class="fu">year</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>. <span class="kw">areg</span>    <span class="fu">y</span> x1 <span class="kw">x2</span>, absorb(id) <span class="kw">vce</span>(<span class="kw">cluster</span> id)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>. <span class="kw">xtreg</span>   <span class="fu">y</span> x1 <span class="kw">x2</span>, <span class="kw">fe</span> <span class="kw">robust</span> <span class="co">//此时, robust &lt;=&gt; vce(cluster id)</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>. reghdfe <span class="fu">y</span> x1 <span class="kw">x2</span>, absorb(id) <span class="kw">vce</span>(<span class="kw">cluster</span> id)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>在有些情况下，(10) 式的估计可能只是回归分析的一个环节，此时我们可以依据 FWL 定理，预先手动进行「组内去心处理」，进而采用去心后的数据进行后续分析，例如：</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode stata code-with-copy"><code class="sourceCode stata"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>. xtset id <span class="fu">year</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>*-<span class="bn">center</span>: <span class="fu">y</span>[it] - ymean[i]</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>*. <span class="kw">bysort</span> id: <span class="bn">center</span> <span class="fu">y</span> x1 <span class="kw">x2</span>, inplace <span class="co">// inplace - 替换现有同名变量</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>. <span class="kw">bysort</span> id: <span class="bn">center</span> <span class="fu">y</span> x1 <span class="kw">x2</span>, <span class="kw">prefix</span>(c_)</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>. <span class="kw">reg</span> c_y c_x1 c_x2, <span class="kw">vce</span>(<span class="kw">cluster</span> id) <span class="co">// 手动估计 FE 模型</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>. rwrmed    c_y c_x1 c_x2  <span class="co">//中介效应分析, Stata Journal, SJ-21-3</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>  net <span class="kw">describe</span> st0646      <span class="co">// 查看命令和附件</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>. ivmediate c_y c_x1 c_x2  <span class="co">//中介效应分析, Stata Journal, SJ-20-3</span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>  net <span class="kw">describe</span> st0611_1    <span class="co">// 查看命令和附件</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+</section>
+<section id="twfe二维固定效应模型" class="level2" data-number="23.4">
+<h2 data-number="23.4" class="anchored" data-anchor-id="twfe二维固定效应模型"><span class="header-section-number">23.4</span> TWFE：二维固定效应模型</h2>
+<p>我们可以在 (10) 中加入一组时间虚拟变量以控制宏观经济因素的影响，该模型称为 TWFE：</p>
+<p><span class="math display">\[
+y_{it} = \mathbf{x}_{it}'\boldsymbol{\beta} + a_i+\lambda_t + \varepsilon_{it} \tag{14}
+\]</span></p>
+<p>我们可以采用类似于 (12) 的方式同时去除个体固定效应和时间效应。转换方式为：<a href="#fn12" class="footnote-ref" id="fnref12" role="doc-noteref"><sup>12</sup></a></p>
+<p><span class="math display">\[
+\widetilde{y}_{it}=y_{it}-\bar{y}_i-\bar{y}_t \tag{15}
+\]</span></p>
+<p>其中，<span class="math inline">\(\bar{y}_t=(1/N_t)\sum_{i=1}^{N_t}y_{it}\)</span>，<span class="math inline">\(N_t\)</span> 表示第 <span class="math inline">\(t\)</span> 个时点包含的公司数量。<span class="math inline">\(\bar{y}_i\)</span> 的定义同前。</p>
+<p>按此思路可以得到 <span class="math inline">\(\widetilde{\mathbf{x}}_{it}\)</span>，进而用 <span class="math inline">\(\widetilde{y}_{it}\)</span> 对 <span class="math inline">\(\widetilde{\mathbf{x}}_{it}\)</span> 执行 OLS 回归即可得到 (14) 的无偏估计量，记为 <span class="math inline">\(\widehat{\boldsymbol{\beta}}_{TWFE}\)</span>。</p>
+<p>若需在回归中保留常数项，则可以执行如下变换：</p>
+<p><span class="math display">\[
+\widetilde{y}_{it}=y_{it}-\bar{y}_i-\bar{y}_t+\bar{y}
+\]</span></p>
+<p>其中，<span class="math inline">\(\bar{y}\)</span> 表示 <span class="math inline">\(y_{it}\)</span> 的样本均值。</p>
+<p>实证分析中通常使用如下两条命令估计 TWFE 模型。差别如下：</p>
+<ul>
+<li>[M1] 将时间效应 <span class="math inline">\(\lambda_t\)</span> 作为一组虚拟变量纳入模型，</li>
+<li>[M2] 则是预先采用 (15) 式去除 <span class="math inline">\(\lambda_t\)</span>。由 FWL 定理可知，二者是等价的。</li>
+</ul>
+<div class="sourceCode" id="cb5"><pre class="sourceCode stata code-with-copy"><code class="sourceCode stata"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>. xtset id <span class="fu">year</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>. <span class="kw">xtreg</span>   <span class="fu">y</span> x1 <span class="kw">x2</span> i.<span class="fu">year</span>, <span class="kw">fe</span> <span class="kw">vce</span>(<span class="kw">cluster</span> id)  <span class="co">// [M1]</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>. reghdfe <span class="fu">y</span> x1 <span class="kw">x2</span>, absorb(id <span class="fu">year</span>) <span class="kw">vce</span>(<span class="kw">cluster</span> id)  <span class="co">// [M2] &lt;=&gt; [M1]</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>若需手动操作，则 (15) 式可以用如下命令实现：</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode stata code-with-copy"><code class="sourceCode stata"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>xtset id <span class="fu">year</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="kw">local</span> <span class="kw">yx</span> <span class="st">"y x1 x2"</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>* y_i_mean</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">foreach</span> v <span class="kw">of</span> <span class="kw">varlist</span> <span class="ot">`yx'</span>{</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>      <span class="kw">bysort</span> id: <span class="kw">egen</span> <span class="ot">`v'</span>_i = <span class="kw">mean</span>(<span class="ot">`v'</span>)</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>* y_t_mean</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>  <span class="kw">foreach</span> v <span class="kw">of</span> <span class="kw">varlist</span> <span class="ot">`yx'</span>{</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>      <span class="kw">bysort</span> <span class="fu">year</span>: <span class="kw">egen</span> <span class="ot">`v'</span>_t = <span class="kw">mean</span>(<span class="ot">`v'</span>)</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>* y_ddm = y_it - y_i_mean - y_t_mean</span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>*  (ddm: <span class="kw">double</span> <span class="kw">de</span>-<span class="kw">mean</span>)</span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>  <span class="kw">foreach</span> v <span class="kw">of</span> <span class="kw">varlist</span> <span class="ot">`yx'</span>{</span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>      <span class="kw">gen</span> <span class="ot">`v'</span>_ddm = <span class="ot">`v'</span> - <span class="ot">`v'</span>_i - <span class="ot">`v'</span>_t</span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a><span class="kw">reg</span> y_ddm x1_ddm x2_ddm, <span class="kw">vce</span>(<span class="kw">cluster</span> id)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="hdfe高维固定效应模型" class="level2" data-number="23.5">
+<h2 data-number="23.5" class="anchored" data-anchor-id="hdfe高维固定效应模型"><span class="header-section-number">23.5</span> HDFE：高维固定效应模型</h2>
+<p>在教育经济、移民、公司金融等领域的研究中，经常使用高维固定效应模型，其中尤以国际贸易领域中的「引力模型」影响最大，<a href="#fn13" class="footnote-ref" id="fnref13" role="doc-noteref"><sup>13</sup></a>通常会在模型中包含三维甚至四维固定效应，以及它们的交互项。若允许经济变量的影响具有异质性，则还可以把固定效应与 <span class="math inline">\(x\)</span> 变量交乘。</p>
+<p>这里以三维固定效应模型为例进行说明，更一般的情形在原理上于此相似，矩阵推导详情参见 Balazsi, Matyas, Wansbeek (<a href="https://doi.org/10.1080/07474938.2015.1032164">2018</a>, <a href="http://sci-hub.ren/10.1080/07474938.2015.1032164">PDF</a>)。<a href="#fn14" class="footnote-ref" id="fnref14" role="doc-noteref"><sup>14</sup></a></p>
+<p>假设我们需要研究全国 31 个省在一段时间内的行业产出的影响因素，则数据包括三个维度：省份 (<span class="math inline">\(i=1,\cdots, N\)</span>)，行业 (<span class="math inline">\(j=1,\cdots,G\)</span>)，年份 (<span class="math inline">\(t=1,\cdots,T\)</span>)，模型设定为：</p>
+<p><span class="math display">\[
+y_{ijt} = \mathbf{x}_{ijt}'\boldsymbol{\beta} + a_i + \gamma_j + \lambda_t + \varepsilon_{ijt} \tag{16}
+\]</span></p>
+<p>沿袭 (12) 和 (15) 的变换思路，可以采用如下变换去除三个维度的固定效应：</p>
+<p><span class="math display">\[
+\widetilde{y}_{ijt} = y_{ijt}-\bar{y}_i-\bar{y}_j-\bar{y}_t + 2\bar{y} \tag{17}
+\]</span></p>
+<p>Balazsi et al.&nbsp;(<a href="https://doi.org/10.1080/07474938.2015.1032164">2018</a>, <a href="http://sci-hub.ren/10.1080/07474938.2015.1032164">PDF</a>) 文中表述如下：<a href="#fn15" class="footnote-ref" id="fnref15" role="doc-noteref"><sup>15</sup></a></p>
+<p><span class="math display">\[
+\widetilde{y}_{i j t}=y_{i j t}-\bar{y}_{i . .}-\bar{y}_{. j .}-\bar{y}_{. . t}+2 \bar{y}_{\ldots .} \tag{18}
+\]</span></p>
+<p>最后，需要特别注意的是，经过组内变换后的系数估计值与直接进行包含多组虚拟变量的 OLS 回归虽然在系数上相同，但标准误的计算需要调整。Stata 中的 <code>reghdfe</code> 等命令对此进行了非常妥善的处理。</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode stata code-with-copy"><code class="sourceCode stata"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>. reghdfe <span class="fu">y</span> x1 <span class="kw">x2</span>, absorb(province industry <span class="fu">year</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>若需手动操作，则 (17) 式可以用如下命令实现：</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode stata code-with-copy"><code class="sourceCode stata"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>. xtset id jcode time</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>. <span class="kw">bysort</span>   id: <span class="bn">center</span> <span class="fu">y</span> x1 <span class="kw">x2</span>, inplace <span class="co">//原地替换已有变量</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>. <span class="kw">bysort</span> <span class="fu">year</span>: <span class="bn">center</span> <span class="fu">y</span> x1 <span class="kw">x2</span>, inplace</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>. <span class="kw">reg</span> <span class="fu">y</span> x1 <span class="kw">x2</span>, <span class="kw">vce</span>(<span class="kw">cluster</span> id)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<section id="双边固定效应" class="level3" data-number="23.5.1">
+<h3 data-number="23.5.1" class="anchored" data-anchor-id="双边固定效应"><span class="header-section-number">23.5.1</span> 双边固定效应</h3>
+<p>国际贸易领域中的引力模型通常会包含交互固定效应。<a href="#fn16" class="footnote-ref" id="fnref16" role="doc-noteref"><sup>16</sup></a>例如，Egger and Pfaffermayr (<a href="https://doi.org/10.1007/s001810200146">2003</a>, <a href="http://sci-hub.ren/10.1007/s001810200146">PDF</a>) 便设定了如下模型，以反映贸易双方的交互影响：</p>
+<p><span class="math display">\[
+y_{i j t}=\mathbf{x}_{ijt}'\boldsymbol{\beta}+\gamma_{ij}+\varepsilon_{i j t}, \tag{19}
+\]</span></p>
+<p>其中，<span class="math inline">\(\gamma_{i j}\)</span> 为双边固定效应，可以采用如下变换去除之 (Balazsi et al., <a href="https://doi.org/10.1080/07474938.2015.1032164">2018</a>, <a href="http://sci-hub.ren/10.1080/07474938.2015.1032164">PDF</a>, eq. 6)：</p>
+<p><span class="math display">\[
+\widetilde{y}_{i j t}=y_{i j t}-\bar{y}_{i j .} \tag{20}
+\]</span></p>
+<p>Stata 命令为：</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode stata code-with-copy"><code class="sourceCode stata"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>. reghdfe <span class="fu">y</span> x1 <span class="kw">x2</span>, absorb(i.ivar#i.jvar) <span class="kw">vce</span>(<span class="kw">cluster</span> ivar jvar)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>手动生成 <span class="math inline">\(y_{i j t}-\bar{y}_{i j .}\)</span> 的命令为：</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode stata code-with-copy"><code class="sourceCode stata"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="kw">bysort</span> ivar jvar: <span class="kw">egen</span> y_ij_mean = <span class="kw">mean</span>(<span class="fu">y</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>实证分析中应用更为广泛的是 Cheng and Wall (2005) 提出的扩展模型，它在 (19) 中增加了时间效应 <span class="math inline">\(\lambda_{t}\)</span>：</p>
+<p><span class="math display">\[
+y_{i j t}=\mathbf{x}_{ijt}'\boldsymbol{\beta} + \gamma_{i j}+\lambda_{t}+\varepsilon_{i j t} . \tag{21}
+\]</span></p>
+<p>用 (18) 式对原始数据进行变换后执行 OLS 估计即可 (Balazsi et al., <a href="https://doi.org/10.1080/07474938.2015.1032164">2018</a>, <a href="http://sci-hub.ren/10.1080/07474938.2015.1032164">PDF</a>)。</p>
+<p>Stata 命令为：</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode stata code-with-copy"><code class="sourceCode stata"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>. reghdfe <span class="fu">y</span> x1 <span class="kw">x2</span>, absorb(ivar#jvar tvar) <span class="kw">vce</span>(<span class="kw">cluster</span> ivar jvar)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Matyas (<a href="https://link.springer.com/book/10.1007/978-3-319-60783-2">2017</a>, <a href="https://link.springer.com/content/pdf/10.1007%2F978-3-319-60783-2.pdf">PDF</a>) 文中表 1.1, 表 1.2, 表 2.1 列举了多种其它设定方式，例如：</p>
+<p><span class="math display">\[
+\begin{aligned}
+    &amp; y_{i j t}=\beta^{\prime} x_{i j t}+\alpha_{j t}+\varepsilon_{i j t}, \\
+    &amp; y_{i j t}=\beta^{\prime} x_{i j t}+\alpha_{i t}+\alpha_{j t}^*+\varepsilon_{i j t},
+    \end{aligned} \tag{22}
+\]</span></p>
+<p>或者把各个交互效应都考虑在内的完整设定：</p>
+<p><span class="math display">\[
+y_{i j t}=\beta^{\prime} x_{i j t}+\gamma_{i j}+\alpha_{i t}+\alpha_{j t}^{*}+\varepsilon_{i j t} . \tag{23}
+\]</span></p>
+<p>相应的组内变换公式为：</p>
+<p><span class="math display">\[
+\tilde{y}_{i j t}=y_{i j t}-\bar{y}_{i j .}-\bar{y}_{. j t}-\bar{y}_{i . t}+\bar{y}_{. . t}+\bar{y}_{. j .}+\bar{y}_{i . .}-\bar{y}_{. . .} \tag{24}
+\]</span></p>
+<p>Stata 命令为：</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode stata code-with-copy"><code class="sourceCode stata"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>. reghdfe <span class="fu">y</span> x1 <span class="kw">x2</span>, absorb(ivar#jvar ivar#tvar jvar#tvar)  <span class="co">///</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>                   <span class="kw">vce</span>(<span class="kw">cluster</span> ivar jvar tvar)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="hdfe高维及更一般的设定" class="level3" data-number="23.5.2">
+<h3 data-number="23.5.2" class="anchored" data-anchor-id="hdfe高维及更一般的设定"><span class="header-section-number">23.5.2</span> HDFE：高维及更一般的设定</h3>
+<p>按照上面的分析逻辑，我们的数据也可能包含四个甚至五个维度的特征。例如，</p>
+<ul>
+<li>我们想研究公司 <span class="math inline">\(s\)</span> 在时间 <span class="math inline">\(t\)</span> 上的产品 <span class="math inline">\(j\)</span> 从给定国家到国家 <span class="math inline">\(i\)</span> 的出口量 <span class="math inline">\(y\)</span>。显然，变量 <span class="math inline">\(y_{i j s t}\)</span> 包含四个维度 (<code>公司-产品-时间-进口国</code>)。</li>
+<li>若手头的数据不仅针对一个国家，而是多个国家，我们最终将得到五维面板数据 (<code>出口国-公司-产品-时间-进口国</code>)。</li>
+</ul>
+<p>显然，这种高维数据使得我们可以采用多种方式来设定的固定效应：基本的固定效应有 5 个，若进一步加入它们的各种交互项，则可供选择的模型设定形式将会大幅增加。然而，就技术层面而言，此前介绍的三维模型的处理思路可以很容易推广到高维情形。</p>
+<p>举例而言，若将 (23) 式扩展至四维，并包含所有的交互效应，则：</p>
+<p><span class="math display">\[
+y_{i j s t}=x_{i j s t}^{\prime} \beta+\gamma_{i j s}^{0}+\gamma_{i j t}^{1}+\gamma_{j s t}^{2}+\gamma_{i s t}^{3}+\varepsilon_{i j s t}, \tag{25}
+\]</span></p>
+<p>去除 <span class="math inline">\(\left(\gamma_{i j s}^{0}, \gamma_{i j t}^{1}, \gamma_{j s t}^{2}, \gamma_{i s t}^{3}\right)\)</span> 的组内变换公式为 (Balazsi et al., <a href="https://doi.org/10.1080/07474938.2015.1032164">2018</a>, <a href="http://sci-hub.ren/10.1080/07474938.2015.1032164">PDF</a>)：</p>
+<p><span class="math display">\[
+\begin{aligned}
+\tilde{y}_{i j s t} =\ &amp; y_{i j s t}-\bar{y}_{. j s t}-\bar{y}_{i . s t}-\bar{y}_{i j . t}-\bar{y}_{i j s .}+\bar{y}_{. . s t}+\bar{y}_{. j . t}+\bar{y}_{. j s .} \\
+&amp; +\bar{y}_{i . . t}+\bar{y}_{i . s .}+\bar{y}_{i j . .}-\bar{y}_{\ldots t}-\bar{y}_{. . s .}-\bar{y}_{. j . .}-\bar{y}_{i . . .}+\bar{y}_{\ldots . .}
+\end{aligned} \tag{26}
+\]</span></p>
+<p>在 Stata 中，使用 <code>reghdfe</code> 命令可以非常方便地实现上述变换：</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode stata code-with-copy"><code class="sourceCode stata"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>. reghdfe <span class="fu">y</span> x1 <span class="kw">x2</span>, absorb(ivar#jvar#svar#tvar)  <span class="co">///</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>                   <span class="kw">vce</span>(<span class="kw">cluster</span> ivar jvar <span class="kw">svar</span> tvar)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+</section>
+<section id="参考文献" class="level2" data-number="23.6">
+<h2 data-number="23.6" class="anchored" data-anchor-id="参考文献"><span class="header-section-number">23.6</span> 参考文献</h2>
+<p>Balazsi, L., L. Matyas, T. Wansbeek. 2018. The estimation of multidimensional fixed effects panel data models. Econometric Reviews, 37 (3): 212-227. <a href="https://doi.org/10.1080/07474938.2015.1032164">Link</a>, <a href="http://sci-hub.ren/10.1080/07474938.2015.1032164">PDF</a>, <a href="https://xs2.dailyheadlines.cc/scholar?cites=1236190443942270900&amp;as_sdt=2005&amp;sciodt=0,5&amp;hl=zh-CN">Cited</a></p>
+<p>Chiang, H. D., K. Kato, Y. Ma, Y. Sasaki, 2022, Multiway cluster robust double/debiased machine learning, Journal of Business &amp; Economic Statistics, 40 (3): 1046-1056. <a href="https://doi.org/10.1080/07350015.2021.1895815">-Link-</a>, <a href="https://sci-hub.ren/10.1080/07350015.2021.1895815">-PDF-</a>, <a href="https://www.tandfonline.com/doi/suppl/10.1080/07350015.2021.1895815?scroll=top">Replication-R codes</a>, Stata: <code>findit crhdreg</code></p>
+<p>Correia, S., P. Guimarães, T. Zylkin. 2020. Fast poisson estimation with high-dimensional fixed effects. The Stata Journal, 20 (1): 95-115. <a href="https://doi.org/10.1177/1536867x20909691">Link</a>, <a href="https://journals.sagepub.com/doi/pdf/10.1177/1536867X20909691">PDF</a>, <a href="https://xs2.dailyheadlines.cc/scholar?cites=5570354126943298338&amp;as_sdt=2005&amp;sciodt=0,5&amp;hl=zh-CN">Cited</a></p>
+<p>Davidson, Russell; MacKinnon, James G. (2004). Econometric Theory and Methods. New York: Oxford University Press. pp.&nbsp;62–75. <a href="http://qed.econ.queensu.ca/pub/faculty/mackinnon/econ850/">Link</a>, <a href="http://qed.econ.queensu.ca/ETM/ETM-davidson-mackinnon-2021.pdf">PDF</a></p>
+<p>Egger, P., M. Pfaffermayr. 2003. The proper panel econometric specification of the gravity equation: A three-way model with bilateral interaction effects. Empirical Economics, 28 (3): 571-580. <a href="https://doi.org/10.1007/s001810200146">Link</a>, <a href="http://sci-hub.ren/10.1007/s001810200146">PDF</a>.</p>
+<p>Fiebig, D. G., R. Bartels. 1996. The Frisch-Waugh theorem and generalized least squares. Econometric Reviews, 15 (4): 431-443. <a href="https://doi.org/10.1080/07474939608800365">Link</a>, <a href="https://doi.org/10.1080/07474939608800365">Link</a>, <a href="http://sci-hub.ren/10.1080/07474939608800365">PDF</a>.</p>
+<p>Frisch, R., and F. V. Waugh. 1933. Partial time regressions as compared with individual trends. Econometrica 1: 387–401.</p>
+<p>Guimaraes, P., P. Portugal. 2010. A simple feasible alternative procedure to estimate models with high-dimensional fixed effects. Stata Journal, 10 (4): 628–649. <a href="https://journals.sagepub.com/doi/pdf/10.1177/1536867X1101000406">PDF</a>, <a href="https://xs2.dailyheadlines.cc/scholar?cites=8847440803699029187&amp;as_sdt=2005&amp;sciodt=0,5&amp;hl=zh-CN">cited</a>.</p>
+<p>Hansen B E . 2021. Econometrics. Princeton University Press, forthcoming. <a href="https://www.ssc.wisc.edu/~bhansen/econometrics/">Data and Contents</a>, <a href="https://www.ssc.wisc.edu/~bhansen/econometrics/Econometrics.pdf">PDF</a></p>
+<p>Hastie, Trevor; Tibshirani, Robert; Friedman, Jerome (2017). Multiple Regression from Simple Univariate Regression. The Elements of Statistical Learning : Data Mining, Inference, and Prediction (2nd ed.). New York: Springer. pp.&nbsp;52–55. <a href="https://hastie.su.domains/Papers/ESLII.pdf#page=71">PDF</a></p>
+<p>Hastie, T., R. J. Tibshirani, J. Friedman. The elements of statistical learning: Data mining, inference, and prediction[M]. 2017. 2E. <a href="https://hastie.su.domains/Papers/ESLII.pdf">PDF</a>.</p>
+<p>Hayashi, Fumio (2000). Econometrics. Princeton: Princeton University Press. pp.&nbsp;18–19.</p>
+<p>Head, K., T. Mayer. 2014. Chapter 3 - gravity equations: Workhorse, toolkit, and cookbook, in G. Gopinath, E. Helpman,K. Rogoff eds, Handbook of International Economics (Elsevier, 131-195. <a href="https://www.sciencedirect.com/science/article/pii/B9780444543141000033">Link</a>, <a href="http://sci-hub.ren/10.1016/B978-0-444-54314-1.00003-3">PDF</a>.</p>
+<p>Lovell, M. C. 1963. Seasonal adjustment of economic time series and multiple regression analysis. Journal of the American Statistical Association 58: 993–1010.</p>
+<p>Lovell, M. (2008). A Simple Proof of the FWL Theorem. Journal of Economic Education. 39 (1): 88–91.</p>
+<p>Matyas, L. 2017. The Econometrics of Multi-dimensional panels. Advanced Studies in Theoretical and Applied Econometrics. Berlin: Springer. <a href="https://link.springer.com/book/10.1007/978-3-319-60783-2">Link</a>, <a href="https://link.springer.com/content/pdf/10.1007%2F978-3-319-60783-2.pdf">PDF</a>.</p>
+<p>Silva, J. M. C. S., S. Tenreyro. 2006. The log of gravity. The Review of Economics and Statistics, 88 (4): 641-658. <a href="https://doi.org/10.1162/rest.88.4.641">Link</a>, <a href="http://sci-hub.ren/10.1162/rest.88.4.641">PDF</a>.</p>
+<p>Stammann, Amrei, Florian Heiß, and Daniel McFadden. 2016. Estimating fixed effects logit models with large panel data. Working Paper. <a href="https://www.econstor.eu/bitstream/10419/145837/1/VfS_2016_pid_6909.pdf">PDF</a></p>
+<p>Stammann, A. 2018. Fast and Feasible Estimation of Generalized Linear Models with High-Dimensional k-way Fixed Effects. ArXiv e-prints . <a href="https://arxiv.org/pdf/1707.01815v2.pdf">PDF</a></p>
+<p>Yamada, H. 2017. The Frisch-Waugh-Lovell Theorem for the lasso and the ridge regression. Communications in Statistics - Theory and Methods 46(21): 10897-10902. <a href="http://dx.doi.org/10.1080/03610926.2016.1252403">Link</a>, <a href="http://sci-hub.ren/10.1080/03610926.2016.1252403">PDF</a>.</p>
+
+
+</section>
+<section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn1"><p>Correia et al.&nbsp;(<a href="https://journals.sagepub.com/doi/pdf/10.1177/1536867X20909691">2020</a>) 对 Stata 中的各种用于估计高维固定效应的命令进行非常细致的梳理。<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>该书表 1.1 - 表 1.3，以及表 2.1 对比了国际贸易、房地产、移民等多个领域中使用高维固定效应模型的 100 余篇论文的模型设定形式。<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3"><p>Davidson and MacKinnon (<a href="http://qed.econ.queensu.ca/pub/dm-book/EIE-davidson-mackinnon-2021.pdf">1993</a>, 19-24) 以及 Davidson and MacKinnon (<a href="http://qed.econ.queensu.ca/pub/faculty/mackinnon/econ850/">2004</a>, <a href="http://qed.econ.queensu.ca/ETM/ETM-davidson-mackinnon-2021.pdf">PDF</a>, pp.&nbsp;62–75, <a href="http://qed.econ.queensu.ca/pub/faculty/mackinnon/econ850/slides/econ850-slides-h03.pdf">Slides</a>) 对此进行非常细致的介绍。<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn4"><p>参见连享会推文：<a href="https://www.lianxh.cn/news/e346db1a68211.html">图示线性回归系数：Frisch-Waugh定理与部分回归图</a>，以及 <a href="https://www.lianxh.cn/news/22f1f266f5868.html">多元回归系数：我们都解释错了？</a>。<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn5"><p>有关时间趋势项的介绍参见连享会推文：<a href="https://www.lianxh.cn/news/5bbe8408904fb.html">傻傻分不清：时间趋势项与时间虚拟变量</a>。<a href="#fnref5" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn6"><p>以 <span class="math inline">\(y\)</span> 为例，用 <span class="math inline">\(y\)</span> 对 <span class="math inline">\(t\)</span> 进行 OLS 回归，得到的残差项 <span class="math inline">\(\tilde{y}\)</span> 即为去除时间趋势后的 <span class="math inline">\(y\)</span>。<a href="#fnref6" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn7"><p>生成 <code>c_y</code> 和 <code>c_x</code> 的 Stata 命令为：<code>bysort industry: center y x, prefix(c_)</code>。<a href="#fnref7" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn8"><p>例如，Guimaraes and Portugal (<a href="https://journals.sagepub.com/doi/pdf/10.1177/1536867X1101000406">2010</a>) 基于 FWL 定理，提出了一种快速估计高维固定效应的方法，Stata 命令为 <code>regintfe</code>。不过，其功能已经完全被 <code>reghdfe</code> 覆盖。<a href="#fnref8" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn9"><p>相关应用参见 <a href="https://www.stata.com/manuals/lassoLasso_intro.pdf">[LASSO] Lasso_intro</a>，以及<a href="https://www.stata.com/manuals/lassoporegress.pdf">[LASSO] poregress</a>。<a href="#fnref9" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn10"><p>由 (6) 式可知，<span class="math inline">\(X_2'X_2b_2 = X_2'y - X_2'x_1b_1= X_2'(y-x_1b_1)\)</span>。<a href="#fnref10" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn11"><p>更为严格的推导过程参见第 sec:xt-app-FE-within 小节。<a href="#fnref11" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn12"><p>具体推导过程参见第 sec:xt-fe-twfe-app 小节。<a href="#fnref12" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn13"><p>有关引力模型的介绍参见 Silva and Tenreyro (<a href="https://doi.org/10.1162/rest.88.4.641">2006</a>, <a href="http://sci-hub.ren/10.1162/rest.88.4.641">PDF</a>，以及 Head and Mayer ( <a href="https://www.sciencedirect.com/science/article/pii/B9780444543141000033">2014</a>, <a href="http://sci-hub.ren/https://doi.org/10.1016/B978-0-444-54314-1.00003-3">PDF</a>)。<a href="#fnref13" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn14"><p>文中的矩阵运算可以用 Stata 中的 Mata 语言实现，详情参见 Revesz (<a href="http://www.personal.ceu.hu/staff/repec/pdf/stata-program_document-dofile.pdf">2013</a>)。<a href="#fnref14" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn15"><p>需要强调的是，上述组内变换通常并不唯一，比如，如下变换也可以消除 (16) 式中的三个固定效应： <span class="math inline">\(\widetilde{y}_{i j t}=y_{i j t}-\bar{y}_{i j .}-\bar{y}_{. t}+\bar{y}_{\ldots}\)</span>，但由此变换得到的 <span class="math inline">\(\boldsymbol{\beta}\)</span> 系数估计值是相同的。<a href="#fnref15" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn16"><p>有关引力模型的介绍参见 Silva and Tenreyro (<a href="https://doi.org/10.1162/rest.88.4.641">2006</a>, <a href="http://sci-hub.ren/10.1162/rest.88.4.641">PDF</a>，以及 Head and Mayer ( <a href="https://www.sciencedirect.com/science/article/pii/B9780444543141000033">2014</a>, <a href="http://sci-hub.ren/https://doi.org/10.1016/B978-0-444-54314-1.00003-3">PDF</a>)。<a href="#fnref16" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const disableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'prefetch';
+    }
+  }
+  const enableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'stylesheet';
+    }
+  }
+  const manageTransitions = (selector, allowTransitions) => {
+    const els = window.document.querySelectorAll(selector);
+    for (let i=0; i < els.length; i++) {
+      const el = els[i];
+      if (allowTransitions) {
+        el.classList.remove('notransition');
+      } else {
+        el.classList.add('notransition');
+      }
+    }
+  }
+  const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+    const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+    const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+    let newTheme = '';
+    if(darkModeDefault) {
+      newTheme = isAlternate ? baseTheme : alternateTheme;
+    } else {
+      newTheme = isAlternate ? alternateTheme : baseTheme;
+    }
+    const changeGiscusTheme = () => {
+      // From: https://github.com/giscus/giscus/issues/336
+      const sendMessage = (message) => {
+        const iframe = document.querySelector('iframe.giscus-frame');
+        if (!iframe) return;
+        iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+      }
+      sendMessage({
+        setConfig: {
+          theme: newTheme
+        }
+      });
+    }
+    const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+    if (isGiscussLoaded) {
+      changeGiscusTheme();
+    }
+  }
+  const toggleColorMode = (alternate) => {
+    // Switch the stylesheets
+    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+    manageTransitions('#quarto-margin-sidebar .nav-link', false);
+    if (alternate) {
+      enableStylesheet(alternateStylesheets);
+      for (const sheetNode of alternateStylesheets) {
+        if (sheetNode.id === "quarto-bootstrap") {
+          toggleBodyColorMode(sheetNode);
+        }
+      }
+    } else {
+      disableStylesheet(alternateStylesheets);
+      toggleBodyColorPrimary();
+    }
+    manageTransitions('#quarto-margin-sidebar .nav-link', true);
+    // Switch the toggles
+    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+    for (let i=0; i < toggles.length; i++) {
+      const toggle = toggles[i];
+      if (toggle) {
+        if (alternate) {
+          toggle.classList.add("alternate");     
+        } else {
+          toggle.classList.remove("alternate");
+        }
+      }
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455)
+    if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+      manageTransitions("body", false);
+      window.scrollTo(0, 1);
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        manageTransitions("body", true);
+      }, 40);  
+    }
+  }
+  const isFileUrl = () => { 
+    return window.location.protocol === 'file:';
+  }
+  const hasAlternateSentinel = () => {  
+    let styleSentinel = getColorSchemeSentinel();
+    if (styleSentinel !== null) {
+      return styleSentinel === "alternate";
+    } else {
+      return false;
+    }
+  }
+  const setStyleSentinel = (alternate) => {
+    const value = alternate ? "alternate" : "default";
+    if (!isFileUrl()) {
+      window.localStorage.setItem("quarto-color-scheme", value);
+    } else {
+      localAlternateSentinel = value;
+    }
+  }
+  const getColorSchemeSentinel = () => {
+    if (!isFileUrl()) {
+      const storageValue = window.localStorage.getItem("quarto-color-scheme");
+      return storageValue != null ? storageValue : localAlternateSentinel;
+    } else {
+      return localAlternateSentinel;
+    }
+  }
+  const darkModeDefault = false;
+  let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+  // Dark / light mode switch
+  window.quartoToggleColorScheme = () => {
+    // Read the current dark / light value 
+    let toAlternate = !hasAlternateSentinel();
+    toggleColorMode(toAlternate);
+    setStyleSentinel(toAlternate);
+    toggleGiscusIfUsed(toAlternate, darkModeDefault);
+  };
+  // Ensure there is a toggle, if there isn't float one in the top right
+  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+    const a = window.document.createElement('a');
+    a.classList.add('top-right');
+    a.classList.add('quarto-color-scheme-toggle');
+    a.href = "";
+    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+    const i = window.document.createElement("i");
+    i.classList.add('bi');
+    a.appendChild(i);
+    window.document.body.appendChild(a);
+  }
+  // Switch to dark mode if need be
+  if (hasAlternateSentinel()) {
+    toggleColorMode(true);
+  } else {
+    toggleColorMode(false);
+  }
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp("https:\/\/lianxhcn\.github\.io\/dsfin\/");
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+          // target, if specified
+          link.setAttribute("target", "_blank");
+          if (link.getAttribute("rel") === null) {
+            link.setAttribute("rel", "noopener");
+          }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../../Lecture/crawing/craw_02_sec02_lingnan_dialog.html" class="pagination-link" aria-label="实例-对话模式：爬取岭南学院教师名录">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">实例-对话模式：爬取岭南学院教师名录</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../../Lecture/panel_fe/panel_IntFE.html" class="pagination-link" aria-label="交互固定效应模型">
+        <span class="nav-page-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">交互固定效应模型</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+      &nbsp;
+    </div>   
+    <div class="nav-footer-center">
+<p><a href="https://www.lianxh.cn">lianxh.cn</a></p>
+</div>
+    <div class="nav-footer-right">
+<p>Support: <a href="https://lianxhcn.github.io/quarto_book/">Quarto</a></p>
+</div>
+  </div>
+</footer>
+
+
+
+
+</body></html>

@@ -141,7 +141,7 @@
 ### 非参数估计方法
 
 - Wasserman (2006)《All of Nonparametric Statistics》, [PDF](https://www.stat.cmu.edu/~brian/valerie/617-2022/0%20-%20books/2006%20-%20Wasserman%20All%20Of%20Nonparametric%20Statistics.pdf)
-
+- ———. 2006. All of Nonparametric Statistics. Springer Texts in Statistics. New York: Springer. https://doi.org/10.1007/0-387-30623-4.
 
 ### 其它
 

@@ -75,6 +75,20 @@ book:
         - Lecture/crawing/craw_02_sec01_lingnan_prompt.md
         - Lecture/crawing/craw_02_sec02_lingnan_dialog.ipynb
 
+    - part: "**面板模型：固定效应**"
+      chapters: 
+        - Lecture/panel_fe/panel_HDFE.md
+        - Lecture/panel_fe/panel_IntFE.md
+
+    - part: "**面板变系数模型**"
+      chapters: 
+        - Lecture/panel_xtplfc/01_Panel_threshold_01_theory.ipynb
+        - Lecture/panel_xtplfc/02_Panel_threshold_02_codes.ipynb
+        - Lecture/panel_xtplfc/04_xtplfc的直观解读及xthreg实现.ipynb
+        - Lecture/panel_xtplfc/05_解读xtplfc的原理_样条基函数.ipynb
+        - Lecture/panel_xtplfc/Du_2021_EE_中文精要.md
+
+
     - part: "**文本分析**"
       chapters:
         - Lecture/text_analysis/lecture_text_01_ailn.md
