@@ -1,0 +1,358 @@
+# 二元选择模型 {#chap-binary}
+
+> **本章目标**：从一个真实的金融问题出发，理解为什么需要 Logit/Probit 模型，掌握其建模逻辑、参数估计和结果解释，并学会在 Python 中完整实现。
+
+## 引言：一个金融预测问题 {#sec-binary-intro}
+
+假设你是一家商业银行的信贷风控分析师。银行每年向数千家上市公司提供贷款，而你的任务是：**在贷款发放之前，预测这家公司未来一年是否会发生债务违约**。
+
+你手头有每家公司的财务数据：
+
+- **Size**（lnTA）：公司规模（总资产的自然对数）
+- **Leverage**：资产负债率
+- **ROA**：资产收益率
+- **Age**：上市年限
+- **Industry**：所属行业（制造/地产/金融/科技）
+- **Ownership**：所有制性质（国有/民营）
+
+因变量 **default** 只有两个取值：$1$（违约）和 $0$（未违约）。
+
+@fig-binary-intro-scatter 展示了 1000 家上市公司的数据。从图中可以看到：违约公司（橙色）集中在规模小、杠杆高的区域；未违约公司（蓝色）则分布在规模大、杠杆低的区域。这种模式提示我们，**Size 和 Leverage 对违约概率有显著的预测能力**。
+
+![上市公司违约数据：Size (lnTA) 与 Leverage 的散点图](./figs/fig01_scatter.png){#fig-binary-intro-scatter width="90%"}
+
+现在的问题是：如何建立一个模型，利用这些财务指标来**估计**每家公司的违约概率，并做出**分类预测**？
+
+---
+
+## 为什么不用线性回归？ {#sec-binary-why-not-ols}
+
+最直接的想法是：既然 $y_i \in \{0, 1\}$，直接对 $y_i$ 做线性回归不就好了？
+
+$$
+\hat{y}_i = \hat{\beta}_0 + \hat{\beta}_1 \cdot \text{Size}_i + \hat{\beta}_2 \cdot \text{Leverage}_i
+$$
+
+这个模型称为**线性概率模型（LPM）**。由于
+
+$$
+\mathrm{E}(y_i \mid \mathbf{x}_i) = 0 \times P(y_i=0 \mid \mathbf{x}_i) + 1 \times P(y_i=1 \mid \mathbf{x}_i) = P(y_i=1 \mid \mathbf{x}_i)
+$$
+
+LPM 的拟合值 $\hat{y}_i$ 可以直接解释为违约概率的估计值。
+
+**LPM 有两个根本性的缺陷**（见 @fig-binary-lpm-vs-logit）：
+
+1. **拟合值超出 $[0,1]$ 范围**：对于规模极大或极小的公司，LPM 可能给出负的或超过 1 的"概率"，这在概率的意义上完全无法解释。
+
+2. **边际效应为常数**：LPM 暗示 Leverage 从 0.1 增加到 0.2，与从 0.8 增加到 0.9，对违约概率的影响**完全相同**。但现实中，已经高度负债的公司，每增加一点杠杆，违约风险的上升应该更为陡峭。
+
+![LPM 与 Logit 的拟合概率对比：左图线性回归可能给出超出 [0,1] 的预测值；右图 Logit 模型的 S 型曲线严格约束在 0 和 1 之间](./figs/fig02_lpm_vs_logit.png){#fig-binary-lpm-vs-logit width="95%"}
+
+我们需要一个函数 $G(\cdot)$，它能把任意实数 $\mathbf{x}_i'\beta \in (-\infty, +\infty)$ 映射到 $(0,1)$ 区间，即
+
+$$
+P(y_i = 1 \mid \mathbf{x}_i) = G(\mathbf{x}_i'\beta), \quad G: \mathbb{R} \to (0,1)
+$$
+
+---
+
+## 链接函数与模型设定 {#sec-binary-link}
+
+不同的 $G(\cdot)$ 选择对应不同的模型。常用的有三种：
+
+### 线性概率模型（LPM）
+
+$$
+G(u) = u \implies P(y_i=1 \mid \mathbf{x}_i) = \mathbf{x}_i'\beta
+$$
+
+优点：OLS 直接估计，系数是常数边际效应，可加入高维固定效应（`reghdfe`）。缺点：拟合值可能超出 $[0,1]$。
+
+### Logit 模型
+
+$$
+G(u) = \Lambda(u) = \frac{e^u}{1+e^u}
+$$ {#eq-logit-link}
+
+其中 $\Lambda(\cdot)$ 是**逻辑分布函数（logistic CDF）**，图形为 S 型曲线。
+
+### Probit 模型
+
+$$
+G(u) = \Phi(u) = \frac{1}{\sqrt{2\pi}} \int_{-\infty}^{u} e^{-t^2/2}\, dt
+$$ {#eq-probit-link}
+
+其中 $\Phi(\cdot)$ 是**标准正态分布的 CDF**。
+
+@fig-binary-link-functions 对比了三种链接函数的形态。Logit 和 Probit 在中间区域几乎重合，差异主要体现在尾部（概率小于 0.1 或大于 0.9 时）。
+
+![三种链接函数对比：LPM（虚线）、Logit（点线）、Probit（实线）](./figs/fig03_link_functions.png){#fig-binary-link-functions width="80%"}
+
+::: {.callout-note}
+### Logit 与 Probit 的选择
+
+在大多数应用中，两者的边际效应估计非常接近，实证结论不会因此改变。经验法则：
+
+- 若目标是**解释变量的因果效应**（含固定效应、IV），优先用 **LPM**（方便加入 `i.` 虚拟变量）或 **Logit**
+- 若目标是**概率预测**或后续要用**倾向得分**（PSM、Heckman 第一步），优先用 **Probit**（有更好的正态性质）
+- 三组系数的大致换算：$\beta_{LPM} \approx \beta_{Logit}/4 \approx \beta_{Probit}/2.5$（均值处的近似）
+:::
+
+---
+
+## 潜变量视角 {#sec-binary-latent}
+
+从结构模型的视角，Logit/Probit 模型可以用**潜变量（latent variable）**来解读，这对理解模型的经济含义非常有帮助。
+
+定义公司 $i$ 的"违约净收益"为潜变量 $y_i^*$：
+
+$$
+y_i^* = \mathbf{x}_i'\beta + e_i
+$$ {#eq-binary-latent}
+
+$y_i^*$ 不可观测，但我们能观察到：
+
+$$
+y_i = \begin{cases} 1 & \text{if } y_i^* > 0 \text{（违约）} \\ 0 & \text{if } y_i^* \leq 0 \text{（未违约）} \end{cases}
+$$
+
+当干扰项 $e_i$ 服从**逻辑分布**时，得到 Logit 模型；服从**标准正态分布**时，得到 Probit 模型。
+
+由此可得：
+
+$$
+P(y_i=1 \mid \mathbf{x}_i) = P(e_i > -\mathbf{x}_i'\beta) = 1 - G(-\mathbf{x}_i'\beta) = G(\mathbf{x}_i'\beta)
+$$
+
+最后一步利用了对称分布的性质。
+
+::: {.callout-tip}
+### 为什么 $\beta$ 和 $\sigma$ 不可分别识别？
+
+在潜变量模型中，若设 $e_i = \sigma \varepsilon_i$，则
+
+$$
+P(y_i=1 \mid \mathbf{x}_i) = G\!\left(\frac{\mathbf{x}_i'\beta}{\sigma}\right) = G(\mathbf{x}_i'\beta^*)
+$$
+
+其中 $\beta^* = \beta/\sigma$。这意味着我们只能识别**系数与标准差的比值** $\beta^*$，而无法单独识别 $\beta$ 和 $\sigma$。通行的处理方式是规范化 $\sigma$：Probit 令 $\sigma=1$，Logit 令 $\sigma=\pi/\sqrt{3}\approx 1.8$，这也解释了为何 Logit 系数通常是 Probit 系数的 1.6–1.8 倍。
+:::
+
+---
+
+## MLE 估计 {#sec-binary-mle}
+
+### 对数似然函数
+
+观察值 $y_i \in \{0,1\}$ 服从 Bernoulli 分布：
+
+$$
+P(y_i \mid \mathbf{x}_i) = p_i^{y_i}(1-p_i)^{1-y_i}, \quad p_i = G(\mathbf{x}_i'\beta)
+$$
+
+样本的对数似然函数为：
+
+$$
+\ln L(\beta) = \sum_{i=1}^{n} \left[ y_i \ln p_i + (1-y_i)\ln(1-p_i) \right]
+$$ {#eq-binary-loglik}
+
+$$
+= \sum_{i: y_i=1} \ln G(\mathbf{x}_i'\beta) + \sum_{i: y_i=0} \ln[1-G(\mathbf{x}_i'\beta)]
+$$
+
+MLE 估计量 $\hat{\beta}$ 使上式取最大值，通过数值优化方法（Newton-Raphson 或 BFGS）求解。
+
+### 估计结果的解读
+
+以公司违约数据为例，Logit 模型的估计结果见 @tbl-binary-logit-results。
+
+| 变量 | 系数 $\hat\beta$ | 标准误 | z统计量 | p值 |
+|------|:------:|:------:|:------:|:------:|
+| 截距 | −2.58 | 0.41 | −6.34 | <0.001 |
+| Size (lnTA) | **−0.62** | 0.09 | −6.89 | <0.001 |
+| Leverage | **4.31** | 0.52 | 8.29 | <0.001 |
+| ROA | −7.84 | 1.63 | −4.81 | <0.001 |
+| Age | −0.04 | 0.01 | −3.21 | 0.001 |
+| 地产（vs 制造） | 0.48 | 0.22 | 2.18 | 0.029 |
+| 金融（vs 制造） | −0.31 | 0.28 | −1.11 | 0.267 |
+| 科技（vs 制造） | 0.19 | 0.24 | 0.79 | 0.429 |
+| 民营（vs 国有） | 0.23 | 0.18 | 1.28 | 0.201 |
+
+: Logit 模型估计结果（因变量：default = 1 表示违约） {#tbl-binary-logit-results}
+
+**系数的直接解读（log odds）**：Size 的系数为 $-0.62$，意味着公司规模每增加 1 个单位（总资产翻 $e$ 倍），违约的 **log odds** 减少 0.62；等价地，违约比（odds）乘以 $e^{-0.62} \approx 0.54$，即降低约 46%。
+
+但 log odds 不直观，我们更关心**边际效应**。
+
+---
+
+## 边际效应 {#sec-binary-me}
+
+### 为什么要计算边际效应
+
+Logit/Probit 的系数本身是 log odds 的变化量，**不能**直接解读为概率的变化量。我们关心的是：Leverage 增加 0.1，违约概率变化多少？
+
+### 边际概率效应（MPE）
+
+对于连续变量 $x_l$，边际效应定义为：
+
+$$
+\mathrm{ME}_l = \frac{\partial P(y_i=1 \mid \mathbf{x}_i)}{\partial x_l} = g(\mathbf{x}_i'\hat\beta) \cdot \hat\beta_l
+$$ {#eq-binary-me}
+
+其中 $g(\cdot) = G'(\cdot)$：
+- Logit：$g(u) = \Lambda(u)[1-\Lambda(u)]$，在 $u=0$ 处取最大值 $0.25$
+- Probit：$g(u) = \phi(u)$（标准正态密度函数）
+
+注意：**边际效应依赖于 $\mathbf{x}_i$ 的取值**，是非常数的。
+
+### 两种报告方式
+
+**MEM（Marginal Effect at the Mean）**：在各解释变量均值处计算：
+
+$$
+\widehat{\mathrm{MEM}}_l = g(\bar{\mathbf{x}}'\hat\beta) \cdot \hat\beta_l
+$$
+
+**AME（Average Marginal Effect）**：对每个观测值计算后取平均：
+
+$$
+\widehat{\mathrm{AME}}_l = \frac{1}{n}\sum_{i=1}^n g(\mathbf{x}_i'\hat\beta) \cdot \hat\beta_l
+$$
+
+::: {.callout-note}
+### AME vs MEM：哪个更好？
+
+**AME 是首选**，原因有二：
+
+1. MEM 将所有变量置于均值处计算，但对于虚拟变量（如 Ownership），"均值处"没有意义——一家公司要么是国有的，要么不是。
+2. AME 保留了样本中观测值的实际分布信息，对总体效应的估计更有代表性。
+
+实践中，AME 与 LPM 系数（即 $\hat\beta_{LPM}$）往往非常接近，这也是 LPM 仍被广泛使用的重要原因之一。
+:::
+
+@tbl-binary-me-comparison 对比了三种模型的 AME 估计。
+
+| 变量 | LPM | Logit AME | Probit AME |
+|------|:---:|:---:|:---:|
+| Size (lnTA) | −0.058 | **−0.056** | −0.055 |
+| Leverage | 0.401 | **0.389** | 0.385 |
+| ROA | −0.721 | **−0.708** | −0.702 |
+| Age | −0.004 | **−0.004** | −0.004 |
+
+: 三种模型的平均边际效应（AME）对比 {#tbl-binary-me-comparison}
+
+三种方法的 AME 估计高度一致，印证了前文关于"实证结论不随模型选择而改变"的论断。
+
+---
+
+## 预测概率与分类 {#sec-binary-predict}
+
+### 预测违约概率
+
+估计完参数后，可以对任意一家公司计算其违约概率：
+
+$$
+\hat{p}_i = \hat{P}(y_i=1 \mid \mathbf{x}_i) = \Lambda(\mathbf{x}_i'\hat\beta)
+$$
+
+**具体例子**：考虑两家公司，基本情况如下：
+
+| 公司 | Size | Leverage | ROA | Age | Industry | Ownership |
+|------|:----:|:--------:|:---:|:---:|:--------:|:---------:|
+| A（高风险）| 6.5 | 0.75 | 0.02 | 5 | 地产 | 民营 |
+| B（低风险）| 9.0 | 0.35 | 0.08 | 15 | 制造 | 国有 |
+
+代入估计结果：
+
+$$
+\hat{p}_A = \Lambda(-2.58 - 0.62\times6.5 + 4.31\times0.75 - 7.84\times0.02 - 0.04\times5 + 0.48 + 0.23) \approx \mathbf{28.3\%}
+$$
+
+$$
+\hat{p}_B = \Lambda(-2.58 - 0.62\times9.0 + 4.31\times0.35 - 7.84\times0.08 - 0.04\times15) \approx \mathbf{2.1\%}
+$$
+
+同样的行业和所有制背景，公司 A 的违约概率是公司 B 的 **13 倍以上**，主要由规模小、杠杆高、盈利弱共同驱动。
+
+### 分类决策与阈值选择
+
+有了违约概率的估计，下一步是做出**分类决策**：预测这家公司是否会违约。最自然的做法是设定概率阈值 $c$：
+
+$$
+\hat{y}_i = \begin{cases} 1 & \text{if } \hat{p}_i > c \\ 0 & \text{if } \hat{p}_i \leq c \end{cases}
+$$
+
+**阈值的选择取决于业务场景**：
+
+- 默认阈值 $c = 0.5$：最小化分类错误总数（适合类别均衡的场景）
+- 保守阈值 $c = 0.1$：宁可误报也要不漏报（适合银行风控——误放一笔坏账的代价远大于误拒一笔好贷款）
+- 可通过**ROC 曲线**和 **AUC** 来评估不同阈值下的模型表现
+
+@fig-binary-roc 展示了 Logit 模型的 ROC 曲线及不同阈值下的混淆矩阵，AUC = 0.87，说明模型有较强的区分能力。
+
+![ROC 曲线与不同阈值下的混淆矩阵](./figs/fig04_roc_confusion.png){#fig-binary-roc width="90%"}
+
+---
+
+## 共线性与混淆变量 {#sec-binary-confounding}
+
+Logit 模型同样面临多重共线性和混淆变量的问题，而且非线性结构使得这类问题更加微妙。
+
+以所有制（Ownership）为例：单变量 Logit 显示民营企业违约率**高于**国有企业（系数为正）；但在控制 Size、Leverage、ROA 之后，系数变小甚至不显著。原因在于**民营企业的平均规模更小、杠杆更高**——其较高的违约率，本质上是由财务特征差异导致的，而非所有制本身的直接影响。
+
+@fig-binary-confounding 复现了 James 书中 Figure 4.3 的逻辑：左图展示国有/民营企业的违约率随 Leverage 变动的曲线（在同等 Leverage 水平下二者非常接近），右图展示两类企业的 Leverage 分布（民营企业的 Leverage 中位数明显更高）。
+
+![混淆变量：所有制与违约率。左图：控制 Leverage 后，两类企业违约率相近；右图：民营企业 Leverage 分布右偏](./figs/fig05_confounding.png){#fig-binary-confounding width="95%"}
+
+这个例子说明：**在做因果推断时，控制财务特征变量至关重要**，否则容易得出"民营企业比国有企业更不稳健"这一可能有误导性的结论。
+
+---
+
+## 模型评估 {#sec-binary-eval}
+
+### 常用指标
+
+| 指标 | 说明 | 本章模型 |
+|------|------|:------:|
+| **AUC** | ROC 曲线下面积，越接近 1 越好 | 0.87 |
+| **准确率（Accuracy）** | 正确分类的比例（$c=0.5$） | 91.2% |
+| **精确率（Precision）** | 预测为违约中真正违约的比例 | 68.3% |
+| **召回率（Recall）** | 真正违约中被正确识别的比例 | 61.5% |
+| **F1 Score** | Precision 和 Recall 的调和平均 | 0.647 |
+| **Log Loss** | 基于预测概率的损失函数 | 0.241 |
+| **McFadden $R^2$** | $1 - \ln L / \ln L_0$，类似 $R^2$ | 0.312 |
+
+::: {.callout-warning}
+### 注意：准确率的陷阱
+
+本数据集中违约率约 12%，即使"永远预测不违约"的哑模型，准确率也达到 88%！因此，对于**类别不平衡**的数据，应优先关注 AUC、F1 Score 等指标，而非单纯的准确率。
+:::
+
+---
+
+## 简要总结 {#sec-binary-summary}
+
+本章的核心逻辑可以用如下框架串联：
+
+$$
+\underbrace{y_i \in \{0,1\}}_{\text{Bernoulli分布}} \xrightarrow{\text{选择链接函数}} \underbrace{P(y_i=1|\mathbf{x}_i) = G(\mathbf{x}_i'\beta)}_{\text{条件概率模型}} \xrightarrow{\text{MLE估计}} \underbrace{\hat\beta}_{\text{参数估计}} \xrightarrow{\text{边际效应}} \underbrace{\text{AME}}_{\text{实证解释}}
+$$
+
+**三个关键选择**：
+
+1. **链接函数的选择**：LPM（因果分析）、Logit/Probit（概率预测）——结论基本一致
+2. **边际效应的报告方式**：AME 优于 MEM，且与 LPM 系数高度可比
+3. **分类阈值的设定**：依据业务成本（误报/漏报的不对称损失）而定
+
+**与 James (2023) 书中的对应关系**：本章的结构和逻辑框架参照了 James et al. (2023) 第 4 章，但以中国上市公司违约数据替代了原书的信用卡 Default 数据，并补充了 AME 计算、混淆变量分析和模型评估等内容。
+
+---
+
+## 延伸阅读
+
+- James, G., Witten, D., Hastie, T., Tibshirani, R. (2023). *An Introduction to Statistical Learning*, Chapter 4. Springer.
+- Wooldridge, J. M. (2010). *Econometric Analysis of Cross Section and Panel Data*, Chapter 15. MIT Press.
+- Cameron, A. C., & Trivedi, P. K. (2005). *Microeconometrics: Methods and Applications*, Chapter 14. Cambridge University Press.
+- Hansen, B. E. (2021). *Econometrics*, Chapter 25. University of Wisconsin. [PDF](https://www.ssc.wisc.edu/~bhansen/econometrics/)

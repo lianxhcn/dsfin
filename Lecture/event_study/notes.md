@@ -1,0 +1,2 @@
+
+- 孟佶贤,康吉嘉,杨倩倩, 等. 2021年拉闸限电事件对中国股市的冲击[J]. 中国管理科学, 2026, 34(3): 25-38. [Link](https://www.zgglkx.com/article/2026/1003-207x/1003-207x-2026-34-3-25.shtml), [PDF](https://read.cnki.net/web/Journal/Article/ZGGK202603003.html)

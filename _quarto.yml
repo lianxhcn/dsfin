@@ -1,6 +1,8 @@
 project:
   type: book
   output-dir: docs
+  resources:
+    - Lecture/reg_ols/figs/**
 
 book:
   title: "金融数据分析与建模"
@@ -75,6 +77,11 @@ book:
         - Lecture/crawing/craw_02_sec01_lingnan_prompt.md
         - Lecture/crawing/craw_02_sec02_lingnan_dialog.ipynb
 
+    # - part: "**线性回归分析**"
+    #   chapters:
+    #     - Lecture/reg_ols/ols_visual_3D.ipynb
+    #     - Lecture/reg_logit/probability_models.qmd
+
     - part: "**面板模型：固定效应**"
       chapters: 
         - Lecture/panel_fe/panel_HDFE.md
@@ -88,6 +95,11 @@ book:
         - Lecture/panel_xtplfc/05_解读xtplfc的原理_样条基函数.ipynb
         - Lecture/panel_xtplfc/Du_2021_EE_中文精要.md
 
+    - part: "**受限因变量**"
+      chapters:
+        - Lecture/limit_dep_logit/02_a_binary_lec.qmd
+        - Lecture/limit_dep_logit/02_b_binary_codes.ipynb
+        # - Lecture/limit_dep_logit/02_c_binary_case.ipynb
 
     - part: "**文本分析**"
       chapters:
@@ -175,3 +187,11 @@ format:
 
 #language:
 #  chapter-title: "第"
+
+# 统一设置全书公式引用格式
+crossref:
+  eq-prefix: ""       # 去掉 Equation 文字，只留 (2.1)
+  # fig-prefix: ""      # 去掉 Figure 文字，只留 (2.1)
+  # tbl-prefix: ""      # 去掉 Table 文字，只留 (2.1)
+  sec-prefix: ""      # 去掉 Section 文字，只留 (2.1)
+  chapters: true      # 启用章节编号（2.1、3.2）

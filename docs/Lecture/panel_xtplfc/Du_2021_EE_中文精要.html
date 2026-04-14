@@ -64,7 +64,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../../">
-<link href="../../Lecture/text_analysis/lecture_text_01_ailn.html" rel="next">
+<link href="../../Lecture/limit_dep_logit/02_a_binary_lec.html" rel="next">
 <link href="../../Lecture/panel_xtplfc/05_解读xtplfc的原理_样条基函数.html" rel="prev">
 <link href="../../images/book-logo.png" rel="icon" type="image/png">
 <script src="../../site_libs/quarto-html/quarto.js"></script>
@@ -448,7 +448,7 @@ window.Quarto = {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="true">
- <span class="menu-text"><strong>文本分析</strong></span></a>
+ <span class="menu-text"><strong>受限因变量</strong></span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -456,26 +456,14 @@ window.Quarto = {
       <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../Lecture/text_analysis/lecture_text_01_ailn.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">30</span>&nbsp; <span class="chapter-title">金融文本分析（上）——从文本到结构化数据</span></span></a>
+  <a href="../../Lecture/limit_dep_logit/02_a_binary_lec.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">30</span>&nbsp; <span class="chapter-title">二元选择模型</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../Lecture/text_analysis/lecture_text_02_ailn.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">31</span>&nbsp; <span class="chapter-title">金融文本分析（下）——情感分析与文本建模</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../../Lecture/text_analysis/lecture_text_analysis_01_claude.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">32</span>&nbsp; <span class="chapter-title">文本数据处理基础</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../../Lecture/text_analysis/lecture_text_analysis_02_claude.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">33</span>&nbsp; <span class="chapter-title">文本分析：情感分析与主题建模</span></span></a>
+  <a href="../../Lecture/limit_dep_logit/02_b_binary_codes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">31</span>&nbsp; <span class="chapter-title">代码生成</span></span></a>
   </div>
 </li>
       </ul>
@@ -483,12 +471,47 @@ window.Quarto = {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" role="navigation" aria-expanded="true">
- <span class="menu-text"><strong>附录：Python 提示词</strong></span></a>
+ <span class="menu-text"><strong>文本分析</strong></span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
       <ul id="quarto-sidebar-section-8" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/text_analysis/lecture_text_01_ailn.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">32</span>&nbsp; <span class="chapter-title">金融文本分析（上）——从文本到结构化数据</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/text_analysis/lecture_text_02_ailn.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">33</span>&nbsp; <span class="chapter-title">金融文本分析（下）——情感分析与文本建模</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/text_analysis/lecture_text_analysis_01_claude.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">34</span>&nbsp; <span class="chapter-title">文本数据处理基础</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/text_analysis/lecture_text_analysis_02_claude.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">35</span>&nbsp; <span class="chapter-title">文本分析：情感分析与主题建模</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-9" role="navigation" aria-expanded="true">
+ <span class="menu-text"><strong>附录：Python 提示词</strong></span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-9" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-9" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../appendix_python/index.html" class="sidebar-item-text sidebar-link">
@@ -602,10 +625,8 @@ window.Quarto = {
 </header>
 
 
-<ul>
-<li>浦进博 (中山大学)，<a href="mailto:pujb@mail2.sysu.edu.cn" class="email">pujb@mail2.sysu.edu.cn</a></li>
-<li>连玉君 (中山大学)，<a href="mailto:arlionn@163.com" class="email">arlionn@163.com</a></li>
-</ul>
+<!-- - 浦进博 (中山大学)，<pujb@mail2.sysu.edu.cn>
+- 连玉君 (中山大学)，<arlionn@163.com>   -->
 <blockquote class="blockquote">
 <p>Du, K., Cheng, Y., &amp; Yao, X. (2021). Environmental regulation, green technology innovation, and industrial structure upgrading: The road to the green transformation of Chinese cities. Energy Economics, 98, 105247. <a href="https://doi.org/10.1016/j.eneco.2021.105247">Link</a>, <a href="https://file.lianxh.cn/Refs/refs_common/Du_2021_EE_xtplfc.pdf">PDF</a>, <a href="https://ars.els-cdn.com/content/image/1-s2.0-S0140988321001523-mmc1.zip">Replication</a>, <a href="https://scholar.google.com/scholar?q=Environmental%20regulation,%20green%20technology%20innovation,%20and%20industrial%20structure%20upgrading:%20The%20road%20to%20the%20green%20transformation%20of%20Chinese%20cities">Google</a>, <a href="https://scholar.google.com/scholar?cites=4834874946954675542&amp;as_sdt=2005&amp;sciodt=0,5&amp;hl=zh-CN">-cited-</a>.</p>
 </blockquote>
@@ -775,8 +796,28 @@ Y_{it} = H_{it}^T \theta + \beta^T X_{it} + \alpha_i + \varepsilon_{it} \quad (1
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>        uvars(varname) </span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>        <span class="kw">generate</span>(<span class="fu">string</span>)</span>
 <span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>        [ options ]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>必填项： - <code>varlist</code>：填入 <span class="math inline">\(Y_{it}\)</span> 和控制变量 - <code>zvars(varlist)</code>：指定具有函数系数的变量列表 <span class="math inline">\(Z_{it}\)</span>。 - <code>uvars(varlist)</code>：指定（连续）变量 <span class="math inline">\(U_{it}\)</span>，这些变量以交互形式进入函数系数。 - <code>generate(prefix)</code>：指定一个前缀，用于存储函数系数拟合值 <span class="math inline">\(\hat{\gamma}(U_{it})\)</span>，参见 (10) 式。</p>
-<p>可选项： - <code>te</code>：指定是否包含时间固定效应。 - <code>power(numlist)</code>：指定样条的幂。默认值为3。 - <code>nknots(numlist)</code>：指定用于样条插值的结点数量。默认值为2。 - <code>quantile</code>：指定基于经验分位数创建结点。默认情况下，结点是通过等距规则生成的。 - <code>maxnknots(numlist)</code>：指定用于进行最小二乘交叉验证（LSCV）的最大结点数量。 - <code>minnknots(numlist)</code>：指定用于执行LSCV的最小结点数量。默认值为2。 - <code>brep(#)</code>：指定bootstrap复制的次数。默认值为brep(200)。建议选择合适的复制次数。 - <code>wild</code>：指定使用wild bootstrap。默认情况下，执行带有选项cluster(panelvar)的残差bootstrap。 - <code>predict(prspec)</code>：使用指定的变量名存储条件均值和固定效应的预测值。该选项接受变量列表或存根。第一个变量名对应于预测的条件均值。第二个名称对应于固定效应。 - <code>level(#)</code>：设置置信水平。默认值为95。 - <code>fast</code>：使用Mata函数加速计算。 - <code>tenfoldcv</code>：使用十折交叉验证代替LSCV。</p>
+<p>必填项：</p>
+<ul>
+<li><code>varlist</code>：填入 <span class="math inline">\(Y_{it}\)</span> 和控制变量</li>
+<li><code>zvars(varlist)</code>：指定具有函数系数的变量列表 <span class="math inline">\(Z_{it}\)</span>。</li>
+<li><code>uvars(varlist)</code>：指定（连续）变量 <span class="math inline">\(U_{it}\)</span>，这些变量以交互形式进入函数系数。</li>
+<li><code>generate(prefix)</code>：指定一个前缀，用于存储函数系数拟合值 <span class="math inline">\(\hat{\gamma}(U_{it})\)</span>，参见 (10) 式。</li>
+</ul>
+<p>可选项：</p>
+<ul>
+<li><code>te</code>：指定是否包含时间固定效应。</li>
+<li><code>power(numlist)</code>：指定样条的幂。默认值为3。</li>
+<li><code>nknots(numlist)</code>：指定用于样条插值的结点数量。默认值为2。</li>
+<li><code>quantile</code>：指定基于经验分位数创建结点。默认情况下，结点是通过等距规则生成的。</li>
+<li><code>maxnknots(numlist)</code>：指定用于进行最小二乘交叉验证（LSCV）的最大结点数量。</li>
+<li><code>minnknots(numlist)</code>：指定用于执行LSCV的最小结点数量。默认值为2。</li>
+<li><code>brep(#)</code>：指定bootstrap复制的次数。默认值为brep(200)。建议选择合适的复制次数。</li>
+<li><code>wild</code>：指定使用wild bootstrap。默认情况下，执行带有选项cluster(panelvar)的残差bootstrap。</li>
+<li><code>predict(prspec)</code>：使用指定的变量名存储条件均值和固定效应的预测值。该选项接受变量列表或存根。第一个变量名对应于预测的条件均值。第二个名称对应于固定效应。</li>
+<li><code>level(#)</code>：设置置信水平。默认值为95。</li>
+<li><code>fast</code>：使用Mata函数加速计算。</li>
+<li><code>tenfoldcv</code>：使用十折交叉验证代替LSCV。</li>
+</ul>
 </section>
 </section>
 <section id="应用du-et-al.-2021-ee" class="level2" data-number="29.5">
@@ -867,7 +908,11 @@ Y_{i t}=\gamma\left(U_{i t-1}\right) Z_{i t-1}+\beta^{\prime} X_{i t-1}+\delta_i
 <p><strong>Fig. 2.</strong> Functional coefficients of ER with respect to ln(GTI).<br>
 <span class="math inline">\(Y_{it} = \ln (gti)\)</span>，<span class="math inline">\(Z_{it} = ER\)</span>；<span class="math inline">\(U_{it-1} = \ln (gdp)\)</span></p>
 </blockquote>
-<p>根据图示结果，我们可以观察到： - 在经济水平相对较低的城市中，环境规制措施反而会对绿色技术创新产生 抑制作用； - 当城市的 lnGDP 值超过 10 时，即经济达到一定发展水平后，环境规制则转而成为推动绿色技术创新的重要因素。</p>
+<p>根据图示结果，我们可以观察到：</p>
+<ul>
+<li>在经济水平相对较低的城市中，环境规制措施反而会对绿色技术创新产生 抑制作用；</li>
+<li>当城市的 lnGDP 值超过 10 时，即经济达到一定发展水平后，环境规制则转而成为推动绿色技术创新的重要因素。</li>
+</ul>
 <hr>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
@@ -879,7 +924,11 @@ Y_{i t}=\gamma\left(U_{i t-1}\right) Z_{i t-1}+\beta^{\prime} X_{i t-1}+\delta_i
 <p><strong>Fig. 3.</strong> Functional coefficients of ER with respect to IS (Industrial Structure).<br>
 <span class="math inline">\(Y_{it} = IS\)</span>，<span class="math inline">\(Z_{it} = ER\)</span>；<span class="math inline">\(U_{it-1} = \ln (gdp)\)</span></p>
 </blockquote>
-<p>图 3 揭示环境规制与产业结构优化升级的关系： - 在经济欠发达的城市中，环境规制并未能有效促进产业结构的优化升级； - 然而，在经济较为发达的城市中，环境规制则展现出了积极的正向效果，有助于推动产业结构的优化与升级。</p>
+<p>图 3 揭示环境规制与产业结构优化升级的关系：</p>
+<ul>
+<li>在经济欠发达的城市中，环境规制并未能有效促进产业结构的优化升级；</li>
+<li>然而，在经济较为发达的城市中，环境规制则展现出了积极的正向效果，有助于推动产业结构的优化与升级。</li>
+</ul>
 </section>
 <section id="边际效应的时序差异" class="level3" data-number="29.5.5">
 <h3 data-number="29.5.5" class="anchored" data-anchor-id="边际效应的时序差异"><span class="header-section-number">29.5.5</span> 边际效应的时序差异</h3>
@@ -914,19 +963,33 @@ Y_{i t}=\gamma\left(U_{i t-1}\right) Z_{i t-1}+\beta^{\prime} X_{i t-1}+\delta_i
 <p><strong>Fig. 4.</strong> - (a) Functional coefficients of ER in 2005. - (b) Functional coefficients of ER in 2010. - (c) Functional coefficients of ER in 2015.</p>
 </blockquote>
 <blockquote class="blockquote">
-<p>注：<br>
-- <span class="math inline">\(\mathbf{\square}\)</span> 表示实际人均 GDP 处于较低水平；<br>
-- <span class="math inline">\(\mathbf{\triangle}\)</span> 表示实际人均 GDP 处于中等水平；<br>
-- <span class="math inline">\(\mathbf{\bigcirc}\)</span> 表示实际人均 GDP 处于较高水平。 - <span class="math inline">\({\color{red}{红色}}\)</span> 表示 ER 对 <span class="math inline">\(\operatorname{lnGTI}\)</span> 和 <span class="math inline">\(\ln\)</span> IS 的影响均不显著；<br>
-- <span class="math inline">\({\color{yellow}{黄色}}\)</span> 表示 ER 对 InIS 有显著影响，但对 InGTI 的影响不显著；<br>
-- <span class="math inline">\({\color{blue}{蓝色}}\)</span> 表示 ER 对 InGTI 有显著影响，但对 InIS 的影响不显著；<br>
-- <span class="math inline">\({\color{green}{绿色}}\)</span> 表示 ER 对 InGTI 和 InIS 的影响均显著。</p>
+<p>注：</p>
 </blockquote>
+<ul>
+<li><span class="math inline">\(\mathbf{\square}\)</span> 表示实际人均 GDP 处于较低水平；<br>
+</li>
+<li><span class="math inline">\(\mathbf{\triangle}\)</span> 表示实际人均 GDP 处于中等水平；<br>
+</li>
+<li><span class="math inline">\(\mathbf{\bigcirc}\)</span> 表示实际人均 GDP 处于较高水平。</li>
+<li><span class="math inline">\({\color{red}{红色}}\)</span> 表示 ER 对 <span class="math inline">\(\operatorname{lnGTI}\)</span> 和 <span class="math inline">\(\ln\)</span> IS 的影响均不显著；<br>
+</li>
+<li><span class="math inline">\({\color{yellow}{黄色}}\)</span> 表示 ER 对 InIS 有显著影响，但对 InGTI 的影响不显著；<br>
+</li>
+<li><span class="math inline">\({\color{blue}{蓝色}}\)</span> 表示 ER 对 InGTI 有显著影响，但对 InIS 的影响不显著；<br>
+</li>
+<li><span class="math inline">\({\color{green}{绿色}}\)</span> 表示 ER 对 InGTI 和 InIS 的影响均显著。</li>
+</ul>
 </section>
 </section>
 <section id="参考文献" class="level2" data-number="29.6">
 <h2 data-number="29.6" class="anchored" data-anchor-id="参考文献"><span class="header-section-number">29.6</span> 参考文献</h2>
-<p>本文的理论和实证部分主要参考下面的几篇文献，数据与代码可在论文的附录中下载。 - Yonghong, A., Cheng, H., &amp; Dong, L. (2016). Semiparametric Estimation of Partially Linear Varying Coefficient Panel Data Models. Essays in Honor of Aman Ullah, 47–65. <a href="https://doi.org/10.1108/S0731-905320160000036011">Link</a>, <a href="http://sci-hub.ren/10.1108/S0731-905320160000036011">PDF</a>, <a href="https://scholar.google.com/scholar?q=Semiparametric%20Estimation%20of%20Partially%20Linear%20Varying%20Coefficient%20Panel%20Data%20Models">Google</a>. - Du, K., Cheng, Y., &amp; Yao, X. (2021). Environmental regulation, green technology innovation, and industrial structure upgrading: The road to the green transformation of Chinese cities. Energy Economics, 98, 105247. <a href="https://doi.org/10.1016/j.eneco.2021.105247">Link</a> (rep), <a href="http://sci-hub.ren/10.1016/j.eneco.2021.105247">PDF</a>, <a href="https://scholar.google.com/scholar?q=Environmental%20regulation,%20green%20technology%20innovation,%20and%20industrial%20structure%20upgrading:%20The%20road%20to%20the%20green%20transformation%20of%20Chinese%20cities">Google</a>. - Du, C., Cao, Y., Ling, Y., Jin, Z., Wang, S., &amp; Wang, D. (2024). Does manufacturing agglomeration promote green productivity growth in China? Fresh evidence from partially linear functional-coefficient models. Energy Economics, 131, 107352. <a href="https://doi.org/10.1016/j.eneco.2024.107352">Link</a> , <a href="http://sci-hub.ren/10.1016/j.eneco.2024.107352">PDF</a>, <a href="https://scholar.google.com/scholar?q=Does%20manufacturing%20agglomeration%20promote%20green%20productivity%20growth%20in%20China?%20Fresh%20evidence%20from%20partially%20linear%20functional-coefficient%20models">Google</a>. - Du, K., Zhang, Y., &amp; Zhou, Q. (2020). Fitting partially linear functional-coefficient panel-data models with Stata. <strong>The Stata Journal</strong>, 20(4), 976–998. <a href="https://journals.sagepub.com/doi/10.1177/1536867X20976339">Link</a>, <a href="https://journals.sagepub.com/doi/pdf/10.1177/1536867X20976339">PDF</a>, <a href="https://scholar.google.com/scholar?q=Fitting%20partially%20linear%20functional-coefficient%20panel-data%20models%20with%20Stata">Google</a>.</p>
+<p>本文的理论和实证部分主要参考下面的几篇文献，数据与代码可在论文的附录中下载。</p>
+<ul>
+<li><p>Yonghong, A., Cheng, H., &amp; Dong, L. (2016). Semiparametric Estimation of Partially Linear Varying Coefficient Panel Data Models. Essays in Honor of Aman Ullah, 47–65. <a href="https://doi.org/10.1108/S0731-905320160000036011">Link</a>, <a href="http://sci-hub.ren/10.1108/S0731-905320160000036011">PDF</a>, <a href="https://scholar.google.com/scholar?q=Semiparametric%20Estimation%20of%20Partially%20Linear%20Varying%20Coefficient%20Panel%20Data%20Models">Google</a>.</p></li>
+<li><p>Du, K., Cheng, Y., &amp; Yao, X. (2021). Environmental regulation, green technology innovation, and industrial structure upgrading: The road to the green transformation of Chinese cities. Energy Economics, 98, 105247. <a href="https://doi.org/10.1016/j.eneco.2021.105247">Link</a> (rep), <a href="http://sci-hub.ren/10.1016/j.eneco.2021.105247">PDF</a>, <a href="https://scholar.google.com/scholar?q=Environmental%20regulation,%20green%20technology%20innovation,%20and%20industrial%20structure%20upgrading:%20The%20road%20to%20the%20green%20transformation%20of%20Chinese%20cities">Google</a>.</p></li>
+<li><p>Du, C., Cao, Y., Ling, Y., Jin, Z., Wang, S., &amp; Wang, D. (2024). Does manufacturing agglomeration promote green productivity growth in China? Fresh evidence from partially linear functional-coefficient models. Energy Economics, 131, 107352. <a href="https://doi.org/10.1016/j.eneco.2024.107352">Link</a> , <a href="http://sci-hub.ren/10.1016/j.eneco.2024.107352">PDF</a>, <a href="https://scholar.google.com/scholar?q=Does%20manufacturing%20agglomeration%20promote%20green%20productivity%20growth%20in%20China?%20Fresh%20evidence%20from%20partially%20linear%20functional-coefficient%20models">Google</a>.</p></li>
+<li><p>Du, K., Zhang, Y., &amp; Zhou, Q. (2020). Fitting partially linear functional-coefficient panel-data models with Stata. <strong>The Stata Journal</strong>, 20(4), 976–998. <a href="https://journals.sagepub.com/doi/10.1177/1536867X20976339">Link</a>, <a href="https://journals.sagepub.com/doi/pdf/10.1177/1536867X20976339">PDF</a>, <a href="https://scholar.google.com/scholar?q=Fitting%20partially%20linear%20functional-coefficient%20panel-data%20models%20with%20Stata">Google</a>.</p></li>
+</ul>
 </section>
 <section id="相关推文" class="level2" data-number="29.7">
 <h2 data-number="29.7" class="anchored" data-anchor-id="相关推文"><span class="header-section-number">29.7</span> 相关推文</h2>
@@ -1517,8 +1580,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../../Lecture/text_analysis/lecture_text_01_ailn.html" class="pagination-link" aria-label="金融文本分析（上）——从文本到结构化数据">
-        <span class="nav-page-text"><span class="chapter-number">30</span>&nbsp; <span class="chapter-title">金融文本分析（上）——从文本到结构化数据</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="../../Lecture/limit_dep_logit/02_a_binary_lec.html" class="pagination-link" aria-label="二元选择模型">
+        <span class="nav-page-text"><span class="chapter-number">30</span>&nbsp; <span class="chapter-title">二元选择模型</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

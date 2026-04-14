@@ -143,10 +143,13 @@
 - Wasserman (2006)《All of Nonparametric Statistics》, [PDF](https://www.stat.cmu.edu/~brian/valerie/617-2022/0%20-%20books/2006%20-%20Wasserman%20All%20Of%20Nonparametric%20Statistics.pdf)
 - ———. 2006. All of Nonparametric Statistics. Springer Texts in Statistics. New York: Springer. https://doi.org/10.1007/0-387-30623-4.
 
-### 其它
+### 贝叶斯
 
 - Rob Hicks, 2022. ECON414 Bayesian Econometrics. [Link](https://econ.pages.code.wm.edu/414/notes/docs/index.html).
   - 介绍了 Bayes 的基本概念，MCMC 方法，贝叶斯线性回归，贝叶斯模型比较等内容；配有在线阅读版本和 GitHub 代码仓库。
+- Hoff, Peter D., 2009. A First Course in Bayesian Statistical Methods. Springer. [-PDF-](https://sites.math.rutgers.edu/~zeilberg/EM20/Hoff.pdf)
+  - 很多人推荐这本书作为入门书
+
 
 ---
 
