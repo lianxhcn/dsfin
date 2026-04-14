@@ -6,7 +6,7 @@
   </url>
   <url>
     <loc>https://lianxhcn.github.io/dsfin/Lecture/00_intro.html</loc>
-    <lastmod>2026-04-08T08:03:02.703Z</lastmod>
+    <lastmod>2026-04-11T15:34:21.354Z</lastmod>
   </url>
   <url>
     <loc>https://lianxhcn.github.io/dsfin/Lecture/00_setup.html</loc>
@@ -14,7 +14,7 @@
   </url>
   <url>
     <loc>https://lianxhcn.github.io/dsfin/Lecture/01_homework.html</loc>
-    <lastmod>2026-04-08T19:18:08.868Z</lastmod>
+    <lastmod>2026-04-08T19:28:35.873Z</lastmod>
   </url>
   <url>
     <loc>https://lianxhcn.github.io/dsfin/Lecture/00-setup/01_00_coding_with_AI.html</loc>
@@ -122,15 +122,23 @@
   </url>
   <url>
     <loc>https://lianxhcn.github.io/dsfin/Lecture/panel_xtplfc/04_xtplfc的直观解读及xthreg实现.html</loc>
-    <lastmod>2026-04-08T18:13:44.017Z</lastmod>
+    <lastmod>2026-04-14T09:41:51.204Z</lastmod>
   </url>
   <url>
     <loc>https://lianxhcn.github.io/dsfin/Lecture/panel_xtplfc/05_解读xtplfc的原理_样条基函数.html</loc>
-    <lastmod>2026-01-31T14:55:47.959Z</lastmod>
+    <lastmod>2026-04-14T09:40:08.748Z</lastmod>
   </url>
   <url>
     <loc>https://lianxhcn.github.io/dsfin/Lecture/panel_xtplfc/Du_2021_EE_中文精要.html</loc>
-    <lastmod>2026-01-31T16:16:22.522Z</lastmod>
+    <lastmod>2026-04-14T09:41:17.855Z</lastmod>
+  </url>
+  <url>
+    <loc>https://lianxhcn.github.io/dsfin/Lecture/limit_dep_logit/02_a_binary_lec.html</loc>
+    <lastmod>2026-04-14T01:16:45.345Z</lastmod>
+  </url>
+  <url>
+    <loc>https://lianxhcn.github.io/dsfin/Lecture/limit_dep_logit/02_b_binary_codes.html</loc>
+    <lastmod>2026-04-14T10:00:42.243Z</lastmod>
   </url>
   <url>
     <loc>https://lianxhcn.github.io/dsfin/Lecture/text_analysis/lecture_text_01_ailn.html</loc>
