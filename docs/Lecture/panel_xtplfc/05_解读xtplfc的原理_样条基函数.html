@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>28&nbsp; 样条基函数与变系数模型：Stata 实操 – 金融数据分析与建模</title>
+<title>30&nbsp; 样条基函数与变系数模型：Stata 实操 – 金融数据分析与建模</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -151,7 +151,7 @@ window.Quarto = {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../Lecture/panel_xtplfc/01_Panel_threshold_01_theory.html"><strong>面板变系数模型</strong></a></li><li class="breadcrumb-item"><a href="../../Lecture/panel_xtplfc/05_解读xtplfc的原理_样条基函数.html"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">样条基函数与变系数模型：Stata 实操</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../Lecture/panel_xtplfc/01_Panel_threshold_01_theory.html"><strong>面板变系数模型</strong></a></li><li class="breadcrumb-item"><a href="../../Lecture/panel_xtplfc/05_解读xtplfc的原理_样条基函数.html"><span class="chapter-number">30</span>&nbsp; <span class="chapter-title">样条基函数与变系数模型：Stata 实操</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -387,7 +387,7 @@ window.Quarto = {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true">
- <span class="menu-text"><strong>面板模型：固定效应</strong></span></a>
+ <span class="menu-text"><strong>线性回归分析</strong></span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -395,14 +395,14 @@ window.Quarto = {
       <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../Lecture/panel_fe/panel_HDFE.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">HDFE：多维固定效应</span></span></a>
+  <a href="../../Lecture/reg_ols/ols_visual_3D.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">二元线性回归的 3D 图示</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../Lecture/panel_fe/panel_IntFE.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">交互固定效应模型</span></span></a>
+  <a href="../../Lecture/reg_logit/probability_models.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">从回归模型到概率模型</span></span></a>
   </div>
 </li>
       </ul>
@@ -410,7 +410,7 @@ window.Quarto = {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="true">
- <span class="menu-text"><strong>面板变系数模型</strong></span></a>
+ <span class="menu-text"><strong>面板模型：固定效应</strong></span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -418,32 +418,14 @@ window.Quarto = {
       <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../Lecture/panel_xtplfc/01_Panel_threshold_01_theory.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">静态面板门槛模型：理论与方法</span></span></a>
+  <a href="../../Lecture/panel_fe/panel_HDFE.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">HDFE：多维固定效应</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../Lecture/panel_xtplfc/02_Panel_threshold_02_codes.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">静态面板门槛模型：Stata 实操</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../../Lecture/panel_xtplfc/04_xtplfc的直观解读及xthreg实现.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">变系数模型</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../../Lecture/panel_xtplfc/05_解读xtplfc的原理_样条基函数.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">样条基函数与变系数模型：Stata 实操</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../../Lecture/panel_xtplfc/Du_2021_EE_中文精要.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">非线性调节效应怎么做？部分线性函数型面板数据模型</span></span></a>
+  <a href="../../Lecture/panel_fe/panel_IntFE.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">交互固定效应模型</span></span></a>
   </div>
 </li>
       </ul>
@@ -451,7 +433,7 @@ window.Quarto = {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="true">
- <span class="menu-text"><strong>受限因变量</strong></span></a>
+ <span class="menu-text"><strong>面板变系数模型</strong></span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -459,14 +441,32 @@ window.Quarto = {
       <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../Lecture/limit_dep_logit/02_a_binary_lec.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">30</span>&nbsp; <span class="chapter-title">二元选择模型</span></span></a>
+  <a href="../../Lecture/panel_xtplfc/01_Panel_threshold_01_theory.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">静态面板门槛模型：理论与方法</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../Lecture/limit_dep_logit/02_b_binary_codes.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">31</span>&nbsp; <span class="chapter-title">代码生成</span></span></a>
+  <a href="../../Lecture/panel_xtplfc/02_Panel_threshold_02_codes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">静态面板门槛模型：Stata 实操</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/panel_xtplfc/04_xtplfc的直观解读及xthreg实现.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">变系数模型</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/panel_xtplfc/05_解读xtplfc的原理_样条基函数.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">30</span>&nbsp; <span class="chapter-title">样条基函数与变系数模型：Stata 实操</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/panel_xtplfc/Du_2021_EE_中文精要.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">31</span>&nbsp; <span class="chapter-title">非线性调节效应怎么做？部分线性函数型面板数据模型</span></span></a>
   </div>
 </li>
       </ul>
@@ -474,7 +474,7 @@ window.Quarto = {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" role="navigation" aria-expanded="true">
- <span class="menu-text"><strong>文本分析</strong></span></a>
+ <span class="menu-text"><strong>受限因变量</strong></span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -482,26 +482,38 @@ window.Quarto = {
       <ul id="quarto-sidebar-section-8" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../Lecture/text_analysis/lecture_text_01_ailn.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">32</span>&nbsp; <span class="chapter-title">金融文本分析（上）——从文本到结构化数据</span></span></a>
+  <a href="../../Lecture/limit_dep_intro/01_overview_lec.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">32</span>&nbsp; <span class="chapter-title">离散变量和受限因变量：导论</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../Lecture/text_analysis/lecture_text_02_ailn.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">33</span>&nbsp; <span class="chapter-title">金融文本分析（下）——情感分析与文本建模</span></span></a>
+  <a href="../../Lecture/limit_dep_intro/01_overview_codes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">33</span>&nbsp; <span class="chapter-title">附：codes</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../Lecture/text_analysis/lecture_text_analysis_01_claude.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">34</span>&nbsp; <span class="chapter-title">文本数据处理基础</span></span></a>
+  <a href="../../Lecture/limit_dep_logit/02_a_binary_lec.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">34</span>&nbsp; <span class="chapter-title">二元选择模型</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../Lecture/text_analysis/lecture_text_analysis_02_claude.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">35</span>&nbsp; <span class="chapter-title">文本分析：情感分析与主题建模</span></span></a>
+  <a href="../../Lecture/limit_dep_logit/02_b_binary_codes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">35</span>&nbsp; <span class="chapter-title">附：Codes</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/limit_dep_logit/02_c_binary_case.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">36</span>&nbsp; <span class="chapter-title">案例：上市公司债务违约分析</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/reg_logit/probability_models.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">从回归模型到概率模型</span></span></a>
   </div>
 </li>
       </ul>
@@ -509,12 +521,47 @@ window.Quarto = {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-9" role="navigation" aria-expanded="true">
- <span class="menu-text"><strong>附录：Python 提示词</strong></span></a>
+ <span class="menu-text"><strong>文本分析</strong></span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-9" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
       <ul id="quarto-sidebar-section-9" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/text_analysis/lecture_text_01_ailn.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">38</span>&nbsp; <span class="chapter-title">金融文本分析（上）——从文本到结构化数据</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/text_analysis/lecture_text_02_ailn.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">39</span>&nbsp; <span class="chapter-title">金融文本分析（下）——情感分析与文本建模</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/text_analysis/lecture_text_analysis_01_claude.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">40</span>&nbsp; <span class="chapter-title">文本数据处理基础</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/text_analysis/lecture_text_analysis_02_claude.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">41</span>&nbsp; <span class="chapter-title">文本分析：情感分析与主题建模</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-10" role="navigation" aria-expanded="true">
+ <span class="menu-text"><strong>附录：Python 提示词</strong></span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-10" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-10" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../appendix_python/index.html" class="sidebar-item-text sidebar-link">
@@ -581,33 +628,33 @@ window.Quarto = {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#数据准备" id="toc-数据准备" class="nav-link active" data-scroll-target="#数据准备"><span class="header-section-number">28.1</span> 数据准备</a></li>
-  <li><a href="#手动构造样条基函数" id="toc-手动构造样条基函数" class="nav-link" data-scroll-target="#手动构造样条基函数"><span class="header-section-number">28.2</span> 手动构造样条基函数</a>
+  <li><a href="#数据准备" id="toc-数据准备" class="nav-link active" data-scroll-target="#数据准备"><span class="header-section-number">30.1</span> 数据准备</a></li>
+  <li><a href="#手动构造样条基函数" id="toc-手动构造样条基函数" class="nav-link" data-scroll-target="#手动构造样条基函数"><span class="header-section-number">30.2</span> 手动构造样条基函数</a>
   <ul class="collapse">
-  <li><a href="#step-1-确定样条结点位置" id="toc-step-1-确定样条结点位置" class="nav-link" data-scroll-target="#step-1-确定样条结点位置"><span class="header-section-number">28.2.1</span> Step 1: 确定样条结点位置</a></li>
-  <li><a href="#step-2-构造三次样条基函数" id="toc-step-2-构造三次样条基函数" class="nav-link" data-scroll-target="#step-2-构造三次样条基函数"><span class="header-section-number">28.2.2</span> 2.2 Step 2: 构造三次样条基函数</a></li>
-  <li><a href="#step-3-构造交互项-z-h" id="toc-step-3-构造交互项-z-h" class="nav-link" data-scroll-target="#step-3-构造交互项-z-h"><span class="header-section-number">28.2.3</span> Step 3: 构造交互项 (Z × h)</a></li>
+  <li><a href="#step-1-确定样条结点位置" id="toc-step-1-确定样条结点位置" class="nav-link" data-scroll-target="#step-1-确定样条结点位置"><span class="header-section-number">30.2.1</span> Step 1: 确定样条结点位置</a></li>
+  <li><a href="#step-2-构造三次样条基函数" id="toc-step-2-构造三次样条基函数" class="nav-link" data-scroll-target="#step-2-构造三次样条基函数"><span class="header-section-number">30.2.2</span> 2.2 Step 2: 构造三次样条基函数</a></li>
+  <li><a href="#step-3-构造交互项-z-h" id="toc-step-3-构造交互项-z-h" class="nav-link" data-scroll-target="#step-3-构造交互项-z-h"><span class="header-section-number">30.2.3</span> Step 3: 构造交互项 (Z × h)</a></li>
   </ul></li>
-  <li><a href="#估计模型手动方法" id="toc-估计模型手动方法" class="nav-link" data-scroll-target="#估计模型手动方法"><span class="header-section-number">28.3</span> 估计模型（手动方法）</a></li>
-  <li><a href="#计算边际效应-γu" id="toc-计算边际效应-γu" class="nav-link" data-scroll-target="#计算边际效应-γu"><span class="header-section-number">28.4</span> 计算边际效应 γ(U)</a></li>
-  <li><a href="#结果可视化" id="toc-结果可视化" class="nav-link" data-scroll-target="#结果可视化"><span class="header-section-number">28.5</span> 结果可视化</a>
+  <li><a href="#估计模型手动方法" id="toc-估计模型手动方法" class="nav-link" data-scroll-target="#估计模型手动方法"><span class="header-section-number">30.3</span> 估计模型（手动方法）</a></li>
+  <li><a href="#计算边际效应-γu" id="toc-计算边际效应-γu" class="nav-link" data-scroll-target="#计算边际效应-γu"><span class="header-section-number">30.4</span> 计算边际效应 γ(U)</a></li>
+  <li><a href="#结果可视化" id="toc-结果可视化" class="nav-link" data-scroll-target="#结果可视化"><span class="header-section-number">30.5</span> 结果可视化</a>
   <ul class="collapse">
-  <li><a href="#基本散点图-置信区间" id="toc-基本散点图-置信区间" class="nav-link" data-scroll-target="#基本散点图-置信区间"><span class="header-section-number">28.5.1</span> 基本散点图 + 置信区间</a></li>
-  <li><a href="#分段绘制展示样条的分段特性" id="toc-分段绘制展示样条的分段特性" class="nav-link" data-scroll-target="#分段绘制展示样条的分段特性"><span class="header-section-number">28.5.2</span> 分段绘制（展示样条的分段特性）</a></li>
+  <li><a href="#基本散点图-置信区间" id="toc-基本散点图-置信区间" class="nav-link" data-scroll-target="#基本散点图-置信区间"><span class="header-section-number">30.5.1</span> 基本散点图 + 置信区间</a></li>
+  <li><a href="#分段绘制展示样条的分段特性" id="toc-分段绘制展示样条的分段特性" class="nav-link" data-scroll-target="#分段绘制展示样条的分段特性"><span class="header-section-number">30.5.2</span> 分段绘制（展示样条的分段特性）</a></li>
   </ul></li>
-  <li><a href="#使用-xtplfc-命令" id="toc-使用-xtplfc-命令" class="nav-link" data-scroll-target="#使用-xtplfc-命令"><span class="header-section-number">28.6</span> 使用 xtplfc 命令</a>
+  <li><a href="#使用-xtplfc-命令" id="toc-使用-xtplfc-命令" class="nav-link" data-scroll-target="#使用-xtplfc-命令"><span class="header-section-number">30.6</span> 使用 xtplfc 命令</a>
   <ul class="collapse">
-  <li><a href="#模型设定" id="toc-模型设定" class="nav-link" data-scroll-target="#模型设定"><span class="header-section-number">28.6.1</span> 模型设定</a></li>
-  <li><a href="#对比两种方法的结果" id="toc-对比两种方法的结果" class="nav-link" data-scroll-target="#对比两种方法的结果"><span class="header-section-number">28.6.2</span> 对比两种方法的结果</a></li>
+  <li><a href="#模型设定" id="toc-模型设定" class="nav-link" data-scroll-target="#模型设定"><span class="header-section-number">30.6.1</span> 模型设定</a></li>
+  <li><a href="#对比两种方法的结果" id="toc-对比两种方法的结果" class="nav-link" data-scroll-target="#对比两种方法的结果"><span class="header-section-number">30.6.2</span> 对比两种方法的结果</a></li>
   </ul></li>
-  <li><a href="#稳健性检验" id="toc-稳健性检验" class="nav-link" data-scroll-target="#稳健性检验"><span class="header-section-number">28.7</span> 稳健性检验</a>
+  <li><a href="#稳健性检验" id="toc-稳健性检验" class="nav-link" data-scroll-target="#稳健性检验"><span class="header-section-number">30.7</span> 稳健性检验</a>
   <ul class="collapse">
-  <li><a href="#改变结点数量" id="toc-改变结点数量" class="nav-link" data-scroll-target="#改变结点数量"><span class="header-section-number">28.7.1</span> 改变结点数量</a></li>
-  <li><a href="#使用不同的样条类型" id="toc-使用不同的样条类型" class="nav-link" data-scroll-target="#使用不同的样条类型"><span class="header-section-number">28.7.2</span> 使用不同的样条类型</a></li>
+  <li><a href="#改变结点数量" id="toc-改变结点数量" class="nav-link" data-scroll-target="#改变结点数量"><span class="header-section-number">30.7.1</span> 改变结点数量</a></li>
+  <li><a href="#使用不同的样条类型" id="toc-使用不同的样条类型" class="nav-link" data-scroll-target="#使用不同的样条类型"><span class="header-section-number">30.7.2</span> 使用不同的样条类型</a></li>
   </ul></li>
-  <li><a href="#结果解释示例" id="toc-结果解释示例" class="nav-link" data-scroll-target="#结果解释示例"><span class="header-section-number">28.8</span> 结果解释示例</a>
+  <li><a href="#结果解释示例" id="toc-结果解释示例" class="nav-link" data-scroll-target="#结果解释示例"><span class="header-section-number">30.8</span> 结果解释示例</a>
   <ul class="collapse">
-  <li><a href="#如何解读边际效应曲线" id="toc-如何解读边际效应曲线" class="nav-link" data-scroll-target="#如何解读边际效应曲线"><span class="header-section-number">28.8.1</span> 如何解读边际效应曲线？</a></li>
+  <li><a href="#如何解读边际效应曲线" id="toc-如何解读边际效应曲线" class="nav-link" data-scroll-target="#如何解读边际效应曲线"><span class="header-section-number">30.8.1</span> 如何解读边际效应曲线？</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -615,9 +662,9 @@ window.Quarto = {
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../Lecture/panel_xtplfc/01_Panel_threshold_01_theory.html"><strong>面板变系数模型</strong></a></li><li class="breadcrumb-item"><a href="../../Lecture/panel_xtplfc/05_解读xtplfc的原理_样条基函数.html"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">样条基函数与变系数模型：Stata 实操</span></a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../Lecture/panel_xtplfc/01_Panel_threshold_01_theory.html"><strong>面板变系数模型</strong></a></li><li class="breadcrumb-item"><a href="../../Lecture/panel_xtplfc/05_解读xtplfc的原理_样条基函数.html"><span class="chapter-number">30</span>&nbsp; <span class="chapter-title">样条基函数与变系数模型：Stata 实操</span></a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">样条基函数与变系数模型：Stata 实操</span></h1>
+<h1 class="title"><span class="chapter-number">30</span>&nbsp; <span class="chapter-title">样条基函数与变系数模型：Stata 实操</span></h1>
 </div>
 
 
@@ -640,8 +687,8 @@ window.Quarto = {
 <p><strong>目标</strong>：理解样条基函数如何逼近未知的函数系数 γ(U)</p>
 </blockquote>
 <hr>
-<section id="数据准备" class="level2" data-number="28.1">
-<h2 data-number="28.1" class="anchored" data-anchor-id="数据准备"><span class="header-section-number">28.1</span> 数据准备</h2>
+<section id="数据准备" class="level2" data-number="30.1">
+<h2 data-number="30.1" class="anchored" data-anchor-id="数据准备"><span class="header-section-number">30.1</span> 数据准备</h2>
 <p>使用 Du et al.&nbsp;(2021) 的中国城市面板数据。</p>
 <div id="cell-2" class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode stata code-with-copy"><code class="sourceCode stata"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>*----- 载入数据</span>
@@ -713,11 +760,11 @@ fdi             double  %10.0g                FDI / GDP</code></pre>
 <li><code>lnfdi</code>: 经济开放度</li>
 </ul>
 </section>
-<section id="手动构造样条基函数" class="level2" data-number="28.2">
-<h2 data-number="28.2" class="anchored" data-anchor-id="手动构造样条基函数"><span class="header-section-number">28.2</span> 手动构造样条基函数</h2>
+<section id="手动构造样条基函数" class="level2" data-number="30.2">
+<h2 data-number="30.2" class="anchored" data-anchor-id="手动构造样条基函数"><span class="header-section-number">30.2</span> 手动构造样条基函数</h2>
 <p>为了深入理解 <code>xtplfc</code> 的工作原理，我们先手动构造三次样条基函数。</p>
-<section id="step-1-确定样条结点位置" class="level3" data-number="28.2.1">
-<h3 data-number="28.2.1" class="anchored" data-anchor-id="step-1-确定样条结点位置"><span class="header-section-number">28.2.1</span> Step 1: 确定样条结点位置</h3>
+<section id="step-1-确定样条结点位置" class="level3" data-number="30.2.1">
+<h3 data-number="30.2.1" class="anchored" data-anchor-id="step-1-确定样条结点位置"><span class="header-section-number">30.2.1</span> Step 1: 确定样条结点位置</h3>
 <p>选择 lngdp 的 30% 和 60% 分位点作为结点。</p>
 <div id="cell-8" class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode stata code-with-copy"><code class="sourceCode stata"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">use</span> <span class="st">"https://github.com/lianxhcn/data/raw/refs/heads/main/stata/Du2021EE_ERdata.dta"</span>, <span class="kw">clear</span></span>
@@ -761,8 +808,8 @@ Knot 2 (60th percentile): 10.281</code></pre>
 </div>
 </div>
 </section>
-<section id="step-2-构造三次样条基函数" class="level3" data-number="28.2.2">
-<h3 data-number="28.2.2" class="anchored" data-anchor-id="step-2-构造三次样条基函数"><span class="header-section-number">28.2.2</span> 2.2 Step 2: 构造三次样条基函数</h3>
+<section id="step-2-构造三次样条基函数" class="level3" data-number="30.2.2">
+<h3 data-number="30.2.2" class="anchored" data-anchor-id="step-2-构造三次样条基函数"><span class="header-section-number">30.2.2</span> 2.2 Step 2: 构造三次样条基函数</h3>
 <p>构造 6 个基函数： - h1 = 1 (常数项) - h2 = U (线性项) - h3 = U² (二次项) - h4 = U³ (三次项) - h5 = (U - κ₁)³₊ (第一个样条调整项) - h6 = (U - κ₂)³₊ (第二个样条调整项)</p>
 <div id="cell-11" class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode stata code-with-copy"><code class="sourceCode stata"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>*----- 基函数 h1 到 h4：多项式项</span>
@@ -799,8 +846,8 @@ Knot 2 (60th percentile): 10.281</code></pre>
 </div>
 </div>
 </section>
-<section id="step-3-构造交互项-z-h" class="level3" data-number="28.2.3">
-<h3 data-number="28.2.3" class="anchored" data-anchor-id="step-3-构造交互项-z-h"><span class="header-section-number">28.2.3</span> Step 3: 构造交互项 (Z × h)</h3>
+<section id="step-3-构造交互项-z-h" class="level3" data-number="30.2.3">
+<h3 data-number="30.2.3" class="anchored" data-anchor-id="step-3-构造交互项-z-h"><span class="header-section-number">30.2.3</span> Step 3: 构造交互项 (Z × h)</h3>
 <p>将环境规制（er）与每个基函数相乘，得到 6 个交互项。</p>
 <p><strong>核心思想</strong>：原模型 <span class="math inline">\(Y=\gamma(U) Z+\beta X+\alpha\)</span> ，其中 <span class="math inline">\(\gamma(U) \approx \sum \theta_j {\color{blue}{h_j(U)}}\)</span></p>
 <p>因此，</p>
@@ -819,8 +866,8 @@ Knot 2 (60th percentile): 10.281</code></pre>
 </div>
 </section>
 </section>
-<section id="估计模型手动方法" class="level2" data-number="28.3">
-<h2 data-number="28.3" class="anchored" data-anchor-id="估计模型手动方法"><span class="header-section-number">28.3</span> 估计模型（手动方法）</h2>
+<section id="估计模型手动方法" class="level2" data-number="30.3">
+<h2 data-number="30.3" class="anchored" data-anchor-id="估计模型手动方法"><span class="header-section-number">30.3</span> 估计模型（手动方法）</h2>
 <p>使用 <code>reghdfe</code> 吸收城市固定效应，等价于先一阶差分再 OLS。</p>
 <div id="cell-16" class="cell">
 <div class="sourceCode cell-code" id="cb17"><pre class="sourceCode stata code-with-copy"><code class="sourceCode stata"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>*----- 安装 reghdfe（如未安装）</span>
@@ -877,8 +924,8 @@ Absorbed degrees of freedom:
 <li>这些系数本身不直接解释，需要组合成 <span class="math inline">\(\gamma(U)\)</span></li>
 </ul>
 </section>
-<section id="计算边际效应-γu" class="level2" data-number="28.4">
-<h2 data-number="28.4" class="anchored" data-anchor-id="计算边际效应-γu"><span class="header-section-number">28.4</span> 计算边际效应 γ(U)</h2>
+<section id="计算边际效应-γu" class="level2" data-number="30.4">
+<h2 data-number="30.4" class="anchored" data-anchor-id="计算边际效应-γu"><span class="header-section-number">30.4</span> 计算边际效应 γ(U)</h2>
 <p>由于模型中包含了拐点项，即 <span class="math inline">\((U - \kappa_k)^3_+\)</span>，我们无法使用 <code>margins</code> 命令计算边际效应。此时，需要借助 <code>predictnl</code> 命令来计算每个观测点的边际效应，即</p>
 <p><span class="math display">\[\hat{\gamma}(U_i) = \sum_{j=2}^{6} \hat{\theta}_j h_j(U_i)\]</span></p>
 <p>标准误可以使用 <code>predictnl</code> 的 <code>se()</code> 选项计算，详情参见 <a href="https://www.stata.com/manuals/rpredictnl.pdf"><strong>[R]</strong> predictnl</a>。</p>
@@ -915,10 +962,10 @@ Absorbed degrees of freedom:
 </div>
 </div>
 </section>
-<section id="结果可视化" class="level2" data-number="28.5">
-<h2 data-number="28.5" class="anchored" data-anchor-id="结果可视化"><span class="header-section-number">28.5</span> 结果可视化</h2>
-<section id="基本散点图-置信区间" class="level3" data-number="28.5.1">
-<h3 data-number="28.5.1" class="anchored" data-anchor-id="基本散点图-置信区间"><span class="header-section-number">28.5.1</span> 基本散点图 + 置信区间</h3>
+<section id="结果可视化" class="level2" data-number="30.5">
+<h2 data-number="30.5" class="anchored" data-anchor-id="结果可视化"><span class="header-section-number">30.5</span> 结果可视化</h2>
+<section id="基本散点图-置信区间" class="level3" data-number="30.5.1">
+<h3 data-number="30.5.1" class="anchored" data-anchor-id="基本散点图-置信区间"><span class="header-section-number">30.5.1</span> 基本散点图 + 置信区间</h3>
 <div id="cell-24" class="cell" data-execution_count="9">
 <div class="sourceCode cell-code" id="cb23"><pre class="sourceCode stata code-with-copy"><code class="sourceCode stata"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>*----- 绘制边际效应曲线</span>
 <span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="kw">twoway</span> (rarea gamma_lb gamma_ub lngdp, <span class="kw">color</span>(<span class="bn">blue</span>*0.2) <span class="kw">sort</span>) <span class="co">///</span></span>
@@ -944,8 +991,8 @@ Absorbed degrees of freedom:
 <p><a href="https://file.lianxh.cn/Refs/refs_common/Du_2021_EE_xtplfc.pdf">原文</a> 结果：</p>
 <p><img src="https://fig-lianxh.oss-cn-shenzhen.aliyuncs.com/20260125170333.png" width="600" alt="20260125170333"></p>
 </section>
-<section id="分段绘制展示样条的分段特性" class="level3" data-number="28.5.2">
-<h3 data-number="28.5.2" class="anchored" data-anchor-id="分段绘制展示样条的分段特性"><span class="header-section-number">28.5.2</span> 分段绘制（展示样条的分段特性）</h3>
+<section id="分段绘制展示样条的分段特性" class="level3" data-number="30.5.2">
+<h3 data-number="30.5.2" class="anchored" data-anchor-id="分段绘制展示样条的分段特性"><span class="header-section-number">30.5.2</span> 分段绘制（展示样条的分段特性）</h3>
 <div id="cell-27" class="cell" data-execution_count="11">
 <div class="sourceCode cell-code" id="cb24"><pre class="sourceCode stata code-with-copy"><code class="sourceCode stata"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>*----- 创建临时数据用于分段绘图</span>
 <span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="kw">preserve</span></span>
@@ -1000,15 +1047,15 @@ Absorbed degrees of freedom:
 </div>
 </section>
 </section>
-<section id="使用-xtplfc-命令" class="level2" data-number="28.6">
-<h2 data-number="28.6" class="anchored" data-anchor-id="使用-xtplfc-命令"><span class="header-section-number">28.6</span> 使用 xtplfc 命令</h2>
+<section id="使用-xtplfc-命令" class="level2" data-number="30.6">
+<h2 data-number="30.6" class="anchored" data-anchor-id="使用-xtplfc-命令"><span class="header-section-number">30.6</span> 使用 xtplfc 命令</h2>
 <p>现在我们使用 <code>xtplfc</code> 命令重新估计，并与手动结果对比。</p>
 <div id="cell-29" class="cell">
 <div class="sourceCode cell-code" id="cb26"><pre class="sourceCode stata code-with-copy"><code class="sourceCode stata"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>*----- 安装 xtplfc（如未安装）</span>
 <span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>* net install st0624.pkg, <span class="ot">all</span> <span class="kw">replace</span> from(http:<span class="co">//www.stata-journal.com/software/sj20-4)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<section id="模型设定" class="level3" data-number="28.6.1">
-<h3 data-number="28.6.1" class="anchored" data-anchor-id="模型设定"><span class="header-section-number">28.6.1</span> 模型设定</h3>
+<section id="模型设定" class="level3" data-number="30.6.1">
+<h3 data-number="30.6.1" class="anchored" data-anchor-id="模型设定"><span class="header-section-number">30.6.1</span> 模型设定</h3>
 <p>由前文介绍可知，函数系数模型的一般形式为：</p>
 <p><span class="math display">\[Y = \gamma(U) Z + \beta X + \alpha + \epsilon\]</span></p>
 <p>我们关心的是 <span class="math inline">\(Z\)</span> 对 <span class="math inline">\(Y\)</span> 的边际影响 <span class="math inline">\(\gamma(U)\)</span>，尤其是 <span class="math inline">\(\gamma(U)\)</span> 随调节变量 <span class="math inline">\(U\)</span> 的变化情况。</p>
@@ -1069,8 +1116,8 @@ Estimated functional coefficient(s) are saved in the data.</code></pre>
 <span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a><span class="kw">gen</span> fcoe_ub = fcoe_gti_1 + 1.96 * fcoe_gti_1_sd</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="对比两种方法的结果" class="level3" data-number="28.6.2">
-<h3 data-number="28.6.2" class="anchored" data-anchor-id="对比两种方法的结果"><span class="header-section-number">28.6.2</span> 对比两种方法的结果</h3>
+<section id="对比两种方法的结果" class="level3" data-number="30.6.2">
+<h3 data-number="30.6.2" class="anchored" data-anchor-id="对比两种方法的结果"><span class="header-section-number">30.6.2</span> 对比两种方法的结果</h3>
 <div id="cell-35" class="cell" data-execution_count="151">
 <div class="sourceCode cell-code" id="cb30"><pre class="sourceCode stata code-with-copy"><code class="sourceCode stata"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>*----- 计算相关系数</span>
 <span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>correlate gamma_hat fcoe_gti_1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -1108,12 +1155,12 @@ Estimated functional coefficient(s) are saved in the data.</code></pre>
 </div>
 </section>
 </section>
-<section id="稳健性检验" class="level2" data-number="28.7">
-<h2 data-number="28.7" class="anchored" data-anchor-id="稳健性检验"><span class="header-section-number">28.7</span> 稳健性检验</h2>
+<section id="稳健性检验" class="level2" data-number="30.7">
+<h2 data-number="30.7" class="anchored" data-anchor-id="稳健性检验"><span class="header-section-number">30.7</span> 稳健性检验</h2>
 <p>有些读者可能会担心，样条基函数的选择（如结点位置、次数等）会不会对结果产生较大影响。为此，我们可以尝试不同的结点位置和次数，观察估计结果的稳定性。</p>
 <p>对比结果显示，无论是改变节点数 (使用 3 个节点和 4 个节点)，还是改变次数 (使用二次和三次样条)，得到的结果与上文基本设定下的结果都不存在显著差异。这说明，估计结果对样条基函数的选择较为稳健。这也是样条方法的一个重要优点。</p>
-<section id="改变结点数量" class="level3" data-number="28.7.1">
-<h3 data-number="28.7.1" class="anchored" data-anchor-id="改变结点数量"><span class="header-section-number">28.7.1</span> 改变结点数量</h3>
+<section id="改变结点数量" class="level3" data-number="30.7.1">
+<h3 data-number="30.7.1" class="anchored" data-anchor-id="改变结点数量"><span class="header-section-number">30.7.1</span> 改变结点数量</h3>
 <div id="cell-39" class="cell" data-execution_count="62">
 <div class="sourceCode cell-code" id="cb33"><pre class="sourceCode stata code-with-copy"><code class="sourceCode stata"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>*----- 使用 3 个结点（25%, 50%, 75% 分位点）</span>
 <span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>cap <span class="kw">drop</span> fcoe_3knots*</span>
@@ -1195,8 +1242,8 @@ Estimated functional coefficient(s) are saved in the data.</code></pre>
 </div>
 </div>
 </section>
-<section id="使用不同的样条类型" class="level3" data-number="28.7.2">
-<h3 data-number="28.7.2" class="anchored" data-anchor-id="使用不同的样条类型"><span class="header-section-number">28.7.2</span> 使用不同的样条类型</h3>
+<section id="使用不同的样条类型" class="level3" data-number="30.7.2">
+<h3 data-number="30.7.2" class="anchored" data-anchor-id="使用不同的样条类型"><span class="header-section-number">30.7.2</span> 使用不同的样条类型</h3>
 <div id="cell-43" class="cell" data-execution_count="155">
 <div class="sourceCode cell-code" id="cb38"><pre class="sourceCode stata code-with-copy"><code class="sourceCode stata"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>*----- 二次样条</span>
 <span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>xtplfc lngti lnrd lnpop lnhc lninv lnfdi, <span class="co">///</span></span>
@@ -1248,10 +1295,10 @@ Estimated functional coefficient(s) are saved in the data.</code></pre>
 </div>
 </section>
 </section>
-<section id="结果解释示例" class="level2" data-number="28.8">
-<h2 data-number="28.8" class="anchored" data-anchor-id="结果解释示例"><span class="header-section-number">28.8</span> 结果解释示例</h2>
-<section id="如何解读边际效应曲线" class="level3" data-number="28.8.1">
-<h3 data-number="28.8.1" class="anchored" data-anchor-id="如何解读边际效应曲线"><span class="header-section-number">28.8.1</span> 如何解读边际效应曲线？</h3>
+<section id="结果解释示例" class="level2" data-number="30.8">
+<h2 data-number="30.8" class="anchored" data-anchor-id="结果解释示例"><span class="header-section-number">30.8</span> 结果解释示例</h2>
+<section id="如何解读边际效应曲线" class="level3" data-number="30.8.1">
+<h3 data-number="30.8.1" class="anchored" data-anchor-id="如何解读边际效应曲线"><span class="header-section-number">30.8.1</span> 如何解读边际效应曲线？</h3>
 <p><strong>横轴（lngdp）</strong>：</p>
 <ul>
 <li>城市的经济发展水平（人均 GDP 的对数）</li>
@@ -1898,12 +1945,12 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
       <a href="../../Lecture/panel_xtplfc/04_xtplfc的直观解读及xthreg实现.html" class="pagination-link" aria-label="变系数模型">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">变系数模型</span></span>
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">变系数模型</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
       <a href="../../Lecture/panel_xtplfc/Du_2021_EE_中文精要.html" class="pagination-link" aria-label="非线性调节效应怎么做？部分线性函数型面板数据模型">
-        <span class="nav-page-text"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">非线性调节效应怎么做？部分线性函数型面板数据模型</span></span> <i class="bi bi-arrow-right-short"></i>
+        <span class="nav-page-text"><span class="chapter-number">31</span>&nbsp; <span class="chapter-title">非线性调节效应怎么做？部分线性函数型面板数据模型</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

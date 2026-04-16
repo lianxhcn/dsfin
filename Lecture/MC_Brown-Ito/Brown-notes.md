@@ -116,3 +116,39 @@ $$
 
 
 由于模型中参数较多，在实际拟合值可能需要使用两阶段拟合的方法。
+
+
+
+
+
+## python packages
+
+- `pymle`: 
+  - Kirkby, J. L., Nguyen, D. H., Nguyen, D., & Nguyen, N. (2025). pymle: A Python Package for Maximum Likelihood Estimation and Simulation of Stochastic Differential Equations. Journal of Statistical Software, 113(4). [Link](https://doi.org/10.18637/jss.v113.i04) (rep), [PDF](https://www.jstatsoft.org/index.php/jss/article/view/v113i04/4721), [Google](<https://scholar.google.com/scholar?q=pymle: A Python Package for Maximum Likelihood Estimation and Simulation of Stochastic Differential Equations>). [Replication](https://www.jstatsoft.org/index.php/jss/article/view/v113i04/4723).
+
+>Table 2: Models provided by the pymle package.
+
+| Model                    | Dynamics                                                                                                                                                                              | Constraint                   | Reference                                    |
+| :----------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | :--------------------------- | :------------------------------------------- |
+| BM                       | $d S_t=\mu d t+\sigma d W_t$                                                                                                                                                          | $\sigma>0$                   | Karatzas and Shreve (2014)                   |
+| GBM                      | $d S_t=\mu S_t d t+\sigma S_t d W_t$                                                                                                                                                  | $\sigma>0$                   | Karatzas and Shreve (2014)                   |
+| IGBM                     | $d S_t=\kappa\left(\mu-S_t\right) d t+\sigma S_t d W_t$                                                                                                                               | $\sigma>0$                   | Abadie and Chamorro (2008); Zhao (2009)      |
+| Peral-Verhulst           | $d S_t=\kappa\left(\mu-S_t\right) S_t d t+\sigma S_t d W_t$                                                                                                                           | $\sigma>0$                   | Dixit and Pindyck (1994)                     |
+| Linear SDE 1             | $d S_t=\left(a+b S_t\right) d t+\left(c+d S_t\right) d W_t$                                                                                                                           | $a, c, d \neq 0$             | Kloeden and Platen (1992)                    |
+| Linear SDE 2             | $d S_t=\left(a+b S_t\right) d t+c S_t d W_t$                                                                                                                                          | $c \neq 0$                   | Kloeden and Platen (1992)                    |
+| Logistic                 | $d S_t=S_t\left(1-a S_t\right) d t+b S_t d W_t$                                                                                                                                       | $b>0$                        | Kloeden and Platen (1992)                    |
+| 3/2                      | $d S_t=S_t\left(\kappa\left(\mu-S_t\right) d t+\sigma S_t \sqrt{S_t} d W_t\right.$                                                                                                    | $\sigma>0$                   | Grasselli (2017); Kirkby and Nguyen (2020)   |
+| CEV                      | $d S_t=\kappa\left(\mu-S_t\right) d t+\sigma S_t^\gamma d W_t$                                                                                                                        | $\gamma, \sigma>0$           | Cox (1996)                                   |
+| CIR                      | $d S_t=\kappa\left(\mu-S_t\right) d t+\sigma \sqrt{S_t} d W_t$                                                                                                                        | $2 \kappa \mu \geq \sigma^2$ | Cox et al. (2005)                            |
+| CKLS                     | $d S_t=\left(0_1+0_2 S_t\right) d t+0_3 S_t^{\theta_4} d W_t$                                                                                                                         | $0_3>0$                      | Chan, Karolyi, Longstaff, and Sanders (1992) |
+| Feller's square root     | $d S_t=S_t\left(0_1-\left(0_3^3-0_1 0_2\right) S_t\right) d t+0_3 S_t^{3 / 2} d W_t$                                                                                                  | $0_3>0$                      | Ahn and Gao (1999)                           |
+| Hyperbolic               | $d S_t=-\frac{\kappa S_t}{\sqrt{1+S_t^2}} d t+\sigma d W_t$                                                                                                                           | $\kappa, \sigma>0$           | Eberlein and Keller (1995)                   |
+| Hyperbolic 2             | $d S_t=\frac{\sigma^2}{2}\left(\beta-\gamma \frac{S_\iota}{\sqrt{\delta^2+\left(S_t-\mu\right)^2}}\right) d t+\sigma d W_t$                                                           | $\sigma,\|\delta\|>0$        | Iacus (2009)                                 |
+| Jacobi                   | $d S_t=-0\left(S_t-1 / 2\right) d t+\sqrt{0 S_t\left(1-S_t\right)} d W_t$                                                                                                             | $0>0$                        | Iacus (2009)                                 |
+| Modified CIR             | $d S_t=-0_1 S_t d t+0_2 \sqrt{1+S_t^2} d W_t$                                                                                                                                         | $0_1+0_2^2>0$                | Iacus (2009)                                 |
+| OU                       | $d S_t=\kappa\left(\mu-S_t\right) d t+\sigma d W_t$                                                                                                                                   | $\sigma>0$                   | Uhlenbeck and Ornstein (1930)                |
+| Radial OU                | $d S_t=\left(0 S_t^{-1}-S_t\right) d t+\sigma d W_t$                                                                                                                                  | $\sigma>0$                   | Iacus (2009)                                 |
+| Pearson                  | $d S_t=-0\left(S_t-\mu\right) d t+\sqrt{20\left(a S_t^2+b S_t+c\right)} d W_t$                                                                                                        | $0>0$                        | Forman and Sørensen (2008)                   |
+| Nonlinear mean reversion | $\begin{aligned} & d S_t=\left(\alpha_{-1} S_t^{-1}+\alpha_0+\alpha_1 S_t+\alpha_2 S_t^2\right) d t \\ & +\sqrt{\beta_0+\beta_1 S_t+\beta_2 S_t^{\beta_3}} d W_t \end{aligned}$       | See ref.                     | Aiit-Sahalia (1996)                          |
+| Nonlinear SDE            | $\begin{aligned} & d S_t=\left(\alpha_{-1} S_t^{-1}+\alpha_0+\alpha_1 S_t+\alpha_2 S_t^2\right) d t \\ & +\left(\beta_0+\beta_1 S_t+\beta_2 S_t^{\beta_3}\right) d W_t \end{aligned}$ | See ref.                     | Aiit-Sahalia (1996)                          |
+

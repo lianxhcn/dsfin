@@ -1,0 +1,2114 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.6.39">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>24&nbsp; 从回归模型到概率模型 – 金融数据分析与建模</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../Lecture/panel_fe/panel_HDFE.html" rel="next">
+<link href="../../Lecture/reg_ols/ols_visual_3D.html" rel="prev">
+<link href="../../images/book-logo.png" rel="icon" type="image/png">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-e8fb9d25728d58bfeac61b497e4a6629.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark-57a92833092fd6dc0d7710b6bdfff9c5.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-7ef202e96c563d31d9e5226e4d6cabf9.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark-490ba4e843cb1303a232ed0c676384f2.min.css" rel="prefetch" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../Lecture/reg_ols/ols_visual_3D.html"><strong>线性回归分析</strong></a></li><li class="breadcrumb-item"><a href="../../Lecture/reg_logit/probability_models.html"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">从回归模型到概率模型</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header sidebar-header-stacked">
+      <a href="https://lianxhcn.github.io/dsfin/" class="sidebar-logo-link">
+      <img src="../../images/book-logo.png" alt="" class="sidebar-logo py-0 d-lg-inline d-none">
+      </a>
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../../">DS Finance</a> 
+        <div class="sidebar-tools-main tools-wide">
+    <a href="https://github.com/lianxhcn/dsfin" title="" class="quarto-navigation-tool px-1" aria-label=""><i class="bi bi-github"></i></a>
+    <a href="https://www.lianxh.cn" title="" class="quarto-navigation-tool px-1" aria-label=""><i class="bi bi-house-fill"></i></a>
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">封面</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/00_intro.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">📚课程资料</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/00_setup.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">📌课件使用指南</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/01_homework.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">🚀作业</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text"><strong>环境配置</strong></span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/00-setup/01_00_coding_with_AI.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">借助 AI 写代码</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/00-setup/01_01_install_anaconda.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Python：安装和环境配置</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/00-setup/01_02_jupyter_notebook.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Jupyter Notebook 的使用</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/00-setup/01_03_install_FAQs.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Python 安装常见问题</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/00-setup/01_04_markdown.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Markdown</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/00-setup/01_06_conda_env.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">虚拟环境管理</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
+ <span class="menu-text"><strong>数据分析</strong></span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/data_get_data/lecture_get_data.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">金融数据获取</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/data_get_data/data_02_get_data_GMD.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">获取数据：GMD</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/data_get_data/data_03_TS_SZ_index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">上证指数的时序特征</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/data_store_structure/lecture_data_management_organization.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">数据管理与组织</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/data_manage/lecture_data_management.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">数据管理：格式、存储与工作流</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/data_clean/lecture_data_clean.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">数据清洗</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true">
+ <span class="menu-text"><strong>可视化</strong></span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/data_visual/graph_01_intro.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Python 可视化：简介</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/data_visual/graph_dis_box_violin.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">箱型图和小提琴图</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/data_visual/graph_dis_histogram.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">直方图</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/data_visual/graph_dis_kdensity.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">核密度函数图</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/data_visual/lec_distribution.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">数据分布：原理与可视化</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/data_visual/lec_distribution_codes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">数据分布：原理与可视化 — 配套代码</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/data_visual/lec_visualization.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">数据可视化：一些基本原则</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true">
+ <span class="menu-text"><strong>数据爬取</strong></span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/crawing/craw_01_introduction.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">网络爬虫简介</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/crawing/craw_02_sec01_lingnan_prompt.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">实例-提示词模式：爬取岭南学院教师名录</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/crawing/craw_02_sec02_lingnan_dialog.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">实例-对话模式：爬取岭南学院教师名录</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true">
+ <span class="menu-text"><strong>线性回归分析</strong></span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/reg_ols/ols_visual_3D.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">二元线性回归的 3D 图示</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/reg_logit/probability_models.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">从回归模型到概率模型</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="true">
+ <span class="menu-text"><strong>面板模型：固定效应</strong></span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/panel_fe/panel_HDFE.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">HDFE：多维固定效应</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/panel_fe/panel_IntFE.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">交互固定效应模型</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="true">
+ <span class="menu-text"><strong>面板变系数模型</strong></span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/panel_xtplfc/01_Panel_threshold_01_theory.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">静态面板门槛模型：理论与方法</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/panel_xtplfc/02_Panel_threshold_02_codes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">静态面板门槛模型：Stata 实操</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/panel_xtplfc/04_xtplfc的直观解读及xthreg实现.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">变系数模型</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/panel_xtplfc/05_解读xtplfc的原理_样条基函数.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">30</span>&nbsp; <span class="chapter-title">样条基函数与变系数模型：Stata 实操</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/panel_xtplfc/Du_2021_EE_中文精要.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">31</span>&nbsp; <span class="chapter-title">非线性调节效应怎么做？部分线性函数型面板数据模型</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" role="navigation" aria-expanded="true">
+ <span class="menu-text"><strong>受限因变量</strong></span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-8" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/limit_dep_intro/01_overview_lec.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">32</span>&nbsp; <span class="chapter-title">离散变量和受限因变量：导论</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/limit_dep_intro/01_overview_codes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">33</span>&nbsp; <span class="chapter-title">附：codes</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/limit_dep_logit/02_a_binary_lec.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">34</span>&nbsp; <span class="chapter-title">二元选择模型</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/limit_dep_logit/02_b_binary_codes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">35</span>&nbsp; <span class="chapter-title">附：Codes</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/limit_dep_logit/02_c_binary_case.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">36</span>&nbsp; <span class="chapter-title">案例：上市公司债务违约分析</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/reg_logit/probability_models.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">从回归模型到概率模型</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-9" role="navigation" aria-expanded="true">
+ <span class="menu-text"><strong>文本分析</strong></span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-9" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-9" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/text_analysis/lecture_text_01_ailn.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">38</span>&nbsp; <span class="chapter-title">金融文本分析（上）——从文本到结构化数据</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/text_analysis/lecture_text_02_ailn.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">39</span>&nbsp; <span class="chapter-title">金融文本分析（下）——情感分析与文本建模</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/text_analysis/lecture_text_analysis_01_claude.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">40</span>&nbsp; <span class="chapter-title">文本数据处理基础</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/text_analysis/lecture_text_analysis_02_claude.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">41</span>&nbsp; <span class="chapter-title">文本分析：情感分析与主题建模</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-10" role="navigation" aria-expanded="true">
+ <span class="menu-text"><strong>附录：Python 提示词</strong></span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-10" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-10" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../appendix_python/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">概览</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../appendix_python/a1_setup.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">A1. 环境配置</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../appendix_python/a2_project.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">A2. 项目规划与版本控制</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../appendix_python/a3_concepts.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">A3. 提示词核心词汇</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../appendix_python/a4_data.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">A4. 数据获取与清洗</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../appendix_python/a5_visualization.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">A5. 数据可视化</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../appendix_python/a6_modeling.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">A6. 统计建模</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../appendix_python/a7_results.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">A7. 结果呈现与表格美化</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../appendix_python/a8_workflow.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">A8. 上下文管理与调试</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#简介" id="toc-简介" class="nav-link active" data-scroll-target="#简介"><span class="header-section-number">24.1</span> 简介</a></li>
+  <li><a href="#sec-GLM-intro" id="toc-sec-GLM-intro" class="nav-link" data-scroll-target="#sec-GLM-intro"><span class="header-section-number">24.2</span> 微观数据的分类</a>
+  <ul class="collapse">
+  <li><a href="#定性数据" id="toc-定性数据" class="nav-link" data-scroll-target="#定性数据"><span class="header-section-number">24.2.1</span> 定性数据</a></li>
+  <li><a href="#定量数据-quantitative-data" id="toc-定量数据-quantitative-data" class="nav-link" data-scroll-target="#定量数据-quantitative-data"><span class="header-section-number">24.2.2</span> 定量数据 (Quantitative Data)</a></li>
+  <li><a href="#小结" id="toc-小结" class="nav-link" data-scroll-target="#小结"><span class="header-section-number">24.2.3</span> 小结</a></li>
+  </ul></li>
+  <li><a href="#何时线性回归模型不再适用" id="toc-何时线性回归模型不再适用" class="nav-link" data-scroll-target="#何时线性回归模型不再适用"><span class="header-section-number">24.3</span> 何时线性回归模型不再适用?</a></li>
+  <li><a href="#条件概率模型" id="toc-条件概率模型" class="nav-link" data-scroll-target="#条件概率模型"><span class="header-section-number">24.4</span> 条件概率模型</a>
+  <ul class="collapse">
+  <li><a href="#sec-prob-basic-CPF01" id="toc-sec-prob-basic-CPF01" class="nav-link" data-scroll-target="#sec-prob-basic-CPF01"><span class="header-section-number">24.4.1</span> 条件概率函数</a></li>
+  <li><a href="#边际效应系数含义之解释" id="toc-边际效应系数含义之解释" class="nav-link" data-scroll-target="#边际效应系数含义之解释"><span class="header-section-number">24.4.2</span> 边际效应：系数含义之解释</a></li>
+  </ul></li>
+  <li><a href="#sec-logit-model" id="toc-sec-logit-model" class="nav-link" data-scroll-target="#sec-logit-model"><span class="header-section-number">24.5</span> 二元选择模型</a>
+  <ul class="collapse">
+  <li><a href="#sec-logit-model-link" id="toc-sec-logit-model-link" class="nav-link" data-scroll-target="#sec-logit-model-link"><span class="header-section-number">24.5.1</span> 链接函数 (Link Function)</a></li>
+  <li><a href="#sec-logit-model-comments" id="toc-sec-logit-model-comments" class="nav-link" data-scroll-target="#sec-logit-model-comments"><span class="header-section-number">24.5.2</span> 简要评述</a></li>
+  </ul></li>
+  <li><a href="#从潜变量角度解读二元选择模型" id="toc-从潜变量角度解读二元选择模型" class="nav-link" data-scroll-target="#从潜变量角度解读二元选择模型"><span class="header-section-number">24.6</span> 从潜变量角度解读二元选择模型</a></li>
+  <li><a href="#条件概率模型-cpm" id="toc-条件概率模型-cpm" class="nav-link" data-scroll-target="#条件概率模型-cpm"><span class="header-section-number">24.7</span> 条件概率模型 (CPM)</a>
+  <ul class="collapse">
+  <li><a href="#基本架构" id="toc-基本架构" class="nav-link" data-scroll-target="#基本架构"><span class="header-section-number">24.7.1</span> 基本架构</a></li>
+  <li><a href="#实例" id="toc-实例" class="nav-link" data-scroll-target="#实例"><span class="header-section-number">24.7.2</span> 实例</a></li>
+  </ul></li>
+  <li><a href="#sec-prob-basic-MLE" id="toc-sec-prob-basic-MLE" class="nav-link" data-scroll-target="#sec-prob-basic-MLE"><span class="header-section-number">24.8</span> 最大似然估计法 (MLE)</a>
+  <ul class="collapse">
+  <li><a href="#sec-MLE-travel-01" id="toc-sec-MLE-travel-01" class="nav-link" data-scroll-target="#sec-MLE-travel-01"><span class="header-section-number">24.8.1</span> 基本思想</a></li>
+  <li><a href="#实例线性回归模型正态分布假设" id="toc-实例线性回归模型正态分布假设" class="nav-link" data-scroll-target="#实例线性回归模型正态分布假设"><span class="header-section-number">24.8.2</span> 实例：线性回归模型——正态分布假设</a></li>
+  <li><a href="#实例probit-模型" id="toc-实例probit-模型" class="nav-link" data-scroll-target="#实例probit-模型"><span class="header-section-number">24.8.3</span> 实例：Probit 模型</a></li>
+  <li><a href="#实例魏卜-weibull-模型" id="toc-实例魏卜-weibull-模型" class="nav-link" data-scroll-target="#实例魏卜-weibull-模型"><span class="header-section-number">24.8.4</span> 实例：魏卜 (Weibull) 模型</a></li>
+  <li><a href="#实例非线性模型-1" id="toc-实例非线性模型-1" class="nav-link" data-scroll-target="#实例非线性模型-1"><span class="header-section-number">24.8.5</span> 实例：非线性模型 1</a></li>
+  <li><a href="#实例非线性模型-2" id="toc-实例非线性模型-2" class="nav-link" data-scroll-target="#实例非线性模型-2"><span class="header-section-number">24.8.6</span> 实例：非线性模型 2</a></li>
+  <li><a href="#实例双边随机边界模型" id="toc-实例双边随机边界模型" class="nav-link" data-scroll-target="#实例双边随机边界模型"><span class="header-section-number">24.8.7</span> 实例：双边随机边界模型</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../Lecture/reg_ols/ols_visual_3D.html"><strong>线性回归分析</strong></a></li><li class="breadcrumb-item"><a href="../../Lecture/reg_logit/probability_models.html"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">从回归模型到概率模型</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">从回归模型到概率模型</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="简介" class="level2" data-number="24.1">
+<h2 data-number="24.1" class="anchored" data-anchor-id="简介"><span class="header-section-number">24.1</span> 简介</h2>
+<p>对于连续变量，我们主要关注「条件期望」，对应的模型称为「条件期望模型，简称 CEM」。然而，当被解释变量是 <span class="math inline">\(0/1\)</span>，或类别变量 (如, <span class="math inline">\(1, 2, \cdots, 5\)</span>) 等“定性响应变量” (qualitative response variables)，以及「离散+连续」混合分布的变量 (如归并数据) 时，我们关注的重点便需转向「条件概率」，此时「条件概率模型，简称 CPM」可能是更好的选择，通常采用 MLE 进行估计。</p>
+<p>本章将介绍此类模型的基本建模原则。从 CEM 转向 CPM，最核心的变化是建立 <span class="math inline">\(y\)</span> 的条件概率与 <span class="math inline">\(x\)</span> 之间的关系，即 <span class="math inline">\(P\left(y_{i}\,|\,\mathbf{x}_{i}\right) = g\left(\mathbf{x}_{i} ; \theta\right)\)</span>。原因有二：</p>
+<p>其一，在许多情况下，我们无法定义定性变量的期望值（例如，有序变量和多元选择变量）；</p>
+<p>其二，即使可以定义其期望值（例如，计数数据既可以被视为定性变量也可以被视为定量变量），但基于条件概率的方法可以提供更多的信息：一旦概率已知，期望值就完全确定了；反之则未必成立。换言之，从随机变量的概率分布入手，我们可以获取更多的信息，而期望值只是这众多备选信息的一个维度。</p>
+</section>
+<section id="sec-GLM-intro" class="level2" data-number="24.2">
+<h2 data-number="24.2" class="anchored" data-anchor-id="sec-GLM-intro"><span class="header-section-number">24.2</span> 微观数据的分类</h2>
+<p>微观数据大体可以分为「定性数据」和「定量数据」两类。后者也称为分类数据。定性数据都是离散数据，主要有三类：二元、多项和有序。定量数据既可以是离散的也可以是连续的，例如，实证分析中，我们可以把年龄 (<code>age</code>) 视为离散变量 (通常会用一组虚拟变量来刻画它，如 <code>i.age</code>)，也可以当做连续变量 (如 <code>c.age</code>，或经过对数转换后再纳入模型，如 <code>lnage</code>)。类似的变量还包括用于记录时间先后的年度变量，我们可以使用 <code>i.year</code> 表示一组年度虚拟变量，也可以使用 <code>c.year</code> 表示时间趋势。</p>
+<p>定量数据也可以根据其取值范围或数据生成过程分为「非受限数据」和「受限数据」。这里举例说明后者：其一，有些变量只能取非负值，例如，公司规模 (总资产或销售额)、人均 GDP、新冠感染人数等；其二，有些定量变量只能观测到其被归并 (censoring)、截断 (truncated) 或分组汇总后的数据，这也是导致样本选择/自选择偏误的主要来源。当此类变量是因变量时，便引申出各类「受限因变量模型」，如 Tobit, Heckman, Two-part 模型等。</p>
+<section id="定性数据" class="level3" data-number="24.2.1">
+<h3 data-number="24.2.1" class="anchored" data-anchor-id="定性数据"><span class="header-section-number">24.2.1</span> 定性数据</h3>
+<p>这类变量往往只有几个有限的取值，如 <span class="math inline">\(\{0, 1\}\)</span>, <span class="math inline">\(\{1,2,3,4,5\}\)</span> 等，其背后往往隐含着某类选择行为或定性判断 (分类) 行为，因此，通常会采用条件概率模型加以分析。</p>
+<section id="二元变量-binary-variables" class="level4 unnumbered">
+<h4 class="unnumbered anchored" data-anchor-id="二元变量-binary-variables">二元变量 (Binary Variables)</h4>
+<p>二元变量仅包含两种可能的结果：<span class="math inline">\(0\)</span> 和 <span class="math inline">\(1\)</span>，有时简称为「0/1 变量」，通常采用 Logit 或 Probit 模型加以分析 (<a href="https://www.stata.com/manuals/rlogit.pdf">[R] logit</a>，<a href="https://www.stata.com/manuals/rprobit.pdf">[R] probit</a>)。研究中的典型问题诸如：公司是否支付股利？本科毕业后是否留学？央行是否提高基准利率？等等。</p>
+</section>
+<section id="多项类别变量-multinomial-variables" class="level4 unnumbered">
+<h4 class="unnumbered anchored" data-anchor-id="多项类别变量-multinomial-variables">多项类别变量 (Multinomial Variables)</h4>
+<p>多项类别变量具有三个以上的结果，并使用一组互斥的无序类别标记加以区分。这些变量可以用来描述一个人的职业选择 (公务员/教师/投行/创业；<span class="math inline">\(y=1,2,3,4\)</span>)、公司的融资行为 (内部融资/发行债券/发行股票；<span class="math inline">\(y=1,2,3\)</span>)。注意，这里的 <span class="math inline">\(1\)</span>, <span class="math inline">\(3\)</span> 等数字只是用于标记不同的选择类型，并无大小的区别，因为我们完全可以用 <span class="math inline">\(A, B, C\)</span> 来代替 <span class="math inline">\(1,2,3\)</span> 作为类别的标记符号，也可以根据自己的喜好调整不同选择类型的编号。此类模型多使用多元 Logit 或多元 Probit 模型进行分析 (<a href="https://www.stata.com/manuals/rmlogit.pdf">[R] mlogit</a>，<a href="https://www.stata.com/manuals/rmprobit.pdf">[R] mprobit</a>)。如果只有两个类别，则简化为二元变量。</p>
+</section>
+<section id="有序变量-ordered-variables" class="level4 unnumbered">
+<h4 class="unnumbered anchored" data-anchor-id="有序变量-ordered-variables">有序变量 (Ordered Variables)</h4>
+<p>有序变量 (序别变量) 在形式上与多元类别变量相似，但变量的各个取值有大小之分。如「幸福感」取值为 <span class="math inline">\(1,2,3,4,5\)</span>，分别对应“很不幸福、不幸福、一般、幸福、很幸福”。需要注意的是，这里虽然用一组递增的数字来表示幸福程度的相对高低，但并未定义组间的差异程度，即“<span class="math inline">\(5\)</span>”与“<span class="math inline">\(4\)</span>”之间的幸福感差异并不必然等于“<span class="math inline">\(3\)</span>”与“<span class="math inline">\(2\)</span>”之间的差异程度。 类似的例子还包括公司债券的信用评级(AAA, AA, A, BBB, BB, ……)，对某个议案或提议的赞同程度 (非常赞同/赞同/中立/不赞同/强烈反对)。此类模型多使用有序 Logit 或 Probit 模型进行分析 (<a href="https://www.stata.com/manuals/rologit.pdf">[R] ologit</a>，<a href="https://www.stata.com/manuals/roprobit.pdf">[R] oprobit</a>)。</p>
+</section>
+</section>
+<section id="定量数据-quantitative-data" class="level3" data-number="24.2.2">
+<h3 data-number="24.2.2" class="anchored" data-anchor-id="定量数据-quantitative-data"><span class="header-section-number">24.2.2</span> 定量数据 (Quantitative Data)</h3>
+<p>通常，我们假设定量因变量具有如下特征：(1) 它可以在 <span class="math inline">\((-\infty, +\infty)\)</span> 实数范围 (<span class="math inline">\(\mathbb{R}\)</span>) 内取值；(2) 其观察值是从总体中随机抽取的。第一个假设常用于线性回归模型，即给定解释变量，因变量的条件分布为正态分布。第二个假设意味着我们手头的样本能够很好地反应总体特征，不存在样本选择偏差。遗憾的是，在微观数据分析中，上述两个假设经常无法满足，由此引申出 Tobit 模型，Heckman 自选择模型等方法，以纠正可能存在的偏差。</p>
+<section id="非负变量-non-negative-variables" class="level4 unnumbered">
+<h4 class="unnumbered anchored" data-anchor-id="非负变量-non-negative-variables">非负变量 (Non-negative Variables)</h4>
+<p>多数情况下，原始变量的取值都是非负的。例如，高管薪酬和资产价格都是非负的，因此都不服从严格意义上的正态分布，但它们的对数转换可能更接近正态分布。又如，一年内交通违规违法的次数、企业专利申请个数等也都是非负值，且存在大量取值为 0 的观察值。此外，有些比率变量的取值必须介于 0 和 1 之间，如「第一大股东持股比例」、「固定资产占比」等。<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> 还有些变量用于记录持续时间 (例如失业的持续时间，企业从提交 IPO 申请到正式上市之间的持续时间，癌症病人确诊后的存活周数等)，需要使用生存分析模型加以分析，参见 <a href="https://www.stata.com/manuals/stsurvival%20analysis.pdf">[ST] survival analysis</a>。</p>
+</section>
+<section id="包含大量零值的非负变量" class="level4 unnumbered">
+<h4 class="unnumbered anchored" data-anchor-id="包含大量零值的非负变量">包含大量零值的非负变量</h4>
+<p>在耐用品消费数据中 (Tobin, 1958)，会包含大量取值为 <span class="math inline">\(0\)</span> 的观察值 (当年没有购买耐用品)，以及一些大于零的观察值 (当年购买了耐用品)。事实上，这类数据提供了两种信息：首先，它告诉我们有多少人购买了这种商品 (购买意愿)；其次，对于参与购买的消费者，他们的购买数量和消费支出是多少？(支付意愿)。<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> 从经济学的角度来看，上述数据特征对应于家庭效用最大化问题的边角解问题。因此，Wooldridge (2002) 建议将此类数据的模型称为“角点解模型 (corner solution models)”。从计量模型角度，我们可以将被解释变量视为两种分布特征的混合体：一是二元分布 ( <span class="math inline">\(\mathrm{Pr}(y=0\,|\,X)\)</span>)，另一个是连续分布 (<span class="math inline">\(\mathrm{E} (y\,|\,X,\, y&gt;0)\)</span>)，可以写出所有观察值的联合概率密度函数，进而采用 MLE 估计参数。</p>
+</section>
+<section id="截断变量-truncated-variables" class="level4 unnumbered">
+<h4 class="unnumbered anchored" data-anchor-id="截断变量-truncated-variables">截断变量 (Truncated Variables)</h4>
+<p>在上面提到的耐用品消费支出的例子中，如果样本中仅包含消费支出大于零的观察值 (买车的人)，就出现了左侧截断。类似的例子还包括：使用纳税申报数据研究居民收入与消费关系时，只有年收入超过 12 万元的个体才会进入样本；使用工业企业数据库研究企业的负债率与业绩关系时，样本中其实只包含了“规模以上” (年销售收入超过 2000 万元) 的企业。截断往往会导致样本选择偏误，因为即使样本中的个体是随机抽取的，也无法代表总体特征。当然，在假定总体的分布函数和截断点以及截断机制的情况下，我们仍然可以从这样的样本中推断出总体参数。<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a></p>
+</section>
+<section id="归并变量-censored-variables" class="level4 unnumbered">
+<h4 class="unnumbered anchored" data-anchor-id="归并变量-censored-variables">归并变量 (Censored Variables)</h4>
+<p>在收入调查中，部分收入较高的受访者因隐私考虑，仅透露其年收入超过 200 万元，而不愿提供具体数值。在记录时，这些收入数据会被统一“归并”或“压缩”为 200 万元。这类数据被称为右归并（right censoring）。显然，也可能存在左归并或双侧归并。与截断数据相比，归并数据提供了更多的信息，但相对于潜在的真实数据，仍可视为某种程度的数据缺失。因此，在生存分析等领域，这类数据通常被称为“删失数据”，有学者也将其翻译为“截堵”，以便与“截断”有所区分。</p>
+<p>在生存分析中，归并数据非常普遍。比如，我们想要研究一个公司在上市后多久 (记为 <span class="math inline">\(T_i\)</span>) 开始发放现金股利，样本区间为 2011-2020 年。若公司 A 于 2013 年上市，2015 年首次发放股利，则 <span class="math inline">\(T_A=2\)</span>；公司 B 和 C 分别于 2011 年和 2017 年上市，但一直到 2020 年都没有发放过股利，则我们只知道 <span class="math inline">\(T_B&gt;9, T_C&gt;3\)</span>，却不知其具体数值。此时，公司 B 和 C 的 <span class="math inline">\(T_i\)</span> 值都出现了归并，且归并点不同。类似的例子还包括：一个癌症病人确诊后的存活周数；一篇文章从投稿到发表的时间间隔，等等。</p>
+</section>
+<section id="计数变量-count-variables" class="level4 unnumbered">
+<h4 class="unnumbered anchored" data-anchor-id="计数变量-count-variables">计数变量 (Count Variables)</h4>
+<p>计数变量用于描述事件发生的频率，通常采用非负整数来表示，即 <span class="math inline">\(\{0,1,2, \ldots\}\)</span> 或 <span class="math inline">\(\{0,1,2, \ldots, K\}\)</span> (如果有明确的上限)。例如，公司的专利申请数量、每年空中交通事故造成的伤亡人数、一名科研人员每年发表论文的数量。这类数据往往积聚在 <span class="math inline">\(0,1,2\)</span> 等位于分布左侧的那些较小的数值上，通常用泊松分布或负二项分布来描述。此外，计数数据也可以视为介于定性数据和定量数据之间的数据类型。如果计数的数量相对较少，则可以将其视为类别变量，采用多元 logit 估计即可。随着计数数量的增加，其特征越来越接近连续变量，此时普通的线性或对数线性回归模型也是不错的选择。</p>
+</section>
+</section>
+<section id="小结" class="level3" data-number="24.2.3">
+<h3 data-number="24.2.3" class="anchored" data-anchor-id="小结"><span class="header-section-number">24.2.3</span> 小结</h3>
+<p>大家可能已经意识到一个残酷现实：在实际分析中遇到的数据更多地是本节提及的各种类型。传统的线性回归模型往往无法满足我们的分析要求，此时「条件概率模型 (CPM)」，以及「广义线性回归模型 (GLM)」便成为我们分析的主要工具。</p>
+</section>
+</section>
+<section id="何时线性回归模型不再适用" class="level2" data-number="24.3">
+<h2 data-number="24.3" class="anchored" data-anchor-id="何时线性回归模型不再适用"><span class="header-section-number">24.3</span> 何时线性回归模型不再适用?</h2>
+<p>实证分析中，应用最广的是线性回归模型 (LRM)：</p>
+<p><span id="eq-prob-basic-LRM-01"><span class="math display">\[
+y_{i}=\beta_{0}+\beta_{1} x_{i 1}+\ldots+\beta_{k} x_{i k}+u_{i}, \quad i=1,2,\cdots, n
+\tag{24.1}\]</span></span></p>
+<p>LRM 易于估计和解释，如果满足一些基本的假设条件 (如参数线性、解释变量之间不存在严重的多重共线性、干扰项独立同分布、干扰项与解释变量之间均值独立等)，则基于 LRM 可以做出非常准确的统计推断。此时，普通最小二乘 (OLS) 估计量最优线性无偏估计量 (BLUE)。若进一步假设干扰项服从正态分布，则尚可得到如下两个结论：其一，OLS 估计量在所有可能的估计量中是最有效的 (其方差在所有估计量中最小)；其二，OLS 估计量的小样本分布是已知的，因此可以基于 <span class="math inline">\(t\)</span> 统计量或 <span class="math inline">\(F\)</span> 统计量进行精确推断 (exact inferencing)。</p>
+<p>为便于解释，我们可以利用条件期望函数重新表述线性回归模型 (<a href="#eq-prob-basic-LRM-01" class="quarto-xref"><span>24.1</span></a>)。假设 <span class="math inline">\(E(u_i|\mathbf{x}_i)=0\)</span>，即满足均值独立性假设，则</p>
+<p><span id="eq-prob-basic-LRM-02"><span class="math display">\[
+\mathrm{E}\left(y_{i}\,|\,\mathbf{x}_{i}\right)=\beta_{0}+\beta_{1} x_{i 1}+ \cdots + \beta_{k} x_{i k}
+\tag{24.2}\]</span></span></p>
+<p>其中，<span class="math inline">\(\mathbf{x}_{i}=\)</span> <span class="math inline">\(\left(1, x_{i 1}, \ldots, x_{ik}\right)^{\prime}\)</span> 表示由解释变量构成的 <span class="math inline">\((k+1) \times 1\)</span> 维列向量 (包括一个常数项)。设参数向量为 <span class="math inline">\(\beta=\left(\beta_{0}, \beta_{1}, \ldots, \beta_{k}\right)^{\prime}\)</span>，则可将 (<a href="#eq-prob-basic-LRM-02" class="quarto-xref"><span>24.2</span></a>) 精简表示如下：</p>
+<p><span class="math display">\[
+\mathrm{E}\left(y_{i}\,|\,\mathbf{x}_{i}\right)=\mathbf{x}_{i}^{\prime} \beta
+\]</span></p>
+<p>接下来，我们要讨论的问题是：如果因变量换成上一小节描述的各种类型，那么线性模型是否依然适用？</p>
+<section id="二元选择变量线性概率模型" class="level4 unnumbered">
+<h4 class="unnumbered anchored" data-anchor-id="二元选择变量线性概率模型">二元选择变量：线性概率模型</h4>
+<p>先看定性因变量。如果因变量是 <span class="math inline">\(0/1\)</span> 变量，则线性回归可以解释为概率模型，因为</p>
+<p><span class="math display">\[
+\mathrm{E}\left(y_{i}\,|\,\mathbf{x}_{i}\right)
+= 0 \times P\left(y_{i}=0\,|\,\mathbf{x}_{i}\right)+1 \times P\left(y_{i}=1\,|\,\mathbf{x}_{i}\right)
+=P\left (y_{i}=1\,|\,\mathbf{x}_{i}\right)
+\]</span></p>
+<p>由此可得</p>
+<p><span id="eq-prob-basic-LRM-04"><span class="math display">\[
+P\left (y_{i}=1\,|\,\mathbf{x}_{i}\right)=\mathbf{x}_{i}^{\prime} \beta
+\tag{24.3}\]</span></span></p>
+<p>该模型也称为「线性概率模型 (LPM)」，这意味着，我们可以直接采用 OLS 估计被解释变量是 <span class="math inline">\(0/1\)</span> 变量的线性模型。<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a> LPM 的局限有主要两个：其 一, 它的拟合值会超出 <span class="math inline">\((0,1)\)</span> 的范围，因此，该模型不适于做概率估算和概率预测。其二, LPM 存在异方差问题, 需要使用 GLS 或 FGLS 加以估计, 因为 <span class="math inline">\(\operatorname{Var}\left(y_i\,|\,\mathbf{x}_i\right)=P\left(y_i=1\,|\,\mathbf{x}_i\right)\left[1-P\left(y_i=1\,|\,\mathbf{x}_i\right)\right]\)</span> 是 <span class="math inline">\(\mathbf{x}_i\)</span> 的 函数。当然, LPM 也有好处, 比如, 其系数含义容易解释, 在模型中包含交乘项时, 也更容易分析。</p>
+</section>
+<section id="多元选择变量与计数变量" class="level4 unnumbered">
+<h4 class="unnumbered anchored" data-anchor-id="多元选择变量与计数变量">多元选择变量与计数变量</h4>
+<p>如果因变量是多元选择变量 (multinomial variables)，则线性模型就不再适用了。因为，如前所述，多元选择变量的取值 <span class="math inline">\(\{1=\text{发行债券}, 2=\text{发行股票}\}\)</span> 仅限于标记和区分不同的选择类型，并无大小的区别。这意味着对多元选择变量的期望值进行建模没有意义。事实上，我们要研究的是 <span class="math inline">\(P(y_i=1\,|\,\mathbf{x}_i)\)</span> 和 <span class="math inline">\(P(y_i=2\,|\,\mathbf{x}_i)\)</span>，即一家公司选择「发行债券」或「发行股票」的概率。因此，针对多元选择变量设定模型时，应该以概率分布函数为基础。这一逻辑也适用于有序变量 (ordered variables)。</p>
+<p>相比之下，计数数据 (count data) 是定量的，其期望值具有明确的经济含义。然而，将线性回归模型应用于计数变量时会存在诸多限制。首先，计数数据的期望值必须是非负值，但线性回归模型的拟合值却有可能出现负值；其次，计数变量的条件方差通常不是常数，从而违反了同方差假设。<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a>最棘手的是第三个问题：在分析计数数据时，我们关心的不仅仅是条件期望：平均而言，一位副教授一年发表多少篇论文？而是：一个副教授一年 (至少) 发表 2 篇论文的概率是多少？简言之，我们更关心条件概率。</p>
+</section>
+<section id="系数的含义和边际效应" class="level4 unnumbered">
+<h4 class="unnumbered anchored" data-anchor-id="系数的含义和边际效应">系数的含义和边际效应</h4>
+<p>在普通线性模型中，变量的系数含义易于解释，因为边际效应 <span class="math inline">\(\hat{\beta_j} = \frac{\partial{y}}{\partial{x_j}}\!\mid\!\mathbf{x}\)</span> 通常是常数。然而，对于受限因变量模型而言，边际效应往往不再是常数，具有明显的非线性特征，此时对系数含义的解释会有一些挑战，但也会很有趣味性。</p>
+</section>
+</section>
+<section id="条件概率模型" class="level2" data-number="24.4">
+<h2 data-number="24.4" class="anchored" data-anchor-id="条件概率模型"><span class="header-section-number">24.4</span> 条件概率模型</h2>
+<section id="sec-prob-basic-CPF01" class="level3" data-number="24.4.1">
+<h3 data-number="24.4.1" class="anchored" data-anchor-id="sec-prob-basic-CPF01"><span class="header-section-number">24.4.1</span> 条件概率函数</h3>
+<p>在多数实证分析中，我们关心都是被解释变量 <span class="math inline">\(y_{i}\)</span> 与一组解释变量 <span class="math inline">\(\mathbf{x}_{i}\)</span> 之间的关系。在这类分析中，最核心的概念就是 <strong>条件期望函数 (CEF)</strong> —— 在给定 <span class="math inline">\(\mathbf{x}_{i}\)</span> 的条件下对 <span class="math inline">\(y_{i}\)</span> 的期望进行建模和估计，表示为：</p>
+<p><span id="eq-prob-basic-01"><span class="math display">\[
+\mathrm{E}\left(y_{i}\,|\,\mathbf{x}_{i}\right)=G\left(\mathbf{x}_{i} ; \beta\right)
+\tag{24.4}\]</span></span></p>
+<p>显然，条件期望 <span class="math inline">\(\mathrm{E}\left(y_{i}\,|\,\mathbf{x}_{i}\right)\)</span> 依赖于一系列待估参数 <span class="math inline">\(\beta\)</span>。</p>
+<p>举两个例子。若设定 <span class="math inline">\(G\left(\mathbf{x}_{i} ; \beta\right) = \mathbf{x}_{i}^{\prime} \beta\)</span>，便可得到常用的线性回归模型。 若设定 <span class="math inline">\(G\left(\mathbf{x}_{i};\beta\right) = \exp(\mathbf{x}_{i}^{\prime} \beta)\)</span>，则 (<a href="#eq-prob-basic-01" class="quarto-xref"><span>24.4</span></a>) 便是「对数线性模型」，因为 <span class="math inline">\(\ln[\mathrm{E}\left(y_{i}\mid\mathbf{x}_{i}\right)]=\mathbf{x}_{i}^{\prime} \beta\)</span>，对应的实证模型为：<span class="math inline">\(\mathrm{ln} y_i = \mathbf{x}_{i}^{\prime} \beta + e_i\)</span>。</p>
+<p><strong>条件概率函数</strong> (conditional probability function, <strong>CPF</strong>) 可以按照相似的思路定义：</p>
+<p><span id="eq-prob-basic-02a"><span class="math display">\[
+P\left(y_{i}\,|\,\mathbf{x}_{i}\right)=f\left(y_{i}\,|\,\mathbf{x}_{i} ; \theta\right)
+\tag{24.5}\]</span></span></p>
+<p>在实际应用中，参数向量 <span class="math inline">\(\theta\)</span> 可以进一步切分成两个部分：一部分用以表示解释变量的线性组合 (<strong>linear index function</strong>)，即 <span class="math inline">\(\mathbf{x}_{i}^{\prime} \beta\)</span>；另一部分则以辅助参数的形式进入模型，以反映概率分布的其他特征 (如方差、偏度等)，它们与 <span class="math inline">\(\mathbf{x}_{i}\)</span> 之间不存在直接关系。</p>
+<p>例如，假设 <span class="math inline">\(y_{i}\,|\,\mathbf{x}_{i} \sim N(\mu_i,\sigma_i^2)\)</span>，则可以将条件均值设定 <span class="math inline">\(\mathrm{E}(y_i\mid \mathbf{x}_i) = \mu_i = \mathbf{x}_{i}^{\prime} \beta\)</span>，而将其条件方差设定为 <span class="math inline">\(\mathrm{Var}(y_i\,|\,\mathbf{x}_i) = \sigma_i^2 = \mathrm{exp}(\mathbf{z}_{i}^{\prime} \gamma)\)</span>。注意，后者其实已经将异方差的决定因素反应在了模型设定之中，可以直接通过 MLE 估计出影响异方差的因素。综合来看，对应于 (<a href="#eq-prob-basic-02a" class="quarto-xref"><span>24.5</span></a>) 式，本例中，<span class="math inline">\(\theta = (\beta,\gamma)\)</span>。</p>
+<p>多数情况下，CEF 和 CPF 都不相同，但也有特例。例如，若被解释变量是 0/1 变量，<span class="math inline">\(y_{i} \in\{0,1\}\)</span>，则：</p>
+<p><span class="math display">\[
+\mathrm{E}\left(y_{i}\,|\,\mathbf{x}_{i}\right)=0 \times P\left(y_{i}=0\,|\,\mathbf{x}_{i}\right)+1 \times P\left(y_{i}=1\,|\,\mathbf{x}_{i}\right)=P\left(y_{i}=1\,|\,\mathbf{x}_{i}\right).
+\]</span></p>
+<p>这就是 (<a href="#eq-prob-basic-LRM-04" class="quarto-xref"><span>24.3</span></a>) 式提到的线性概率模型 (LPM)。</p>
+</section>
+<section id="边际效应系数含义之解释" class="level3" data-number="24.4.2">
+<h3 data-number="24.4.2" class="anchored" data-anchor-id="边际效应系数含义之解释"><span class="header-section-number">24.4.2</span> 边际效应：系数含义之解释</h3>
+<section id="回顾普通线性模型的边际效应" class="level4" data-number="24.4.2.1">
+<h4 data-number="24.4.2.1" class="anchored" data-anchor-id="回顾普通线性模型的边际效应"><span class="header-section-number">24.4.2.1</span> 回顾：普通线性模型的边际效应</h4>
+<p>在 CEF 模型 <span class="math inline">\(\mathrm{E}\left(y_{i}\,|\,\mathbf{x}_{i}\right)=G\left(\mathbf{x}_{i} ; \beta\right)\)</span> 中，我们关心的是解释变量如何应影响 <span class="math inline">\(y\)</span> 的条件期望值。将这一思路延伸到 CPF 模型 <span class="math inline">\(P\left(y_{i}\,|\,\mathbf{x}_{i}\right) = f\left(y_{i}\,|\,\mathbf{x}_{i} ; \theta\right)\)</span> 中，关注点变为：解释变量如何影响 <span class="math inline">\(y\)</span> 的条件概率？</p>
+<p>正式而言，在 CEF 模型中，我们关心的是所谓的「边际均值效应 (marginal mean effect, MME)」。第 <span class="math inline">\(l\)</span> 个解释变量的 MME 定义为：</p>
+<p><span class="math display">\[
+\mathrm{MME} = \frac{\partial \mathrm{E}\left(y_{i}\,|\,\mathbf{x}_{i}\right)}{\partial x_{i l}}
+\]</span></p>
+<p>以线性回归模型为例，假设条件期望函数 (CEF) 为：</p>
+<p><span class="math display">\[
+\mathbf{x}_{i}^{\prime} \beta=\beta_{0}+\beta_{1} x_{i 1}+\ldots+\beta_{k} x_{i k}
+\]</span></p>
+<p>对应的 MME 为：</p>
+<p><span id="eq-prob-basic-05"><span class="math display">\[
+\mathrm{MME} = \frac{\partial \mathrm{E}\left(y_{i}\,|\,\mathbf{x}_{i}\right)}{\partial x_{i l}}=\beta_{l}
+\tag{24.6}\]</span></span></p>
+<p>若 <span class="math inline">\(\mathrm{E}\left(y_{i}\,|\,\mathbf{x}_{i}\right)\)</span> 是 <span class="math inline">\(\beta\)</span> 的非线性函数，则 MME 与 <span class="math inline">\(\mathbf{x}_{i}\)</span> 的取值有关，不再是常数。此时，我们往往会报告 <span class="math inline">\(\mathbf{x}_{i}\)</span> 取特定值时 (如均值、中位数，第 25 和 75 百分位数等) 的 MME。 当然，我们也可以定义「平均边际均值效应 (average marginal mean effect, AMME)：<a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a></p>
+<p><span class="math display">\[
+\mathrm{AMME} = \mathrm{E}_{x}\left[\partial \mathrm{E}\left(y_{i}\,|\,\mathbf{x}_{i}\right) / \partial x_{i l}\right]
+\]</span></p>
+<p>可以用 MME 的样本均值作为其一致估计量。</p>
+</section>
+<section id="广义线性模型的边际效应" class="level4" data-number="24.4.2.2">
+<h4 data-number="24.4.2.2" class="anchored" data-anchor-id="广义线性模型的边际效应"><span class="header-section-number">24.4.2.2</span> 广义线性模型的边际效应</h4>
+<p>对于广义线性模型 (generalized linear model，GLM)：</p>
+<p><span class="math display">\[
+\mathrm{E}\left(y_{i}\,|\,\mathbf{x}_{i}\right) = G\left(\mathbf{x}_{i}^{\prime} \beta\right)
+\]</span></p>
+<p>其中，<span class="math inline">\(\mu(\cdot)\)</span> 是线性组合 <span class="math inline">\(\mathbf{x}_{i}^{\prime} \beta\)</span> 的链接函数 (link function)，要求其连续、可导。此时，边际均值效应 MME 可以 表示为：</p>
+<p><span id="eq-prob-basic-06"><span class="math display">\[
+\frac{\partial \mathrm{E}\left(y_{i}\,|\,\mathbf{x}_{i}\right)}{\partial x_{i l}}=g\left(\mathbf{x}_{i}^{\prime} \beta\right) \beta_{l}
+\tag{24.7}\]</span></span></p>
+<p>其中，<span class="math inline">\(g(\cdot) = G'(\cdot)\)</span>，是 <span class="math inline">\(G(\cdot)\)</span> 的一阶偏导数。我们可以进一步定义「相对 MME 比率」，</p>
+<p><span class="math display">\[
+\mathrm{RMMER} = \frac{\partial \mathrm{E}\left(y_{i}\,|\,\mathbf{x}_{i}\right) / \partial x_{i l}}{\mathrm{E}\left(y_{i}\,|\,\mathbf{x}_{i}\right)}
+\]</span></p>
+<p>对于离散变量，可以用「离散均值效应」(discrete mean effect) 衡量其边际效应，它表示解释变量变化一个单位 (最常见的情形是虚拟变量的取值从 0 变为 1) 对被解释变量期望值的影响：</p>
+<p><span id="eq-prob-basic-07"><span class="math display">\[
+\Delta \mathrm{E}\left(y_{i}\,|\,\mathbf{x}_{i}\right)=G\left(\mathbf{x}_{i}^{\prime} \beta+\beta_{l}\right)-G\left(\mathbf{x}_{i}^{\prime} \beta\right)
+\quad \text{(absolute change)}
+\tag{24.8}\]</span></span></p>
+<p><span id="eq-prob-basic-08"><span class="math display">\[
+\frac{\Delta \mathrm{E}\left(y_{i}\,|\,\mathbf{x}_{i}\right)}{\mathrm{E}\left(y_{i}\,|\,\mathbf{x}_{i}\right)}=\frac{G\left(\mathbf{x}_{i}^{\prime} \beta+\beta_{l}\right)}{G\left(\mathbf{x}_{i}^{\prime} \beta\right)}-1 \quad \text{(relative change)}
+\tag{24.9}\]</span></span></p>
+<p>有些情况下，在把 <span class="math inline">\(\mathbf{x}_{i}^{\prime} \beta\)</span> 放入链接函数之前，我们会对原始变量进行一些转换，此时需要多次求导，以便得到原始变量的边际均值效应和离散均值效应。例如，对于条件期望函数：</p>
+<p><span class="math display">\[
+\mathrm{E}\left(y_{i}\,|\,\mathbf{x}_{i}\right)=G\left(\beta_{0}+\beta_{1} x_{i 1}+\beta_{2} x_{i 1}^{2}\right)
+\]</span></p>
+<p>变量 <span class="math inline">\(x_{i 1}\)</span> 的 MME 为：</p>
+<p><span class="math display">\[
+\frac{\partial \mathrm{E}\left(y_{i}\,|\,\mathbf{x}_{i}\right)}{\partial x_{i 1}}=g\left(\beta_{0}+\beta_{1} x_{i 1}+\beta_{2} x_{i 1}^{2}\right) \times\left(\beta_{1}+2 \beta_{2} x_{i 1}\right)
+\]</span></p>
+<p>再如，若 <span class="math inline">\(\mathrm{E}\left(y_{i}\,|\,\mathbf{x}_{i}\right)=G\left(\beta_{0}+\beta_{1} \log \left(x_{i 1}\right)\right)\)</span>，则</p>
+<p><span class="math display">\[
+\frac{\partial \mathrm{E}\left(y_{i}\,|\,\mathbf{x}_{i}\right)}{\partial x_{i 1}}=g\left[\beta_{0}+\beta_{1} \log \left(x_{i 1}\right)\right] \times \frac{\beta_{1}}{x_{i 1}}
+\]</span></p>
+<p>其中，<span class="math inline">\(\log (z)\)</span> 表示 <span class="math inline">\(z\)</span> 的自然对数，一阶偏导为 <span class="math inline">\(d \log (z) / d z=1 / z\)</span>。</p>
+<p>需要注意的是，<span class="math inline">\(G\left(\mathbf{x}_{i}^{\prime} \beta\right)\)</span> 的非线性特征使其自带交互效应 (interactive effects)，即使原始模型中不包含交乘项 <span class="math inline">\(x_{i l} x_{i m}\)</span> 时也是如此，这是因为</p>
+<p><span id="eq-prob-basic-09"><span class="math display">\[
+\frac{\partial^{2} \mathrm{E}\left(y_{i}\,|\,\mathbf{x}_{i}\right)}{\partial x_{i l} \partial x_{i m}}=G^{\prime \prime}\left(\mathbf{x}_{i}^{\prime} \beta\right) \beta_{l} \beta_{m}
+\tag{24.10}\]</span></span></p>
+<p>其中，<span class="math inline">\(G^{\prime \prime}(\cdot)\)</span> 表示 <span class="math inline">\(\mu(\cdot)\)</span> 的二阶偏导数，即 <span class="math inline">\(d^{2} G(z) /(d z)^{2}\)</span>。</p>
+<p>相比而言，在普通线性模型 <span class="math inline">\(\mathrm{E}\left(y_{i}\,|\,\mathbf{x}_{i}\right)=\mathbf{x}_{i}^{\prime} \beta\)</span> 中，只有模型中包含变量的交乘项时，变量之间的交叉边际效应 <span class="math inline">\({\partial^{2} \mathrm{E}\left(y_{i}\,|\,\mathbf{x}_{i}\right)}/{\partial x_{i l} \partial x_{i m}}\)</span> 才不为零。</p>
+</section>
+<section id="条件概率模型的边际效应" class="level4" data-number="24.4.2.3">
+<h4 data-number="24.4.2.3" class="anchored" data-anchor-id="条件概率模型的边际效应"><span class="header-section-number">24.4.2.3</span> 条件概率模型的边际效应</h4>
+<p>在条件概率模型中，我们重点关注的是边际概率效应 (MPE)。第 <span class="math inline">\(l\)</span> 个外生变量的 MPE 定义为偏导数 <span class="math inline">\(\partial P\left(y_{i}\,|\,\mathbf{x}_{i}\right) / \partial x_{i l}\)</span>。对于任何给定的概率模型，因变量有多少种取值，就会有多少个与之对应的 MPE。例如，如果我们考虑一个二元响应变量，那么便会有两个 MPE，即在保持其它变量不变的情况下，<span class="math inline">\(x_{i l}\)</span> 变动对 <span class="math inline">\(y=0\)</span> 的概率的边际影响和 <span class="math inline">\(y=1\)</span> 的概率的边际影响。以此类推，若被解释变量是具有 <span class="math inline">\(J\)</span> 个取值的类别变量，就可以计算出 <span class="math inline">\(J\)</span> 个不同的 MPE。在这类模型中，我们通常会施加约束条件：<span class="math inline">\(J\)</span> 个 MPE 的总和必须为零。这意味着只有 <span class="math inline">\(J-1\)</span> 个 MPE 是线性无关的。</p>
+<p>实际应用中，我们通常会将条件概率函数中的链接函数设定为线性形式，此时 MPE 的计算相对简单。对于条件概率函数 <span class="math inline">\(P\left(y_{i}\,|\,\mathbf{x}_{i}\right)=f\left(y_{i}\,|\,\mathbf{x}_{i}^{\prime} \beta\right)\)</span> 其 MPE 的通用表达式为：</p>
+<p><span id="eq-prob-basic-10"><span class="math display">\[
+\frac{\partial P\left(y_{i}\,|\,\mathbf{x}_{i}\right)}{\partial x_{i l}}=f^{\prime}\left(y_{i}\,|\,\mathbf{x}_{i}^{\prime} \beta\right) \beta_{l}
+\tag{24.11}\]</span></span></p>
+<p>其中，<span class="math inline">\(f^{\prime}(\cdot)=\partial f\left(y_{i}\,|\,\mathbf{x}_{i}^{\prime} \beta\right) / \partial\left(\mathbf{x}_{i}^{\prime} \beta\right)\)</span>。<a href="#fn7" class="footnote-ref" id="fnref7" role="doc-noteref"><sup>7</sup></a> 至于 MME，有两种处理方法：一是在解释变量的均值处计算 MPE；二是将所有的 MPE 取均值，从而得到不依赖于 <span class="math inline">\(\mathbf{x}_{i}\)</span> 的边际效应。</p>
+<p>当解释变量是离散变量时，<span class="math inline">\(x_{i l}\)</span> 增加一个单位产生的离散概率效应 (discrete effect on the probabilities) 为：</p>
+<p><span id="eq-prob-basic-11"><span class="math display">\[
+\Delta P\left(y_{i}\,|\,\mathbf{x}_{i}\right)=f\left(y_{i}\,|\,\mathbf{x}_{i}^{\prime} \beta+\beta_{l}\right)-f\left(y_{i}\,|\,\mathbf{x}_{i}^{\prime} \beta\right)
+\tag{24.12}\]</span></span></p>
+<p>若需计算相对效应 (relative effects)，只需将上述两式除以 <span class="math inline">\(f\left(y_{i}\,|\,\mathbf{x}_{i}^{\prime} \beta\right)\)</span> 即可。</p>
+<p>上面介绍的边际和离散概率效应在众多模型中都会用到，比如 Logit, Probit, 计数模型等。这里需要说明的是，由 (<a href="#eq-prob-basic-10" class="quarto-xref"><span>24.11</span></a>) 和 (<a href="#eq-prob-basic-11" class="quarto-xref"><span>24.12</span></a>) 式可知，若 <span class="math inline">\(f\left(y_{i}\,|\,\mathbf{x}_{i}^{\prime} \beta\right)&gt;0\)</span>，则边际效应与 <span class="math inline">\(\beta_{l}\)</span> 符号相同；否则，二者的符号完全相反。</p>
+<p>借助微分的概念，我们可以使用边际概率效应来近似概率的离散 (非连续) 变化：</p>
+<p><span class="math display">\[
+\Delta P\left(y_{i}\,|\,\mathbf{x}_{i}\right) \approx \frac{\partial P\left(y_{i}\,|\,\mathbf{x}_{i}\right)}{\partial x_{i l}} \Delta x_{i l}
+\]</span></p>
+<p>显然，<span class="math inline">\(x_{i l}\)</span> 的变动幅度越小，近似程度越高。这个概念可以很容易地扩展到两个或多个解释变量的情形。 例如，假设模型中只包含两个解释变量 <span class="math inline">\(x_{i l}\)</span> 和 <span class="math inline">\(x_{i m}\)</span>，则通过完全微分可得：</p>
+<p><span id="eq-prob-basic-12"><span class="math display">\[
+\Delta P\left(y_{i}\,|\,\mathbf{x}_{i}\right) \approx \frac{\partial P\left(y_{i}\,|\,\mathbf{x}_{i}\right)}{\partial x_{i l}} \Delta x_{i l}+\frac{\partial P\left(y_{i}\,|\,\mathbf{x}_{i}\right)}{\partial x_{i m}} \Delta x_{i m}
+\tag{24.13}\]</span></span></p>
+<p>当 <span class="math inline">\(\Delta P\left(y_{i}\,|\,\mathbf{x}_{i}\right)=0\)</span> 时，上式可以重新表示为：</p>
+<p><span id="eq-prob-basic-13"><span class="math display">\[
+\frac{\Delta x_{i l}}{\Delta x_{i m}}=-\frac{\partial P\left(y_{i}\,|\,\mathbf{x}_{i}\right) / \partial x_{i m}}{\partial P\left(y_{i}\,|\,\mathbf{x}_{i}\right) / \partial x_{i l}}
+\tag{24.14}\]</span></span></p>
+<p>该比值可以解释为「无差异概率曲线 (iso-probability curve)」，因为它反映了两个解释变量需要如何变动才能保持概率不变。例如，我们可以分析当 <span class="math inline">\(\Delta x_{i m}=1\)</span> 时，如何调整 <span class="math inline">\(\Delta x_{i l}\)</span> 才能保证 <span class="math inline">\(\Delta P\left(y_{i}\,|\,\mathbf{x}_{i}\right)=0\)</span>。</p>
+</section>
+</section>
+</section>
+<section id="sec-logit-model" class="level2" data-number="24.5">
+<h2 data-number="24.5" class="anchored" data-anchor-id="sec-logit-model"><span class="header-section-number">24.5</span> 二元选择模型</h2>
+<p>诸如”是否违约”、“是否读博士”这样的选择行为，我们最终观察到的被解释变量只有 0 和 1 两个取值。我们关心的问题是 <span class="math inline">\(\mathrm{Pr}(y=1)\)</span> 受哪些因素的影响，以及影响程度。</p>
+<p>下面先列出整体的建模和估计思路，进而详述。</p>
+<ol type="1">
+<li>分布假设。假设随机变量 <span class="math inline">\(Y\)</span> 服从伯努利分布：只有 1 和 0 两个取值，二者发生的概率分别为 <span class="math inline">\(p\)</span> 和 <span class="math inline">\(1-p\)</span>。概率函数 (probability mass function) 为：</li>
+</ol>
+<p><span id="eq-logit-prob-01"><span class="math display">\[
+\pi_{i}=\left\{\begin{array}{lll}
+      p &amp; \text { if } y_{i}=1 \\
+    1-p &amp; \text { if } y_{i}=0
+\end{array}\right.
+\tag{24.15}\]</span></span></p>
+<p>为便于推导，可将上述分类表达的概率函数合并为一个通用的概率函数：</p>
+<p><span id="eq-logit-prob-02"><span class="math display">\[\pi_{i} =  f(y_i; p) =  p^{y_i}(1-p)^{1-y_i} \tag{24.16}\]</span></span></p>
+<ol start="2" type="1">
+<li>定义样本的联合概率函数 (似然函数)：</li>
+</ol>
+<p><span class="math display">\[
+L(p) =  \prod_{i=1}^{n} f(y_i; p) = \prod_{i=1}^{n} p^{y_i}(1-p)^{1-y_i}
+\]</span></p>
+<p>以及对数似然函数：</p>
+<p><span id="eq-prob-basic-eg01"><span class="math display">\[
+\ln L(p)=\sum_{i=1}^{n} \ln f\left(y_{i} ; p\right)=\sum_{i=1}^{n} y_{i} \ln p+\left(1-y_{i}\right) \ln (1-p)
+\tag{24.17}\]</span></span></p>
+<ol start="3" type="1">
+<li>设定条件概率：参数异质性设定。如果认为 <span class="math inline">\(p = \mathrm{Pr}(y=1)\)</span> 受多种因素影响 (如性别、年龄、收入等)，致使每个人的选择行为的条件概率有所不同，则可以设定为更为一般的形式：</li>
+</ol>
+<p><span id="eq-MLE-eg-05"><span class="math display">\[p(x) = \mathrm{Pr}(y_i=1\mid \mathbf{x}) = G(\mathbf{x}_i'\beta) \tag{24.18}\]</span></span></p>
+<p>此处，<span class="math inline">\(G(\cdot)\)</span> 称为”链接函数 (Link Function)“。其作用是将我们关心的参数 <span class="math inline">\(\theta_i\)</span> 与其影响因素 <span class="math inline">\(\mathbf{x}_i\)</span> 联系起来。<a href="#fn8" class="footnote-ref" id="fnref8" role="doc-noteref"><sup>8</sup></a> 选择不同的 <span class="math inline">\(G(\cdot)\)</span> 便可得到不同的模型，最为常用的是线性概率模型 (LPM)，Probit 模型和 Logit 模型。</p>
+<ul>
+<li>LPM：</li>
+</ul>
+<p><span id="eq-logit-link-01"><span class="math display">\[p(x) = \mathbf{x}_i^\prime \beta \tag{24.19}\]</span></span></p>
+<ul>
+<li>Logit：</li>
+</ul>
+<p><span id="eq-logit-link-02"><span class="math display">\[
+p(x) = \Lambda(\mathbf{x}_i^\prime \beta) =  \frac{\mathrm{exp}(\mathbf{x}_i^\prime \beta)}{1+\mathrm{exp}(\mathbf{x}_i^\prime \beta)}
+\tag{24.20}\]</span></span></p>
+<p>其中，<span class="math inline">\(\Lambda(u)\)</span> 为逻辑分布函数，对应的 Stata 函数为 <code>invlogit(u)</code>。</p>
+<ul>
+<li>Probit：</li>
+</ul>
+<p><span id="eq-logit-link-03"><span class="math display">\[
+p(x) = \Phi(\mathbf{x}_i^\prime \beta) = \frac{1}{\sqrt{2 \pi}} \int_{-\infty}^{\mathbf{x}_i^\prime \beta} e^{{t^2}/2} d t
+\tag{24.21}\]</span></span></p>
+<p>其中，<span class="math inline">\(\Phi(u)\)</span> 为标准正态分布的累积分布函数，对应的 Stata 函数为 <code>normal(u)</code>。</p>
+<ol start="4" type="1">
+<li><p>执行估计。可以直接通过数值方法极大化 <span class="math inline">\(\ln L(\theta ; y)\)</span> 以得到 <span class="math inline">\(\hat{\theta} = \mathrm{Max}_{\theta}\ \mathrm{ln} L(p)\)</span>。详见第 <a href="#sec-prob-basic-MLE" class="quarto-xref"><span>Section 24.8</span></a> 小节。</p></li>
+<li><p>预测概率。 一旦获得参数估计值 <span class="math inline">\(\hat{\beta}\)</span>，只需用其替代 (<a href="#eq-MLE-eg-05" class="quarto-xref"><span>24.18</span></a>) 式中的 <span class="math inline">\(\beta\)</span>，即可得到概率估计值： <span class="math display">\[\widehat{p} (x) = G (\mathbf{x}_i^\prime \hat{\beta})\]</span></p></li>
+</ol>
+<ul>
+<li><p>LPM：<span class="math inline">\(\widehat{p} (x) = \mathbf{x}_i^\prime \hat{\beta}\)</span></p></li>
+<li><p>Logit：<span class="math inline">\(\widehat{p} (x) = \Lambda(\mathbf{x}_i^\prime \hat{\beta}) = \mathrm{exp}(\mathbf{x}_i^\prime \hat{\beta})/[1+\mathrm{exp}(\mathbf{x}_i^\prime \hat{\beta})]\)</span></p></li>
+<li><p>Probit：<span class="math inline">\(\widehat{p} (x) = \Phi(\mathbf{x}_i^\prime \hat{\beta})\)</span></p></li>
+</ul>
+<ol start="6" type="1">
+<li>边际效应。多数情况下，链接函数 <span class="math inline">\(G(\cdot)\)</span> 都是非线性函数，从而导致 <span class="math inline">\(x\)</span> 对 <span class="math inline">\(p(x)\)</span> 的边际影响不再是常数，但我们可以基于 (<a href="#eq-prob-basic-10" class="quarto-xref"><span>24.11</span></a>) 式计算边际效应。具体到二元选择模型，边际效应定义如下：</li>
+</ol>
+<p><span id="eq-logit-ME-00"><span class="math display">\[
+\mathrm{ME} = \frac{\partial p(x)}{\partial x}=G^{\prime}(\mathbf{x}_i^\prime \hat{\beta}) \beta
+\tag{24.22}\]</span></span></p>
+<ul>
+<li>LPM：</li>
+</ul>
+<p><span id="eq-logit-ME-01"><span class="math display">\[\mathrm{ME}_{LPM} = \beta_{LPM} \tag{24.23}\]</span></span></p>
+<ul>
+<li>Logit：</li>
+</ul>
+<p><span id="eq-logit-ME-02"><span class="math display">\[
+\mathrm{ME}_{logit}  =  \frac{\mathrm{exp}(\mathbf{x}_i^\prime \beta_{Logit})}{[1+\mathrm{exp}(\mathbf{x}_i^\prime \beta_{Logit})]^2}\beta_{Logit}
+\tag{24.24}\]</span></span></p>
+<ul>
+<li>Probit：</li>
+</ul>
+<p><span id="eq-logit-ME-03"><span class="math display">\[\mathrm{ME}_{Probit} = \phi(\mathbf{x}_i^\prime \beta_{Probit})\beta_{Probit} \tag{24.25}\]</span></span></p>
+<p>需要说明的是，<a href="#eq-logit-ME-01" class="quarto-xref"><span>24.23</span></a> 式中的 <span class="math inline">\(\beta\)</span> 是执行 OLS 后得到的系数估计值，即 <code>reg y x</code> 后得到的 <code>_b[x]</code>；而 (<a href="#eq-logit-ME-02" class="quarto-xref"><span>24.24</span></a>) 中的 <span class="math inline">\(\beta\)</span> 则是 执行 <code>logit y x</code> 后得到的 <code>_b[x]</code>。同理，(<a href="#eq-logit-ME-03" class="quarto-xref"><span>24.25</span></a>) 中的 <span class="math inline">\(\beta\)</span> 是执行 <code>probit y x</code> 后得到的 <code>_b[x]</code>。</p>
+<section id="sec-logit-model-link" class="level3" data-number="24.5.1">
+<h3 data-number="24.5.1" class="anchored" data-anchor-id="sec-logit-model-link"><span class="header-section-number">24.5.1</span> 链接函数 (Link Function)</h3>
+<section id="线性概率模型-lpm" class="level4" data-number="24.5.1.1">
+<h4 data-number="24.5.1.1" class="anchored" data-anchor-id="线性概率模型-lpm"><span class="header-section-number">24.5.1.1</span> 线性概率模型 (LPM)</h4>
+<p><span class="math display">\[
+p(x) =\mathbf{x}_i'\boldsymbol{\beta} = \beta_0 + \beta_1 x_{1i}+\cdots + + \beta_k x_{ki}
+\]</span></p>
+<p>LPM 的优点在于，其系数含义容易解释 (当模型中不包含交乘项和高阶项时，边际效应为常数)。同时，该模型可以直接采用 OLS 进行估计，对于包含大量虚拟变量和交乘项的模型而言，这显然是非常方便的。<a href="#fn9" class="footnote-ref" id="fnref9" role="doc-noteref"><sup>9</sup></a></p>
+<p>LPM 的局限有两个： 其一，它的拟合值会超出 <span class="math inline">\((0,1)\)</span> 的范围，而我们想要的是一个概率值：<span class="math inline">\(0 \leq P\left(y=1\,|\,x\right) \leq 1\)</span>。 其二，LPM 存在异方差问题，需要使用 GLS 或 FGLS 加以估计。<a href="#fn10" class="footnote-ref" id="fnref10" role="doc-noteref"><sup>10</sup></a></p>
+</section>
+<section id="probit-和-logit-模型" class="level4" data-number="24.5.1.2">
+<h4 data-number="24.5.1.2" class="anchored" data-anchor-id="probit-和-logit-模型"><span class="header-section-number">24.5.1.2</span> Probit 和 Logit 模型</h4>
+<p>虽然二者使用了完全不同的转换函数，但无论是预测概率还是边际效应都非常接近。因此，在应用中，大家很少刻意对二者进行区分。</p>
+<p>我们可以使用 <code>twoway function</code> 命令绘制 <span class="math inline">\(G(u)\)</span> 与 <span class="math inline">\(u\)</span> 之间的函数关系，以便更直观地看出三种链接函数的差别。代码如下：</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode stata code-with-copy"><code class="sourceCode stata"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">local</span> <span class="kw">range</span> <span class="st">"range(-3.6 +3.6)"</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="kw">tw</span> (<span class="kw">function</span> linear = 0.5 + 0.2*x,       <span class="ot">`range'</span> lp(longdash)) <span class="co">///</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>   (<span class="kw">function</span>  <span class="kw">logit</span> = <span class="fu">exp</span>(x)/(1+<span class="fu">exp</span>(x)), <span class="ot">`range'</span> lp(<span class="kw">dash</span>))     <span class="co">///</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>   (<span class="kw">function</span> <span class="kw">probit</span> = <span class="fu">normal</span>(x),         <span class="ot">`range'</span> lp(solid)) ,  <span class="co">///</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>   <span class="bn">ytitle</span>(<span class="st">"Pr (y | x)"</span>)  <span class="co">///</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>   <span class="kw">ylabel</span>(0(0.1)1, <span class="kw">format</span>(%2.1f)) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>从图 <a href="#fig-Logit-Link-function-01" class="quarto-xref">Figure&nbsp;<span>24.1</span></a> 呈现的结果来看，三者的差异主要反应在尾部，即 <span class="math inline">\(\mathrm{Pr}(y\mid x)\)</span> 小于 <span class="math inline">\(0.1\)</span> 或大于 <span class="math inline">\(0.9\)</span> 这两种情形下，而在 <span class="math inline">\(\mathrm{Pr}(y\mid x) \in (0.2, 0.8)\)</span> 范围内三者的预测概率和边际效应差别很小。</p>
+<p>当然，当我们用 <code>regress</code>, <code>logit</code>, <code>probit</code> 分别估计 PLM, Logit 和 Probit 模型时，三者的系数值不可以直接比较，这从 (<a href="#eq-logit-ME-01" class="quarto-xref"><span>24.23</span></a>)-(<a href="#eq-logit-ME-03" class="quarto-xref"><span>24.25</span></a>) 式可以看出：三者的 ME 相近，但由于 <span class="math inline">\(\beta\)</span> 前面的乘数不同，必然导致 <span class="math inline">\(\beta_{PLM}\)</span> 与 <span class="math inline">\(\beta_{Logit}\)</span> 以及 <span class="math inline">\(\beta_{Probit}\)</span> 不同。经验上，三组系数的关系如下：</p>
+<ol type="1">
+<li><span class="math inline">\(\beta_{PLM}\)</span> 反映了平均边际效应，大体上与</li>
+</ol>
+<div id="fig-Logit-Link-function-01" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-Logit-Link-function-01-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./figs/Logit-Link-function-01.png" class="img-fluid figure-img" style="width:100.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-Logit-Link-function-01-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;24.1: LPM，Probit 和 Logit 模型的链接函数
+</figcaption>
+</figure>
+</div>
+<p>简要总结一下：本例中的被解释变量是 0/1 变量，因此我们选择伯努利分布来描述其分布特征，进而将参数 <span class="math inline">\(p\)</span> 通过一个取值范围与之相同的链接函数 <span class="math inline">\(G(\mathbf{x}'\beta)\)</span> 与解释变量 <span class="math inline">\(\mathbf{x}\)</span> 联系起来，由此引申出 Logit 和 Probit 模型。这是 「广义线性回归模型 (GLM)」 的基本思想。当然，这种转换也导致 Logit 和 Probit 模型的系数含义不容易解释，为此，我们需要进行边际效应分析。</p>
+</section>
+</section>
+<section id="sec-logit-model-comments" class="level3" data-number="24.5.2">
+<h3 data-number="24.5.2" class="anchored" data-anchor-id="sec-logit-model-comments"><span class="header-section-number">24.5.2</span> 简要评述</h3>
+<p>通过上述分析可以看出，虽然使用不同的链接函数可以得到 LPM，Logit，Probit 等不同的模型设定，但由三者得到的预测概率和边际效应在多数情况下都非常相近。具体使用哪个模型，与分析的目的有关。</p>
+<p>若研究目的在于解释 <span class="math inline">\(x\)</span> 对 <span class="math inline">\(\mathrm{Pr}(y=1\mid x)\)</span> 的影响，且数据不存在「单边聚集」(0 或 1 的占比非常大)，则 LPM 就可以满足需要。我们可以借助 <code>reghdfe</code> 等命令，在模型中加入各类固定效应，以尽可能缓解遗漏变量偏误。</p>
+<p>若研究目的是概率预测，使用 Probit 或 Logit 是更好的选择，因为二者得到的预测概率都严格介于 0 和 1 之间。这在匹配分析 (如 PSM)，Heckman 选择模型中应用非常广泛。相比之下，Probit 模型的应用场景更广泛一些，因为它可以在潜变量框架下推导而得，各类条件分布函数的计算也相对方便。</p>
+</section>
+</section>
+<section id="从潜变量角度解读二元选择模型" class="level2" data-number="24.6">
+<h2 data-number="24.6" class="anchored" data-anchor-id="从潜变量角度解读二元选择模型"><span class="header-section-number">24.6</span> 从潜变量角度解读二元选择模型</h2>
+<p><strong>Note</strong>：本节内容的理论部分摘抄自 Hansen (<a href="https://www.ssc.wisc.edu/~bhansen/econometrics/Econometrics.pdf">2021</a>), Section 25.4.</p>
+<p>我们可以借助潜变量模型 (latent variable model) 来解读上一小节介绍的 Logit 和 Probit 模型。考虑如下模型：</p>
+<p><span class="math display">\[
+\begin{aligned}
+Y^* &amp; =X^{\prime} \beta+e \\
+e &amp; \sim G(e) \\
+Y &amp; =\mathbf{1}\left\{Y^*&gt;0\right\}=\left\{\begin{array}{cc}
+1 &amp; \text { if } Y^*&gt;0 \\
+0 &amp; \text { otherwise. }
+\end{array}\right.
+\end{aligned}
+\]</span></p>
+<p>在该模型中，观察值为 <span class="math inline">\((Y，X)\)</span>。变量<span class="math inline">\(Y^*\)</span>是潜变量 (latent variable)，不可观测，它与 <span class="math inline">\(X\)</span> 和干扰项 <span class="math inline">\(e\)</span> 之间存在线性关系，而 <span class="math inline">\(e\)</span> 则来自对称分布 <span class="math inline">\(G\)</span>。如果潜在变量<span class="math inline">\(Y^*\)</span> 大于零，则可以观察二元变量 <span class="math inline">\(Y\)</span> 取值为 1，否则为 0。 因此，事件 <span class="math inline">\(Y=1\)</span> 与 <span class="math inline">\(Y^*&gt;0\)</span> 等价，即</p>
+<p><span id="eq-Hansen2021-eq25.3"><span class="math display">\[X^{\prime} \beta+e&gt;0 \tag{24.26}\]</span></span></p>
+<p>这意味着存在如下概率关系：</p>
+<p><span id="eq-Hansen2021-eq25.3a"><span class="math display">\[
+P(x)=\mathbb{P}\left[e&gt;-x^{\prime} \beta\right]=1-G\left(-x^{\prime} \beta\right)=G\left(x^{\prime} \beta\right) .
+\tag{24.27}\]</span></span></p>
+<p>最后一个等号利用了 <span class="math inline">\(G(u)\)</span> 为零对称的假设。这表明响应概率 <span class="math inline">\(P(x)=G\left(x^{\prime} \beta\right)\)</span> 恰好是前文提到的链接函数 <span class="math inline">\(G(u)\)</span>。</p>
+<p>事实上，该潜变量模型对应着一个选择模型。例如，<span class="math inline">\(Y^*=MR-MC\)</span> 表示某人加班 (多工作一天) 的的净效用 (边际收益减去边际成本)。显然，当 <span class="math inline">\(Y^*&gt;0\)</span> 时，他会加班，即 <span class="math inline">\(Y=1\)</span>，否则 <span class="math inline">\(Y=0\)</span>。可以看出，这个结构选择模型与基于链接函数得到的索引模型 (index model) 是等价的。如果假设干扰项 <span class="math inline">\(e\)</span> 服从标准正态分布，便可得到 Probit 模型；如果假设 <span class="math inline">\(e\)</span> 服从逻辑分布，便可得到 Logit 模型。</p>
+<p>这里需要说明的是，无论是 Logit 模型还是 Probit 模型，我们都无法单独识别 <span class="math inline">\(\beta\)</span> 和 <span class="math inline">\(\sigma\)</span>，而只能识别 <span class="math inline">\(\beta/\sigma\)</span>。具体而言，假设 <span class="math inline">\(e=\sigma \varepsilon\)</span>，其中 <span class="math inline">\(\varepsilon\)</span> 具有单位方差分布 <span class="math inline">\(G(u)\)</span>。 那么响应概率为</p>
+<p><span class="math display">\[
+\mathbb{P}[Y=1\,|\,X=x]=\mathbb{P}\left[\sigma e&gt;-x^{\prime} \beta\right]=G\left(\frac{x^{\prime} \beta}{\sigma}\right)=G\left(x^{\prime} \beta^*\right)
+\]</span></p>
+<p>其中，<span class="math inline">\(\beta^*=\beta / \sigma\)</span>。 这是一个系数为<span class="math inline">\(\beta^*\)</span>的索引模型。这意味着 <span class="math inline">\(\beta\)</span> 和 <span class="math inline">\(\sigma\)</span> 无法单独识别，我们只能识别二者的比值 <span class="math inline">\(\beta^*=\beta / \sigma\)</span>。惯用的解决方法是将 <span class="math inline">\(\sigma\)</span> 标准化为一些简单的数值。Probit 和 Logit 模型分别使用 <span class="math inline">\(\sigma=1\)</span> 和 <span class="math inline">\(\sigma=\pi / \sqrt{3} \simeq 1.8\)</span>。</p>
+<p>这意味着，Probit 和 Logit 模型的系数估计值无法直接比较。一般来说，最好将 Probit 模型的系数解释为 <span class="math inline">\(\beta / \sigma\)</span>，结构系数按结构标准差缩放；而将 Logit 模型的系数解释为 <span class="math inline">\(\beta / \nu\)</span>，其中 <span class="math inline">\(\nu=\sigma \sqrt{3} / \pi\)</span>。要粗略比较 Probit 和 Logit 的系数，可以请将 Probit 系数乘以 <span class="math inline">\(1.8\)</span> 或将 Logit 系数除以 <span class="math inline">\(1.8\)</span>。</p>
+<p>总体而言，虽然系数 <span class="math inline">\(\beta\)</span> 无法识别，但如下参数是可以识别的:</p>
+<ol type="1">
+<li><p>缩放后的系数 (Scaled coefficients): <span class="math inline">\(\beta^*=\beta / \sigma\)</span>.</p></li>
+<li><p>系数的比值 (Ratios of coefficients): <span class="math inline">\(\beta_1 / \beta_2=\beta_1^* / \beta_2^*\)</span>.</p></li>
+<li><p>边际效应 (Marginal effects): <span class="math inline">\(\frac{\partial}{\partial x} P(x)=\frac{\beta}{\sigma} g\left(\frac{x^{\prime} \beta}{\sigma}\right)=\beta^* g\left(x^{\prime} \beta^*\right)\)</span>.</p></li>
+</ol>
+<p>我们可以通过一个模拟的例子来呈现上述思想。数据生成过程为：</p>
+<p><span class="math display">\[
+\begin{aligned}
+Y^* &amp; = \mathbf{x}'\beta = -3 + 0.6 x + e \\
+e &amp; \sim N(0,1) \\
+Y &amp; =\mathbf{1}\left\{Y^*&gt;0\right\}=\left\{\begin{array}{cc}
+1 &amp; \text { if } Y^*&gt;0 \\
+0 &amp; \text { otherwise. }
+\end{array}\right.
+\end{aligned}
+\]</span></p>
+<p>其中，<span class="math inline">\(x\sim U(0,10)\)</span> 是服从均匀分布的随机数，取值介于 0 和 10 之间。 由 (<a href="#eq-Hansen2021-eq25.3a" class="quarto-xref"><span>24.27</span></a>) 式可知，<span class="math inline">\(P(x) = Pr(Y=1\mid x) = \Phi(x'\beta)\)</span></p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode stata code-with-copy"><code class="sourceCode stata"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">clear</span> </span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="kw">set</span> <span class="kw">obs</span> 400</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="kw">set</span> <span class="dv">seed</span> 12348</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="kw">gen</span> x = uniform()*10</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="kw">gen</span> ystar = -3 + 0.6*x + rnormal()</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="fu">count</span> <span class="kw">if</span> ystar&lt;0</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="kw">gen</span> <span class="fu">y</span> = (ystar&gt;0)  <span class="co">// 0,1</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode stata code-with-copy"><code class="sourceCode stata"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>*- 散点图：Y* 和 Y  v.<span class="fu">s</span>.  x</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="kw">tw</span> (<span class="kw">scatter</span> ystar x <span class="kw">if</span> ystar&gt;0, <span class="bn">ytitle</span>(<span class="fu">y</span>*)) <span class="co">///</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>   (<span class="kw">scatter</span> ystar x <span class="kw">if</span> ystar&lt;0) <span class="co">///</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>   (<span class="kw">scatter</span> <span class="fu">y</span>     x <span class="kw">if</span> ystar&gt;0, msize(*0.5) yaxis(2)) <span class="co">///</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>   (<span class="kw">scatter</span> <span class="fu">y</span>     x <span class="kw">if</span> ystar&lt;0, msize(*0.5) yaxis(2)) <span class="co">///</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>   <span class="kw">lfit</span> ystar x, <span class="co">///</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>   <span class="bn">legend</span>(<span class="kw">order</span>(1 <span class="st">"y*"</span> 2 <span class="st">"y*"</span> 4 <span class="st">"y"</span> 5 <span class="st">"y"</span>) <span class="bn">ring</span>(0) pos(5))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode stata code-with-copy"><code class="sourceCode stata"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>*- Y 的分段散点图 </span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>binscatter <span class="fu">y</span> x, n(20) <span class="kw">ylabel</span>(0(0.2)1)  <span class="co">///</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    mcolor(<span class="kw">red</span>) msymbols(Oh) linetype(<span class="kw">none</span>)</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="bn">addplot</span>: <span class="kw">scatter</span> <span class="fu">y</span> x, mcolor(<span class="bn">blue</span>%30) ms(+) <span class="co">///</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>                      msize(*0.7) <span class="kw">ylabel</span>(0(0.2)1) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>图 <a href="#fig-Logit-Latent-variable-01" class="quarto-xref">Figure&nbsp;<span>24.2</span></a> 呈现了 <span class="math inline">\(Y^*\)</span> 和 <span class="math inline">\(Y\)</span> 的散点图。图 <a href="#fig-Logit-Latent-variable-02" class="quarto-xref">Figure&nbsp;<span>24.3</span></a> 则呈现了分仓散点图 (<code>binscatter</code>)。由于 <span class="math inline">\(Y\)</span> 是一个 0/1 变量，所以各个子样本组中 <span class="math inline">\(Y\)</span> 的均值其实就是该组内 <span class="math inline">\(Y=1\)</span> 的取值的占比，也即 <span class="math inline">\(\mathrm{Pr}(y=1\mid x)\)</span>。</p>
+<div id="fig-Logit-Latent-variable-01" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-Logit-Latent-variable-01-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./figs/Logit-Latent-variable-01.png" class="img-fluid figure-img" style="width:100.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-Logit-Latent-variable-01-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;24.2: <span class="math inline">\(Y^*\)</span> 和 <span class="math inline">\(Y\)</span> 的散点图。<br>其中，<span class="math inline">\(Y^* = \mathbf{x}'\beta = -3 + 0.6 x + e\)</span>，<span class="math inline">\(Y=\mathbf{1}(Y^*&gt;0)\)</span>
+</figcaption>
+</figure>
+</div>
+<div id="fig-Logit-Latent-variable-02" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-Logit-Latent-variable-02-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./figs/Logit-Latent-variable-02.png" class="img-fluid figure-img" style="width:100.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-Logit-Latent-variable-02-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;24.3: <span class="math inline">\(Y\)</span> 的分仓散点图 (<code>binscatter</code>)。<br>制作步骤为：(1) 将样本按照 <span class="math inline">\(x\)</span> 由小到大排序，进而将所有观察值等分 20 组，每组的样本数相同；(2) 在每个子样本组中，计算 <span class="math inline">\(\bar{Y}_j (j=1,2,\cdots,20)\)</span>，同理可得 <span class="math inline">\(\bar{x}_j\)</span>；(3) 绘制 <span class="math inline">\(\bar{Y}_j\)</span> 对 <span class="math inline">\(\bar{x}_j\)</span> 的散点图。图中的空心圆圈表示每个子样本组中 <span class="math inline">\(y=1\)</span> 的占比，也即 <span class="math inline">\(\mathrm{Pr}(y=1\mid x)\)</span>。
+</figcaption>
+</figure>
+</div>
+</section>
+<section id="条件概率模型-cpm" class="level2" data-number="24.7">
+<h2 data-number="24.7" class="anchored" data-anchor-id="条件概率模型-cpm"><span class="header-section-number">24.7</span> 条件概率模型 (CPM)</h2>
+<section id="基本架构" class="level3" data-number="24.7.1">
+<h3 data-number="24.7.1" class="anchored" data-anchor-id="基本架构"><span class="header-section-number">24.7.1</span> 基本架构</h3>
+<p>了解了上述基础知识后，我们可以将条件概率模型的思想扩展至更为广泛的情形。模型设定的基本思路是：由于设定 <span class="math inline">\(Y\)</span> 和 <span class="math inline">\(X\)</span> 联合分布较为复杂，我们绕道而行，转而设定与之等价的条件概率模型，基本步骤如下：</p>
+<ol type="1">
+<li><p><strong>设定分布函数</strong> (Distribution Function)。选择一个简单的单变量概率函数 <span class="math inline">\(P(Y=y)=f(y ; \theta)\)</span>，它应该能够完整地映射出被观测变量的所有可能取值。</p></li>
+<li><p><strong>设定链接函数</strong> (Link function)。将参数 <span class="math inline">\(\theta\)</span> 表示为 <span class="math inline">\(X\)</span> 的函数，如 <span class="math inline">\(\theta(\mathbf{x}) = G(\mathbf{x}, \boldsymbol{\beta})\)</span>，以获得条件概率 <span class="math inline">\(f(y\,|\,\mathbf{x}; \boldsymbol{\beta})\)</span>。</p></li>
+<li><p><strong>MLE 估计</strong>。</p></li>
+<li><p><strong>边际效应分析</strong>。</p></li>
+</ol>
+<p>具体解释如下。我们的目标是建立一个模型，以便最大限度地刻画被解释变量 (观察值) 的数据生成过程 (DGP)。因此，第一步便是选择一个合适的概率函数来描述 DGP 特征。显然，概率函数中通常会包含若干个反应分布特征的参数，我们可以通过设定不同的链接函数 (link function) 把这些参数与解释变量联系起来，<a href="#fn11" class="footnote-ref" id="fnref11" role="doc-noteref"><sup>11</sup></a> 以便反映解释变量和被解释变量的概率分布之间的关系。</p>
+<p>至于估计和边际效应分析，由于 Stata 中都有对应的命令，处理起来并不困难。边际效应主要通过 <code>margins</code> 和 <code>marginsplot</code> 命令来完成。</p>
+<p>下面，用几个例子来进一步说明这种方法操作细节。</p>
+</section>
+<section id="实例" class="level3" data-number="24.7.2">
+<h3 data-number="24.7.2" class="anchored" data-anchor-id="实例"><span class="header-section-number">24.7.2</span> 实例</h3>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+正态线性回归模型
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>正态线性回归模型实际上也可以用条件概率模型来解读。例如，假设 <span class="math inline">\(y \sim \operatorname{N}\left(\mu, \sigma^{2}\right)\)</span>，其密度函数为：</p>
+<p><span class="math display">\[
+f\left(y ; \mu, \sigma^{2}\right)=\frac{1}{\sqrt{2 \pi} \sigma} \exp \left[-\frac{1}{2}\left(\frac{y-\mu}{\sigma}\right)^{2}\right]=\frac{1}{\sigma} \phi\left(\frac{y-\mu}{\sigma}\right)
+\]</span></p>
+<p>其中，<span class="math inline">\(\phi(\cdot)\)</span> 表示标准正态分布的密度函数。在标准的线性回归模型中，我们通常将条件期望函数 <span class="math inline">\(\mathrm{E}(y\,|\,x)\)</span> 设定为线性链接函数 (link function)。因此，我们可以采用完全相同的方式将正态分布的均值参数 <span class="math inline">\(\mu\)</span> 设定为解释变量的函数，即 <span class="math display">\[\mu(x)=x^{\prime}\beta ,\]</span> 由此即可得到正态线性模型：</p>
+<p><span class="math display">\[
+f(y\,|\,x ; \theta)=\frac{1}{\sigma} \phi\left(\frac{y-x^{\prime} \beta}{\sigma}\right)
+\]</span></p>
+<p>其中，<span class="math inline">\(\theta=\left(\beta^{\prime},  \sigma^{2}\right)^{\prime}\)</span>。显然，按此思路，我们也可以把方差参数 <span class="math inline">\(\sigma^{2}\)</span> 设定为某些解释变量的函数以刻画异方差特征，例如，<a href="#fn12" class="footnote-ref" id="fnref12" role="doc-noteref"><sup>12</sup></a> <span class="math display">\[\sigma_i^{2} = \exp(z_i^{\prime} \gamma)\]</span></p>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+多元选择模型
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>如果 <span class="math inline">\(Y\)</span> 是包含 <span class="math inline">\(J\)</span> 个取值的类别变量 (如出行方式)，且各个取值之间彼此不相关，则可以选择多项式分布的概率函数。它有 <span class="math inline">\(J\)</span> 个参数：<span class="math inline">\(p_{j} (j=1,2,\cdots, J)\)</span>，表示每种选择的概率。联合概率函数可以简写为</p>
+<p><span class="math display">\[
+f\left(y ; p_{1}, \ldots, p_{J}\right)=p_{1}^{d_{1}} p_{2}^{d_{2}} \cdots p_{J}^{d_{J}}
+\]</span></p>
+<p>其中，<span class="math inline">\(d_{j}\)</span> 为虚拟变量，当 <span class="math inline">\(y=j\)</span> 时 <span class="math inline">\(d_{j}=1\)</span>，否则 <span class="math inline">\(d_{j}=0\)</span>。由于 <span class="math inline">\(\sum_{j} p_{j}=1\)</span>，所以任何一个参数都可以用其他参数来定义。 <span class="math display">\[p_{1}=1-\sum_{j=2}^{J} p_{j}\]</span> 在与之对应的条件概率模型中，<span class="math inline">\(\pi\)</span> 同样被设定为 <span class="math inline">\(\mathbf{x}\)</span> 的函数，但要求各个取值对应的概率值具有可加性，例如：</p>
+<p><span class="math display">\[
+p_j(x)=\frac{\exp \left(\mathbf{x}^{\prime} \beta_j\right)}{\sum_{\ell=1}^J \exp \left(\mathbf{x}^{\prime} \beta_{\ell}\right)}
+\]</span></p>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+计数模型：泊松分布
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>假设 <span class="math inline">\(Y_{1}, \ldots, Y_{n}\)</span> 是一组彼此独立的随机变量，且服从泊松分布 (Poisson distribution)，参数为 <span class="math inline">\(\theta\)</span>：</p>
+<p><span class="math display">\[
+f\left(y_{i} ; \theta\right)=\frac{\theta^{y_{i}} e^{-\theta}}{y_{i} !}, \quad y_{i}=0,1,2, \ldots
+\]</span></p>
+<p>泊松分布的期望值和方差相等，且两者都由同一个参数 <span class="math inline">\(\theta\)</span> 决定，即 <span class="math inline">\(\mathrm{E}(y)=\operatorname{Var}(y)= \theta\)</span>。 它们的联合分布 (似然函数) 为：</p>
+<p><span class="math display">\[
+\begin{aligned}
+L_n(y_{i} ; \theta)=\prod_{i=1}^{n} f\left(y_{i} ; \theta\right) &amp;=\frac{\theta^{y_{1}} e^{-\theta}}{y_{1} !} \times \frac{\theta^{y_{2}} e^{-\theta}}{y_{2} !} \times \cdots \times \frac{\theta^{y_{n}} e^{-\theta}}{y_{n} !} \\
+&amp;=\frac{\theta^{\Sigma y_{i}} e^{-n \theta}}{y_{1} ! y_{2} ! \ldots y_{n} !}
+\end{aligned}
+\]</span></p>
+<p>对数似然函数为：</p>
+<p><span id="eq-prob-basic-poisson01"><span class="math display">\[
+\ln L_{n}\left(y_{i} ; \theta\right)=-n \theta+\ln \theta \sum_{i}^{n} y_{i}-\sum_{i}^{n} \ln y_{i} !
+\tag{24.28}\]</span></span></p>
+<p>一阶条件为：</p>
+<p><span class="math display">\[
+\frac{\partial \ln L_n}{\partial \theta}=\frac{1}{\theta} \sum_i^n y_{i}-n \quad \Longrightarrow \quad \widehat{\theta}=\sum y_{i} / n=\bar{y}
+\]</span></p>
+<p>由于 <span class="math inline">\(\partial\ln L_n^{2} / \partial \theta^{2}=-\sum y_{i} / \theta^{2}&lt;0\)</span>，表明当 <span class="math inline">\(\theta=\widehat{\theta}\)</span> 时 <span class="math inline">\(\ln L_n\)</span> 取得最大值，即 <span class="math inline">\(\bar{y}\)</span> 是最大似然估计。</p>
+<p>按照此前的思路，我们可以对参数 <span class="math inline">\(\theta\)</span> 进行线性化设定以便分析影响 <span class="math inline">\(\theta\)</span> 的因素。考虑到 <span class="math inline">\(\theta&gt;0\)</span>，设定 <span class="math inline">\(\theta_i = \exp(\mathbf{x}_i'\boldsymbol{\beta})\)</span>，用其替换 (<a href="#eq-prob-basic-poisson01" class="quarto-xref"><span>24.28</span></a>) 式中的 <span class="math inline">\(\theta\)</span> 即可得到泊松回归模型的对数似然函数：</p>
+<p><span id="eq-prob-basic-poisson02"><span class="math display">\[
+\ln L_{n}\left(y_{i}, \mathbf{x}_i; \boldsymbol{\beta}\right)=-n \exp(\mathbf{x}_i'\boldsymbol{\beta})+ (\mathbf{x}_i'\boldsymbol{\beta}) \sum_{i}^{n} y_{i}-\sum_{i}^{n} \ln y_{i} !
+\tag{24.29}\]</span></span></p>
+</div>
+</div>
+</section>
+</section>
+<section id="sec-prob-basic-MLE" class="level2" data-number="24.8">
+<h2 data-number="24.8" class="anchored" data-anchor-id="sec-prob-basic-MLE"><span class="header-section-number">24.8</span> 最大似然估计法 (MLE)</h2>
+<p>条件概率模型和 GLM 主要采用极大似然估计法 (MLE) 来估计，包括两个主要环节：(1) 定义似然函数；(2) 极大化似然函数以获得未知参数的估计值。</p>
+<p>似然函数的定义可以从条件概率函数 (CPF) <span class="math inline">\(f\left(y_{i}\,|\,\mathbf{x}_{i}; \theta\right)\)</span> 入手。 从总体中随机抽取 <span class="math inline">\(n\)</span> 个观察值构成样本 <span class="math inline">\(\left(y_{i}, \mathbf{x}_{i}\right), i=1, \ldots, n\)</span>。记 <span class="math inline">\(y=\left(y_{1}, \ldots, y_{n}\right)^{\prime}\)</span>，<span class="math inline">\(x=\left(x_{1}, \ldots, x_{n}\right)^{\prime}\)</span>。抽样样本的联合概率函数就是各个观察值的概率之积，通常称为「似然函数 (likelihood function)」：</p>
+<p><span id="eq-prob-basic-02"><span class="math display">\[
+L(\theta ; y, x) = f(y\,|\,x ; \theta)=\prod_{i=1}^{n} f\left(y_{i}\,|\,\mathbf{x}_{i} ; \theta\right)
+\tag{24.30}\]</span></span></p>
+<p>极大化 (<a href="#eq-prob-basic-02" class="quarto-xref"><span>24.30</span></a>) 式，即可获取参数 <span class="math inline">\(\theta\)</span> 的 MLE 估计量 <span class="math inline">\(\hat{\theta}_{ML}\)</span>。给定一些基本的假设条件，MLE 估计量存在唯一解，具有一致性且渐进有效。</p>
+<p>下面先用一个简单的例子说明 MLE 的基本思想，进而介绍几个典型的例子，并辅以 Stata 实操。</p>
+<section id="sec-MLE-travel-01" class="level3" data-number="24.8.1">
+<h3 data-number="24.8.1" class="anchored" data-anchor-id="sec-MLE-travel-01"><span class="header-section-number">24.8.1</span> 基本思想</h3>
+<p>假设某城市的居民只有两种出行方式：步行 (<span class="math inline">\(y_i=1\)</span>) 和 开车 (<span class="math inline">\(y_i=0\)</span>)，二者发生的概率 <span class="math inline">\(p_i\)</span> 分别为 <span class="math inline">\(\theta\)</span> 和 <span class="math inline">\(1-\theta\)</span>。随机询问五个人，结果为 <span class="math inline">\(\{1,0,0,1,1\}\)</span>。如何采用 MLE 估计出 <span class="math inline">\(\hat{\theta}\)</span> 呢？</p>
+<p><span class="math display">\[
+\begin{array}{l|ccccc} %lllll
+\hline y_{i} \quad&amp;\quad 1      &amp; \quad 0        &amp; \quad 0        &amp; \quad 1      &amp; \quad 1 \quad \\
+\hline p_{i} \quad&amp;\quad \theta &amp; \quad 1-\theta &amp; \quad 1-\theta &amp; \quad \theta &amp; \quad \theta \quad \\
+\hline
+\end{array}
+\]</span></p>
+<p>我们可以根据 (<a href="#eq-prob-basic-02" class="quarto-xref"><span>24.30</span></a>) 式定义似然函数如下：</p>
+<p><span id="eq-MLE-eg-travel-01"><span class="math display">\[
+L(\theta) = \prod_{i=1}^{5}p_i
+              = \theta \cdot(1-\theta) \cdot(1-\theta) \cdot \theta \cdot \theta = \theta^{3}(1-\theta)^{2}
+\tag{24.31}\]</span></span></p>
+<p>接下来，只需要找出使 <span class="math inline">\(L(\theta)\)</span> 最大时的 <span class="math inline">\(\theta\)</span> 即可。为了便于求解，采用对数似然函数更为方便：</p>
+<p><span id="eq-MLE-eg-travel-02"><span class="math display">\[\ln L(\theta)=3 \ln \theta+2 \ln (1-\theta) \tag{24.32}\]</span></span></p>
+<p>相应的一阶条件为：</p>
+<p><span class="math display">\[
+\frac{d \ln L(\theta)}{d \theta}=\frac{3}{\theta}-\frac{2}{1-\theta}=0 \quad \Longrightarrow \quad \hat{\theta}=\frac{3}{5}
+\]</span></p>
+<p>各位可能会哑然失笑，这里得到的 <span class="math inline">\(\hat{\theta}=3/5\)</span> 不就是 <span class="math inline">\(y_i\)</span> 的样本均值 <span class="math inline">\(\bar{y} = 3/5\)</span> 吗？确实如此，这在第 <a href="#sec-prob-basic-CPF01" class="quarto-xref"><span>Section 24.4.1</span></a> 小节末尾处已经提及过：当 <span class="math inline">\(y\)</span> 是 0/1 变量时，<span class="math inline">\(\mathrm{E}\left(y_{i}\,|\,\mathbf{x}_{i}\right)=P\left(y_{i}=1\,|\,\mathbf{x}_{i}\right)\)</span>。那么，如何确认 <span class="math inline">\(\hat{\theta}=3/5\)</span> 是 <span class="math inline">\(\ln L(\theta)\)</span> 的极大值解呢？我们可以求取 <span class="math inline">\(\ln L(\theta)\)</span> 的二阶导数，看其是否小于零：<span class="math inline">\({d\ln^{2}L(\theta)}/{d \theta^{2}}=-3 {\theta^{-2}}-2{(1-\theta)^{-2}}&lt;0\)</span>。</p>
+<div id="fig-B1_GLM_MLE_eg_01" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-B1_GLM_MLE_eg_01-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./figs/B1_GLM_MLE_eg_01.png" class="img-fluid figure-img" style="width:100.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-B1_GLM_MLE_eg_01-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;24.4: 似然函数 <span class="math inline">\(L(\theta)\)</span> 与对数似然函数 <span class="math inline">\(\mathrm{ln} L(\theta)\)</span> 对比
+</figcaption>
+</figure>
+</div>
+<p>我们也可以采用数值方法求解参数 <span class="math inline">\(\theta\)</span>。由图 <a href="#fig-B1_GLM_MLE_eg_01" class="quarto-xref">Figure&nbsp;<span>24.4</span></a> 可知，由于参数 <span class="math inline">\(\theta \in (0,1)\)</span>，我们只需要在此范围内进行网格搜索，进而找出 <span class="math inline">\(\mathrm{ln} L(\theta)\)</span> 取最大值时对应的 <span class="math inline">\(\theta\)</span> 值即可。下面的代码演示了是实现过程：<a href="#fn13" class="footnote-ref" id="fnref13" role="doc-noteref"><sup>13</sup></a></p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode stata code-with-copy"><code class="sourceCode stata"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>  <span class="kw">clear</span> </span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">set</span> <span class="kw">obs</span> 10</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">gen</span> theta = .</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">gen</span>   lnL = .   <span class="co">// log(likelihood)</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">gen</span>     L = .   <span class="co">//     likelihood</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">local</span> i=1</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">foreach</span> theta <span class="kw">of</span> numlist 0.2 0.4 0.5 0.56 0.58 0.6 0.62 0.64 0.7 0.8{</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>      <span class="kw">replace</span> theta = <span class="ot">`theta'</span> <span class="kw">in</span> <span class="ot">`i'</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>      <span class="kw">replace</span>   lnL = 3*<span class="fu">ln</span>(<span class="ot">`theta'</span>) + 2*<span class="fu">ln</span>(1-<span class="ot">`theta'</span>) <span class="kw">in</span> <span class="ot">`i'</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>      <span class="kw">replace</span>     L = <span class="fu">exp</span>(lnL) <span class="kw">in</span> <span class="ot">`i++'</span>   </span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>  } </span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>  <span class="kw">qui</span> <span class="kw">sum</span> lnL</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>  <span class="kw">gen</span> str1 <span class="fu">max</span> = <span class="st">"*"</span> <span class="kw">if</span> lnL==<span class="fu">r</span>(<span class="fu">max</span>)   </span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>  <span class="ot">list</span>, <span class="kw">clean</span> </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>结果如下：</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode stata code-with-copy"><code class="sourceCode stata"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>.   <span class="ot">list</span>, <span class="kw">clean</span> </span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>       theta      lnL        L   <span class="fu">max</span>  </span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  1.    0.20   -5.275   0.0051        </span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>  2.    0.40   -3.771   0.0230        </span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>  3.    0.50   -3.466   0.0313        </span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>  4.    0.56   -3.381   0.0340        </span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>  5.    0.58   -3.369   0.0344        </span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>  6.    0.60   -3.365   0.0346     *  </span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>  7.    0.62   -3.369   0.0344        </span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>  8.    0.64   -3.382   0.0340        </span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>  9.    0.70   -3.478   0.0309        </span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a> 10.    0.80   -3.888   0.0205        </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>从上述结果也可以看出，在进行数值求解过程中，以对数似然函数 <span class="math inline">\(\mathrm{ln} L(\theta)\)</span> 为目标函数相对更好一些。这是因为，似然函数 <span class="math inline">\(L(\theta)\)</span> 本质上是一系列概率密度或概率值的乘积，其取值通常都非常小，而 <span class="math inline">\(\mathrm{ln} L(\theta)\)</span> 的取值范围则宽泛的多。</p>
+<section id="小结-1" class="level4" data-number="24.8.1.1">
+<h4 data-number="24.8.1.1" class="anchored" data-anchor-id="小结-1"><span class="header-section-number">24.8.1.1</span> 小结</h4>
+<p>此例虽简单，但呈现了 MLE 的基本思想：</p>
+<p>第一步，设定随机变量 <span class="math inline">\(y_i\)</span> 的分布函数，本例中为「非此即彼」的伯努利分布；</p>
+<p>第二步，写出样本中所有观察值的联合概率函数 <span class="math inline">\(L(\theta)\)</span> 以及对数似然函数 <span class="math inline">\(\mathrm{ln}L(\theta)\)</span>；</p>
+<p>第三步，极大化 <span class="math inline">\(\mathrm{ln}L(\theta)\)</span>，从而得到参数 <span class="math inline">\(\theta\)</span> 的估计值。</p>
+<p>作为扩展，可以对参数 <span class="math inline">\(\theta\)</span> 进行异质性设定，如 <span class="math inline">\(\theta(x) = G(x'\beta)\)</span>。</p>
+</section>
+</section>
+<section id="实例线性回归模型正态分布假设" class="level3" data-number="24.8.2">
+<h3 data-number="24.8.2" class="anchored" data-anchor-id="实例线性回归模型正态分布假设"><span class="header-section-number">24.8.2</span> 实例：线性回归模型——正态分布假设</h3>
+<p>对于如下线性模型：</p>
+<p><span class="math display">\[y_j = \mathbf{x}_j\beta + \varepsilon_j\]</span></p>
+<p>假设 <span class="math inline">\(\varepsilon_j|\mathbf{x}_j \sim \mathcal{N}(0,\sigma^2)\)</span>，则 <span class="math display">\[y_j \sim \mathcal{N}(\mathbf{x}_j\beta, \sigma^2)\]</span> 亦可表示为： <span class="math display">\[\varepsilon_j \sim \mathcal{N}(y_j - \mathbf{x}_j\beta, \sigma^2)\]</span> 因此，第 <span class="math inline">\(j\)</span> 个观察值对应的对数似然因子为：</p>
+<p><span class="math display">\[
+\begin{aligned}
+\ln {L}_j &amp;=&amp; \ln \frac{1}{\sqrt{2\pi \sigma^2}}
+         \exp \left[-\frac{1}{2}\frac{(y_j-\mathbf{x}_j\beta)}{\sigma^2} \right] \\
+   &amp;=&amp; \ln \left[ \frac{1}{\sigma}\cdot \phi\left( \frac{(y_j-\mathbf{x}_j\beta)}{\sigma} \right) \right]
+\end{aligned}
+\]</span></p>
+<p>其中，<span class="math inline">\(\phi(\cdot)\)</span> 为标准正态分布的密度函数，即 <span class="math display">\[\phi(z)=\frac{1}{\sqrt{2\pi}} \exp\left( -\frac{z^2}{2} \right)\]</span> 基于上述设定，我们可以将线性模型的对数似然函数写成如下形式：</p>
+<p><span class="math display">\[
+\begin{aligned}
+  \ln {L}_j &amp;=&amp; \ln \phi\big\{(y_j-\theta_{1j})/\theta_{2j}\big\} - \ln \theta_{2j} \\
+  \theta_{1j} &amp;=&amp; \mu_j = \mathbf{x}_j\beta \\
+  \theta_{2j} &amp;=&amp; \sigma
+\end{aligned}
+\]</span></p>
+<p>设定似然函数的 Stata 程序为：</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode stata code-with-copy"><code class="sourceCode stata"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>  cap <span class="kw">program</span> <span class="kw">drop</span> mymean_lf</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">program</span> <span class="kw">define</span> mymean_lf</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>     <span class="kw">version</span> 9.1        <span class="co">/*声明Stata版本*/</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>     <span class="kw">args</span>  lnf mu sigma <span class="co">/*输入项：似然函数，参数1，参数2，……*/</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>     <span class="kw">quietly</span> <span class="kw">replace</span> <span class="ot">`lnf'</span> = <span class="fu">ln</span>(<span class="fu">normalden</span>((<span class="ot">$ML_y1</span> - <span class="ot">`mu'</span>)/<span class="ot">`sigma'</span>)) - <span class="fu">ln</span>(<span class="ot">`sigma'</span>)</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>                        <span class="co">/*$ML_y1 默认写法，表示被解释变量*/</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>   <span class="kw">end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>其中，<code>normalden(z)</code><span class="math inline">\(=\phi(z)\)</span> 是 Stata 提供的标准正态分布的密度函数。 Stata 还提供了另外两个与正态分布相关的函数：<code>normalden(z,s)=normalden(z)/s</code>，即</p>
+<p><span class="math display">\[
+\mbox{\texttt{normalden(z,s)} } =\frac{1}{\mbox{\texttt{s}}} \cdot \phi(\mbox{\texttt{z}})
+\]</span></p>
+<p>以及 <code>normalden(z,m,s) = normalden((z-m)/s)/s</code>，即</p>
+<p><span class="math display">\[
+\mbox{\texttt{normalden(z,m,s)} } =\frac{1}{\mbox{\texttt{s}}} \cdot
+    \phi\left(\frac{\mbox{\texttt{z-m}}}{\mbox{\texttt{s}}} \right)
+\]</span></p>
+<p>若使用 <code>normalden(z,m,s)</code> 函数，则上述程序可以采用如下更为简洁的方式来定义：</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode stata code-with-copy"><code class="sourceCode stata"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>  cap <span class="kw">program</span> <span class="kw">drop</span> mymean_lf</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">program</span> <span class="kw">define</span> mymean_lf</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>     <span class="kw">version</span> 9.1</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>     <span class="kw">args</span>  lnf mu sigma</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>     <span class="kw">quietly</span> <span class="kw">replace</span> <span class="ot">`lnf'</span> = <span class="fu">ln</span>(<span class="fu">normalden</span>(<span class="ot">$ML_y1</span>, <span class="ot">`mu'</span>, <span class="ot">`sigma'</span>))</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="实例probit-模型" class="level3" data-number="24.8.3">
+<h3 data-number="24.8.3" class="anchored" data-anchor-id="实例probit-模型"><span class="header-section-number">24.8.3</span> 实例：Probit 模型</h3>
+<p>Probit 模型的对数似然函数为：</p>
+<p><span id="eq-mle_probit"><span class="math display">\[
+\ln {L}_i =\left\{
+  \begin{array}{l l}
+     \ln \Phi(\mathbf{x}_j \boldsymbol{\beta})   &amp; \mbox{若}~~ y_j = 1 \\
+     \ln \Phi(-\mathbf{x}_j \boldsymbol{\beta})  &amp; \mbox{若}~~ y_j = 0
+  \end{array}
+  \right.
+\tag{24.33}\]</span></span></p>
+<p>相应的似然函数可采用如下 Stata 程序来实现：</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode stata code-with-copy"><code class="sourceCode stata"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="kw">program</span> <span class="kw">define</span> myprobit_lf</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>   <span class="kw">version</span> 9.2</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>   <span class="kw">args</span> lnf <span class="kw">xb</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>   <span class="kw">qui</span> <span class="kw">replace</span> <span class="ot">`lnf'</span> = <span class="fu">ln</span>(<span class="fu">normal</span>( <span class="ot">`xb'</span>)) <span class="kw">if</span> <span class="ot">$ML_y1</span> == 1</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>   <span class="kw">qui</span> <span class="kw">replace</span> <span class="ot">`lnf'</span> = <span class="fu">ln</span>(<span class="fu">normal</span>(-<span class="ot">`xb'</span>)) <span class="kw">if</span> <span class="ot">$ML_y1</span> == 0</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="实例魏卜-weibull-模型" class="level3" data-number="24.8.4">
+<h3 data-number="24.8.4" class="anchored" data-anchor-id="实例魏卜-weibull-模型"><span class="header-section-number">24.8.4</span> 实例：魏卜 (Weibull) 模型</h3>
+<p>魏卜模型中第 <span class="math inline">\(j\)</span> 个观察值对应的对数似然函数为：</p>
+<p><span id="eq-mle_weibull01"><span class="math display">\[
+\begin{aligned}
+\small
+  \ln {L}_j &amp;=&amp; -\left({t_j}/{e^{\theta_{1j}}} \right)^{e^{\theta_{2j}}}
+                      + d_j\big\{\theta_{2j}-\theta_{1j}
+                      + (e^{\theta_{2j}}-1)(\ln t_j-\theta_{1j}) \big\}  \\
+\nonumber  \theta_{1j} &amp;=&amp; \ln \eta_j   = \mathbf{x}_{1j} \beta_1 \\
+\nonumber  \theta_{2j} &amp;=&amp; \ln \gamma_j = \mathbf{x}_{2j} \beta_2
+\end{aligned}
+\tag{24.34}\]</span></span></p>
+<p>其中， <span class="math inline">\(t_j\)</span> 表示事件发生的时间，若事件发生，则 <span class="math inline">\(d_j = 1\)</span>，否则 <span class="math inline">\(d_j =
+0\)</span>。同时，<span class="math inline">\(\ln \eta_j\)</span> 和 <span class="math inline">\(\ln \gamma_j\)</span> 两个参数分别设定为 <span class="math inline">\(\mathbf{x}_{1j}\)</span> 和 <span class="math inline">\(\mathbf{x}_{2j}\)</span> 的线性函数。设定对数似然函数的 Stata 程序为：</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode stata code-with-copy"><code class="sourceCode stata"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="kw">program</span> myweibull_lf</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">version</span> 9.2</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">args</span> lnf leta lgam</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>    <span class="kw">tempvar</span> <span class="kw">p</span> M R</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>    <span class="kw">quietly</span> {</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>        <span class="kw">gen</span> <span class="kw">double</span> <span class="ot">`p'</span> = <span class="fu">exp</span>(<span class="ot">`lgam'</span>)</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>        <span class="kw">gen</span> <span class="kw">double</span> <span class="ot">`M'</span> = (<span class="ot">$ML_y1</span>*<span class="fu">exp</span>(-<span class="ot">`leta'</span>))^<span class="ot">`p'</span></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>        <span class="kw">gen</span> <span class="kw">double</span> <span class="ot">`R'</span> = <span class="fu">ln</span>(<span class="ot">$ML_y1</span>)-<span class="ot">`leta'</span></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>        <span class="kw">replace</span> <span class="ot">`lnf'</span> = -<span class="ot">`M'</span> + <span class="ot">$ML_y2</span>*(<span class="ot">`lgam'</span>-<span class="ot">`leta'</span>+(<span class="ot">`p'</span>-1)*<span class="ot">`R'</span>)</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>在上述对数似然函数的设定中，我们使用了三个暂时性的变量：<code>p</code>、<code>M</code> 和 <code>R</code>。这使得程序的结构非常明了，不易出错。 需要注意的是，在产生上述三个暂时性变量的过程中，我们都使用了双精度型变量，即 <code>double</code>。这能够有效提供计算的精度，便于达到收敛。</p>
+<p>由于该模型有两个被解释变量：<span class="math inline">\(t_j\)</span> 和 <span class="math inline">\(d_j\)</span>，所以我们分别用 <code>$ML_y1</code> 和 <code>$ML_y2</code> 设定之。</p>
+</section>
+<section id="实例非线性模型-1" class="level3" data-number="24.8.5">
+<h3 data-number="24.8.5" class="anchored" data-anchor-id="实例非线性模型-1"><span class="header-section-number">24.8.5</span> 实例：非线性模型 1</h3>
+<p>假设我们要估计如下非线性模型：</p>
+<p><span class="math display">\[
+\mathbf{y}=\beta_{0}\left(1-e^{-\mathbf{x} \beta_{1}}\right)+\boldsymbol{\varepsilon}
+\]</span></p>
+<p>可以先将其转化为：</p>
+<p><span class="math display">\[
+\boldsymbol{\varepsilon}=\mathbf{y}-\beta_{0}\left(1-e^{-\mathbf{x} \beta_{1}}\right)
+\]</span></p>
+<p>如果我们假设误差项正态分布，均值为 <span class="math inline">\(0\)</span>，方差为 <span class="math inline">\(\sigma^{2}\)</span>，则对数似然函数可以写成：</p>
+<p><span class="math display">\[
+\ln L=\sum_{i=1}^{N}\left(-\frac{1}{2} \ln (2 \pi)-\ln \sigma-\frac{1}{2} \frac{\varepsilon^{2}}{\sigma^{2}}\right)
+\]</span></p>
+<p>除了<span class="math inline">\(\beta_{0}\)</span>和<span class="math inline">\(\beta_{1}\)</span>，MLE方法还估计了一个额外的参数<span class="math inline">\(\sigma\)</span>，即误差项的标准差。尽管我们假设随机误差具有正态分布，但该方法仍然可以产生<span class="math inline">\(\beta_{0}\)</span>和<span class="math inline">\(\beta_{1}\)</span>的一致估计。</p>
+<p>Stata 实现程序如下：</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode stata code-with-copy"><code class="sourceCode stata"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="kw">program</span> mlnexpgr</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="kw">version</span> 8</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">args</span> lnf B1 B0 lnsigma <span class="co">// the third equation is for parameter ln(sigma)</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">tempvar</span> sigma res</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">quietly</span> <span class="kw">generate</span> <span class="kw">double</span> <span class="ot">`sigma'</span> = <span class="fu">exp</span>(<span class="ot">`lnsigma'</span>)</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">quietly</span> <span class="kw">generate</span> <span class="kw">double</span> <span class="ot">`res'</span> = <span class="ot">$ML_y1</span> - <span class="ot">`B0'</span>*(1-<span class="fu">exp</span>(-<span class="ot">`B1'</span>))</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>  <span class="kw">quietly</span> <span class="kw">replace</span> <span class="ot">`lnf'</span> = -0.5*<span class="fu">ln</span>(2*<span class="dt">_pi</span>)-<span class="fu">ln</span>(<span class="ot">`sigma'</span>)-0.5*<span class="ot">`res'</span>^2/<span class="ot">`sigma'</span>^2</span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="实例非线性模型-2" class="level3" data-number="24.8.6">
+<h3 data-number="24.8.6" class="anchored" data-anchor-id="实例非线性模型-2"><span class="header-section-number">24.8.6</span> 实例：非线性模型 2</h3>
+<p>考虑如下非线性模型：</p>
+<p><span id="eq-mle_nl01"><span class="math display">\[
+y_j = \beta_1x_{1j} + \beta_2x_{2j} + \beta_3x_{3j}^{\beta_4} + \beta_5 + \varepsilon_j,
+    \quad \varepsilon_j \sim \mathcal{N}(0,\sigma^2)
+\tag{24.35}\]</span></span></p>
+<p>在编写似然函数过程中，我们可以将上述模型表示为：</p>
+<p>$$</p>
+<span class="math display">\[\begin{aligned}
+
+   \ln {L}_j &amp;=&amp; \ln \phi\left\{(y_j-\theta_{1j}-\theta_{2j}x_{3j}^{\theta_{3j}})/\theta_{4j} \right\} \\
+   \theta_{1j}  &amp;=&amp; \beta_1x_{1j} + \beta_2x_{2j} + \beta_5 \\
+   \theta_{2j}  &amp;=&amp; \beta_3 \\
+   \theta_{1j}  &amp;=&amp; \beta_4 \\
+   \theta_{1j}  &amp;=&amp; \sigma
+\end{aligned}\]</span>
+<p>$$ {#eq-mle_nl02}</p>
+<p>设定似然函数的程序为：</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode stata code-with-copy"><code class="sourceCode stata"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="kw">program</span> mynonlin_lf</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">version</span> 9.2</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">args</span> lnf b1 b2 b3 sigma</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>    <span class="kw">quietly</span> <span class="kw">replace</span> <span class="ot">`lnf'</span> = <span class="co">///</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>            <span class="fu">ln</span>(normden(<span class="ot">$ML_y1</span>,<span class="ot">`b1'</span>+<span class="ot">`b2'</span>*X3^<span class="ot">`b3'</span>,<span class="ot">`sigma'</span>))</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>需要注意的是，在上述设定中，变量 <code>x3</code> 的名称在程序中被直接标明了。因此，在实际应用中，有两种选择：其一，把数据文件中需要放置于 <code>x3</code> 位置的变量 (如 <code>gdp</code>) 更名为 <code>x3</code>；其二，修改上述 <code>mynonlin_lf</code> 程序，把 <code>x3</code> 修改为 <code>gdp</code>。</p>
+</section>
+<section id="实例双边随机边界模型" class="level3" data-number="24.8.7">
+<h3 data-number="24.8.7" class="anchored" data-anchor-id="实例双边随机边界模型"><span class="header-section-number">24.8.7</span> 实例：双边随机边界模型</h3>
+<p>双边随机边界模型 (Two-tier Stochastic Frontier Model) 由 Kumbhakar and Parmeter (2007) 提出，基本设定如下：</p>
+<p><span id="eq-5203"><span class="math display">\[
+y_{it} = \mathbf{x}_{it}{}\!'\boldsymbol{\beta} + \varepsilon_{it} ,
+    \qquad
+    \varepsilon_{it} = v_{it} - u_{it} + w_{it}.
+\tag{24.36}\]</span></span></p>
+<p>其中，<span class="math inline">\(v_{it}\)</span> 为通常意义上的随机干扰项， 假设其服从正态分布，即</p>
+<p><span id="eq-5204"><span class="math display">\[v_{it} \sim \mbox{i.i.d.}\,\mathcal{N}(0,\sigma_v^2). \tag{24.37}\]</span></span></p>
+<p><span class="math inline">\(u_{it}\)</span> 和 <span class="math inline">\(w_{it}\)</span> 均为非负的随机干扰项， 二者都具有单边分布的特征，为简单起见，假设它们都服从指数分布：<a href="#fn14" class="footnote-ref" id="fnref14" role="doc-noteref"><sup>14</sup></a></p>
+<p><span id="eq-5205"><span class="math display">\[
+   u_{it}  \sim  \mbox{i.i.d.} \,\mbox{Exp}\, (\sigma_u), \quad  w_{it}  \sim  \mbox{i.i.d.} \,\mbox{Exp}\, (\sigma_w)
+\tag{24.38}\]</span></span></p>
+<p>最后，假设三个干扰项 <span class="math inline">\(v_{it}\)</span>、<span class="math inline">\(u_{it}\)</span> 和 <span class="math inline">\(w_{it}\)</span> 之间彼此独立。</p>
+<p>基于上述设定，可以写出复合干扰项 <span class="math inline">\(\varepsilon_{it}\)</span> 的概率密度函数 (pdf)：</p>
+<p><span id="eq-5206"><span class="math display">\[
+\begin{aligned}
+  f(\varepsilon_{it})
+   &amp;=    \frac{\exp(a_{it})}{\sigma_u+\sigma_w}\Phi(c_{it})
+        +\frac{\exp(b_{it})}{\sigma_u+\sigma_w}\int_{-h_{it}}^{\infty}\phi(z)~dz \\
+   &amp;=    \frac{\exp(a_{it})}{\sigma_u+\sigma_w}\Phi(c_{it})
+        +\frac{\exp(b_{it})}{\sigma_u+\sigma_w}\Phi(h_{it}).
+\end{aligned}
+\tag{24.39}\]</span></span></p>
+<p>其中，<span class="math inline">\(\phi(\cdot)\)</span> 和 <span class="math inline">\(\Phi(\cdot)\)</span> 分别为为标准常态分布的概率密度函数和累积分布函数， 其它参数的设定如下，</p>
+<p><span class="math display">\[
+a_{it}={\frac{\sigma_v^2}{2\sigma_u^2}} + \frac{\varepsilon_{it}}{\sigma_u}, \quad
+  b_{it}=\frac{\sigma_v^2}{2\sigma_w^2} - \frac{\varepsilon_{it}}{\sigma_w},   \quad
+  h_{it}=\frac{\varepsilon_{it}}{\sigma_v} - \frac{\sigma_v}{\sigma_w},        \quad
+  c_{it}=-\frac{\varepsilon_{it}}{\sigma_v} - \frac{\sigma_v}{\sigma_u}.
+\]</span></p>
+<p>第 <span class="math inline">\(it\)</span> 个观察值对应的对数似然函数为：</p>
+<p><span id="eq-5207"><span class="math display">\[
+\ln {L}(\mathbf{x}_{it};\boldsymbol{\theta}) = -\ln(\sigma_u+\sigma_w) +
+\ln\big[\exp(a_{it})\Phi(c_{it}) + \exp(b_{it})\Phi(h_{it})\big],
+\tag{24.40}\]</span></span></p>
+<p>其中， <span class="math inline">\(\boldsymbol{\theta}=\left[\begin{array}{llll}\boldsymbol{\beta} &amp; \sigma_v &amp; \sigma_u &amp; \sigma_w\end{array}\right]^{\prime}\)</span> 。</p>
+<p>这里需要特别强调的是， 由于参数 <span class="math inline">\(\sigma_u\)</span> 仅出现在 <span class="math inline">\(a_{it}\)</span> 和 <span class="math inline">\(c_{it}\)</span> 中， 而参数 <span class="math inline">\(\sigma_w\)</span> 则仅出现在 <span class="math inline">\(b_{it}\)</span> 和 <span class="math inline">\(h_{it}\)</span> 中， 所以二者皆可确认。</p>
+<p>设定似然函数的程序为：</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode stata code-with-copy"><code class="sourceCode stata"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="kw">program</span> <span class="kw">define</span> twotier_sfa_lf</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>   <span class="kw">version</span> 9.2</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>   <span class="kw">args</span> lnf <span class="kw">xb</span> sigma_v sigma_u sigma_w</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>   <span class="kw">tempvar</span> <span class="fu">e</span> a b <span class="kw">h</span> c</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>     <span class="kw">qui</span> <span class="kw">gen</span> <span class="kw">double</span> <span class="ot">`e'</span> = <span class="ot">$ML_y1</span> - <span class="ot">`xb'</span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>     <span class="kw">qui</span> <span class="kw">gen</span> <span class="kw">double</span> <span class="ot">`a'</span> = <span class="ot">`e'</span>/<span class="fu">exp</span>(<span class="ot">`sigma_u'</span>) + <span class="fu">exp</span>(<span class="ot">`sigma_v'</span>)^2/(2*<span class="fu">exp</span>(<span class="ot">`sigma_u'</span>)^2)</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>     <span class="kw">qui</span> <span class="kw">gen</span> <span class="kw">double</span> <span class="ot">`h'</span> = <span class="ot">`e'</span>/<span class="fu">exp</span>(<span class="ot">`sigma_v'</span>) - <span class="fu">exp</span>(<span class="ot">`sigma_v'</span>)/<span class="fu">exp</span>(<span class="ot">`sigma_w'</span>)</span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>     <span class="kw">qui</span> <span class="kw">gen</span> <span class="kw">double</span> <span class="ot">`b'</span> = <span class="fu">exp</span>(<span class="ot">`sigma_v'</span>)^2/(2*<span class="fu">exp</span>(<span class="ot">`sigma_w'</span>)^2) - <span class="ot">`e'</span>/<span class="fu">exp</span>(<span class="ot">`sigma_w'</span>)</span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>     <span class="kw">qui</span> <span class="kw">gen</span> <span class="kw">double</span> <span class="ot">`c'</span>= - <span class="ot">`e'</span>/<span class="fu">exp</span>(<span class="ot">`sigma_v'</span>) - <span class="fu">exp</span>(<span class="ot">`sigma_v'</span>)/<span class="fu">exp</span>(<span class="ot">`sigma_u'</span>)</span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>   <span class="kw">qui</span> <span class="kw">replace</span> <span class="ot">`lnf'</span> = - <span class="fu">ln</span>(<span class="fu">exp</span>(<span class="ot">`sigma_u'</span>) + <span class="fu">exp</span>(<span class="ot">`sigma_w'</span>)) <span class="co">///</span></span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>                       + <span class="fu">ln</span>(<span class="fu">exp</span>(<span class="ot">`a'</span>)*<span class="fu">norm</span>(<span class="ot">`c'</span>) + <span class="fu">exp</span>(<span class="ot">`b'</span>)*<span class="fu">norm</span>(<span class="ot">`c'</span>))</span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>该模型的完整程序可以在如下码云仓库中获取：</p>
+<p><a href="https://gitee.com/arlionn/sftt" class="uri">https://gitee.com/arlionn/sftt</a></p>
+<p>参考文献：Yujun, Chang Liu, Christopher F. Parmeter. Two-tier stochastic frontier analysis using Stata. Stata Joural, 2022, forthcoming.</p>
+
+
+</section>
+</section>
+<section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn1"><p>在 Stata 中，可以用 <a href="https://www.stata.com/manuals/rbetareg.pdf">[R] betareg</a>, <a href="https://www.stata.com/manuals/rfracreg.pdf">[R] fracreg</a>, <code>frm</code> 等命令估计此类模型。<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>这里再举一个例子。在股票交易数据中，多数投资者的日内交易量均为零，如 Hoopers et al.&nbsp;(<a href="https://doi.org/10.1093/ej/ueab059">2022</a>)。 Hoopers et al.&nbsp;(<a href="https://doi.org/10.1093/ej/ueab059">2022</a>) 在研究 2008 年 9 月雷曼兄弟倒闭期间的个人股票交易行为时便遇到了这样的问题。他们采用了两种应对方法：一是将交易量数据简化为“0/1”变量(是否买卖)，进而采用线性概率模型 (LPM) 进行估计；二是删除交易量为零的观察值，进而估计对数线性模型，即用 <span class="math inline">\(\mathrm{ln}(y)\)</span> 与其它变量进行 OLS 回归。事实上，相对于上述两步估计法，后文介绍的 Tobit 模型更为合理。<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3"><p>举个通俗的例子，一个苹果，即使咬掉了 1/3，我们仍然能够判断出它是一个苹果，甚至能基于余下的 2/3 大致推测出这个苹果的大小。<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn4"><p>有关此问题的进一步讨论，参见 <a href="https://www.lianxh.cn/news/7a44186e16de7.html">Stata：何时使用线性概率模型而非Logit？</a><a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn5"><p>当然，这两个问题都比较容易解决。比如，可以采用 <span class="math inline">\(\mathrm{ln}(y+0.01)\)</span> 转换来克服第一个问题；采用 GLS 或 WLS 估计来克服第二个问题。<a href="#fnref5" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn6"><p>这里，我们要注意区分 MME 和 AMME 的差别。MME 定义为 <span class="math inline">\(\partial \mathrm{E}\left(y_{i}\,|\,\mathbf{x}_{i}\right) / \partial x_{i l}\)</span>，含义是：某个解释变量对 <span class="math inline">\(y\)</span> 的「<strong>条件期望值</strong>」的影响；而 AMME 则是某个解释变量在各个不同的取值上的 MME 的「<strong>平均值</strong>」。简言之，MME (marginal mean effect) 中的 <strong>mean</strong> 表示「期望」，而 AMME 中的 average 表示「取平均值」。<a href="#fnref6" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn7"><p>需要说明的是，这里并不要求 <span class="math inline">\(f\left(y_{i}\,|\,\mathbf{x}_{i}^{\prime} \beta\right)\)</span> 中包含其它辅助参数。<a href="#fnref7" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn8"><p>换个角度来看，这也是一种降维的方法。如果直接估计 <span class="math inline">\(\theta_i\)</span>，则会有 <span class="math inline">\(N\)</span> 个待估参数，但通过链接函数 <span class="math inline">\(G(\mathbf{x}_i'\beta)\)</span> 我们就只需估计 <span class="math inline">\(k\)</span> (<span class="math inline">\(k\)</span> 是 <span class="math inline">\(\mathbf{x}\)</span> 中包含的解释变量的个数) 个参数。<a href="#fnref8" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn9"><p>在实证分析中，LPM 模型应用非常普遍，主要是原因在于可以在模型中加入各类固定效应以便克服遗漏变量偏误。此时，使用 <code>reghdfe</code> 或 <code>xtreg</code> 命令就可以完成估计。参见 Fisman, R., J. Shi, Y. Wang, W. Wu. 2020. “Social ties and the selection of china’s political elite”. American Economic Review, 110 (6): 1752-1781. <a href="https://doi.org/10.1257/aer.20180841">Link</a>, <a href="http://sci-hub.ren/10.1257/aer.20180841">PDF</a>。<a href="#fnref9" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn10"><p>这是因为，<span class="math inline">\(\operatorname{Var}\left(y_{i}\,|\,\mathbf{x}_{i}\right)=P\left(y_{i} =1\,|\,\mathbf{x}_{i}\right)\left[1-P\left(y_{i}=1\,|\,\mathbf{x}_{i}\right)\right]\)</span> 是 <span class="math inline">\(\mathbf{x}_{i}\)</span> 的函数。<a href="#fnref10" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn11"><p>最常用的方式就是把某些参数表示成一个或多个解释变量的线性组合。后文会通过多个例子来说明这一建模思想。<a href="#fnref11" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn12"><p>之所以设定成指数形式，是为了保证方差非负。<a href="#fnref12" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn13"><p>本例的目的只是为了演示原理。在 Stata 中，借助 <code>ml max</code> 命令，可以实现更快更稳定的估计。<a href="#fnref13" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn14"><p>当然，也可以假设 <span class="math inline">\(u_i\)</span> 和 <span class="math inline">\(w_i\)</span> 服从其它类型的非对称分布， 如半正态分布、伽玛分布或截断型半正态分布。 但 Kumbhakar and Lovell (2000, pp.90) 研究表明， 采用不同的分布假设对效率的衡量并没有太大的影响。<a href="#fnref14" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const disableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'prefetch';
+    }
+  }
+  const enableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'stylesheet';
+    }
+  }
+  const manageTransitions = (selector, allowTransitions) => {
+    const els = window.document.querySelectorAll(selector);
+    for (let i=0; i < els.length; i++) {
+      const el = els[i];
+      if (allowTransitions) {
+        el.classList.remove('notransition');
+      } else {
+        el.classList.add('notransition');
+      }
+    }
+  }
+  const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+    const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+    const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+    let newTheme = '';
+    if(darkModeDefault) {
+      newTheme = isAlternate ? baseTheme : alternateTheme;
+    } else {
+      newTheme = isAlternate ? alternateTheme : baseTheme;
+    }
+    const changeGiscusTheme = () => {
+      // From: https://github.com/giscus/giscus/issues/336
+      const sendMessage = (message) => {
+        const iframe = document.querySelector('iframe.giscus-frame');
+        if (!iframe) return;
+        iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+      }
+      sendMessage({
+        setConfig: {
+          theme: newTheme
+        }
+      });
+    }
+    const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+    if (isGiscussLoaded) {
+      changeGiscusTheme();
+    }
+  }
+  const toggleColorMode = (alternate) => {
+    // Switch the stylesheets
+    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+    manageTransitions('#quarto-margin-sidebar .nav-link', false);
+    if (alternate) {
+      enableStylesheet(alternateStylesheets);
+      for (const sheetNode of alternateStylesheets) {
+        if (sheetNode.id === "quarto-bootstrap") {
+          toggleBodyColorMode(sheetNode);
+        }
+      }
+    } else {
+      disableStylesheet(alternateStylesheets);
+      toggleBodyColorPrimary();
+    }
+    manageTransitions('#quarto-margin-sidebar .nav-link', true);
+    // Switch the toggles
+    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+    for (let i=0; i < toggles.length; i++) {
+      const toggle = toggles[i];
+      if (toggle) {
+        if (alternate) {
+          toggle.classList.add("alternate");     
+        } else {
+          toggle.classList.remove("alternate");
+        }
+      }
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455)
+    if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+      manageTransitions("body", false);
+      window.scrollTo(0, 1);
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        manageTransitions("body", true);
+      }, 40);  
+    }
+  }
+  const isFileUrl = () => { 
+    return window.location.protocol === 'file:';
+  }
+  const hasAlternateSentinel = () => {  
+    let styleSentinel = getColorSchemeSentinel();
+    if (styleSentinel !== null) {
+      return styleSentinel === "alternate";
+    } else {
+      return false;
+    }
+  }
+  const setStyleSentinel = (alternate) => {
+    const value = alternate ? "alternate" : "default";
+    if (!isFileUrl()) {
+      window.localStorage.setItem("quarto-color-scheme", value);
+    } else {
+      localAlternateSentinel = value;
+    }
+  }
+  const getColorSchemeSentinel = () => {
+    if (!isFileUrl()) {
+      const storageValue = window.localStorage.getItem("quarto-color-scheme");
+      return storageValue != null ? storageValue : localAlternateSentinel;
+    } else {
+      return localAlternateSentinel;
+    }
+  }
+  const darkModeDefault = false;
+  let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+  // Dark / light mode switch
+  window.quartoToggleColorScheme = () => {
+    // Read the current dark / light value 
+    let toAlternate = !hasAlternateSentinel();
+    toggleColorMode(toAlternate);
+    setStyleSentinel(toAlternate);
+    toggleGiscusIfUsed(toAlternate, darkModeDefault);
+  };
+  // Ensure there is a toggle, if there isn't float one in the top right
+  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+    const a = window.document.createElement('a');
+    a.classList.add('top-right');
+    a.classList.add('quarto-color-scheme-toggle');
+    a.href = "";
+    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+    const i = window.document.createElement("i");
+    i.classList.add('bi');
+    a.appendChild(i);
+    window.document.body.appendChild(a);
+  }
+  // Switch to dark mode if need be
+  if (hasAlternateSentinel()) {
+    toggleColorMode(true);
+  } else {
+    toggleColorMode(false);
+  }
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp("https:\/\/lianxhcn\.github\.io\/dsfin\/");
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+          // target, if specified
+          link.setAttribute("target", "_blank");
+          if (link.getAttribute("rel") === null) {
+            link.setAttribute("rel", "noopener");
+          }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../../Lecture/reg_ols/ols_visual_3D.html" class="pagination-link" aria-label="二元线性回归的 3D 图示">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">二元线性回归的 3D 图示</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../../Lecture/panel_fe/panel_HDFE.html" class="pagination-link" aria-label="HDFE：多维固定效应">
+        <span class="nav-page-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">HDFE：多维固定效应</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+      &nbsp;
+    </div>   
+    <div class="nav-footer-center">
+<p><a href="https://www.lianxh.cn">lianxh.cn</a></p>
+</div>
+    <div class="nav-footer-right">
+<p>Support: <a href="https://lianxhcn.github.io/quarto_book/">Quarto</a></p>
+</div>
+  </div>
+</footer>
+
+
+
+
+</body></html>

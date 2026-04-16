@@ -138,6 +138,8 @@
 * Goodfellow, I., Bengio, Y., & Courville, A. (2016). Deep Learning. MIT Press. [Link](http://www.deeplearningbook.org). [TensorFlow Exercises](https://www.tensorflow.org/tutorials?hl=zh-cn). [Slides](https://www.deeplearningbook.org/lecture_slides.html). [PDF1](http://alvarestech.com/temp/deep/Deep%20Learning%20by%20Ian%20Goodfellow,%20Yoshua%20Bengio,%20Aaron%20Courville%20%28z-lib.org%29.pdf). [PDF2](https://github.com/janishar/mit-deep-learning-book-pdf/blob/master/complete-book-pdf/Ian%20Goodfellow%2C%20Yoshua%20Bengio%2C%20Aaron%20Courville%20-%20Deep%20Learning%20%282017%2C%20MIT%29.pdf).
   * Note: 深度学习领域的代表性教材，系统覆盖前馈网络、卷积网络、序列模型、优化与概率图模型；配有官网、练习资源与课件。
 
+* Deisenroth, M. P., Faisal, A. A., & Ong, C. S. (2020). Mathematics for Machine Learning. Cambridge University Press. [Link](https://mml-book.github.io/), [PDF](https://mml-book.github.io/book/mml-book.pdf), [GitHub](https://github.com/mml-book/mml-book.github.io)
+
 ### 非参数估计方法
 
 - Wasserman (2006)《All of Nonparametric Statistics》, [PDF](https://www.stat.cmu.edu/~brian/valerie/617-2022/0%20-%20books/2006%20-%20Wasserman%20All%20Of%20Nonparametric%20Statistics.pdf)

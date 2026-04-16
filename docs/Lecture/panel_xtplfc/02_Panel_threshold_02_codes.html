@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>26&nbsp; 静态面板门槛模型：Stata 实操 – 金融数据分析与建模</title>
+<title>28&nbsp; 静态面板门槛模型：Stata 实操 – 金融数据分析与建模</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -151,7 +151,7 @@ window.Quarto = {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../Lecture/panel_xtplfc/01_Panel_threshold_01_theory.html"><strong>面板变系数模型</strong></a></li><li class="breadcrumb-item"><a href="../../Lecture/panel_xtplfc/02_Panel_threshold_02_codes.html"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">静态面板门槛模型：Stata 实操</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../Lecture/panel_xtplfc/01_Panel_threshold_01_theory.html"><strong>面板变系数模型</strong></a></li><li class="breadcrumb-item"><a href="../../Lecture/panel_xtplfc/02_Panel_threshold_02_codes.html"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">静态面板门槛模型：Stata 实操</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -387,7 +387,7 @@ window.Quarto = {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true">
- <span class="menu-text"><strong>面板模型：固定效应</strong></span></a>
+ <span class="menu-text"><strong>线性回归分析</strong></span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -395,14 +395,14 @@ window.Quarto = {
       <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../Lecture/panel_fe/panel_HDFE.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">HDFE：多维固定效应</span></span></a>
+  <a href="../../Lecture/reg_ols/ols_visual_3D.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">二元线性回归的 3D 图示</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../Lecture/panel_fe/panel_IntFE.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">交互固定效应模型</span></span></a>
+  <a href="../../Lecture/reg_logit/probability_models.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">从回归模型到概率模型</span></span></a>
   </div>
 </li>
       </ul>
@@ -410,7 +410,7 @@ window.Quarto = {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="true">
- <span class="menu-text"><strong>面板变系数模型</strong></span></a>
+ <span class="menu-text"><strong>面板模型：固定效应</strong></span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -418,32 +418,14 @@ window.Quarto = {
       <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../Lecture/panel_xtplfc/01_Panel_threshold_01_theory.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">静态面板门槛模型：理论与方法</span></span></a>
+  <a href="../../Lecture/panel_fe/panel_HDFE.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">HDFE：多维固定效应</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../Lecture/panel_xtplfc/02_Panel_threshold_02_codes.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">静态面板门槛模型：Stata 实操</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../../Lecture/panel_xtplfc/04_xtplfc的直观解读及xthreg实现.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">变系数模型</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../../Lecture/panel_xtplfc/05_解读xtplfc的原理_样条基函数.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">样条基函数与变系数模型：Stata 实操</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../../Lecture/panel_xtplfc/Du_2021_EE_中文精要.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">非线性调节效应怎么做？部分线性函数型面板数据模型</span></span></a>
+  <a href="../../Lecture/panel_fe/panel_IntFE.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">交互固定效应模型</span></span></a>
   </div>
 </li>
       </ul>
@@ -451,7 +433,7 @@ window.Quarto = {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="true">
- <span class="menu-text"><strong>受限因变量</strong></span></a>
+ <span class="menu-text"><strong>面板变系数模型</strong></span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -459,14 +441,32 @@ window.Quarto = {
       <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../Lecture/limit_dep_logit/02_a_binary_lec.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">30</span>&nbsp; <span class="chapter-title">二元选择模型</span></span></a>
+  <a href="../../Lecture/panel_xtplfc/01_Panel_threshold_01_theory.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">静态面板门槛模型：理论与方法</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../Lecture/limit_dep_logit/02_b_binary_codes.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">31</span>&nbsp; <span class="chapter-title">代码生成</span></span></a>
+  <a href="../../Lecture/panel_xtplfc/02_Panel_threshold_02_codes.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">静态面板门槛模型：Stata 实操</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/panel_xtplfc/04_xtplfc的直观解读及xthreg实现.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">变系数模型</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/panel_xtplfc/05_解读xtplfc的原理_样条基函数.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">30</span>&nbsp; <span class="chapter-title">样条基函数与变系数模型：Stata 实操</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/panel_xtplfc/Du_2021_EE_中文精要.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">31</span>&nbsp; <span class="chapter-title">非线性调节效应怎么做？部分线性函数型面板数据模型</span></span></a>
   </div>
 </li>
       </ul>
@@ -474,7 +474,7 @@ window.Quarto = {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" role="navigation" aria-expanded="true">
- <span class="menu-text"><strong>文本分析</strong></span></a>
+ <span class="menu-text"><strong>受限因变量</strong></span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -482,26 +482,38 @@ window.Quarto = {
       <ul id="quarto-sidebar-section-8" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../Lecture/text_analysis/lecture_text_01_ailn.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">32</span>&nbsp; <span class="chapter-title">金融文本分析（上）——从文本到结构化数据</span></span></a>
+  <a href="../../Lecture/limit_dep_intro/01_overview_lec.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">32</span>&nbsp; <span class="chapter-title">离散变量和受限因变量：导论</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../Lecture/text_analysis/lecture_text_02_ailn.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">33</span>&nbsp; <span class="chapter-title">金融文本分析（下）——情感分析与文本建模</span></span></a>
+  <a href="../../Lecture/limit_dep_intro/01_overview_codes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">33</span>&nbsp; <span class="chapter-title">附：codes</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../Lecture/text_analysis/lecture_text_analysis_01_claude.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">34</span>&nbsp; <span class="chapter-title">文本数据处理基础</span></span></a>
+  <a href="../../Lecture/limit_dep_logit/02_a_binary_lec.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">34</span>&nbsp; <span class="chapter-title">二元选择模型</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../Lecture/text_analysis/lecture_text_analysis_02_claude.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">35</span>&nbsp; <span class="chapter-title">文本分析：情感分析与主题建模</span></span></a>
+  <a href="../../Lecture/limit_dep_logit/02_b_binary_codes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">35</span>&nbsp; <span class="chapter-title">附：Codes</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/limit_dep_logit/02_c_binary_case.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">36</span>&nbsp; <span class="chapter-title">案例：上市公司债务违约分析</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/reg_logit/probability_models.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">从回归模型到概率模型</span></span></a>
   </div>
 </li>
       </ul>
@@ -509,12 +521,47 @@ window.Quarto = {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-9" role="navigation" aria-expanded="true">
- <span class="menu-text"><strong>附录：Python 提示词</strong></span></a>
+ <span class="menu-text"><strong>文本分析</strong></span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-9" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
       <ul id="quarto-sidebar-section-9" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/text_analysis/lecture_text_01_ailn.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">38</span>&nbsp; <span class="chapter-title">金融文本分析（上）——从文本到结构化数据</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/text_analysis/lecture_text_02_ailn.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">39</span>&nbsp; <span class="chapter-title">金融文本分析（下）——情感分析与文本建模</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/text_analysis/lecture_text_analysis_01_claude.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">40</span>&nbsp; <span class="chapter-title">文本数据处理基础</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/text_analysis/lecture_text_analysis_02_claude.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">41</span>&nbsp; <span class="chapter-title">文本分析：情感分析与主题建模</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-10" role="navigation" aria-expanded="true">
+ <span class="menu-text"><strong>附录：Python 提示词</strong></span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-10" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-10" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../appendix_python/index.html" class="sidebar-item-text sidebar-link">
@@ -581,41 +628,41 @@ window.Quarto = {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#stata-实操xthreg-命令" id="toc-stata-实操xthreg-命令" class="nav-link active" data-scroll-target="#stata-实操xthreg-命令"><span class="header-section-number">26.1</span> Stata 实操：xthreg 命令</a>
+  <li><a href="#stata-实操xthreg-命令" id="toc-stata-实操xthreg-命令" class="nav-link active" data-scroll-target="#stata-实操xthreg-命令"><span class="header-section-number">28.1</span> Stata 实操：xthreg 命令</a>
   <ul class="collapse">
-  <li><a href="#命令安装" id="toc-命令安装" class="nav-link" data-scroll-target="#命令安装"><span class="header-section-number">26.1.1</span> 命令安装</a></li>
-  <li><a href="#命令语法" id="toc-命令语法" class="nav-link" data-scroll-target="#命令语法"><span class="header-section-number">26.1.2</span> 命令语法</a></li>
+  <li><a href="#命令安装" id="toc-命令安装" class="nav-link" data-scroll-target="#命令安装"><span class="header-section-number">28.1.1</span> 命令安装</a></li>
+  <li><a href="#命令语法" id="toc-命令语法" class="nav-link" data-scroll-target="#命令语法"><span class="header-section-number">28.1.2</span> 命令语法</a></li>
   </ul></li>
-  <li><a href="#模拟数据实例" id="toc-模拟数据实例" class="nav-link" data-scroll-target="#模拟数据实例"><span class="header-section-number">26.2</span> 模拟数据实例</a>
+  <li><a href="#模拟数据实例" id="toc-模拟数据实例" class="nav-link" data-scroll-target="#模拟数据实例"><span class="header-section-number">28.2</span> 模拟数据实例</a>
   <ul class="collapse">
-  <li><a href="#单一门槛模型的模拟" id="toc-单一门槛模型的模拟" class="nav-link" data-scroll-target="#单一门槛模型的模拟"><span class="header-section-number">26.2.1</span> 单一门槛模型的模拟</a></li>
-  <li><a href="#初步探索性分析" id="toc-初步探索性分析" class="nav-link" data-scroll-target="#初步探索性分析"><span class="header-section-number">26.2.2</span> 初步探索性分析</a></li>
-  <li><a href="#如何识别门槛值" id="toc-如何识别门槛值" class="nav-link" data-scroll-target="#如何识别门槛值"><span class="header-section-number">26.2.3</span> 如何识别门槛值？</a></li>
-  <li><a href="#进一步搜索门槛值" id="toc-进一步搜索门槛值" class="nav-link" data-scroll-target="#进一步搜索门槛值"><span class="header-section-number">26.2.4</span> 进一步搜索门槛值</a></li>
-  <li><a href="#网格搜索结构突变点" id="toc-网格搜索结构突变点" class="nav-link" data-scroll-target="#网格搜索结构突变点"><span class="header-section-number">26.2.5</span> 网格搜索结构突变点</a></li>
-  <li><a href="#模拟数据分析小结" id="toc-模拟数据分析小结" class="nav-link" data-scroll-target="#模拟数据分析小结"><span class="header-section-number">26.2.6</span> 模拟数据分析小结</a></li>
+  <li><a href="#单一门槛模型的模拟" id="toc-单一门槛模型的模拟" class="nav-link" data-scroll-target="#单一门槛模型的模拟"><span class="header-section-number">28.2.1</span> 单一门槛模型的模拟</a></li>
+  <li><a href="#初步探索性分析" id="toc-初步探索性分析" class="nav-link" data-scroll-target="#初步探索性分析"><span class="header-section-number">28.2.2</span> 初步探索性分析</a></li>
+  <li><a href="#如何识别门槛值" id="toc-如何识别门槛值" class="nav-link" data-scroll-target="#如何识别门槛值"><span class="header-section-number">28.2.3</span> 如何识别门槛值？</a></li>
+  <li><a href="#进一步搜索门槛值" id="toc-进一步搜索门槛值" class="nav-link" data-scroll-target="#进一步搜索门槛值"><span class="header-section-number">28.2.4</span> 进一步搜索门槛值</a></li>
+  <li><a href="#网格搜索结构突变点" id="toc-网格搜索结构突变点" class="nav-link" data-scroll-target="#网格搜索结构突变点"><span class="header-section-number">28.2.5</span> 网格搜索结构突变点</a></li>
+  <li><a href="#模拟数据分析小结" id="toc-模拟数据分析小结" class="nav-link" data-scroll-target="#模拟数据分析小结"><span class="header-section-number">28.2.6</span> 模拟数据分析小结</a></li>
   </ul></li>
-  <li><a href="#案例-1融资约束与投资-现金流敏感性-hansen-1999" id="toc-案例-1融资约束与投资-现金流敏感性-hansen-1999" class="nav-link" data-scroll-target="#案例-1融资约束与投资-现金流敏感性-hansen-1999"><span class="header-section-number">26.3</span> 案例 1：融资约束与投资-现金流敏感性 (Hansen, 1999)</a>
+  <li><a href="#案例-1融资约束与投资-现金流敏感性-hansen-1999" id="toc-案例-1融资约束与投资-现金流敏感性-hansen-1999" class="nav-link" data-scroll-target="#案例-1融资约束与投资-现金流敏感性-hansen-1999"><span class="header-section-number">28.3</span> 案例 1：融资约束与投资-现金流敏感性 (Hansen, 1999)</a>
   <ul class="collapse">
-  <li><a href="#问题背景为什么需要阈值视角" id="toc-问题背景为什么需要阈值视角" class="nav-link" data-scroll-target="#问题背景为什么需要阈值视角"><span class="header-section-number">26.3.1</span> 问题背景：为什么需要“阈值”视角</a></li>
-  <li><a href="#数据与门槛变量选择" id="toc-数据与门槛变量选择" class="nav-link" data-scroll-target="#数据与门槛变量选择"><span class="header-section-number">26.3.2</span> 数据与门槛变量选择</a></li>
-  <li><a href="#stata-实操" id="toc-stata-实操" class="nav-link" data-scroll-target="#stata-实操"><span class="header-section-number">26.3.3</span> Stata 实操</a></li>
+  <li><a href="#问题背景为什么需要阈值视角" id="toc-问题背景为什么需要阈值视角" class="nav-link" data-scroll-target="#问题背景为什么需要阈值视角"><span class="header-section-number">28.3.1</span> 问题背景：为什么需要“阈值”视角</a></li>
+  <li><a href="#数据与门槛变量选择" id="toc-数据与门槛变量选择" class="nav-link" data-scroll-target="#数据与门槛变量选择"><span class="header-section-number">28.3.2</span> 数据与门槛变量选择</a></li>
+  <li><a href="#stata-实操" id="toc-stata-实操" class="nav-link" data-scroll-target="#stata-实操"><span class="header-section-number">28.3.3</span> Stata 实操</a></li>
   </ul></li>
-  <li><a href="#案例-2du-et-al.-2021---环境规制与绿色创新" id="toc-案例-2du-et-al.-2021---环境规制与绿色创新" class="nav-link" data-scroll-target="#案例-2du-et-al.-2021---环境规制与绿色创新"><span class="header-section-number">26.4</span> 案例 2：Du et al.&nbsp;(2021) - 环境规制与绿色创新</a>
+  <li><a href="#案例-2du-et-al.-2021---环境规制与绿色创新" id="toc-案例-2du-et-al.-2021---环境规制与绿色创新" class="nav-link" data-scroll-target="#案例-2du-et-al.-2021---环境规制与绿色创新"><span class="header-section-number">28.4</span> 案例 2：Du et al.&nbsp;(2021) - 环境规制与绿色创新</a>
   <ul class="collapse">
-  <li><a href="#补充门槛值的-lr-检验图示" id="toc-补充门槛值的-lr-检验图示" class="nav-link" data-scroll-target="#补充门槛值的-lr-检验图示"><span class="header-section-number">26.4.1</span> 补充：门槛值的 LR 检验图示</a></li>
-  <li><a href="#稳健性检验" id="toc-稳健性检验" class="nav-link" data-scroll-target="#稳健性检验"><span class="header-section-number">26.4.2</span> 稳健性检验</a></li>
+  <li><a href="#补充门槛值的-lr-检验图示" id="toc-补充门槛值的-lr-检验图示" class="nav-link" data-scroll-target="#补充门槛值的-lr-检验图示"><span class="header-section-number">28.4.1</span> 补充：门槛值的 LR 检验图示</a></li>
+  <li><a href="#稳健性检验" id="toc-稳健性检验" class="nav-link" data-scroll-target="#稳健性检验"><span class="header-section-number">28.4.2</span> 稳健性检验</a></li>
   </ul></li>
-  <li><a href="#参考文献" id="toc-参考文献" class="nav-link" data-scroll-target="#参考文献"><span class="header-section-number">26.5</span> 参考文献</a></li>
+  <li><a href="#参考文献" id="toc-参考文献" class="nav-link" data-scroll-target="#参考文献"><span class="header-section-number">28.5</span> 参考文献</a></li>
   </ul>
 </nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../Lecture/panel_xtplfc/01_Panel_threshold_01_theory.html"><strong>面板变系数模型</strong></a></li><li class="breadcrumb-item"><a href="../../Lecture/panel_xtplfc/02_Panel_threshold_02_codes.html"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">静态面板门槛模型：Stata 实操</span></a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../Lecture/panel_xtplfc/01_Panel_threshold_01_theory.html"><strong>面板变系数模型</strong></a></li><li class="breadcrumb-item"><a href="../../Lecture/panel_xtplfc/02_Panel_threshold_02_codes.html"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">静态面板门槛模型：Stata 实操</span></a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">静态面板门槛模型：Stata 实操</span></h1>
+<h1 class="title"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">静态面板门槛模型：Stata 实操</span></h1>
 </div>
 
 
@@ -660,17 +707,17 @@ window.Quarto = {
 <pre><code>D:\stata\personal\PX_B_2026a\B1_hetPanel\data</code></pre>
 </div>
 </div>
-<section id="stata-实操xthreg-命令" class="level2" data-number="26.1">
-<h2 data-number="26.1" class="anchored" data-anchor-id="stata-实操xthreg-命令"><span class="header-section-number">26.1</span> Stata 实操：xthreg 命令</h2>
-<section id="命令安装" class="level3" data-number="26.1.1">
-<h3 data-number="26.1.1" class="anchored" data-anchor-id="命令安装"><span class="header-section-number">26.1.1</span> 命令安装</h3>
+<section id="stata-实操xthreg-命令" class="level2" data-number="28.1">
+<h2 data-number="28.1" class="anchored" data-anchor-id="stata-实操xthreg-命令"><span class="header-section-number">28.1</span> Stata 实操：xthreg 命令</h2>
+<section id="命令安装" class="level3" data-number="28.1.1">
+<h3 data-number="28.1.1" class="anchored" data-anchor-id="命令安装"><span class="header-section-number">28.1.1</span> 命令安装</h3>
 <p>Wang (2015) 编写的 <code>xthreg</code> 命令实现了 Hansen (1999) 的面板门槛模型：</p>
 <blockquote class="blockquote">
 <p>Wang, Q. (2015). Fixed-Effect Panel Threshold Model using Stata. <em>The Stata Journal</em>, 15(1), 121–134. <a href="https://doi.org/10.1177/1536867X1501500108">Link</a>, <a href="https://journals.sagepub.com/doi/pdf/10.1177/1536867X1501500108">PDF</a>, <a href="https://scholar.google.com/scholar?q=Fixed-Effect+Panel+Threshold+Model+using+Stata">Google Scholar</a>.</p>
 </blockquote>
 </section>
-<section id="命令语法" class="level3" data-number="26.1.2">
-<h3 data-number="26.1.2" class="anchored" data-anchor-id="命令语法"><span class="header-section-number">26.1.2</span> 命令语法</h3>
+<section id="命令语法" class="level3" data-number="28.1.2">
+<h3 data-number="28.1.2" class="anchored" data-anchor-id="命令语法"><span class="header-section-number">28.1.2</span> 命令语法</h3>
 <div class="sourceCode" id="cb3"><pre class="sourceCode stata code-with-copy"><code class="sourceCode stata"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">help</span> xthreg</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="sourceCode" id="cb4"><pre class="sourceCode stata code-with-copy"><code class="sourceCode stata"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>xthreg depvar [indepvars] [<span class="kw">if</span>] [<span class="kw">in</span>] , <span class="co">///</span></span>
@@ -695,16 +742,16 @@ window.Quarto = {
 </ol>
 </section>
 </section>
-<section id="模拟数据实例" class="level2" data-number="26.2">
-<h2 data-number="26.2" class="anchored" data-anchor-id="模拟数据实例"><span class="header-section-number">26.2</span> 模拟数据实例</h2>
+<section id="模拟数据实例" class="level2" data-number="28.2">
+<h2 data-number="28.2" class="anchored" data-anchor-id="模拟数据实例"><span class="header-section-number">28.2</span> 模拟数据实例</h2>
 <p>为了更好地理解面板门槛模型的特性，我们首先使用模拟数据进行演示。这可以帮助我们：</p>
 <ol type="1">
 <li>直观理解门槛效应的含义</li>
 <li>验证估计方法的有效性</li>
 <li>了解不同估计方法的优劣</li>
 </ol>
-<section id="单一门槛模型的模拟" class="level3" data-number="26.2.1">
-<h3 data-number="26.2.1" class="anchored" data-anchor-id="单一门槛模型的模拟"><span class="header-section-number">26.2.1</span> 单一门槛模型的模拟</h3>
+<section id="单一门槛模型的模拟" class="level3" data-number="28.2.1">
+<h3 data-number="28.2.1" class="anchored" data-anchor-id="单一门槛模型的模拟"><span class="header-section-number">28.2.1</span> 单一门槛模型的模拟</h3>
 <p>我们生成一个简单的门槛模型数据：</p>
 <p><span class="math display">\[
 y = \begin{cases}
@@ -743,8 +790,8 @@ file xthreg_sim1.dta saved</code></pre>
 </div>
 </div>
 </section>
-<section id="初步探索性分析" class="level3" data-number="26.2.2">
-<h3 data-number="26.2.2" class="anchored" data-anchor-id="初步探索性分析"><span class="header-section-number">26.2.2</span> 初步探索性分析</h3>
+<section id="初步探索性分析" class="level3" data-number="28.2.2">
+<h3 data-number="28.2.2" class="anchored" data-anchor-id="初步探索性分析"><span class="header-section-number">28.2.2</span> 初步探索性分析</h3>
 <p>对于一个不知道上述数据生成过程 (DGP) 的研究者而言，由于样本中只有三个变量：<span class="math inline">\(y\)</span>、<span class="math inline">\(x\)</span> 和 <span class="math inline">\(t\)</span>。为了探究变量之间的关系，他可能会先绘制 <span class="math inline">\(y\)</span> 和 <span class="math inline">\(t\)</span> 以及 <span class="math inline">\(x\)</span> 之间的散点图，以期初步分析变量之间的关系</p>
 <div id="explore-cell" class="cell" data-execution_count="13">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode stata code-with-copy"><code class="sourceCode stata"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>* 绘制散点图</span>
@@ -778,8 +825,8 @@ file xthreg_sim1.dta saved</code></pre>
 <li>很多读者在执行 <code>twoway scatter y x</code> 之前，预期看到的图形是一个 <code>V 字形</code>，而不是上图中呈现的 <code>X 字形</code>。这是因为，调节 <span class="math inline">\(y\)</span> 和 <span class="math inline">\(x\)</span> 之间的关系的变量是 <span class="math inline">\(t\)</span>，而不是 <span class="math inline">\(x\)</span> 本身。这也是此类问题的复杂之处所在。因此，在使用门槛模型进行分析之前，要对问题的背景有充分的理解，并从理论上确定可能的门槛变量。</li>
 </ul>
 </section>
-<section id="如何识别门槛值" class="level3" data-number="26.2.3">
-<h3 data-number="26.2.3" class="anchored" data-anchor-id="如何识别门槛值"><span class="header-section-number">26.2.3</span> 如何识别门槛值？</h3>
+<section id="如何识别门槛值" class="level3" data-number="28.2.3">
+<h3 data-number="28.2.3" class="anchored" data-anchor-id="如何识别门槛值"><span class="header-section-number">28.2.3</span> 如何识别门槛值？</h3>
 <p>假如我们只知道 <span class="math inline">\(t\)</span> 是门槛变量，它会影响 <span class="math inline">\(y\)</span> 和 <span class="math inline">\(x\)</span> 之间的关系，但并不清楚具体的门槛值是多少。此时，我们可以借助 Chow 检验的思想来初步识别门槛值。</p>
 <p>基本思路是「让数据说话」：我们可以在 <span class="math inline">\(t\)</span> 的取值范围内，尝试不同的切分点，将样本划分为两组，然后引入交叉项来刻画结构变化，进而通过比较模型的拟合效果 (如 RSS) 来识别最佳切分点。</p>
 <p>在正式开始搜索之前，先举个简单的例子。假设我们分析后认为门槛值可能是 <span class="math inline">\(t=40\)</span>，我们可以先进行三次回归，分别对应「全样本回归」、「左侧区间回归 (<span class="math inline">\(t \le 40\)</span>)」和「右侧区间回归 (<span class="math inline">\(t &gt; 40\)</span>)」，以便后续比较。具体代码如下：</p>
@@ -826,8 +873,8 @@ Standard errors in parentheses
 <p>可以看出，使用全样本进行回归时，拟合效果非常差，<code>r2</code> 仅为 0.001，说明模型几乎没有解释力。相比之下，分区间回归的拟合效果明显提升，<code>r2</code> 分别为 0.981 (左侧) 和 0.496 (右侧)。这意味着，存在结构变化，且 <span class="math inline">\(t=40\)</span> 是一个有助于改善模型拟合的门槛值。</p>
 <p>我们也注意到，上述估计结果中 <code>rss</code> (残差平方和) 也有类似的表现，而且其数值变化非常灵敏。因此，在后续的门槛值搜索过程中，我们可以重点关注 <code>rss</code> 指标。之所以不使用 <code>r2</code>，是因为其取值基本上介于 0 和 1 之间，变化范围有限，在密集搜素过程中灵敏度不足。</p>
 </section>
-<section id="进一步搜索门槛值" class="level3" data-number="26.2.4">
-<h3 data-number="26.2.4" class="anchored" data-anchor-id="进一步搜索门槛值"><span class="header-section-number">26.2.4</span> 进一步搜索门槛值</h3>
+<section id="进一步搜索门槛值" class="level3" data-number="28.2.4">
+<h3 data-number="28.2.4" class="anchored" data-anchor-id="进一步搜索门槛值"><span class="header-section-number">28.2.4</span> 进一步搜索门槛值</h3>
 <p>沿着上述分析思路，我们可以在 <span class="math inline">\(t\)</span> 的取值范围内，尝试不同的切分点 (如从 10 到 90，每隔 1 个单位取一个点)，然后计算每个切分点对应的 <code>rss</code>，最终选择 <code>rss</code> 最小的切分点作为门槛值。</p>
 <p>为了将所有观察值都纳入分析，我们在模型中引入虚拟变量 <code>d</code> (用以区分不同区间)，以及 <code>d</code> 与 <span class="math inline">\(x\)</span> 的交叉项，从而构建如下模型 (本例中截距项没有发生变化，故省去 <code>d</code>)：</p>
 <p><span class="math display">\[
@@ -889,8 +936,8 @@ rss          4587.38    4197.44    2557.83     107.69    1520.84
 </div>
 </div>
 </section>
-<section id="网格搜索结构突变点" class="level3" data-number="26.2.5">
-<h3 data-number="26.2.5" class="anchored" data-anchor-id="网格搜索结构突变点"><span class="header-section-number">26.2.5</span> 网格搜索结构突变点</h3>
+<section id="网格搜索结构突变点" class="level3" data-number="28.2.5">
+<h3 data-number="28.2.5" class="anchored" data-anchor-id="网格搜索结构突变点"><span class="header-section-number">28.2.5</span> 网格搜索结构突变点</h3>
 <p>虚拟变量法的结果表明，在真实断点 <span class="math inline">\(t=50\)</span> 处，残差平方和最小，R方和对数似然最大。这启发我们可以通过<strong>网格搜索</strong>的方法来找到最优断点。</p>
 <div id="grid-search-code" class="cell" data-execution_count="17">
 <div class="sourceCode cell-code" id="cb15"><pre class="sourceCode stata code-with-copy"><code class="sourceCode stata"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="kw">use</span> <span class="st">"xthreg_sim1.dta"</span>, <span class="kw">clear</span> </span>
@@ -939,8 +986,8 @@ rss          4587.38    4197.44    2557.83     107.69    1520.84
 </div>
 </div>
 </section>
-<section id="模拟数据分析小结" class="level3" data-number="26.2.6">
-<h3 data-number="26.2.6" class="anchored" data-anchor-id="模拟数据分析小结"><span class="header-section-number">26.2.6</span> 模拟数据分析小结</h3>
+<section id="模拟数据分析小结" class="level3" data-number="28.2.6">
+<h3 data-number="28.2.6" class="anchored" data-anchor-id="模拟数据分析小结"><span class="header-section-number">28.2.6</span> 模拟数据分析小结</h3>
 <p>通过模拟数据分析，我们得到以下重要结论：</p>
 <ol type="1">
 <li><p><strong>全样本回归严重偏误</strong>：忽略门槛效应会导致 <span class="math inline">\(x\)</span> 的系数接近 0，完全无法反映真实关系</p></li>
@@ -956,15 +1003,15 @@ rss          4587.38    4197.44    2557.83     107.69    1520.84
 </ul>
 </section>
 </section>
-<section id="案例-1融资约束与投资-现金流敏感性-hansen-1999" class="level2" data-number="26.3">
-<h2 data-number="26.3" class="anchored" data-anchor-id="案例-1融资约束与投资-现金流敏感性-hansen-1999"><span class="header-section-number">26.3</span> 案例 1：融资约束与投资-现金流敏感性 (Hansen, 1999)</h2>
+<section id="案例-1融资约束与投资-现金流敏感性-hansen-1999" class="level2" data-number="28.3">
+<h2 data-number="28.3" class="anchored" data-anchor-id="案例-1融资约束与投资-现金流敏感性-hansen-1999"><span class="header-section-number">28.3</span> 案例 1：融资约束与投资-现金流敏感性 (Hansen, 1999)</h2>
 <p>本节演示 Hansen (1999) 在提出面板门槛模型的经典论文中展示的一个实证应用。</p>
 <p>中，我们将使用一个实际的面板数据来演示 <code>xthreg</code> 命令的使用。我们使用 Hansen (1999) 原文中的数据，研究投资与融资约束的关系。</p>
 <blockquote class="blockquote">
 <p>Hansen, B. E. (1999). Threshold effects in non-dynamic panels: Estimation, testing, and inference. <em>Journal of Econometrics</em>, 93(2), 345–368. <a href="https://doi.org/10.1016/S0304-4076%2899%2900025-1">Link</a>, <a href="http://sci-hub.ren/10.1016/S0304-4076%2899%2900025-1">PDF</a>, <a href="https://scholar.google.com/scholar?q=Threshold%20effects%20in%20non-dynamic%20panels:%20Estimation,%20testing,%20and%20inference">Google</a>.</p>
 </blockquote>
-<section id="问题背景为什么需要阈值视角" class="level3" data-number="26.3.1">
-<h3 data-number="26.3.1" class="anchored" data-anchor-id="问题背景为什么需要阈值视角"><span class="header-section-number">26.3.1</span> 问题背景：为什么需要“阈值”视角</h3>
+<section id="问题背景为什么需要阈值视角" class="level3" data-number="28.3.1">
+<h3 data-number="28.3.1" class="anchored" data-anchor-id="问题背景为什么需要阈值视角"><span class="header-section-number">28.3.1</span> 问题背景：为什么需要“阈值”视角</h3>
 <p>在经典的完美资本市场框架下，企业的投资支出应主要由投资机会决定。这意味着若我们估计如下投资模型，<span class="math inline">\(cflow\)</span> (内部现金流) 的系数应不显著：</p>
 <p><span class="math display">\[I_{it} = \alpha_i + \beta Q_{i,t-1} + \gamma cflow_{i,t-1} + e_{it}\]</span></p>
 <p>然而，以 Fazzari et al.&nbsp;(1988, 简称 FHP) 为代表的一系列实证研究发现，<span class="math inline">\(cflow\)</span> 对投资支出的影响显著且正向，这一现象被称为 “投资-现金流敏感性” (investment-cash flow sensitivity)。他们用「融资约束假说」来解释这一现象：融资约束导致企业的外部融资成本高于内部融资成本，从而使企业的投资决策受到内部现金流的限制。</p>
@@ -980,8 +1027,8 @@ rss          4587.38    4197.44    2557.83     107.69    1520.84
 </ul>
 <p>对于第一个问题，Hansen (1999) 选用「公司负债率 (<span class="math inline">\(D_{it}\)</span>)」作为阈值变量。他的主要贡献在在于使用面板门槛模型来解决第二个问题，通过搜索让数据自己决定阈值水平。</p>
 </section>
-<section id="数据与门槛变量选择" class="level3" data-number="26.3.2">
-<h3 data-number="26.3.2" class="anchored" data-anchor-id="数据与门槛变量选择"><span class="header-section-number">26.3.2</span> 数据与门槛变量选择</h3>
+<section id="数据与门槛变量选择" class="level3" data-number="28.3.2">
+<h3 data-number="28.3.2" class="anchored" data-anchor-id="数据与门槛变量选择"><span class="header-section-number">28.3.2</span> 数据与门槛变量选择</h3>
 <p>Hansen (1999) 的样本包含 565 家美国制造业企业，时间跨度为 1973-1987 年，共计 15 年的面板数据。他认为 “长期负债/资产比 (<span class="math inline">\(D\)</span>)” 具有一定的外生性，更适用作为「融资约束程度」的衡量指标：<span class="math inline">\(D\)</span> 越大则融资约束越严重。这对应面板门槛模型中的门槛变量。模型设定如下：</p>
 <p><span class="math display">\[
 \begin{align}
@@ -1003,8 +1050,8 @@ I_{it} =\ &amp; \mu_i
 </ul>
 <p>融融资约束假说成立，则可以预期 <span class="math inline">\(\beta_1 &lt; \beta_2 &lt; \beta_3\)</span>，或者至少 <span class="math inline">\(\beta_1 &lt; \beta_3\)</span>。</p>
 </section>
-<section id="stata-实操" class="level3" data-number="26.3.3">
-<h3 data-number="26.3.3" class="anchored" data-anchor-id="stata-实操"><span class="header-section-number">26.3.3</span> Stata 实操</h3>
+<section id="stata-实操" class="level3" data-number="28.3.3">
+<h3 data-number="28.3.3" class="anchored" data-anchor-id="stata-实操"><span class="header-section-number">28.3.3</span> Stata 实操</h3>
 <div id="load-data-cell" class="cell" data-execution_count="34">
 <div class="sourceCode cell-code" id="cb17"><pre class="sourceCode stata code-with-copy"><code class="sourceCode stata"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>*-download <span class="kw">data</span>, <span class="fu">get</span> 'hansen1999.dta'</span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>net <span class="fu">get</span> st0373.pkg, <span class="kw">replace</span> from(http:<span class="co">//www.stata-journal.com/software/sj15-1)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -1163,8 +1210,8 @@ Threshold effect test (bootstrap = 300 300 300):
 -------------------------------------------------------------------------------</code></pre>
 </div>
 </div>
-<section id="门槛值的解释" class="level4" data-number="26.3.3.1">
-<h4 data-number="26.3.3.1" class="anchored" data-anchor-id="门槛值的解释"><span class="header-section-number">26.3.3.1</span> 门槛值的解释</h4>
+<section id="门槛值的解释" class="level4" data-number="28.3.3.1">
+<h4 data-number="28.3.3.1" class="anchored" data-anchor-id="门槛值的解释"><span class="header-section-number">28.3.3.1</span> 门槛值的解释</h4>
 <p>解释 <code>Th-1</code>，<code>Th-21</code>，<code>Th-22</code> 和 <code>Th-3</code> 的含义：</p>
 <ul>
 <li>第一轮搜索：假设只有一个门槛，此时估计的是单一门槛模型，得到的门槛估计值为 <code>Th-1</code></li>
@@ -1177,8 +1224,8 @@ Threshold effect test (bootstrap = 300 300 300):
 </ul>
 <p>就本例而言，<span class="math inline">\(\hat{\gamma}_{21}\)</span> 和 <span class="math inline">\(\hat{\gamma}_{22}\)</span> 分别为 <span class="math inline">\(0.0154\)</span> 和 <span class="math inline">\(0.5418\)</span>，具有明显的区分度。注意，此处的门槛变量为 <code>d1</code> (负债率)，其样本均值为 0.234，最小值为 0，最大值为 4.673。</p>
 </section>
-<section id="门槛效应检验" class="level4" data-number="26.3.3.2">
-<h4 data-number="26.3.3.2" class="anchored" data-anchor-id="门槛效应检验"><span class="header-section-number">26.3.3.2</span> 门槛效应检验</h4>
+<section id="门槛效应检验" class="level4" data-number="28.3.3.2">
+<h4 data-number="28.3.3.2" class="anchored" data-anchor-id="门槛效应检验"><span class="header-section-number">28.3.3.2</span> 门槛效应检验</h4>
 <p>「Threshold effect test」是指对门槛效应的显著性进行检验，这是我们确定模型设定形式的重要依据。我们重点关注 F 统计量(<code>Fstat</code>)及其对应的 p 值(<code>Prob</code>)。结合输出结果，可以按“逐步检验”的思路解读：</p>
 <ul>
 <li><strong>Single threshold</strong>: <code>Fstat = 35.20</code>，<code>Prob = 0.0000</code>，且 <code>Fstat</code> 明显大于 <code>Crit10/Crit5/Crit1</code>。因此，我们可以<strong>拒绝</strong>“无门槛效应(线性模型)”的原假设，说明数据支持<strong>至少存在 1 个门槛</strong>。</li>
@@ -1188,8 +1235,8 @@ Threshold effect test (bootstrap = 300 300 300):
 <p>综合以上三步检验，一个自然的结论是：该样本更支持 <strong>Double threshold model(双门槛, 三个 regime)</strong>。换言之，阈值变量将样本划分为三个区间，在不同区间内，核心解释变量(通常是 <code>rx()</code> 中指定的变量)的边际效应存在显著差异。</p>
 <p>需要说明的是，这里的结果是基于 300 次 Bootstrap 重复得到的。实际应用中，建议使用更多的重复次数(如 1000 次或更多)，以获得更稳定的结果。</p>
 </section>
-<section id="估计双重门槛模型" class="level4" data-number="26.3.3.3">
-<h4 data-number="26.3.3.3" class="anchored" data-anchor-id="估计双重门槛模型"><span class="header-section-number">26.3.3.3</span> 估计双重门槛模型</h4>
+<section id="估计双重门槛模型" class="level4" data-number="28.3.3.3">
+<h4 data-number="28.3.3.3" class="anchored" data-anchor-id="估计双重门槛模型"><span class="header-section-number">28.3.3.3</span> 估计双重门槛模型</h4>
 <p>既然上述检验结果支持双重门槛模型，我们可以进一步估计该模型的参数。具体命令如下：</p>
 <div id="9afa3074" class="cell" data-execution_count="46">
 <div class="sourceCode cell-code" id="cb27"><pre class="sourceCode stata code-with-copy"><code class="sourceCode stata"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>        </span>
@@ -1288,8 +1335,8 @@ t statistics in parentheses
 </div>
 </div>
 </section>
-<section id="图示门槛值及检验结果" class="level4" data-number="26.3.3.4">
-<h4 data-number="26.3.3.4" class="anchored" data-anchor-id="图示门槛值及检验结果"><span class="header-section-number">26.3.3.4</span> 图示门槛值及检验结果</h4>
+<section id="图示门槛值及检验结果" class="level4" data-number="28.3.3.4">
+<h4 data-number="28.3.3.4" class="anchored" data-anchor-id="图示门槛值及检验结果"><span class="header-section-number">28.3.3.4</span> 图示门槛值及检验结果</h4>
 <div id="390b320e" class="cell">
 <div class="sourceCode cell-code" id="cb31"><pre class="sourceCode stata code-with-copy"><code class="sourceCode stata"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>*-提取门槛值, 后续回归分析中会使用</span>
 <span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>  <span class="co">//ereturn list</span></span>
@@ -1373,8 +1420,8 @@ file /Hansen_Fig02.png written in PNG format</code></pre>
 </section>
 </section>
 </section>
-<section id="案例-2du-et-al.-2021---环境规制与绿色创新" class="level2" data-number="26.4">
-<h2 data-number="26.4" class="anchored" data-anchor-id="案例-2du-et-al.-2021---环境规制与绿色创新"><span class="header-section-number">26.4</span> 案例 2：Du et al.&nbsp;(2021) - 环境规制与绿色创新</h2>
+<section id="案例-2du-et-al.-2021---环境规制与绿色创新" class="level2" data-number="28.4">
+<h2 data-number="28.4" class="anchored" data-anchor-id="案例-2du-et-al.-2021---环境规制与绿色创新"><span class="header-section-number">28.4</span> 案例 2：Du et al.&nbsp;(2021) - 环境规制与绿色创新</h2>
 <p>在这案例中，我们使用 Du et al.&nbsp;(2021) 文中的数据来估计面板门槛模型，研究环境规制 (<span class="math inline">\(X\)</span>) 对城市绿色创新 (<span class="math inline">\(Y\)</span>) 的影响。二者的关系受到经济发展水平 (<span class="math inline">\(Z\)</span>) 的调节。</p>
 <blockquote class="blockquote">
 <p>Du, K., Cheng, Y., &amp; Yao, X. (2021). Environmental regulation, green technology innovation, and industrial structure upgrading: The road to the green transformation of Chinese cities. <strong>Energy Economics</strong>, 98, 105247. <a href="https://doi.org/10.1016/j.eneco.2021.105247">Link</a> (rep), <a href="http://sci-hub.ren/10.1016/j.eneco.2021.105247">PDF</a>, <a href="https://ars.els-cdn.com/content/image/1-s2.0-S0140988321001523-mmc1.zip">-Replication-</a>, <a href="https://scholar.google.com/scholar?q=Environmental%20regulation,%20green%20technology%20innovation,%20and%20industrial%20structure%20upgrading:%20The%20road%20to%20the%20green%20transformation%20of%20Chinese%20cities">Google</a>.</p>
@@ -1654,8 +1701,8 @@ Th-22  9.3856125  364.94139         26  9.3738585  9.3910856</code></pre>
 <li>当人均 GDP 较高时 (<span class="math inline">\(\ln GDP &gt; \hat{\lambda}_2\)</span>)，环境规制对绿色技术创新的边际效应显著为正，表明在经济发展水平较高的城市，环境规制能够有效促进绿色技术创新。</li>
 </ul>
 <p>一个直观的解释是，随着经济的发展，城市具备了更强的资源和能力来应对环境规制带来的挑战，从而能够将环境规制转化为推动绿色技术创新的动力。这一发现对于政策制定者具有重要意义，表明在制定环境政策时，应考虑城市的经济发展水平，以实现环境保护与经济增长的双赢目标。</p>
-<section id="补充门槛值的-lr-检验图示" class="level3" data-number="26.4.1">
-<h3 data-number="26.4.1" class="anchored" data-anchor-id="补充门槛值的-lr-检验图示"><span class="header-section-number">26.4.1</span> 补充：门槛值的 LR 检验图示</h3>
+<section id="补充门槛值的-lr-检验图示" class="level3" data-number="28.4.1">
+<h3 data-number="28.4.1" class="anchored" data-anchor-id="补充门槛值的-lr-检验图示"><span class="header-section-number">28.4.1</span> 补充：门槛值的 LR 检验图示</h3>
 <p>这里给出两个门槛值的 LR 图形，以便读者理解门槛值的确定过程。</p>
 <div id="0d3eb008" class="cell" data-execution_count="8">
 <div class="sourceCode cell-code" id="cb54"><pre class="sourceCode stata code-with-copy"><code class="sourceCode stata"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a>*-提取门槛值, 后续回归分析中会使用</span>
@@ -1712,8 +1759,8 @@ file /Du-2021-xthreg-Fig02.png written in PNG format</code></pre>
 </div>
 </div>
 </section>
-<section id="稳健性检验" class="level3" data-number="26.4.2">
-<h3 data-number="26.4.2" class="anchored" data-anchor-id="稳健性检验"><span class="header-section-number">26.4.2</span> 稳健性检验</h3>
+<section id="稳健性检验" class="level3" data-number="28.4.2">
+<h3 data-number="28.4.2" class="anchored" data-anchor-id="稳健性检验"><span class="header-section-number">28.4.2</span> 稳健性检验</h3>
 <p>实证研究中常见的稳健性检验包括：</p>
 <ol type="1">
 <li><strong>更换门槛变量</strong>：尝试其他可能的门槛变量</li>
@@ -1724,8 +1771,8 @@ file /Du-2021-xthreg-Fig02.png written in PNG format</code></pre>
 </ol>
 </section>
 </section>
-<section id="参考文献" class="level2" data-number="26.5">
-<h2 data-number="26.5" class="anchored" data-anchor-id="参考文献"><span class="header-section-number">26.5</span> 参考文献</h2>
+<section id="参考文献" class="level2" data-number="28.5">
+<h2 data-number="28.5" class="anchored" data-anchor-id="参考文献"><span class="header-section-number">28.5</span> 参考文献</h2>
 <ul>
 <li><strong>核心文献</strong>
 <ul>
@@ -2335,12 +2382,12 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
       <a href="../../Lecture/panel_xtplfc/01_Panel_threshold_01_theory.html" class="pagination-link" aria-label="静态面板门槛模型：理论与方法">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">静态面板门槛模型：理论与方法</span></span>
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">静态面板门槛模型：理论与方法</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
       <a href="../../Lecture/panel_xtplfc/04_xtplfc的直观解读及xthreg实现.html" class="pagination-link" aria-label="变系数模型">
-        <span class="nav-page-text"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">变系数模型</span></span> <i class="bi bi-arrow-right-short"></i>
+        <span class="nav-page-text"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">变系数模型</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

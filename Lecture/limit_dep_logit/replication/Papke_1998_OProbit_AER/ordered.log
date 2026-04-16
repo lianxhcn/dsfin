@@ -1,0 +1,161 @@
+-------------------------------------------------------------------------------------------------------------------------
+       log:  K:\docencia_2010_2011\mef\web\docs\ordered.log
+  log type:  text
+ opened on:  17 Feb 2011, 19:43:21
+
+. use pension2.dta;
+
+. * DEPENDENT VARIABLE:  pctstck;
+. * VALUES:     pctstck=0:    MOSTLY BONDS;
+. *               pctstck=50:   MIXED;
+. *               pctstck=100:  MOSTLY STOCKS;
+. tab pctstck;
+
+0=mstbnds,5 |
+0=mixed,100 |
+  =mststcks |      Freq.     Percent        Cum.
+------------+-----------------------------------
+          0 |         64       32.99       32.99
+         50 |         72       37.11       70.10
+        100 |         58       29.90      100.00
+------------+-----------------------------------
+      Total |        194      100.00
+
+. * LINEAR REGRESSION MODEL;
+. *************************;
+. * MODEL SPECIFICATION AND OLS ESTIMATION;
+. reg pctstck choice age educ female finc101 prftshr, robust;
+
+Linear regression                                      Number of obs =     194
+                                                       F(  6,   187) =    3.31
+                                                       Prob > F      =  0.0041
+                                                       R-squared     =  0.0740
+                                                       Root MSE      =  38.833
+
+------------------------------------------------------------------------------
+             |               Robust
+     pctstck |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+      choice |      11.55   5.735955     2.01   0.045     .2345048     22.8655
+         age |   -1.54825   .7315388    -2.12   0.036     -2.99138   -.1051211
+        educ |   .8481931   1.096606     0.77   0.440    -1.315116    3.011503
+      female |   .5601323   6.361896     0.09   0.930    -11.99018    13.11044
+     finc101 |  -18.90966   7.743609    -2.44   0.016    -34.18572   -3.633604
+     prftshr |   14.47008   7.766988     1.86   0.064    -.8520955    29.79226
+       _cons |   121.3505   50.88921     2.38   0.018     20.95981    221.7413
+------------------------------------------------------------------------------
+
+. * ORDERED PROBIT MODEL;
+. **********************;
+. * MODEL SPECIFICATION AND MAXIMUM LIKELIHOOD ESTIMATION;
+. oprobit pctstck choice age educ female finc101 prftshr, robust;
+
+Iteration 0:   log pseudolikelihood = -212.37031
+Iteration 1:   log pseudolikelihood = -204.87474
+Iteration 2:   log pseudolikelihood = -204.86707
+Iteration 3:   log pseudolikelihood = -204.86707
+
+Ordered probit regression                         Number of obs   =        194
+                                                  Wald chi2(6)    =      16.86
+                                                  Prob > chi2     =     0.0098
+Log pseudolikelihood = -204.86707                 Pseudo R2       =     0.0353
+
+------------------------------------------------------------------------------
+             |               Robust
+     pctstck |      Coef.   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+      choice |   .3438541   .1703531     2.02   0.044     .0099681      .67774
+         age |  -.0462824   .0218472    -2.12   0.034    -.0891021   -.0034627
+        educ |   .0278768   .0322381     0.86   0.387    -.0353088    .0910624
+      female |   .0241385   .1859521     0.13   0.897     -.340321     .388598
+     finc101 |  -.5476741   .2339696    -2.34   0.019    -1.006246   -.0891021
+     prftshr |   .4295272   .2362738     1.82   0.069    -.0335609    .8926153
+-------------+----------------------------------------------------------------
+       /cut1 |  -2.601093    1.49527                     -5.531769    .3295826
+       /cut2 |  -1.585344   1.490982                     -4.507615    1.336926
+------------------------------------------------------------------------------
+
+. * ESTIMATED PROBABILITIES (from the ordered probit model);
+. *********************************************************;
+. predict ep0 ep50 ep100;
+(option pr assumed; predicted probabilities)
+
+. * or, alternatively;
+. predict p0, outcome(0);
+(option pr assumed; predicted probability)
+
+. predict p50, outcome(50);
+(option pr assumed; predicted probability)
+
+. predict p100, outcome(100);
+(option pr assumed; predicted probability)
+
+. sum p0 p50 p100;
+
+    Variable |       Obs        Mean    Std. Dev.       Min        Max
+-------------+--------------------------------------------------------
+          p0 |       194    .3300616    .1136821   .0932085   .7688683
+         p50 |       194     .371105     .025009   .1911478   .3884584
+        p100 |       194    .2988334     .104114   .0399838   .6200088
+
+. * AVERAGE MARGINAL EFFECTS (from the ordered probit model);
+. **********************************************************;
+. * Note: The command "mfx" computes the average marginal effects for any kind of model. It is a post estimation command.
+>  Then, it takes the previous estimated model. For nonlinear models, the average marginal effects depend on the whole ve
+> ctor of explanatory variables. Stata computes the effects at the mean values of the regressors;
+. mfx, predict(p outcome(0));
+
+Marginal effects after oprobit
+      y  = Pr(pctstck==0) (predict, p outcome(0))
+         =  .32267363
+------------------------------------------------------------------------------
+variable |      dy/dx    Std. Err.     z    P>|z|  [    95% C.I.   ]      X
+---------+--------------------------------------------------------------------
+  choice*|  -.1250246      .06263   -2.00   0.046   -.24777 -.002279   .613402
+     age |   .0166085      .00792    2.10   0.036   .001095  .032122   60.4845
+    educ |  -.0100036      .01159   -0.86   0.388  -.032729  .012721   13.5722
+  female*|  -.0086719      .06685   -0.13   0.897  -.139691  .122347   .603093
+ finc101*|   .2107444       .0922    2.29   0.022   .030037  .391452   .061856
+ prftshr*|  -.1435603      .07148   -2.01   0.045  -.283654 -.003467   .206186
+------------------------------------------------------------------------------
+(*) dy/dx is for discrete change of dummy variable from 0 to 1
+
+. mfx, predict(p outcome(50));
+
+Marginal effects after oprobit
+      y  = Pr(pctstck==50) (predict, p outcome(50))
+         =  .38805461
+------------------------------------------------------------------------------
+variable |      dy/dx    Std. Err.     z    P>|z|  [    95% C.I.   ]      X
+---------+--------------------------------------------------------------------
+  choice*|   .0104328      .01249    0.84   0.403  -.014042  .034908   .613402
+     age |  -.0007845      .00144   -0.54   0.586  -.003611  .002042   60.4845
+    educ |   .0004725      .00102    0.46   0.644  -.001534  .002479   13.5722
+  female*|   .0004305       .0035    0.12   0.902  -.006422  .007283   .603093
+ finc101*|  -.0522476      .03837   -1.36   0.173  -.127451  .022956   .061856
+ prftshr*|  -.0117362      .02205   -0.53   0.595  -.054948  .031476   .206186
+------------------------------------------------------------------------------
+(*) dy/dx is for discrete change of dummy variable from 0 to 1
+
+. mfx, predict(p outcome(100));
+
+Marginal effects after oprobit
+      y  = Pr(pctstck==100) (predict, p outcome(100))
+         =  .28927176
+------------------------------------------------------------------------------
+variable |      dy/dx    Std. Err.     z    P>|z|  [    95% C.I.   ]      X
+---------+--------------------------------------------------------------------
+  choice*|   .1145918      .05513    2.08   0.038   .006545  .222638   .613402
+     age |   -.015824      .00739   -2.14   0.032  -.030317 -.001331   60.4845
+    educ |   .0095311      .01097    0.87   0.385   -.01197  .031032   13.5722
+  female*|   .0082414      .06342    0.13   0.897  -.116065  .132548   .603093
+ finc101*|  -.1584968      .05766   -2.75   0.006  -.271517 -.045476   .061856
+ prftshr*|   .1552965      .08973    1.73   0.084  -.020576  .331169   .206186
+------------------------------------------------------------------------------
+(*) dy/dx is for discrete change of dummy variable from 0 to 1
+
+. log close;
+       log:  K:\docencia_2010_2011\mef\web\docs\ordered.log
+  log type:  text
+ closed on:  17 Feb 2011, 19:43:26
+-------------------------------------------------------------------------------------------------------------------------

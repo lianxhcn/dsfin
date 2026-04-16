@@ -1,0 +1,47 @@
+-------------------------------------------------------------------------------
+       log:  C:\mitbook\textfiles\pension.des
+  log type:  text
+ opened on:  22 Apr 2002, 11:14:36
+
+. ds
+id        pyears    prftshr   choice    female    married   age       educ     
+finc25    finc35    finc50    finc75    finc100   finc101   wealth89  black    
+stckin89  irain89   pctstck   
+
+. des
+
+Contains data from pension.dta
+  obs:           194                          
+ vars:            19                          3 Dec 2001 14:45
+ size:         6,102 (99.1% of memory free)
+-------------------------------------------------------------------------------
+              storage  display     value
+variable name   type   format      label      variable label
+-------------------------------------------------------------------------------
+id              int    %9.0g                  family identifier
+pyears          byte   %9.0g                  years in pension plan
+prftshr         byte   %9.0g                  =1 if profit sharing plan
+choice          byte   %9.0g                  =1 if can choose method invest
+female          byte   %9.0g                  =1 if female
+married         byte   %9.0g                  =1 if married
+age             byte   %9.0g                  age in years
+educ            byte   %9.0g                  highest grade completed
+finc25          byte   %9.0g                  $15,000 < faminc92 <= $25,000
+finc35          byte   %9.0g                  $25,000 < faminc92 <= $35,000
+finc50          byte   %9.0g                  $35,000 < faminc92 <= $50,000
+finc75          byte   %9.0g                  $50,000 < faminc92 <= $75,000
+finc100         byte   %9.0g                  $75,000 < faminc92 <= $100,000
+finc101         byte   %9.0g                  $100,000 < faminc92
+wealth89        float  %9.0g                  net worth, 1989, $1000
+black           byte   %9.0g                  =1 if black
+stckin89        byte   %9.0g                  =1 if owned stock in 1989
+irain89         byte   %9.0g                  =1 if had IRA in 1989
+pctstck         byte   %9.0g                  0=mstbnds,50=mixed,100=mststcks
+-------------------------------------------------------------------------------
+Sorted by:  id  
+
+. log close
+       log:  C:\mitbook\textfiles\pension.des
+  log type:  text
+ closed on:  22 Apr 2002, 11:14:49
+-------------------------------------------------------------------------------

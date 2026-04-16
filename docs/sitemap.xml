@@ -6,7 +6,7 @@
   </url>
   <url>
     <loc>https://lianxhcn.github.io/dsfin/Lecture/00_intro.html</loc>
-    <lastmod>2026-04-11T15:34:21.354Z</lastmod>
+    <lastmod>2026-04-15T15:06:02.091Z</lastmod>
   </url>
   <url>
     <loc>https://lianxhcn.github.io/dsfin/Lecture/00_setup.html</loc>
@@ -105,6 +105,14 @@
     <lastmod>2026-03-24T16:41:10.781Z</lastmod>
   </url>
   <url>
+    <loc>https://lianxhcn.github.io/dsfin/Lecture/reg_ols/ols_visual_3D.html</loc>
+    <lastmod>2026-04-11T14:04:26.810Z</lastmod>
+  </url>
+  <url>
+    <loc>https://lianxhcn.github.io/dsfin/Lecture/reg_logit/probability_models.html</loc>
+    <lastmod>2026-04-16T00:26:43.411Z</lastmod>
+  </url>
+  <url>
     <loc>https://lianxhcn.github.io/dsfin/Lecture/panel_fe/panel_HDFE.html</loc>
     <lastmod>2026-04-08T17:58:10.989Z</lastmod>
   </url>
@@ -133,12 +141,24 @@
     <lastmod>2026-04-14T09:41:17.855Z</lastmod>
   </url>
   <url>
+    <loc>https://lianxhcn.github.io/dsfin/Lecture/limit_dep_intro/01_overview_lec.html</loc>
+    <lastmod>2026-04-15T18:01:23.304Z</lastmod>
+  </url>
+  <url>
+    <loc>https://lianxhcn.github.io/dsfin/Lecture/limit_dep_intro/01_overview_codes.html</loc>
+    <lastmod>2026-04-15T18:33:41.946Z</lastmod>
+  </url>
+  <url>
     <loc>https://lianxhcn.github.io/dsfin/Lecture/limit_dep_logit/02_a_binary_lec.html</loc>
-    <lastmod>2026-04-14T01:16:45.345Z</lastmod>
+    <lastmod>2026-04-14T09:59:51.477Z</lastmod>
   </url>
   <url>
     <loc>https://lianxhcn.github.io/dsfin/Lecture/limit_dep_logit/02_b_binary_codes.html</loc>
-    <lastmod>2026-04-14T10:00:42.243Z</lastmod>
+    <lastmod>2026-04-15T19:18:59.386Z</lastmod>
+  </url>
+  <url>
+    <loc>https://lianxhcn.github.io/dsfin/Lecture/limit_dep_logit/02_c_binary_case.html</loc>
+    <lastmod>2026-04-15T19:28:24.348Z</lastmod>
   </url>
   <url>
     <loc>https://lianxhcn.github.io/dsfin/Lecture/text_analysis/lecture_text_01_ailn.html</loc>
