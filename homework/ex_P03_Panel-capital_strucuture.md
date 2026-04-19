@@ -453,7 +453,7 @@ xthreg lev npr size tang growth ndts, ///
 
 **② GitHub 仓库 + Quarto Book（选做加分）**
 
-- 仓库名称：**`dshw-03-panel`**，Public
+- 仓库名称：**`dshw--panel`**，Public
 - github 仓库中不能包含原始数据（`data/raw/`），但可以包含清洗后的最终数据（`data/clean/`）和分析结果（`output/`）
 - 将分析整理为 Quarto Book，参考 [Quarto Book 教程](https://lianxhcn.github.io/quarto_book/) 和课程网站的 [_quarto.yml](https://github.com/lianxhcn/dsfin/blob/main/_quarto.yml) 配置
 - 发布至 GitHub Pages，在 README 中提供链接
@@ -501,10 +501,10 @@ __pycache__/
 - Jupyter Notebook
 
 ### GitHub 仓库
-https://github.com/[组长用户名]/dshw-03-panel
+https://github.com/[组长用户名]/dshw--panel
 
 ### Quarto Book（如完成）
-https://[用户名].github.io/dshw-03-panel/
+https://[用户名].github.io/dshw--panel/
 
 ### 主要发现（3-5 条）
 1. ...
