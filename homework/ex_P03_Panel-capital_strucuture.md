@@ -225,13 +225,8 @@ $$Lev_{it} = \alpha_i + \beta \cdot NPR_{it} + \theta \cdot m2\_growth_t + \bold
 
 ```stata
 * 安装包（如未安装）
-* net install regife, from("https://github.com/matthieugomez/regife.jl")
+* ssc install regife, replace
 * 注：regife 为 Stata 外部命令，具体安装方式请参考课堂讲义
-
-regife lev npr m2_growth size tang growth ndts, ///
-    id(stkcd) time(year) ///
-    factors(f, rank(2)) ///
-    vce(robust)
 ```
 
 **与 M1 的比较**：
@@ -286,37 +281,28 @@ reghdfe lev npr npr_soe soe size tang growth ndts, ///
 
 #### 模型 M4：时变系数模型
 
-允许 $\beta$ 随年度变化，检验 NPR-Lev 关系的时序稳定性：
+允许 $\beta$ 随年度变化，检验 NPR-Lev 关系的时序稳定性：(Note: 以下代码只是示例，可能有误，具体实现可能需要根据实际数据结构调整)
 
-**方法一**：逐年交互项
 
 $$Lev_{it} = \alpha_i + \sum_{t=2010}^{2025} \beta_t \cdot (NPR_{it} \times \mathbf{1}[Year=t]) + \boldsymbol{\gamma}' \boldsymbol{X}_{it} + \varepsilon_{it}$$
 
 ```stata
-* 生成年度虚拟变量与 NPR 的交互项
-forvalues y = 2010/2025 {
-    gen npr_y`y' = npr * (year == `y')
-}
-
-reghdfe lev npr_y2010-npr_y2025 size tang growth ndts, ///
+reghdfe lev i.year#c.npr size tang growth ndts, ///
     absorb(stkcd year) vce(cluster stkcd year)
 
 * 提取各年系数和置信区间，绘制时序图
-coefplot, keep(npr_y*) vertical ///
-    yline(0) xlabel(, angle(45)) ///
-    title("NPR 对 Lev 影响的时序变化（β_t）")
+coefplot, ……
+
+* 绘图
+margins, dydx(npr) at(year=(2010(1)2025)) ……
+
+marginsplot, ……
 ```
-
-**方法二**：允许所有系数随时间变化（`xtplfc` 实现）
-
-参考课堂讲义（第 29 章），将 $Year$ 作为调节变量：
-
-$$Lev_{it} = \alpha_i + \beta(Year_t) \cdot NPR_{it} + \boldsymbol{\gamma}(Year_t)' \boldsymbol{X}_{it} + \varepsilon_{it}$$
 
 **呈现要求**：
 
 - 绘制 $\hat{\beta}_t$ 的时序图，加入 95% 置信区间（error band）
-- 在图中标注重要宏观事件（2015 年股灾、2018 年中美贸易摩擦、2020 年 COVID-19、2022 年经济下行）
+- (可选) 在图中标注重要宏观事件（2015 年股灾、2018 年中美贸易摩擦、2020 年 COVID-19、2022 年经济下行）
 - 讨论：NPR-Lev 关系是否发生了结构性变化？转折点大约在哪一年？
 
 #### 模型 M5：函数系数模型（非线性调节效应）
@@ -343,7 +329,17 @@ margins, dydx(npr) at(size=(20(1)30))
 marginsplot, title("β(Size)：NPR 对 Lev 的边际效应随企业规模变化")
 ```
 
-**方法二**：样条函数系数模型（`xtplfc`）
+**方法二**：样条函数系数模型（`xtplfc`）(可选)
+
+该命令的早期版本只支持平衡面板，最新版本已支持非平衡面板。请根据实际数据情况选择使用。
+
+最新版本需要手动下载并安装：<https://gitee.com/kerrydu/xtplfc_Stata/>
+
+```stata
+net install xtplfc, from("https://gitee.com/kerrydu/xtplfc_Stata/raw/master/") replace
+```
+
+上述新版命令无法执行，可以使用 `ssc install xtplfc, replace` 安装旧版，进而使用 `xtbalance` 将数据转换为平衡面板后运行。
 
 参考课堂讲义（第 29、30 章），使用 `xtplfc` 命令，以 $Size$ 为平滑变量估计非参数形式的 $\beta(Size)$：
 
@@ -373,7 +369,7 @@ $$Lev_{it} = \alpha_i + \beta_1 NPR_{it} \cdot \mathbf{1}[Size_{it} \leq \hat{\g
 ```stata
 * 安装包（如未安装）
 * ssc install xtbalance
-* ssc install xthreg
+* findit xthreg // 然后根据提示安装
 
 * 转换为平衡面板
 xtbalance, range(2010 2025)
