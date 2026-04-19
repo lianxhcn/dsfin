@@ -1,22 +1,30 @@
-1. 黄丽蓉 ，[github](<https://github.com/lironghcloud/dshw-p02>)
-3. 曾悦晴 CHAN YUE QING  [github](<https://github.com/yqqq727/dshw-p01>)
-4. 黄彦琦，[github](<https://github.com/huang-yq-7/dshw-p02>)
-5. 吕林翰，[github](<https://github.com/lvlh2/dshw-p02>)
-6. 王卓 ，[github](<https://github.com/Ne0po1itan/dshw-p02>)
-7. 吴思雨 [github](<https://github.com/Freyabot/dshw-p02>)，[website](https://FreyaBot.github.io/dshw-p02/)
-8. 冯晓怡 [github](<https://github.com/tian1ruoyouyi1115/dshw-p01>)
-9.  姬亚楠，[github](<https://github.com/sunzhen123-lab/dshw-p02>)，[website](https://sunzhen123-lab.github.io/dshw-p02/)
-10. 赵颐安 ，[github](<https://github.com/chaoyian/dshw-p02>)
-11. 赵一骏，[github](<https://github.com/real-Yijun/dshw-p01>)，[website](https://real-Yijun.github.io/dshw-p01/)
-12. 苏远 ，[github](<https://github.com/yuansu6/dshw-p01>)
-13. 李贤记 [github](<https://github.com/599625523-sketch/ex_p02/tree/main/dshw-p02>), [website](https://599625523-sketch.github.io/ex_p02/)
-14. 彭远超 ，[github](<https://github.com/PYC1234/dshw-p02>), [website](https://pyc1234.github.io/dshw-p02/)
-15. 姬亚楠，[github](<https://github.com/sunzhen123-lab/dshw-p02>)，[website](https://sunzhen123-lab.github.io/dshw-p02/)
-16. 李泽欣 ，[github](<https://github.com/leoleeism0807/dshw-p02>)，[website](https://sunzhenlab.github.io/dshw-p02/)
-17. 李贤记 [github](<https://github.com/599625sketch/ex_p02/tree/main/dshw-p02>),[website](https://599625sketch.github.io/ex_p02/)
-18. 林川胜[github](<https://github.com/1197325cyber/dshw-p02>), [website](https://1197325cyber.github.io/dshw-p02/)
-21. 梁柏麟，[github](<https://github.com/lilyliang666/dshw-p01>)
-22. 黄丽蓉 ，[github](<https://github.com/lirongh59-cloud/dshw-p02>)
-23. 谢婧怡 ，[github](<https://github.com/xiejingyi25210094/dshw-p02>)
-24. 姚嘉乐YEOJIALE [github](<https://github.com/y-0420/dshw-p01>)
-25. 郭虹辰,[github](<https://github.com/guohcc/dshw-p02>)
+综合评分
+
+论文选题与综述（20 分）：16 分
+基础理论与专门知识（30 分）：21 分
+实践能力与应用价值（35 分）：25 分
+论文写作与学术规范（15 分）：11 分
+
+总分：73 分
+
+结论：论文基本达到相应学术水平要求，建议修改后答辩。
+
+论文评语
+
+作者试图用不完全契约理论来解释内地居民购买香港保险过程中出现的理赔争议，这个切入点本身是有一定想法的。全文从理论、案例到对策，框架基本完整，问题意识也比较明确。比较明显的不足在于，最关键的案例分析部分没有很好撑起来。论文前面花了较多篇幅铺垫“不完全契约”、“剩余控制权配置冲突”等理论，但到了第四章，三个案例更多还是对事件经过的叙述，分析深度不够，和前文理论没有真正结合起来。这样一来，后面的治理建议虽然方向没有大问题，但论证基础显得不够扎实。总体来看，这篇论文有一定应用价值，但核心分析部分还需要进一步加强。
+
+论文的不足之处和建议
+
+1. 第四章建议作为重点修改部分。论文在前文已经明确提出，三个案例要按照“案情还原—争议焦点提炼—剩余控制权配置冲突分析—治理断点诊断”的统一路径展开，但实际写出来更像是三个案例材料的整理，缺少真正的机制分析。建议每个案例都更清楚地回答几个问题：争议发生在什么环节，合同哪里存在不完全性，谁掌握了解释和裁量空间，这种权力配置为什么会引发争议。这样案例部分才能真正起到支撑全文的作用。
+
+2. 文献综述部分也需要大改。现在第二章写了不少理论内容，但整体上还是偏铺陈，和本文自己的研究问题结合得不够紧。建议不要只是把相关理论和文献放进来，而是更明确地围绕本文的问题来梳理：已有研究对跨境保险争议解释到哪一步，哪些地方还没有讲透，本文到底补充了什么。这样会更有针对性，也更能服务后文分析。
+
+3. 第五章的对策建议需要再具体一点。论文提出了前端防范、中端干预、后端保障的三段式协同治理框架，也提到信息披露、销售存证、独立调解机构、监管评级衔接等做法，但目前总体上还是偏原则性。建议进一步说明哪些措施可以优先推进，谁来牵头，现实中可能遇到哪些制度或执行障碍。否则容易给人一种“思路很多，但落地还不够清楚”的感觉。
+
+4. 结构和题目之间还可以再统一一下。比如，每章开头可以加一小段导言，结尾加一个本章小结，这样逻辑会更清楚。另外，题目写的是“理赔争议”，但正文讨论的内容已经延伸到销售误导、复效申请、继承程序等更广义的问题，建议作者再斟酌一下题目和正文范围是否完全对应。
+
+商榷问题
+
+1. 这篇论文研究的重点，到底是狭义的“理赔争议”，还是更广义的“跨境保险合同履行与权利实现争议”？这一点建议再界定清楚。
+
+2. 文中提出的联合调解机制，究竟是作为现有机制的补充，还是作者设想中的主要解决渠道，这一点还可以再明确一些。

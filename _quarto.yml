@@ -198,3 +198,8 @@ crossref:
   # tbl-prefix: ""      # 去掉 Table 文字，只留 (2.1)
   sec-prefix: ""      # 去掉 Section 文字，只留 (2.1)
   chapters: true      # 启用章节编号（2.1、3.2）
+  fig-title: "图"
+  tbl-title: "表"
+  eq-title: "式"
+fig-cap-location: bottom    # New: 图注位置
+

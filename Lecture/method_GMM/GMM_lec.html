@@ -1,0 +1,1660 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.6.39">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="连享会">
+<meta name="dcterms.date" content="2026-04-18">
+
+<title>广义矩估计</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="GMM_lec_files/libs/clipboard/clipboard.min.js"></script>
+<script src="GMM_lec_files/libs/quarto-html/quarto.js"></script>
+<script src="GMM_lec_files/libs/quarto-html/popper.min.js"></script>
+<script src="GMM_lec_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="GMM_lec_files/libs/quarto-html/anchor.min.js"></script>
+<link href="GMM_lec_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="GMM_lec_files/libs/quarto-html/quarto-syntax-highlighting-e26003cea8cd680ca0c55a263523d882.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="GMM_lec_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="GMM_lec_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="GMM_lec_files/libs/bootstrap/bootstrap-a1ff8711b79ae3724c050874b28d9907.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body>
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+<div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+  <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#导言" id="toc-导言" class="nav-link active" data-scroll-target="#导言"><span class="header-section-number">1</span> 导言</a></li>
+  <li><a href="#第-1-节为什么需要-gmm" id="toc-第-1-节为什么需要-gmm" class="nav-link" data-scroll-target="#第-1-节为什么需要-gmm"><span class="header-section-number">2</span> 第 1 节：为什么需要 GMM？</a>
+  <ul class="collapse">
+  <li><a href="#ols-和-mle-的共同前提" id="toc-ols-和-mle-的共同前提" class="nav-link" data-scroll-target="#ols-和-mle-的共同前提"><span class="header-section-number">2.1</span> OLS 和 MLE 的共同前提</a></li>
+  <li><a href="#金融数据的三个典型挑战" id="toc-金融数据的三个典型挑战" class="nav-link" data-scroll-target="#金融数据的三个典型挑战"><span class="header-section-number">2.2</span> 金融数据的三个典型挑战</a></li>
+  <li><a href="#工具变量过度识别时的信息利用问题" id="toc-工具变量过度识别时的信息利用问题" class="nav-link" data-scroll-target="#工具变量过度识别时的信息利用问题"><span class="header-section-number">2.3</span> 工具变量过度识别时的信息利用问题</a></li>
+  <li><a href="#gmm-的三类核心应用场景" id="toc-gmm-的三类核心应用场景" class="nav-link" data-scroll-target="#gmm-的三类核心应用场景"><span class="header-section-number">2.4</span> GMM 的三类核心应用场景</a></li>
+  </ul></li>
+  <li><a href="#第-2-节矩条件gmm-的语言" id="toc-第-2-节矩条件gmm-的语言" class="nav-link" data-scroll-target="#第-2-节矩条件gmm-的语言"><span class="header-section-number">3</span> 第 2 节：矩条件——GMM 的语言</a>
+  <ul class="collapse">
+  <li><a href="#什么是矩条件" id="toc-什么是矩条件" class="nav-link" data-scroll-target="#什么是矩条件"><span class="header-section-number">3.1</span> 什么是矩条件</a></li>
+  <li><a href="#矩条件的三类来源" id="toc-矩条件的三类来源" class="nav-link" data-scroll-target="#矩条件的三类来源"><span class="header-section-number">3.2</span> 矩条件的三类来源</a></li>
+  <li><a href="#从总体矩条件到样本矩偏离" id="toc-从总体矩条件到样本矩偏离" class="nav-link" data-scroll-target="#从总体矩条件到样本矩偏离"><span class="header-section-number">3.3</span> 从总体矩条件到样本矩偏离</a></li>
+  <li><a href="#恰好识别与过度识别的直觉" id="toc-恰好识别与过度识别的直觉" class="nav-link" data-scroll-target="#恰好识别与过度识别的直觉"><span class="header-section-number">3.4</span> 恰好识别与过度识别的直觉</a></li>
+  </ul></li>
+  <li><a href="#第-3-节从矩条件到-gmm-估计量" id="toc-第-3-节从矩条件到-gmm-估计量" class="nav-link" data-scroll-target="#第-3-节从矩条件到-gmm-估计量"><span class="header-section-number">4</span> 第 3 节：从矩条件到 GMM 估计量</a>
+  <ul class="collapse">
+  <li><a href="#gmm-目标函数" id="toc-gmm-目标函数" class="nav-link" data-scroll-target="#gmm-目标函数"><span class="header-section-number">4.1</span> GMM 目标函数</a></li>
+  <li><a href="#线性模型的一阶条件" id="toc-线性模型的一阶条件" class="nav-link" data-scroll-target="#线性模型的一阶条件"><span class="header-section-number">4.2</span> 线性模型的一阶条件</a></li>
+  <li><a href="#单步-gmm-与两步-gmm" id="toc-单步-gmm-与两步-gmm" class="nav-link" data-scroll-target="#单步-gmm-与两步-gmm"><span class="header-section-number">4.3</span> 单步 GMM 与两步 GMM</a></li>
+  </ul></li>
+  <li><a href="#第-4-节2sls-与-gmm提取信息vs.加权偏离" id="toc-第-4-节2sls-与-gmm提取信息vs.加权偏离" class="nav-link" data-scroll-target="#第-4-节2sls-与-gmm提取信息vs.加权偏离"><span class="header-section-number">5</span> 第 4 节：2SLS 与 GMM：「提取信息」vs.「加权偏离」</a>
+  <ul class="collapse">
+  <li><a href="#引入场景" id="toc-引入场景" class="nav-link" data-scroll-target="#引入场景"><span class="header-section-number">5.1</span> 引入场景</a></li>
+  <li><a href="#sls-的逻辑提取信息" id="toc-sls-的逻辑提取信息" class="nav-link" data-scroll-target="#sls-的逻辑提取信息"><span class="header-section-number">5.2</span> 2SLS 的逻辑：「提取信息」</a></li>
+  <li><a href="#gmm-的逻辑加权偏离" id="toc-gmm-的逻辑加权偏离" class="nav-link" data-scroll-target="#gmm-的逻辑加权偏离"><span class="header-section-number">5.3</span> GMM 的逻辑：「加权偏离」</a></li>
+  <li><a href="#异方差下的差异" id="toc-异方差下的差异" class="nav-link" data-scroll-target="#异方差下的差异"><span class="header-section-number">5.4</span> 异方差下的差异</a></li>
+  </ul></li>
+  <li><a href="#第-5-节olsiv2sls-都是-gmm-的特例" id="toc-第-5-节olsiv2sls-都是-gmm-的特例" class="nav-link" data-scroll-target="#第-5-节olsiv2sls-都是-gmm-的特例"><span class="header-section-number">6</span> 第 5 节：OLS、IV、2SLS 都是 GMM 的特例</a>
+  <ul class="collapse">
+  <li><a href="#统一框架表" id="toc-统一框架表" class="nav-link" data-scroll-target="#统一框架表"><span class="header-section-number">6.1</span> 统一框架表</a></li>
+  <li><a href="#恰好识别时的退化" id="toc-恰好识别时的退化" class="nav-link" data-scroll-target="#恰好识别时的退化"><span class="header-section-number">6.2</span> 恰好识别时的退化</a></li>
+  <li><a href="#sls-是-gmm-的特例但不是有效-gmm" id="toc-sls-是-gmm-的特例但不是有效-gmm" class="nav-link" data-scroll-target="#sls-是-gmm-的特例但不是有效-gmm"><span class="header-section-number">6.3</span> 2SLS 是 GMM 的特例（但不是有效 GMM）</a></li>
+  </ul></li>
+  <li><a href="#第-6-节最优权重矩阵与有效性" id="toc-第-6-节最优权重矩阵与有效性" class="nav-link" data-scroll-target="#第-6-节最优权重矩阵与有效性"><span class="header-section-number">7</span> 第 6 节：最优权重矩阵与有效性</a>
+  <ul class="collapse">
+  <li><a href="#为什么权重矩阵影响效率" id="toc-为什么权重矩阵影响效率" class="nav-link" data-scroll-target="#为什么权重矩阵影响效率"><span class="header-section-number">7.1</span> 为什么权重矩阵影响效率</a></li>
+  <li><a href="#最优权重矩阵的定义" id="toc-最优权重矩阵的定义" class="nav-link" data-scroll-target="#最优权重矩阵的定义"><span class="header-section-number">7.2</span> 最优权重矩阵的定义</a></li>
+  <li><a href="#三种场景下的-hats-估计" id="toc-三种场景下的-hats-估计" class="nav-link" data-scroll-target="#三种场景下的-hats-估计"><span class="header-section-number">7.3</span> 三种场景下的 <span class="math inline">\(\hat{S}\)</span> 估计</a></li>
+  <li><a href="#矩选择简要提及" id="toc-矩选择简要提及" class="nav-link" data-scroll-target="#矩选择简要提及"><span class="header-section-number">7.4</span> 矩选择（简要提及）</a></li>
+  </ul></li>
+  <li><a href="#第-7-节推断sargan-检验hansen-j-检验与参数检验" id="toc-第-7-节推断sargan-检验hansen-j-检验与参数检验" class="nav-link" data-scroll-target="#第-7-节推断sargan-检验hansen-j-检验与参数检验"><span class="header-section-number">8</span> 第 7 节：推断：Sargan 检验、Hansen J 检验与参数检验</a>
+  <ul class="collapse">
+  <li><a href="#过度识别检验的直觉" id="toc-过度识别检验的直觉" class="nav-link" data-scroll-target="#过度识别检验的直觉"><span class="header-section-number">8.1</span> 过度识别检验的直觉</a></li>
+  <li><a href="#sargan-检验与-hansen-j-检验对照" id="toc-sargan-检验与-hansen-j-检验对照" class="nav-link" data-scroll-target="#sargan-检验与-hansen-j-检验对照"><span class="header-section-number">8.2</span> Sargan 检验与 Hansen J 检验对照</a></li>
+  <li><a href="#j-检验的局限性" id="toc-j-检验的局限性" class="nav-link" data-scroll-target="#j-检验的局限性"><span class="header-section-number">8.3</span> J 检验的局限性</a></li>
+  <li><a href="#参数的-wald-检验" id="toc-参数的-wald-检验" class="nav-link" data-scroll-target="#参数的-wald-检验"><span class="header-section-number">8.4</span> 参数的 Wald 检验</a></li>
+  <li><a href="#python-软件输出示例" id="toc-python-软件输出示例" class="nav-link" data-scroll-target="#python-软件输出示例"><span class="header-section-number">8.5</span> Python 软件输出示例</a></li>
+  </ul></li>
+  <li><a href="#第-8-节gmm-的核心应用场景" id="toc-第-8-节gmm-的核心应用场景" class="nav-link" data-scroll-target="#第-8-节gmm-的核心应用场景"><span class="header-section-number">9</span> 第 8 节：GMM 的核心应用场景</a>
+  <ul class="collapse">
+  <li><a href="#过度识别-iv-异方差有效-gmm-vs.-2sls" id="toc-过度识别-iv-异方差有效-gmm-vs.-2sls" class="nav-link" data-scroll-target="#过度识别-iv-异方差有效-gmm-vs.-2sls"><span class="header-section-number">9.1</span> 8.1 过度识别 IV + 异方差：有效 GMM vs.&nbsp;2SLS</a></li>
+  <li><a href="#euler-方程非线性-gmm" id="toc-euler-方程非线性-gmm" class="nav-link" data-scroll-target="#euler-方程非线性-gmm"><span class="header-section-number">9.2</span> 8.2 Euler 方程：非线性 GMM</a></li>
+  <li><a href="#多方程矩条件横截面资产定价检验" id="toc-多方程矩条件横截面资产定价检验" class="nav-link" data-scroll-target="#多方程矩条件横截面资产定价检验"><span class="header-section-number">9.3</span> 8.3 多方程矩条件：横截面资产定价检验</a></li>
+  <li><a href="#高阶矩与测量误差erickson-whited-方法" id="toc-高阶矩与测量误差erickson-whited-方法" class="nav-link" data-scroll-target="#高阶矩与测量误差erickson-whited-方法">8.4 高阶矩与测量误差：Erickson-Whited 方法</a></li>
+  </ul></li>
+  <li><a href="#第-9-节使用-gmm-时的常见问题" id="toc-第-9-节使用-gmm-时的常见问题" class="nav-link" data-scroll-target="#第-9-节使用-gmm-时的常见问题"><span class="header-section-number">10</span> 第 9 节：使用 GMM 时的常见问题</a>
+  <ul class="collapse">
+  <li><a href="#弱工具变量最重要" id="toc-弱工具变量最重要" class="nav-link" data-scroll-target="#弱工具变量最重要"><span class="header-section-number">10.1</span> 9.1 弱工具变量（最重要）</a></li>
+  <li><a href="#矩条件数量过多过多工具变量" id="toc-矩条件数量过多过多工具变量" class="nav-link" data-scroll-target="#矩条件数量过多过多工具变量"><span class="header-section-number">10.2</span> 9.2 矩条件数量过多（过多工具变量）</a></li>
+  <li><a href="#j-检验通过-工具变量有效" id="toc-j-检验通过-工具变量有效" class="nav-link" data-scroll-target="#j-检验通过-工具变量有效"><span class="header-section-number">10.3</span> 9.3 J 检验通过 ≠ 工具变量有效</a></li>
+  <li><a href="#异方差下-sargan-vs.-hansen-的混淆" id="toc-异方差下-sargan-vs.-hansen-的混淆" class="nav-link" data-scroll-target="#异方差下-sargan-vs.-hansen-的混淆"><span class="header-section-number">10.4</span> 9.4 异方差下 Sargan vs.&nbsp;Hansen 的混淆</a></li>
+  <li><a href="#两步-gmm-的有限样本扭曲" id="toc-两步-gmm-的有限样本扭曲" class="nav-link" data-scroll-target="#两步-gmm-的有限样本扭曲"><span class="header-section-number">10.5</span> 9.5 两步 GMM 的有限样本扭曲</a></li>
+  <li><a href="#收敛失败非线性-gmm" id="toc-收敛失败非线性-gmm" class="nav-link" data-scroll-target="#收敛失败非线性-gmm"><span class="header-section-number">10.6</span> 9.6 收敛失败（非线性 GMM）</a></li>
+  </ul></li>
+  <li><a href="#第-10-节小结gmm-作为统一估计框架" id="toc-第-10-节小结gmm-作为统一估计框架" class="nav-link" data-scroll-target="#第-10-节小结gmm-作为统一估计框架"><span class="header-section-number">11</span> 第 10 节：小结——GMM 作为统一估计框架</a>
+  <ul class="collapse">
+  <li><a href="#回顾核心主线" id="toc-回顾核心主线" class="nav-link" data-scroll-target="#回顾核心主线"><span class="header-section-number">11.1</span> 回顾核心主线</a></li>
+  <li><a href="#gmm-统一框架总表" id="toc-gmm-统一框架总表" class="nav-link" data-scroll-target="#gmm-统一框架总表"><span class="header-section-number">11.2</span> GMM 统一框架总表</a></li>
+  <li><a href="#gmm-与-mle-的分工" id="toc-gmm-与-mle-的分工" class="nav-link" data-scroll-target="#gmm-与-mle-的分工"><span class="header-section-number">11.3</span> GMM 与 MLE 的分工</a></li>
+  <li><a href="#与后续章节的衔接" id="toc-与后续章节的衔接" class="nav-link" data-scroll-target="#与后续章节的衔接"><span class="header-section-number">11.4</span> 与后续章节的衔接</a></li>
+  </ul></li>
+  </ul>
+</nav>
+</div>
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">广义矩估计</h1>
+<p class="subtitle lead">从矩条件到统一估计框架</p>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>连享会 </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">April 18, 2026</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="导言" class="level2" data-number="1">
+<h2 data-number="1" class="anchored" data-anchor-id="导言"><span class="header-section-number">1</span> 导言</h2>
+<p>学过线性回归的读者都熟悉这样一个核心条件：解释变量与误差项不相关，即 <span class="math inline">\(E(x_i \varepsilon_i) = 0\)</span>。这个条件保证了普通最小二乘法（Ordinary Least Squares, OLS）能一致地估计参数 <span class="math inline">\(\beta\)</span>。当 <span class="math inline">\(x_i\)</span> 是内生变量（endogenous variable）、这个条件不再成立时，我们转而寻找工具变量（Instrumental Variable, IV）<span class="math inline">\(z_i\)</span>，并依赖新的正交条件 <span class="math inline">\(E(z_i \varepsilon_i) = 0\)</span> 来识别参数。</p>
+<p>这两个表达式——<span class="math inline">\(E(x_i \varepsilon_i) = 0\)</span> 和 <span class="math inline">\(E(z_i \varepsilon_i) = 0\)</span>——有一个共同的名字：<strong>矩条件</strong>（moment conditions）。它们都在说同一件事：如果模型设定正确、参数取真值，那么某个函数的期望值应当等于零。换句话说，你在学 OLS 和 IV 的时候，其实已经在用矩条件了，只是当时没有用这个名字。</p>
+<p>当矩条件数量恰好等于参数数量时（<strong>恰好识别</strong>，just-identified），可以直接令样本矩条件等于零求解，这是普通矩估计（Method of Moments, MM）。当矩条件数量多于参数数量时（<strong>过度识别</strong>，over-identified），没有参数能让所有矩条件同时精确为零，只能找到「最接近满足全部矩条件」的解——这就是广义矩估计（Generalized Method of Moments, GMM）要做的事。GMM 进一步通过权重矩阵（weighting matrix）<span class="math inline">\(W\)</span> 给「更稳定的矩条件」更大的权重，这是它优于两阶段最小二乘法（Two-Stage Least Squares, 2SLS）的根本所在。</p>
+<p>还有一个值得预告的洞察：OLS、IV、2SLS 其实都是 GMM 在特定矩条件和特定权重矩阵下的特例。理解了 GMM，就理解了这些方法共同的骨架。在后续应用场景一节中，我们还会看到 GMM 如何处理更复杂的非线性约束——比如消费-资产定价的 Euler 方程，这类场景在无法或不愿指定完整联合分布时，MLE 并不自然，而 GMM 更有优势。</p>
+<p><strong>全章核心主线：</strong></p>
+<p><span class="math display">\[
+\text{矩条件（理论）} \;\rightarrow\; \text{样本矩偏离} \;\rightarrow\; \text{加权最小化} \;\rightarrow\; \hat{\theta}_{GMM} \;\rightarrow\; \text{推断与检验}
+\]</span></p>
+<p>引用核心主线流程图（<a href="#fig-GMM-flowchart" class="quarto-xref">Figure&nbsp;1</a>），并呼应第一句总纲式表述：</p>
+<blockquote class="blockquote">
+<p>GMM 的核心思想是——用「经济理论或统计假设告诉我们应当成立的矩条件」约束参数估计，找出使样本矩条件偏离最小的那组参数值。</p>
+</blockquote>
+<p><strong>本章与 MLE 章节的关系</strong></p>
+<p>本章与前面章节的最大似然估计（MLE）构成 Part III「估计方法」的两种框架：MLE 从「分布」出发，GMM 从「矩条件」出发。两者的分工和比较将在本章末尾的小结中给出。</p>
+<p>建议顺序阅读第 1—7 节；第 8 节是应用场景，可选择性深入；第 9、10 节分别是踩坑指南和总结。</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+本章学完后你能做什么
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li>理解「GMM 只需要矩条件，不需要分布假设」意味着什么</li>
+<li>看懂论文和软件输出中的 Hansen J 统计量、Sargan 统计量、两步 GMM 等术语</li>
+<li>理解 2SLS 与有效 GMM 的本质区别，知道什么时候需要用 GMM 而非 2SLS</li>
+<li>对非线性 GMM（如 Euler 方程估计）和多方程 GMM（如资产定价检验）有基本认识</li>
+</ul>
+</div>
+</div>
+<div id="fig-GMM-flowchart" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-GMM-flowchart-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./figs/method_GMM_fig01_flowchart.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-GMM-flowchart-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+图&nbsp;1: GMM 完整分析链条
+</figcaption>
+</figure>
+</div>
+<hr>
+</section>
+<section id="第-1-节为什么需要-gmm" class="level2" data-number="2">
+<h2 data-number="2" class="anchored" data-anchor-id="第-1-节为什么需要-gmm"><span class="header-section-number">2</span> 第 1 节：为什么需要 GMM？</h2>
+<section id="ols-和-mle-的共同前提" class="level3" data-number="2.1">
+<h3 data-number="2.1" class="anchored" data-anchor-id="ols-和-mle-的共同前提"><span class="header-section-number">2.1</span> OLS 和 MLE 的共同前提</h3>
+<p>OLS 的一致性依赖两个核心假设：解释变量与误差项正交（<span class="math inline">\(E[x_i\varepsilon_i] = 0\)</span>），以及误差同方差（homoskedasticity）。MLE 走得更远，需要完整指定因变量的条件分布——正态、泊松、逻辑斯谛……缺少这个分布假设，似然函数就无从写下。两者都依赖对数据生成过程（data generating process, DGP）的较强先验知识。</p>
+</section>
+<section id="金融数据的三个典型挑战" class="level3" data-number="2.2">
+<h3 data-number="2.2" class="anchored" data-anchor-id="金融数据的三个典型挑战"><span class="header-section-number">2.2</span> 金融数据的三个典型挑战</h3>
+<p>金融数据的特征使上述假设常常可疑：</p>
+<ul>
+<li><strong>厚尾与非正态</strong>：股票收益率、波动率等具有明显的超额峰度（excess kurtosis），正态假设在实证研究中极易失当。</li>
+<li><strong>异方差与序列相关</strong>（serial correlation）：金融时间序列几乎必然存在这两个问题，影响 OLS 和简单 IV 估计的效率。</li>
+<li><strong>非线性理论约束</strong>：资产定价理论给出的是效用最大化一阶条件（如 Euler 方程），本质上是非线性的，无法直接套用 OLS/MLE 的标准框架处理。</li>
+</ul>
+</section>
+<section id="工具变量过度识别时的信息利用问题" class="level3" data-number="2.3">
+<h3 data-number="2.3" class="anchored" data-anchor-id="工具变量过度识别时的信息利用问题"><span class="header-section-number">2.3</span> 工具变量过度识别时的信息利用问题</h3>
+<p>这是引出 GMM 最直接的动机。假设有 1 个内生变量 <span class="math inline">\(x\)</span> 和 3 个工具变量 <span class="math inline">\(z_1, z_2, z_3\)</span>：</p>
+<p>2SLS 的做法是「提取信息」：把三个工具变量合并为一个拟合值 <span class="math inline">\(\hat{x}\)</span>（第一阶段投影），再用 <span class="math inline">\(\hat{x}\)</span> 做第二阶段回归。三个矩条件 <span class="math inline">\(E[z_1'\varepsilon]=0\)</span>，<span class="math inline">\(E[z_2'\varepsilon]=0\)</span>，<span class="math inline">\(E[z_3'\varepsilon]=0\)</span> 被隐式地等权合并进了第一阶段投影中，没有显式区分不同工具变量对应矩条件的稳定性差异。</p>
+<p>GMM 的做法是「加权偏离」：保留三个样本矩条件 <span class="math inline">\(\bar{g}_1\)</span>、<span class="math inline">\(\bar{g}_2\)</span>、<span class="math inline">\(\bar{g}_3\)</span> 的独立性，通过权重矩阵 <span class="math inline">\(W\)</span> 给方差更小、协方差结构更稳定的矩条件更高权重。这样就能系统地利用全部约束信息，而不是把它们「压扁」成一个投影。</p>
+</section>
+<section id="gmm-的三类核心应用场景" class="level3" data-number="2.4">
+<h3 data-number="2.4" class="anchored" data-anchor-id="gmm-的三类核心应用场景"><span class="header-section-number">2.4</span> GMM 的三类核心应用场景</h3>
+<div id="tbl-gmm-scenarios" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-gmm-scenarios-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+表&nbsp;1: GMM 的三类核心应用场景
+</figcaption>
+<div aria-describedby="tbl-gmm-scenarios-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<colgroup>
+<col style="width: 23%">
+<col style="width: 23%">
+<col style="width: 53%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">应用场景</th>
+<th style="text-align: left;">典型例子</th>
+<th style="text-align: left;">GMM 相对其他方法的优势</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">过度识别 IV 估计</td>
+<td style="text-align: left;">多个工具变量的内生性回归</td>
+<td style="text-align: left;">系统利用全部矩条件，异方差下仍有效</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">非线性理论约束</td>
+<td style="text-align: left;">Euler 方程、资产定价一阶条件</td>
+<td style="text-align: left;">不需要分布假设，直接用经济理论构造矩条件</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">多方程联合估计</td>
+<td style="text-align: left;">横截面资产定价检验</td>
+<td style="text-align: left;">利用方程间误差相关性，比逐方程 OLS 更有效</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+本章学习目标
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>本章不要求推导 GMM 的渐近分布，也不要求自己构造权重矩阵。核心目标是理解「GMM 在做什么」以及「为什么要用权重矩阵」，能够读懂软件输出并判断何时应使用 GMM 而非 2SLS。</p>
+</div>
+</div>
+<hr>
+</section>
+</section>
+<section id="第-2-节矩条件gmm-的语言" class="level2" data-number="3">
+<h2 data-number="3" class="anchored" data-anchor-id="第-2-节矩条件gmm-的语言"><span class="header-section-number">3</span> 第 2 节：矩条件——GMM 的语言</h2>
+<section id="什么是矩条件" class="level3" data-number="3.1">
+<h3 data-number="3.1" class="anchored" data-anchor-id="什么是矩条件"><span class="header-section-number">3.1</span> 什么是矩条件</h3>
+<p>「矩条件」的本质，是一句关于总体的声明：「如果模型设定正确、参数取真值，那么某个函数的期望值应该等于零。」</p>
+<p>这个概念比它听起来要亲切得多。你已经熟悉的几个例子：当 OLS 假设误差与解释变量正交时，它在说 <span class="math inline">\(E[x_i\varepsilon_i]=0\)</span>；当 IV 假设工具变量外生时，它在说 <span class="math inline">\(E[z_i\varepsilon_i]=0\)</span>。这两句话都是矩条件——只是你之前用另一种语言描述它们。</p>
+<p>用正式语言：设参数真值为 <span class="math inline">\(\theta_0\)</span>，矩条件写作：</p>
+<p><span id="eq-moment-condition"><span class="math display">\[
+E[g(y_i, x_i, \theta_0)] = 0
+\tag{1}\]</span></span></p>
+<p>其中 <span class="math inline">\(g(\cdot)\)</span> 是我们根据理论或假设构造的函数，其维度（矩条件个数）记为 <span class="math inline">\(q\)</span>，参数个数记为 <span class="math inline">\(k\)</span>。</p>
+</section>
+<section id="矩条件的三类来源" class="level3" data-number="3.2">
+<h3 data-number="3.2" class="anchored" data-anchor-id="矩条件的三类来源"><span class="header-section-number">3.2</span> 矩条件的三类来源</h3>
+<p>这是全章最重要的「认知地图」，后续所有例子都能在这张表中找到位置：</p>
+<div id="tbl-moment-sources" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-moment-sources-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+表&nbsp;2: 矩条件的三类来源
+</figcaption>
+<div aria-describedby="tbl-moment-sources-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">来源类型</th>
+<th style="text-align: left;">典型形式</th>
+<th style="text-align: left;">具体例子</th>
+<th style="text-align: left;">可检验性</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><strong>正交性条件</strong></td>
+<td style="text-align: left;"><span class="math inline">\(E[z_i \varepsilon_i(\theta)] = 0\)</span></td>
+<td style="text-align: left;">工具变量外生性</td>
+<td style="text-align: left;">J 检验（过度识别时）</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>经济理论一阶条件</strong></td>
+<td style="text-align: left;"><span class="math inline">\(E[\beta \cdot MRS_{t+1} \cdot R_{t+1} - 1 \mid z_t] = 0\)</span></td>
+<td style="text-align: left;">Euler 方程、资产定价</td>
+<td style="text-align: left;">J 检验</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><strong>高阶矩约束</strong></td>
+<td style="text-align: left;"><span class="math inline">\(E[(x_i^*)^k \cdot \varepsilon_i] = 0\)</span>（<span class="math inline">\(k \geq 2\)</span>）</td>
+<td style="text-align: left;">测量误差识别（Erickson-Whited）</td>
+<td style="text-align: left;">模型设定检验</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>面板滞后约束</strong></td>
+<td style="text-align: left;"><span class="math inline">\(E[y_{i,t-s} \cdot \Delta\varepsilon_{i,t}] = 0\)</span>（<span class="math inline">\(s \geq 2\)</span>）</td>
+<td style="text-align: left;">动态面板（AB 估计）</td>
+<td style="text-align: left;">Sargan/Hansen</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<p>矩条件不是凭空设定的，而是经济理论或统计假设的直接「翻译」。矩条件的可信度取决于其背后假设的可信度；过度识别检验（J/Sargan 检验）可以帮助检验矩条件的联合有效性，但无法指出哪一个具体矩条件出了问题。</p>
+</section>
+<section id="从总体矩条件到样本矩偏离" class="level3" data-number="3.3">
+<h3 data-number="3.3" class="anchored" data-anchor-id="从总体矩条件到样本矩偏离"><span class="header-section-number">3.3</span> 从总体矩条件到样本矩偏离</h3>
+<p>总体矩条件是关于期望的声明，在有限样本中，我们用<strong>样本均值</strong>来近似期望，定义样本矩条件（sample moment condition）：</p>
+<p><span id="eq-sample-moment"><span class="math display">\[
+\bar{g}(\theta) = \frac{1}{n} \sum_{i=1}^n g(y_i, x_i, \theta)
+\tag{2}\]</span></span></p>
+<p>当参数个数 <span class="math inline">\(k\)</span> 等于矩条件数 <span class="math inline">\(q\)</span> 时（<strong>恰好识别</strong>），可以直接令 <span class="math inline">\(\bar{g}(\hat{\theta}) = 0\)</span> 求解——这就是普通矩估计（MM）。当 <span class="math inline">\(q &gt; k\)</span> 时（<strong>过度识别</strong>），不存在能让所有 <span class="math inline">\(\bar{g}_j(\hat{\theta}) = 0\)</span> 同时成立的参数值，只能退而求其次：找到使「总体偏离」尽量小的参数——<strong>这就是 GMM</strong>。</p>
+</section>
+<section id="恰好识别与过度识别的直觉" class="level3" data-number="3.4">
+<h3 data-number="3.4" class="anchored" data-anchor-id="恰好识别与过度识别的直觉"><span class="header-section-number">3.4</span> 恰好识别与过度识别的直觉</h3>
+<p>用方程组的直觉来理解：恰好识别相当于「用 <span class="math inline">\(k\)</span> 个方程解 <span class="math inline">\(k\)</span> 个未知数」，有唯一解；过度识别相当于「用 <span class="math inline">\(q &gt; k\)</span> 个方程解 <span class="math inline">\(k\)</span> 个未知数」，方程组通常无精确解，只能找「最接近满足所有方程」的参数。这个「最接近」的度量方式，就是权重矩阵 <span class="math inline">\(W\)</span> 的作用。参见 <a href="#fig-GMM-moment-conditions" class="quarto-xref">Figure&nbsp;2</a>。</p>
+<div id="fig-GMM-moment-conditions" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-GMM-moment-conditions-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./figs/method_GMM_fig02_moment_conditions.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-GMM-moment-conditions-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+图&nbsp;2: 矩条件示意图：恰好识别（左）与过度识别（右）的几何含义
+</figcaption>
+</figure>
+</div>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+矩条件的个数不等于约束越多越好
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>矩条件数量越多，理论上提供的信息越多，估计效率越高。但矩条件越多，权重矩阵 <span class="math inline">\(\hat{S}\)</span> 的维度越大，在有限样本中估计误差也越大，可能导致 GMM 估计量严重偏误。这个「信息量 vs.&nbsp;估计精度」的权衡，是 GMM 在实践中最重要的设计选择之一，将在后续章节详细讨论。</p>
+</div>
+</div>
+<hr>
+</section>
+</section>
+<section id="第-3-节从矩条件到-gmm-估计量" class="level2" data-number="4">
+<h2 data-number="4" class="anchored" data-anchor-id="第-3-节从矩条件到-gmm-估计量"><span class="header-section-number">4</span> 第 3 节：从矩条件到 GMM 估计量</h2>
+<section id="gmm-目标函数" class="level3" data-number="4.1">
+<h3 data-number="4.1" class="anchored" data-anchor-id="gmm-目标函数"><span class="header-section-number">4.1</span> GMM 目标函数</h3>
+<p>先用自然语言说清楚「我们在最小化什么」：</p>
+<blockquote class="blockquote">
+<p>GMM 把 <span class="math inline">\(q\)</span> 个样本矩偏离 <span class="math inline">\(\bar{g}_1(\theta), \bar{g}_2(\theta), \ldots, \bar{g}_q(\theta)\)</span> 看作一个向量，然后最小化这个向量的「加权长度」。权重由矩阵 <span class="math inline">\(W\)</span> 决定。</p>
+</blockquote>
+<p>形式化表达：</p>
+<p><span id="eq-gmm-objective"><span class="math display">\[
+\hat{\theta}_{GMM} = \arg\min_\theta \; Q(\theta), \quad Q(\theta) = \bar{g}(\theta)^\top W \bar{g}(\theta)
+\tag{3}\]</span></span></p>
+<p>其中 <span class="math inline">\(W\)</span> 是 <span class="math inline">\(q \times q\)</span> 的正定对称矩阵（positive definite symmetric matrix）。<span class="math inline">\(W\)</span> 的对角元素 <span class="math inline">\(W_{jj}\)</span> 是第 <span class="math inline">\(j\)</span> 个矩条件的权重，<span class="math inline">\(W_{jk}\)</span> 捕捉了矩条件 <span class="math inline">\(j\)</span> 和 <span class="math inline">\(k\)</span> 之间的相互关系。不同的权重矩阵选择，对应不同的估计量。</p>
+<p>参见 <a href="#fig-GMM-objective" class="quarto-xref">Figure&nbsp;3</a>，直观展示了不同权重矩阵 <span class="math inline">\(W\)</span> 下目标函数形状与最优解位置的变化。</p>
+<div id="fig-GMM-objective" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-GMM-objective-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./figs/method_GMM_fig03_gmm_objective.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-GMM-objective-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+图&nbsp;3: GMM 目标函数等高线图：不同权重矩阵下的最优解
+</figcaption>
+</figure>
+</div>
+</section>
+<section id="线性模型的一阶条件" class="level3" data-number="4.2">
+<h3 data-number="4.2" class="anchored" data-anchor-id="线性模型的一阶条件"><span class="header-section-number">4.2</span> 线性模型的一阶条件</h3>
+<p>仅针对线性模型 <span class="math inline">\(y_i = x_i^\top\beta + \varepsilon_i\)</span> 给出一阶条件，帮助建立直觉。这里 <span class="math inline">\(\mathbf{x}_i\)</span> 是 <span class="math inline">\(k \times 1\)</span> 列向量，包含所有解释变量，这一个向量方程等价于 <span class="math inline">\(k\)</span> 个标量方程。</p>
+<p>在给出矩阵表达式之前，先用文字说清楚它的含义：2SLS 估计量的构造分两步——第一步用工具变量对内生变量做回归，提取外生信息；第二步用这一「净化过的」拟合值替换原内生变量做 OLS。GMM 在此基础上进一步允许每个工具变量（矩条件）有不同的权重。</p>
+<p><span id="eq-gmm-linear"><span class="math display">\[
+\hat{\theta}_{GMM} = \left(\mathbf{X}^\top \mathbf{Z} W \mathbf{Z}^\top \mathbf{X}\right)^{-1} \mathbf{X}^\top \mathbf{Z} W \mathbf{Z}^\top \mathbf{y}
+\tag{4}\]</span></span></p>
+<p>括号里的 <span class="math inline">\(\mathbf{X}^\top \mathbf{Z}\)</span> 本质上是在度量内生变量和工具变量之间的相关性强度；<span class="math inline">\(W\)</span> 决定了在汇总这种相关性时，各矩条件的相对权重。当 <span class="math inline">\(W = (\mathbf{Z}^\top \mathbf{Z}/n)^{-1}\)</span> 时，这个公式退化为 2SLS 估计量。</p>
+</section>
+<section id="单步-gmm-与两步-gmm" class="level3" data-number="4.3">
+<h3 data-number="4.3" class="anchored" data-anchor-id="单步-gmm-与两步-gmm"><span class="header-section-number">4.3</span> 单步 GMM 与两步 GMM</h3>
+<p>这是实践中最常见的混淆点：</p>
+<p><strong>A. 单步 GMM</strong>：选定某个固定的 <span class="math inline">\(W\)</span>（通常 <span class="math inline">\(W = I\)</span> 或 <span class="math inline">\(W = (\mathbf{Z}^\top \mathbf{Z}/n)^{-1}\)</span>），直接求解 <a href="#eq-gmm-objective" class="quarto-xref">Equation&nbsp;3</a>。简单，但 <span class="math inline">\(W\)</span> 可能不是最优的，估计效率未必达到理论下界。</p>
+<p><strong>B. 两步 GMM（Two-Step GMM）</strong>：</p>
+<ul>
+<li>第一步：用 <span class="math inline">\(W^{(1)} = I\)</span> 得到初步估计 <span class="math inline">\(\hat{\theta}^{(1)}\)</span></li>
+<li>第二步：用 <span class="math inline">\(\hat{\theta}^{(1)}\)</span> 计算残差，估计最优权重矩阵 <span class="math inline">\(\hat{S}\)</span>，再以 <span class="math inline">\(W^{(2)} = \hat{S}^{-1}\)</span> 重新估计，得到渐近有效的 <span class="math inline">\(\hat{\theta}^{(2)}\)</span></li>
+<li>渐近意义下，两步 GMM 是有效的（达到效率下界）</li>
+</ul>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+两步 GMM 的有限样本问题
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>两步 GMM 在大样本下渐近最优，但在有限样本中，第二步权重矩阵 <span class="math inline">\(\hat{S}\)</span> 的估计误差会传递到参数估计中，可能导致比单步 GMM 更大的有限样本偏误和扭曲的置信区间。在矩条件数量较多时（相对于样本量），这个问题尤为突出。</p>
+<p>实践建议：报告两步 GMM 的系数，但同时用 CUE 或 LIML 做稳健性检验。</p>
+</div>
+</div>
+<hr>
+</section>
+</section>
+<section id="第-4-节2sls-与-gmm提取信息vs.加权偏离" class="level2" data-number="5">
+<h2 data-number="5" class="anchored" data-anchor-id="第-4-节2sls-与-gmm提取信息vs.加权偏离"><span class="header-section-number">5</span> 第 4 节：2SLS 与 GMM：「提取信息」vs.「加权偏离」</h2>
+<section id="引入场景" class="level3" data-number="5.1">
+<h3 data-number="5.1" class="anchored" data-anchor-id="引入场景"><span class="header-section-number">5.1</span> 引入场景</h3>
+<p>设模型：<span class="math inline">\(y_i = x_i \beta + \varepsilon_i\)</span>，<span class="math inline">\(x_i\)</span> 内生，有三个工具变量 <span class="math inline">\(z_1, z_2, z_3\)</span>（过度识别）。这是两种估计方法在应用场景上最常见的对比。本节重点是<strong>权重机制的差异</strong>。</p>
+</section>
+<section id="sls-的逻辑提取信息" class="level3" data-number="5.2">
+<h3 data-number="5.2" class="anchored" data-anchor-id="sls-的逻辑提取信息"><span class="header-section-number">5.2</span> 2SLS 的逻辑：「提取信息」</h3>
+<p>2SLS 的思路是投影（projection）。第一阶段：把内生变量 <span class="math inline">\(x\)</span> 投影到工具变量空间，这一步把 <span class="math inline">\(x\)</span> 中「可以被三个工具变量解释」的外生部分提取出来，得到拟合值 <span class="math inline">\(\hat{x} = \mathbf{Z}(\mathbf{Z}^\top \mathbf{Z})^{-1}\mathbf{Z}^\top x\)</span>。这里 <span class="math inline">\(\mathbf{Z}\)</span> 是以 <span class="math inline">\(z_1, z_2, z_3\)</span> 为列的矩阵，括号里的 <span class="math inline">\(\mathbf{Z}^\top \mathbf{Z}\)</span> 衡量了工具变量彼此之间以及与内生变量的相关结构。第二阶段：用 <span class="math inline">\(\hat{x}\)</span> 替换 <span class="math inline">\(x\)</span> 做 OLS 回归，得到一致的参数估计。</p>
+<p>2SLS 对三个矩条件的处理方式：虽然它假设 <span class="math inline">\(E[z_j'\varepsilon]=0\)</span>（<span class="math inline">\(j=1,2,3\)</span>），但在第一阶段的投影中，三个工具变量被<strong>等权</strong>合并成一个 <span class="math inline">\(\hat{x}\)</span>。从权重矩阵的角度看，2SLS 相当于选择 <span class="math inline">\(W = (\mathbf{Z}^\top \mathbf{Z}/n)^{-1}\)</span>，这只有在误差同方差时才是最优的。</p>
+</section>
+<section id="gmm-的逻辑加权偏离" class="level3" data-number="5.3">
+<h3 data-number="5.3" class="anchored" data-anchor-id="gmm-的逻辑加权偏离"><span class="header-section-number">5.3</span> GMM 的逻辑：「加权偏离」</h3>
+<p>GMM 保留三个矩条件的独立性：</p>
+<p><span class="math display">\[
+\bar{g}_j(\theta) = \frac{1}{n}\sum_{i=1}^n z_{ij} \varepsilon_i(\theta), \quad j = 1, 2, 3
+\]</span></p>
+<p>构造向量 <span class="math inline">\(\bar{g} = (\bar{g}_1, \bar{g}_2, \bar{g}_3)^\top\)</span>，目标函数 <span class="math inline">\(Q(\theta) = \bar{g}^\top W \bar{g}\)</span>。最优权重矩阵 <span class="math inline">\(W = \hat{S}^{-1}\)</span> 的构造（异方差稳健版本）：</p>
+<p><span class="math display">\[
+\hat{S} = \frac{1}{n}\sum_{i=1}^n g_i g_i^\top
+\]</span></p>
+<p><span class="math inline">\(\hat{S}\)</span> 的对角元素 <span class="math inline">\(\hat{S}_{jj}\)</span> 是第 <span class="math inline">\(j\)</span> 个矩条件 <span class="math inline">\(\bar{g}_j\)</span> 的方差估计。<strong>方差越小，说明这个矩条件越稳定，在 <span class="math inline">\(W = \hat{S}^{-1}\)</span> 中对应的权重通常越大。</strong> 参见 <a href="#fig-GMM-2sls-vs-gmm" class="quarto-xref">Figure&nbsp;4</a>。</p>
+<div id="fig-GMM-2sls-vs-gmm" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-GMM-2sls-vs-gmm-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./figs/method_GMM_fig05_2sls_vs_gmm.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-GMM-2sls-vs-gmm-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+图&nbsp;4: 2SLS 等权合并 vs.&nbsp;有效 GMM 差异化加权——权重矩阵的核心作用
+</figcaption>
+</figure>
+</div>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+GMM 权重矩阵的精髓
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>最优权重矩阵 <span class="math inline">\(W = \hat{S}^{-1}\)</span> 的含义是：<strong>方差更小、协方差结构更稳定的矩条件，权重通常更大；越不稳定（方差越大）的矩条件，权重通常更小。</strong></p>
+<p>这是 GMM 相对 2SLS 的根本优势：2SLS 对工具变量等权处理（对应 <span class="math inline">\(W = (\mathbf{Z}^\top \mathbf{Z}/n)^{-1}\)</span>），而有效 GMM 则根据矩条件的方差-协方差结构来分配识别权重。</p>
+</div>
+</div>
+</section>
+<section id="异方差下的差异" class="level3" data-number="5.4">
+<h3 data-number="5.4" class="anchored" data-anchor-id="异方差下的差异"><span class="header-section-number">5.4</span> 异方差下的差异</h3>
+<p>当误差项存在异方差（heteroskedasticity）时，2SLS 仍然一致，但<strong>不是有效的</strong>（efficiency bound 未达到）。有效 GMM 通过 <span class="math inline">\(W = \hat{S}^{-1}\)</span>（异方差稳健的 <span class="math inline">\(\hat{S}\)</span>）达到有效性下界。</p>
+<p><strong>形式化结论</strong>：2SLS 等价于使用 <span class="math inline">\(W = (\mathbf{Z}^\top \mathbf{Z}/n)^{-1}\)</span> 的 GMM，这只是在同方差条件下才与最优权重矩阵一致。</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+什么时候 2SLS = 有效 GMM？
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>当且仅当误差项<strong>同方差且无序列相关</strong>时，<span class="math inline">\(W_{2SLS} = (\mathbf{Z}^\top \mathbf{Z}/n)^{-1}\)</span> 与最优 <span class="math inline">\(\hat{S}^{-1}\)</span> 等价，两者给出相同的参数估计量和标准误。在金融数据中（几乎必然存在异方差），这个条件通常不成立，若研究目标是追求更高效率并统一处理矩条件结构，可进一步考虑两步 GMM。</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+提示词：理解 2SLS 与 GMM 的差异
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<blockquote class="blockquote">
+<p>我有一个内生变量 x 和三个工具变量 z1、z2、z3。请用直觉语言解释：2SLS 如何使用这三个工具变量？有效 GMM 如何使用它们？两者的本质区别是什么？在什么情况下必须用 GMM 而不能用 2SLS？</p>
+</blockquote>
+</div>
+</div>
+<hr>
+</section>
+</section>
+<section id="第-5-节olsiv2sls-都是-gmm-的特例" class="level2" data-number="6">
+<h2 data-number="6" class="anchored" data-anchor-id="第-5-节olsiv2sls-都是-gmm-的特例"><span class="header-section-number">6</span> 第 5 节：OLS、IV、2SLS 都是 GMM 的特例</h2>
+<section id="统一框架表" class="level3" data-number="6.1">
+<h3 data-number="6.1" class="anchored" data-anchor-id="统一框架表"><span class="header-section-number">6.1</span> 统一框架表</h3>
+<p>先给表格，后给文字说明——表格是这一节结构层面的核心：</p>
+<div id="tbl-unified-framework" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-unified-framework-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+表&nbsp;3: OLS、IV、2SLS 与 GMM 的统一框架
+</figcaption>
+<div aria-describedby="tbl-unified-framework-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<colgroup>
+<col style="width: 12%">
+<col style="width: 35%">
+<col style="width: 15%">
+<col style="width: 21%">
+<col style="width: 15%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">估计量</th>
+<th style="text-align: left;">矩条件 <span class="math inline">\(g_i(\theta)\)</span></th>
+<th style="text-align: left;">识别状态</th>
+<th style="text-align: left;">权重矩阵 <span class="math inline">\(W\)</span></th>
+<th style="text-align: left;">等价条件</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">OLS</td>
+<td style="text-align: left;"><span class="math inline">\(\mathbf{x}_i (y_i - \mathbf{x}_i^\top \beta)\)</span></td>
+<td style="text-align: left;">恰好识别（<span class="math inline">\(q=k\)</span>）</td>
+<td style="text-align: left;">退化（无需）</td>
+<td style="text-align: left;"><span class="math inline">\(\mathbf{x}_i\)</span> 外生</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">IV（恰好识别）</td>
+<td style="text-align: left;"><span class="math inline">\(z_i (y_i - x_i^\top \beta)\)</span></td>
+<td style="text-align: left;">恰好识别（<span class="math inline">\(q=k\)</span>）</td>
+<td style="text-align: left;">退化（无需）</td>
+<td style="text-align: left;"><span class="math inline">\(z_i\)</span> 外生且相关</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">2SLS</td>
+<td style="text-align: left;"><span class="math inline">\(\mathbf{z}_i (y_i - \mathbf{x}_i^\top \beta)\)</span></td>
+<td style="text-align: left;">过度识别（<span class="math inline">\(q&gt;k\)</span>）</td>
+<td style="text-align: left;"><span class="math inline">\((\mathbf{Z}^\top \mathbf{Z}/n)^{-1}\)</span></td>
+<td style="text-align: left;">误差同方差</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">有效 GMM</td>
+<td style="text-align: left;"><span class="math inline">\(\mathbf{z}_i (y_i - \mathbf{x}_i^\top \beta)\)</span></td>
+<td style="text-align: left;">过度识别（<span class="math inline">\(q&gt;k\)</span>）</td>
+<td style="text-align: left;"><span class="math inline">\(\hat{S}^{-1}\)</span></td>
+<td style="text-align: left;">无额外假设</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<p>这里 <span class="math inline">\(\mathbf{x}_i\)</span> 是 <span class="math inline">\(k \times 1\)</span> 列向量，包含所有解释变量；这一个向量方程等价于 <span class="math inline">\(k\)</span> 个标量方程。<span class="math inline">\(\mathbf{z}_i\)</span> 是 <span class="math inline">\(q \times 1\)</span> 工具变量向量，<span class="math inline">\(q \geq k\)</span>。</p>
+</section>
+<section id="恰好识别时的退化" class="level3" data-number="6.2">
+<h3 data-number="6.2" class="anchored" data-anchor-id="恰好识别时的退化"><span class="header-section-number">6.2</span> 恰好识别时的退化</h3>
+<p>当 <span class="math inline">\(q=k\)</span> 时，GMM 目标函数可以精确为零，权重矩阵不影响估计结果——因为无论 <span class="math inline">\(W\)</span> 取何值，使 <span class="math inline">\(\bar{g}(\hat{\theta})=0\)</span> 的解唯一（只要模型可识别）。因此 OLS 和恰好识别的 IV，都是 GMM 的特例，权重矩阵的选择无关紧要。这一点说明：GMM 框架的「新东西」全部体现在过度识别的情形中。</p>
+</section>
+<section id="sls-是-gmm-的特例但不是有效-gmm" class="level3" data-number="6.3">
+<h3 data-number="6.3" class="anchored" data-anchor-id="sls-是-gmm-的特例但不是有效-gmm"><span class="header-section-number">6.3</span> 2SLS 是 GMM 的特例（但不是有效 GMM）</h3>
+<p>过度识别时，权重矩阵的选择影响估计效率。2SLS 选用的 <span class="math inline">\(W = (\mathbf{Z}^\top \mathbf{Z}/n)^{-1}\)</span>，只在同方差条件下与最优权重等价。因此，2SLS 是 GMM 的一个特例，但在一般情形下不是有效（最优）的 GMM。</p>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+核心结论：OLS/IV/2SLS 都是 GMM 特例
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>OLS、IV、2SLS 都是 GMM 在特定矩条件和特定权重矩阵下的特例。GMM 是更一般的框架：通过选择不同的矩条件函数 <span class="math inline">\(g(\cdot)\)</span> 和权重矩阵 <span class="math inline">\(W\)</span>，可以「生成」出各种不同的经典估计量。OLS、IV、2SLS 都是 GMM 在特定矩条件和特定权重矩阵下的特例；理解了权重矩阵的构造逻辑，就理解了 GMM 相对 2SLS 的根本优势所在。</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+提示词：验证 OLS 是 GMM 特例
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<blockquote class="blockquote">
+<p>请用 Python 生成一组简单线性回归数据（n=200，无内生性问题），分别用 OLS 和以 <span class="math inline">\(W=I\)</span> 的 GMM（矩条件为 <span class="math inline">\(E[x_i \varepsilon_i]=0\)</span>）估计参数，验证两者给出相同的系数估计值。</p>
+</blockquote>
+</div>
+</div>
+<hr>
+</section>
+</section>
+<section id="第-6-节最优权重矩阵与有效性" class="level2" data-number="7">
+<h2 data-number="7" class="anchored" data-anchor-id="第-6-节最优权重矩阵与有效性"><span class="header-section-number">7</span> 第 6 节：最优权重矩阵与有效性</h2>
+<section id="为什么权重矩阵影响效率" class="level3" data-number="7.1">
+<h3 data-number="7.1" class="anchored" data-anchor-id="为什么权重矩阵影响效率"><span class="header-section-number">7.1</span> 为什么权重矩阵影响效率</h3>
+<p>类比加权最小二乘法（Weighted Least Squares, WLS）：WLS 给「精度更高的观测」更大权重，从而比 OLS 更有效。GMM 的最优权重矩阵做的是类似的事：给「更稳定（方差更小）的矩条件」更大权重，使最终参数估计量的方差达到理论下界。参见 <a href="#fig-GMM-efficiency" class="quarto-xref">Figure&nbsp;5</a>，通过蒙特卡洛模拟展示了异方差场景下各估计量的有限样本分布差异。</p>
+<div id="fig-GMM-efficiency" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-GMM-efficiency-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./figs/method_GMM_fig04_efficiency.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-GMM-efficiency-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+图&nbsp;5: 不同估计量的有限样本分布对比（蒙特卡洛模拟，<span class="math inline">\(n=200\)</span>，异方差场景）
+</figcaption>
+</figure>
+</div>
+</section>
+<section id="最优权重矩阵的定义" class="level3" data-number="7.2">
+<h3 data-number="7.2" class="anchored" data-anchor-id="最优权重矩阵的定义"><span class="header-section-number">7.2</span> 最优权重矩阵的定义</h3>
+<p><span class="math inline">\(\hat{S}\)</span> 是矩条件的<strong>长期方差矩阵</strong>（long-run variance matrix）的一致估计量。这里 <span class="math inline">\(S\)</span> 是一个 <span class="math inline">\(q \times q\)</span> 矩阵，它的 <span class="math inline">\((j, k)\)</span> 元素捕捉了矩条件 <span class="math inline">\(j\)</span> 和矩条件 <span class="math inline">\(k\)</span> 之间的协方差结构（包括序列相关）：</p>
+<p><span id="eq-S-matrix"><span class="math display">\[
+S = \lim_{n\to\infty} n \cdot \text{Var}[\bar{g}(\theta_0)] = \sum_{j=-\infty}^{\infty} E\left[g_i g_{i-j}^\top\right]
+\tag{5}\]</span></span></p>
+<p>直觉上：<span class="math inline">\(S\)</span> 是所有矩条件的「噪声」度量，<span class="math inline">\(S^{-1}\)</span> 是最优权重矩阵——噪声越小（方差越小）的矩条件，得到越大的权重。</p>
+</section>
+<section id="三种场景下的-hats-估计" class="level3" data-number="7.3">
+<h3 data-number="7.3" class="anchored" data-anchor-id="三种场景下的-hats-估计"><span class="header-section-number">7.3</span> 三种场景下的 <span class="math inline">\(\hat{S}\)</span> 估计</h3>
+<div id="tbl-S-estimation" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-S-estimation-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+表&nbsp;4: 三种场景下的最优权重矩阵估计
+</figcaption>
+<div aria-describedby="tbl-S-estimation-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<colgroup>
+<col style="width: 19%">
+<col style="width: 41%">
+<col style="width: 39%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">误差假设</th>
+<th style="text-align: left;"><span class="math inline">\(\hat{S}\)</span> 的估计方式</th>
+<th style="text-align: left;">Python/Stata 对应</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">同方差、无序列相关</td>
+<td style="text-align: left;"><span class="math inline">\(\hat{S} = \hat{\sigma}^2 (\mathbf{Z}^\top \mathbf{Z} / n)\)</span></td>
+<td style="text-align: left;">默认选项，2SLS 等价</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">异方差、无序列相关</td>
+<td style="text-align: left;"><span class="math inline">\(\hat{S} = \frac{1}{n}\sum_i \hat{\varepsilon}_i^2 z_i z_i^\top\)</span>（White）</td>
+<td style="text-align: left;"><code>cov_type='robust'</code></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">异方差 + 序列相关</td>
+<td style="text-align: left;">Newey-West HAC 估计量（截断滞后 <span class="math inline">\(M\)</span>）</td>
+<td style="text-align: left;"><code>cov_type='HAC'</code>，<code>nlags=M</code></td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+矩条件不是越多越好
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>随着矩条件数量 <span class="math inline">\(q\)</span> 增加，有效 GMM 的渐近效率提高，但有限样本偏误也急剧增大——因为 <span class="math inline">\(q \times q\)</span> 的权重矩阵 <span class="math inline">\(\hat{S}\)</span> 需要更多数据才能估计准确。经验规则：矩条件数量与样本量之比 <span class="math inline">\(q/n\)</span> 不宜超过 0.1。当工具变量数量较多时，可考虑使用 LIML 或 Fuller 估计量作为替代，它们对过多工具变量的有限样本偏误更鲁棒。</p>
+</div>
+</div>
+</section>
+<section id="矩选择简要提及" class="level3" data-number="7.4">
+<h3 data-number="7.4" class="anchored" data-anchor-id="矩选择简要提及"><span class="header-section-number">7.4</span> 矩选择（简要提及）</h3>
+<p>Andrews (1999) 提出了类似信息准则的矩选择准则（GMM Moment Selection Criteria），用于在候选矩条件中选择最优子集。在 Stata 中可通过 <code>ivreg2</code> 结合 <code>endog()</code> 选项实现部分功能；Python 的 <code>linearmodels</code> 暂无内置实现，但可手动构造。</p>
+<hr>
+</section>
+</section>
+<section id="第-7-节推断sargan-检验hansen-j-检验与参数检验" class="level2" data-number="8">
+<h2 data-number="8" class="anchored" data-anchor-id="第-7-节推断sargan-检验hansen-j-检验与参数检验"><span class="header-section-number">8</span> 第 7 节：推断：Sargan 检验、Hansen J 检验与参数检验</h2>
+<section id="过度识别检验的直觉" class="level3" data-number="8.1">
+<h3 data-number="8.1" class="anchored" data-anchor-id="过度识别检验的直觉"><span class="header-section-number">8.1</span> 过度识别检验的直觉</h3>
+<p>先建立直觉，再给公式：如果所有矩条件都是正确设定的（所有工具变量都是外生的），那么在大样本中，样本矩偏离 <span class="math inline">\(\bar{g}(\hat{\theta}_{GMM})\)</span> 应当接近于零。如果 <span class="math inline">\(\bar{g}\)</span> 在统计意义上显著不为零，说明某些矩条件可能不成立——也就是说，某些「工具变量」可能并不真正外生。</p>
+<p>两种检验统计量的形式相同：</p>
+<p><span id="eq-J-stat"><span class="math display">\[
+J = n \cdot \bar{g}(\hat{\theta})^\top \hat{W} \bar{g}(\hat{\theta}) \sim \chi^2(q - k) \quad \text{（零假设下）}
+\tag{6}\]</span></span></p>
+<p>自由度 <span class="math inline">\(q-k\)</span> = 矩条件数 <span class="math inline">\(-\)</span> 参数数 = 过度识别数量（degrees of overidentification）。</p>
+</section>
+<section id="sargan-检验与-hansen-j-检验对照" class="level3" data-number="8.2">
+<h3 data-number="8.2" class="anchored" data-anchor-id="sargan-检验与-hansen-j-检验对照"><span class="header-section-number">8.2</span> Sargan 检验与 Hansen J 检验对照</h3>
+<div id="tbl-sargan-hansen" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-sargan-hansen-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+表&nbsp;5: Sargan 检验与 Hansen J 检验对照
+</figcaption>
+<div aria-describedby="tbl-sargan-hansen-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<colgroup>
+<col style="width: 21%">
+<col style="width: 26%">
+<col style="width: 29%">
+<col style="width: 21%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">检验名称</th>
+<th style="text-align: left;">权重矩阵假设</th>
+<th style="text-align: left;">推荐适用场景</th>
+<th style="text-align: left;">主要缺陷</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><strong>Sargan 检验</strong></td>
+<td style="text-align: left;"><span class="math inline">\(\hat{W} = \hat{\sigma}^2 (\mathbf{Z}^\top \mathbf{Z} / n)^{-1}\)</span>（同方差）</td>
+<td style="text-align: left;">误差项同方差、无序列相关</td>
+<td style="text-align: left;">异方差下<strong>过度拒绝</strong>，检验扭曲</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>Hansen J 检验</strong></td>
+<td style="text-align: left;"><span class="math inline">\(\hat{W} = \hat{S}^{-1}\)</span>（HAC 稳健）</td>
+<td style="text-align: left;">异方差、序列相关均适用</td>
+<td style="text-align: left;">弱工具变量时检验<strong>力不足</strong>（过于宽容）</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<p><strong>经验法则（有文献依据）：</strong></p>
+<ul>
+<li>凡使用异方差稳健标准误（<code>robust</code>），必须配套 Hansen J，Sargan 统计量在此场景下失去意义（Baum, Schaffer &amp; Stillman, 2003）。</li>
+<li>矩条件数量过多时，Hansen J 检验力会显著下降（Roodman, 2009）。</li>
+<li>Difference-in-Sargan（C 检验）可用于检验额外矩条件子集的有效性：<span class="math inline">\(D = J_{\text{限制}} - J_{\text{非限制}} \sim \chi^2(r)\)</span>。</li>
+<li>若 Sargan 和 Hansen J 给出截然相反的结论，通常意味着误差项存在异方差，应以 Hansen J 为准。</li>
+</ul>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Sargan 检验在异方差下不可靠
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>若误差项存在异方差（金融数据中几乎必然如此），Sargan 检验会<strong>过度拒绝</strong>原假设——即使矩条件（工具变量外生性）是正确的，也会频繁给出「拒绝」的结论，这是检验的尺寸扭曲（size distortion）问题。</p>
+<p><strong>实践建议</strong>：在报告异方差稳健标准误时，必须配套使用 Hansen J 检验，而不是 Sargan 检验。</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+动态面板中的 Sargan/Hansen（与 xtabond2 的关系）
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Stata 的 <code>xtabond2</code> 命令同时报告两类统计量：不加 <code>robust</code> 选项时报告 Sargan 统计量（假设同方差）；加 <code>robust</code> 选项时报告 Hansen J 统计量（异方差稳健）。在动态面板估计中，几乎总应使用 <code>robust</code> 选项，因此应当关注 Hansen J 而非 Sargan。</p>
+<p>注意：Hansen J 检验的「宽容性」在矩条件数量很多时尤为突出——过多的工具变量会使 J 检验几乎无法拒绝，这是动态面板研究中工具变量数量需要被严格限制的重要原因之一（Roodman, 2009）。</p>
+</div>
+</div>
+</section>
+<section id="j-检验的局限性" class="level3" data-number="8.3">
+<h3 data-number="8.3" class="anchored" data-anchor-id="j-检验的局限性"><span class="header-section-number">8.3</span> J 检验的局限性</h3>
+<p>J 检验只能检验矩条件的<strong>联合</strong>有效性，无法指出哪个矩条件出了问题。差分 Sargan 检验（Difference-in-Sargan / C 检验）可以补充：通过比较两个嵌套的 GMM 估计（使用不同矩条件子集），检验额外矩条件的有效性，统计量 <span class="math inline">\(D = J_{\text{限制}} - J_{\text{非限制}} \sim \chi^2(r)\)</span>，<span class="math inline">\(r\)</span> 为额外矩条件数。</p>
+</section>
+<section id="参数的-wald-检验" class="level3" data-number="8.4">
+<h3 data-number="8.4" class="anchored" data-anchor-id="参数的-wald-检验"><span class="header-section-number">8.4</span> 参数的 Wald 检验</h3>
+<p>GMM 参数估计量的渐近分布为正态，因此可以构造标准的 Wald 检验（Wald test）：</p>
+<p><span id="eq-Wald"><span class="math display">\[
+W = (\hat{\theta} - \theta_0)^\top [\text{Var}(\hat{\theta})]^{-1} (\hat{\theta} - \theta_0) \sim \chi^2(k)
+\tag{7}\]</span></span></p>
+<p>这对应 MLE 框架中的似然比检验（LR test），是 GMM 框架下的参数显著性检验标准工具。</p>
+</section>
+<section id="python-软件输出示例" class="level3" data-number="8.5">
+<h3 data-number="8.5" class="anchored" data-anchor-id="python-软件输出示例"><span class="header-section-number">8.5</span> Python 软件输出示例</h3>
+<p>以下是 <code>linearmodels.IVGMM</code> 的典型输出，括号内为逐行解读：</p>
+<pre><code>                      IV-GMM Estimation Summary
+==================================================================
+Dep. Variable:                  y   R-squared:              0.312
+Estimator:                 IV-GMM   Adj. R-squared:         0.310
+No. Observations:             500   F-statistic:           112.34
+Date:                      ...      P-value (F-stat)       0.0000
+Cov. Estimator:            robust
+------------------------------------------------------------------
+                       Parameter Estimates
+==================================================================
+          Parameter  Std. Err.   T-stat   P-value  Lower CI  Upper CI
+const        1.0234     0.0891   11.487   0.0000    0.8488    1.1980
+x1           1.9876     0.1102   18.036   0.0000    1.7716    2.2036
+x2          -0.4923     0.0897   -5.488   0.0000   -0.6681   -0.3165
+==================================================================
+                       Instrument Tests
+==================================================================
+Hansen J-statistic:  2.1034  (p-value: 0.3491)   ← 过度识别检验（不拒绝）
+Sargan statistic:    3.2218  (p-value: 0.1994)   ← 同方差版本（参考）
+Durbin-Wu-Hausman:   8.9721  (p-value: 0.0113)   ← 内生性检验（拒绝外生）
+==================================================================</code></pre>
+<p>解读要点：<strong>Hansen J（p = 0.35）</strong>不拒绝「所有矩条件联合有效」，工具变量外生性通过联合检验；<strong>Sargan（p = 0.20）</strong>结论一致，但若存在异方差，应优先参考 Hansen J；<strong>Durbin-Wu-Hausman（p = 0.011）</strong>拒绝「<span class="math inline">\(x_1\)</span> 外生」，证实内生性问题存在，使用 IV/GMM 是必要的。</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-13-contents" aria-controls="callout-13" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Stata 对应代码
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-13" class="callout-13-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div class="sourceCode" id="cb2"><pre class="sourceCode stata code-with-copy"><code class="sourceCode stata"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>* 2SLS（经典标准误）</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>ivreg2 <span class="fu">y</span> (x1 <span class="kw">x2</span> = z1 z2 z3 z4)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>* 2SLS（异方差稳健标准误）</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>ivreg2 <span class="fu">y</span> (x1 <span class="kw">x2</span> = z1 z2 z3 z4), <span class="kw">robust</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>* 两步有效 GMM（异方差稳健，推荐）</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>ivreg2 <span class="fu">y</span> (x1 <span class="kw">x2</span> = z1 z2 z3 z4), gmm2s <span class="kw">robust</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>* 输出自动包含 Hansen <span class="fu">J</span> 统计量（robust 模式下）</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<blockquote class="blockquote">
+<p><strong>说明</strong>：<code>ivreg2</code> 的 <code>gmm2s robust</code> 选项对应 Python <code>linearmodels.IVGMM</code> 的两步 GMM（<code>weight_type='robust'</code>）。Stata 在 <code>robust</code> 模式下自动报告 Hansen J，而非 Sargan。</p>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+参考文献：Sargan/Hansen 检验的实践指南
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li>Baum, C. F., Schaffer, M. E., &amp; Stillman, S. (2003). Instrumental variables and GMM: Estimation and testing. <em>Stata Journal</em>, 3(1), 1–31.</li>
+<li>Roodman, D. (2009). A note on the theme of too many instruments. <em>Oxford Bulletin of Economics and Statistics</em>, 71(1), 135–158.</li>
+<li>Hayashi, F. (2000). <em>Econometrics</em>. Princeton University Press. Ch. 3.</li>
+</ul>
+</div>
+</div>
+<hr>
+</section>
+</section>
+<section id="第-8-节gmm-的核心应用场景" class="level2" data-number="9">
+<h2 data-number="9" class="anchored" data-anchor-id="第-8-节gmm-的核心应用场景"><span class="header-section-number">9</span> 第 8 节：GMM 的核心应用场景</h2>
+<section id="过度识别-iv-异方差有效-gmm-vs.-2sls" class="level3" data-number="9.1">
+<h3 data-number="9.1" class="anchored" data-anchor-id="过度识别-iv-异方差有效-gmm-vs.-2sls"><span class="header-section-number">9.1</span> 8.1 过度识别 IV + 异方差：有效 GMM vs.&nbsp;2SLS</h3>
+<p>当存在多个工具变量且误差项异方差时，经典 2SLS 与有效 GMM 的效率会出现差异。即便使用异方差稳健 2SLS 推断，GMM 仍可能在效率上更优。直觉上：异方差使不同矩条件的「信噪比」出现差异，只有通过最优权重矩阵才能充分利用这种差异。</p>
+<p>典型结果：三种方法系数接近（均一致），但标准误有系统差异——异方差下，2SLS 的经典标准误偏小（低估），2SLS-robust 标准误扩大，有效 GMM 的标准误与 2SLS-robust 接近但通常更有效（更小）。配套的案例实现见 <code>GMM_case.ipynb</code> Case 1（数据：<code>method_GMM_data01_iv_hetero.csv</code>）。</p>
+</section>
+<section id="euler-方程非线性-gmm" class="level3" data-number="9.2">
+<h3 data-number="9.2" class="anchored" data-anchor-id="euler-方程非线性-gmm"><span class="header-section-number">9.2</span> 8.2 Euler 方程：非线性 GMM</h3>
+<p>设想这样一个研究困境：你在研究投资者的跨期消费决策是否符合理性预期。理论模型告诉你，均衡时效用函数的一阶条件必须成立——这是一个关于消费增长率和资产收益率的非线性方程。你想用数据估计效用函数的参数（贴现因子 <span class="math inline">\(\beta\)</span> 和风险厌恶系数 <span class="math inline">\(\gamma\)</span>），但你不知道消费增长率服从什么分布，更不知道它与收益率的联合分布。在无法或不愿指定完整联合分布时，MLE 并不自然，更难以实施。怎么办？</p>
+<p>答案是：你不需要知道完整的分布，只需要知道一件事——如果模型成立，Euler 方程的期望值应当等于零。这就是一个矩条件。</p>
+<p>在标准消费-储蓄模型中，理性代理人的最优选择满足：今天多消费一单位的边际效用，等于明天消费对应的折现边际效用乘以投资收益率。这个条件写成期望的形式就是：</p>
+<p><span id="eq-euler"><span class="math display">\[
+E_t\left[\beta \left(\frac{c_{t+1}}{c_t}\right)^{-\gamma} R_{t+1} - 1 \;\middle|\; z_t\right] = 0
+\tag{8}\]</span></span></p>
+<p>其中 <span class="math inline">\(\beta\)</span> 是主观贴现因子（subjective discount factor），<span class="math inline">\(\gamma\)</span> 是相对风险厌恶系数（coefficient of relative risk aversion），<span class="math inline">\(R_{t+1}\)</span> 是资产总收益率，<span class="math inline">\(z_t\)</span> 是信息集中的任意工具变量。</p>
+<p>用这个方程乘以工具变量 <span class="math inline">\(z_t\)</span>，得到 <span class="math inline">\(q\)</span> 个矩条件，通过 GMM 的加权最小化即可估计 <span class="math inline">\((\beta, \gamma)\)</span>，而无需假设消费增长率的分布——这是 GMM 相对 MLE 最能体现独特优势的场景。配套案例见 <code>GMM_case.ipynb</code> Case 2a（模拟数据，<span class="math inline">\(\beta_0 = 0.98\)</span>，<span class="math inline">\(\gamma_0 = 2.0\)</span>）和 Case 2b（FRED 真实数据，可选）。</p>
+</section>
+<section id="多方程矩条件横截面资产定价检验" class="level3" data-number="9.3">
+<h3 data-number="9.3" class="anchored" data-anchor-id="多方程矩条件横截面资产定价检验"><span class="header-section-number">9.3</span> 8.3 多方程矩条件：横截面资产定价检验</h3>
+<p>横截面资产定价检验场景：有 <span class="math inline">\(N\)</span> 支资产，每支资产都提供一个时间序列矩条件（超额收益与因子收益之间的正交条件）。如果逐方程 OLS 估计，忽略了方程间误差项的相关性；GMM 通过权重矩阵利用方程间的协方差结构，可以得到更有效的因子风险溢价（risk premium）估计，并通过 J 检验同时检验所有资产的定价误差是否联合为零。</p>
+<p>在 CAPM 框架下，每支资产 <span class="math inline">\(i\)</span> 的矩条件为 <span class="math inline">\(E[(R_{it} - R_{ft}) - \beta_i(R_{mt} - R_{ft})] = 0\)</span>，合并 <span class="math inline">\(N\)</span> 支资产就得到 <span class="math inline">\(N\)</span> 个联立矩条件。Fama-MacBeth 两步法忽略了截面误差相关性，GMM 多方程估计明确利用了这个信息，通常标准误更小。配套案例见 <code>GMM_case.ipynb</code> Case 3（可选）。</p>
+</section>
+<section id="高阶矩与测量误差erickson-whited-方法" class="level3 unnumbered">
+<h3 class="unnumbered anchored" data-anchor-id="高阶矩与测量误差erickson-whited-方法">8.4 高阶矩与测量误差：Erickson-Whited 方法</h3>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+本节为压缩版介绍
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>重点是适用场景与软件命令，不展开方法推导。有兴趣深入的读者可参考末尾参考文献。</p>
+</div>
+</div>
+<p><strong>适用场景</strong>：当有内生性或测量误差、但找不到合适外部工具变量时。典型场景是企业投资-Q 关系研究中，Tobin’s Q 作为投资机会的代理变量存在严重的经典测量误差（classical measurement error），而外部工具变量难以找到。</p>
+<p><strong>核心思路</strong>：若真实变量 <span class="math inline">\(x^*\)</span> 存在经典测量误差 <span class="math inline">\(x = x^* + \nu\)</span>（<span class="math inline">\(\nu\)</span> 与 <span class="math inline">\(x^*\)</span> 独立），则 <span class="math inline">\(x^*\)</span> 的<strong>高阶矩</strong>（三阶矩、四阶矩）与误差项之间存在天然的正交性条件。这些正交性可以构造额外的矩条件，从而在<strong>不需要外部工具变量</strong>的情况下识别参数。关键假设：测量误差 <span class="math inline">\(\nu\)</span> 与真实变量 <span class="math inline">\(x^*\)</span> 相互独立（经典测量误差假设）。</p>
+<p><strong>软件命令</strong>：</p>
+<p>Stata 的 <code>ewreg</code> 命令（Erickson-Whited regression），可从 SSC 安装：</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode stata code-with-copy"><code class="sourceCode stata"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">ssc</span> install ewreg</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>ewreg <span class="fu">y</span> x_mismeasured controls, <span class="kw">order</span>(3)   <span class="co">// order() 指定矩条件阶数</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Python 目前无成熟现成包，可借助 <code>scipy.optimize.minimize</code> 手动构造高阶矩条件求解 GMM 目标函数；亦可参考 Erickson et al.（2014）附录代码。</p>
+<p><strong>局限性</strong>：高阶矩对非正态性和厚尾分布较敏感；矩阶数越高，有限样本偏误越大。建议作为稳健性检验而非主要估计方法。</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+参考文献
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li>Erickson, T., &amp; Whited, T. M. (2000). Measurement error and the relationship between investment and q. <em>Journal of Political Economy</em>, 108(5), 1027–1057.</li>
+<li>Erickson, T., Jiang, C. H., &amp; Whited, T. M. (2014). Minimum distance estimation of the errors-in-variables model using linear cumulant equations. <em>Journal of Econometrics</em>, 183(2), 211–221.</li>
+<li>Whited, T. M. (2001). Is it inefficient investment that causes the diversification discount? <em>Journal of Finance</em>, 56(5), 1667–1691.（应用示例）</li>
+</ul>
+</div>
+</div>
+<hr>
+</section>
+</section>
+<section id="第-9-节使用-gmm-时的常见问题" class="level2" data-number="10">
+<h2 data-number="10" class="anchored" data-anchor-id="第-9-节使用-gmm-时的常见问题"><span class="header-section-number">10</span> 第 9 节：使用 GMM 时的常见问题</h2>
+<section id="弱工具变量最重要" class="level3" data-number="10.1">
+<h3 data-number="10.1" class="anchored" data-anchor-id="弱工具变量最重要"><span class="header-section-number">10.1</span> 9.1 弱工具变量（最重要）</h3>
+<p>弱工具变量（weak instruments）指工具变量与内生变量的相关性很弱，导致 GMM（和 2SLS）估计量方差急剧增大，且渐近正态近似失效——即使样本量很大，置信区间也会严重偏离标称覆盖率。</p>
+<p><strong>诊断</strong>：一阶段 F 统计量（经验阈值：<span class="math inline">\(F &lt; 10\)</span> 表示可能存在弱工具变量问题）；Cragg-Donald 统计量（多个内生变量时）；Stock-Yogo 临界值。</p>
+<p><strong>处理</strong>：使用有弱工具变量稳健推断的方法（Anderson-Rubin 检验、条件似然比检验）；考虑 LIML 估计量（对弱工具变量的有限样本偏误比 2SLS/GMM 更小）。</p>
+</section>
+<section id="矩条件数量过多过多工具变量" class="level3" data-number="10.2">
+<h3 data-number="10.2" class="anchored" data-anchor-id="矩条件数量过多过多工具变量"><span class="header-section-number">10.2</span> 9.2 矩条件数量过多（过多工具变量）</h3>
+<p>矩条件数量 <span class="math inline">\(q\)</span> 相对于样本量 <span class="math inline">\(n\)</span> 过大时，权重矩阵 <span class="math inline">\(\hat{S}\)</span> 估计不精确，两步 GMM 会出现严重的有限样本偏误（系数朝 OLS 方向偏移）。经验规则：<span class="math inline">\(q/n &lt; 0.1\)</span>。若工具变量数量多，考虑对工具变量做主成分降维，或改用 LIML/CUE（连续更新估计，continuously updated estimator）等对过多矩条件更鲁棒的估计量。</p>
+</section>
+<section id="j-检验通过-工具变量有效" class="level3" data-number="10.3">
+<h3 data-number="10.3" class="anchored" data-anchor-id="j-检验通过-工具变量有效"><span class="header-section-number">10.3</span> 9.3 J 检验通过 ≠ 工具变量有效</h3>
+<p>Hansen J 检验只检验矩条件的<strong>联合</strong>有效性。更重要的是：J 检验通过仅意味着矩条件在数据中看起来是相容的，但并不能证明工具变量是外生的——弱工具变量往往会使 J 检验「宽容」（检验力低），即使某些矩条件不成立也难以拒绝。</p>
+</section>
+<section id="异方差下-sargan-vs.-hansen-的混淆" class="level3" data-number="10.4">
+<h3 data-number="10.4" class="anchored" data-anchor-id="异方差下-sargan-vs.-hansen-的混淆"><span class="header-section-number">10.4</span> 9.4 异方差下 Sargan vs.&nbsp;Hansen 的混淆</h3>
+<p>实践中最常见的错误之一：在异方差场景下使用 Sargan 检验，导致过度拒绝原假设。凡使用异方差稳健标准误（<code>robust</code>）时，必须同步使用 Hansen J 而非 Sargan。Stata 的 <code>ivreg2, robust</code> 自动报告正确的统计量；Python 的 <code>linearmodels.IVGMM</code> 设置 <code>cov_type='robust'</code> 后同样报告 Hansen J。</p>
+</section>
+<section id="两步-gmm-的有限样本扭曲" class="level3" data-number="10.5">
+<h3 data-number="10.5" class="anchored" data-anchor-id="两步-gmm-的有限样本扭曲"><span class="header-section-number">10.5</span> 9.5 两步 GMM 的有限样本扭曲</h3>
+<p>两步 GMM 在理论上渐近有效，但第二步权重矩阵估计的误差会引入额外的有限样本偏误，使得参数估计值和标准误都出现系统性扭曲（通常是低估标准误、过度拒绝）。处理：同时报告 CUE 或 LIML 作为稳健性检验；在小样本中（<span class="math inline">\(n &lt; 200\)</span>）尤需谨慎。</p>
+</section>
+<section id="收敛失败非线性-gmm" class="level3" data-number="10.6">
+<h3 data-number="10.6" class="anchored" data-anchor-id="收敛失败非线性-gmm"><span class="header-section-number">10.6</span> 9.6 收敛失败（非线性 GMM）</h3>
+<p>非线性 GMM（如 Euler 方程估计）依赖数值优化，面临与 MLE 类似的收敛问题：多个局部极小值、初值敏感性、目标函数在参数空间某些区域极为平坦。处理：从多组初始值出发，比较收敛结果；使用基于轮廓（profile）的参数可信区间，而非 Wald 型置信区间；考虑对参数进行变量替换（如估计 <span class="math inline">\(\log\beta\)</span> 而非 <span class="math inline">\(\beta\)</span>）改善优化地形。</p>
+<hr>
+</section>
+</section>
+<section id="第-10-节小结gmm-作为统一估计框架" class="level2" data-number="11">
+<h2 data-number="11" class="anchored" data-anchor-id="第-10-节小结gmm-作为统一估计框架"><span class="header-section-number">11</span> 第 10 节：小结——GMM 作为统一估计框架</h2>
+<section id="回顾核心主线" class="level3" data-number="11.1">
+<h3 data-number="11.1" class="anchored" data-anchor-id="回顾核心主线"><span class="header-section-number">11.1</span> 回顾核心主线</h3>
+<p>本章从一个读者已经熟悉的场景出发——OLS 的正交条件 <span class="math inline">\(E[x_i\varepsilon_i] = 0\)</span>——逐步展示了这个条件本质上就是一个矩条件；当矩条件数量超过参数数量时，就自然引出了 GMM 的加权最小化框架（<a href="#fig-GMM-flowchart" class="quarto-xref">Figure&nbsp;1</a>）。</p>
+<p><strong>两句总纲的呼应</strong>：GMM 的核心思想是——用「经济理论或统计假设告诉我们应当成立的矩条件」约束参数估计，找出使样本矩条件偏离最小的那组参数值。OLS、IV、2SLS 都是 GMM 在特定矩条件和权重矩阵下的特例；理解了权重矩阵的构造逻辑，就理解了 GMM 相对 2SLS 的根本优势所在。</p>
+</section>
+<section id="gmm-统一框架总表" class="level3" data-number="11.2">
+<h3 data-number="11.2" class="anchored" data-anchor-id="gmm-统一框架总表"><span class="header-section-number">11.2</span> GMM 统一框架总表</h3>
+<div id="tbl-gmm-unified" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-gmm-unified-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+表&nbsp;6: GMM 统一框架总表
+</figcaption>
+<div aria-describedby="tbl-gmm-unified-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<colgroup>
+<col style="width: 20%">
+<col style="width: 17%">
+<col style="width: 15%">
+<col style="width: 15%">
+<col style="width: 15%">
+<col style="width: 15%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">估计量/方法</th>
+<th style="text-align: left;">矩条件来源</th>
+<th style="text-align: left;">识别状态</th>
+<th style="text-align: left;">权重矩阵</th>
+<th style="text-align: left;">关键假设</th>
+<th style="text-align: left;">常见场景</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">OLS</td>
+<td style="text-align: left;">正交性</td>
+<td style="text-align: left;">恰好识别</td>
+<td style="text-align: left;">退化</td>
+<td style="text-align: left;">解释变量外生</td>
+<td style="text-align: left;">无内生性的线性回归</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">IV（恰好识别）</td>
+<td style="text-align: left;">正交性</td>
+<td style="text-align: left;">恰好识别</td>
+<td style="text-align: left;">退化</td>
+<td style="text-align: left;">工具变量外生+相关</td>
+<td style="text-align: left;">单工具变量 IV</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">2SLS</td>
+<td style="text-align: left;">正交性</td>
+<td style="text-align: left;">过度识别</td>
+<td style="text-align: left;"><span class="math inline">\((\mathbf{Z}^\top \mathbf{Z})^{-1}\)</span></td>
+<td style="text-align: left;">+同方差</td>
+<td style="text-align: left;">多工具变量，同方差</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">有效 GMM</td>
+<td style="text-align: left;">正交性</td>
+<td style="text-align: left;">过度识别</td>
+<td style="text-align: left;"><span class="math inline">\(\hat{S}^{-1}\)</span></td>
+<td style="text-align: left;">无额外</td>
+<td style="text-align: left;">多工具变量，异方差</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Euler 方程 GMM</td>
+<td style="text-align: left;">经济理论 FOC</td>
+<td style="text-align: left;">过度识别</td>
+<td style="text-align: left;"><span class="math inline">\(\hat{S}^{-1}\)</span></td>
+<td style="text-align: left;">无分布假设</td>
+<td style="text-align: left;">资产定价、消费模型</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">多方程 GMM</td>
+<td style="text-align: left;">多方程正交性</td>
+<td style="text-align: left;">过度识别</td>
+<td style="text-align: left;">块对角 <span class="math inline">\(\hat{S}^{-1}\)</span></td>
+<td style="text-align: left;">方程间误差相关</td>
+<td style="text-align: left;">资产定价横截面检验</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">EW 高阶矩 GMM</td>
+<td style="text-align: left;">高阶矩约束</td>
+<td style="text-align: left;">过度识别</td>
+<td style="text-align: left;"><span class="math inline">\(\hat{S}^{-1}\)</span></td>
+<td style="text-align: left;">经典测量误差</td>
+<td style="text-align: left;">Tobin’s Q 等代理变量</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+</section>
+<section id="gmm-与-mle-的分工" class="level3" data-number="11.3">
+<h3 data-number="11.3" class="anchored" data-anchor-id="gmm-与-mle-的分工"><span class="header-section-number">11.3</span> GMM 与 MLE 的分工</h3>
+<div id="tbl-gmm-vs-mle" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-gmm-vs-mle-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+表&nbsp;7: GMM 与 MLE 的分工
+</figcaption>
+<div aria-describedby="tbl-gmm-vs-mle-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<colgroup>
+<col style="width: 28%">
+<col style="width: 42%">
+<col style="width: 28%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">情形</th>
+<th style="text-align: left;">推荐方法</th>
+<th style="text-align: left;">理由</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">知道分布假设、有限样本精度重要</td>
+<td style="text-align: left;">MLE</td>
+<td style="text-align: left;">充分利用分布信息，渐近有效性最优</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">只知道矩条件、分布未知或不可信</td>
+<td style="text-align: left;">GMM</td>
+<td style="text-align: left;">不需要分布假设，对设定错误更鲁棒</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">非线性模型 + 分布假设可疑</td>
+<td style="text-align: left;">GMM</td>
+<td style="text-align: left;">Euler 方程等场景，MLE 需要联合分布</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">过度识别 IV + 异方差/序列相关</td>
+<td style="text-align: left;">GMM</td>
+<td style="text-align: left;">2SLS 非最优，需最优权重矩阵</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">有限样本很小（<span class="math inline">\(n &lt; 50\)</span>）</td>
+<td style="text-align: left;">MLE（若能指定分布）</td>
+<td style="text-align: left;">GMM 渐近性质在小样本可能很差</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+</section>
+<section id="与后续章节的衔接" class="level3" data-number="11.4">
+<h3 data-number="11.4" class="anchored" data-anchor-id="与后续章节的衔接"><span class="header-section-number">11.4</span> 与后续章节的衔接</h3>
+<p>GMM 的另一个重要应用——动态面板的 Arellano-Bond（AB）估计和 System GMM——将在后续面板数据章节中详细介绍。那一章将直接建立在本章矩条件概念的基础上，届时核心新内容是「如何从面板结构中系统地构造工具变量」，而估计原则与本章完全相同。理解了本章的 GMM 框架，动态面板的 AB 估计器将是一个自然的延伸而非全新知识点。</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+延伸阅读
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>奠基论文：</strong></p>
+<ul>
+<li>Hansen, L. P. (1982). Large sample properties of generalized method of moments estimators. <em>Econometrica</em>, 50(4), 1029–1054.</li>
+<li>Hansen, L. P., &amp; Singleton, K. J. (1982). Generalized instrumental variables estimation of nonlinear rational expectations models. <em>Econometrica</em>, 50(5), 1269–1286.</li>
+</ul>
+<p><strong>教材：</strong></p>
+<ul>
+<li>Greene, W. H. (2012). <em>Econometric Analysis</em> (7th ed.). Pearson. Ch. 13.</li>
+<li>Cameron, A. C., &amp; Trivedi, P. K. (2005). <em>Microeconometrics</em>. Cambridge. Ch. 6.</li>
+<li>Hall, A. R. (2005). <em>Generalized Method of Moments</em>. Oxford University Press.</li>
+</ul>
+<p><strong>在线资源：</strong></p>
+<ul>
+<li>Baum, C. F., Schaffer, M. E., &amp; Stillman, S. (2003). Instrumental variables and GMM: Estimation and testing. <em>Stata Journal</em>, 3(1), 1–31.</li>
+<li>课程主页：<a href="https://lianxhcn.github.io/dsfin/" class="uri">https://lianxhcn.github.io/dsfin/</a></li>
+</ul>
+</div>
+</div>
+</section>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
