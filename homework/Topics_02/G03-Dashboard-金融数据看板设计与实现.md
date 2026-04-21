@@ -7,7 +7,7 @@
 
 ---
 
-## Part 1：原理讲解-讲义风格
+## Part 1：讲义部分（必须完成，内容将用于后续课程）
 
 > **说明**：本部分要求小组以"讲义"而非"作业报告"的风格撰写，内容须清晰、准确、可供他人学习使用。写作质量直接影响评分，且优秀的内容可能被收录为课程正式讲义。
 
@@ -37,9 +37,8 @@
 
 可参考文献：[Storytelling with Data](https://www.storytellingwithdata.com)、Edward Tufte 的数据-墨水比（Data-Ink Ratio）概念。
 
-::: {.callout-note title="扩展阅读 1：Dashboard 设计的十条原则"}
-Stephen Few（2006）在 *Information Dashboard Design* 中总结了看板设计的核心原则，包括：避免过度使用颜色、禁用三维饼图、保持视觉一致性等。原文摘要可在以下链接获取：<https://www.perceptualedge.com>
-:::
+> 📝
+> Stephen Few（2006）在 *Information Dashboard Design* 中总结了看板设计的核心原则，包括：避免过度使用颜色、禁用三维饼图、保持视觉一致性等。原文摘要可在以下链接获取：<https://www.perceptualedge.com>
 
 ---
 
@@ -60,9 +59,8 @@ Stephen Few（2006）在 *Information Dashboard Design* 中总结了看板设计
 | `Panel` | 多后端框架 | 高 | 多种 | 中-高 | 科学计算看板 |
 | `Quarto + Plotly` | 文档 + 图表 | 中（静态交互） | GitHub Pages | 低 | **本作业主线** |
 
-::: {.callout-note title="扩展阅读 2：Streamlit vs Dash 的选型指南"}
-两者都能实现动态看板，但设计哲学不同：Streamlit 以"脚本即应用"为核心，代码更简洁；Dash 基于 React，支持更复杂的回调逻辑和企业级部署。详细对比参见：<https://plotly.com/comparing-dash-and-streamlit/>
-:::
+> 📝
+> 两者都能实现动态看板，但设计哲学不同：Streamlit 以"脚本即应用"为核心，代码更简洁；Dash 基于 React，支持更复杂的回调逻辑和企业级部署。详细对比参见：<https://plotly.com/comparing-dash-and-streamlit/>
 
 **② Plotly 核心概念与基础语法**
 
@@ -171,9 +169,8 @@ fig.show()
 ```
 ```
 
-::: {.callout-tip title="扩展阅读 3：Plotly Express vs Graph Objects"}
-Plotly 提供两套 API：`plotly.express`（高级接口，代码简洁，适合快速探索）和 `plotly.graph_objects`（低级接口，灵活可控，适合精细定制）。本作业主线使用 `graph_objects`，因为看板通常需要精细的子图布局控制。Express 的使用示例见官方文档：<https://plotly.com/python/plotly-express/>
-:::
+> 💡
+> Plotly 提供两套 API：`plotly.express`（高级接口，代码简洁，适合快速探索）和 `plotly.graph_objects`（低级接口，灵活可控，适合精细定制）。本作业主线使用 `graph_objects`，因为看板通常需要精细的子图布局控制。Express 的使用示例见官方文档：<https://plotly.com/python/plotly-express/>
 
 **③ Quarto Book 的多页布局与看板页设计**
 

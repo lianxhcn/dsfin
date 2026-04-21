@@ -1,0 +1,2280 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.6.39">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>38&nbsp; 最大似然估计 (MLE) – 金融数据分析与建模</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../Lecture/method_MLE/MLE_codes.html" rel="next">
+<link href="../../Lecture/limit_dep_logit/02_c_binary_case.html" rel="prev">
+<link href="../../images/book-logo.png" rel="icon" type="image/png">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-e8fb9d25728d58bfeac61b497e4a6629.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark-57a92833092fd6dc0d7710b6bdfff9c5.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-7ef202e96c563d31d9e5226e4d6cabf9.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark-490ba4e843cb1303a232ed0c676384f2.min.css" rel="prefetch" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../Lecture/method_MLE/MLE_lec.html"><strong>估计方法</strong></a></li><li class="breadcrumb-item"><a href="../../Lecture/method_MLE/MLE_lec.html"><span class="chapter-number">38</span>&nbsp; <span class="chapter-title">最大似然估计 (MLE)</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header sidebar-header-stacked">
+      <a href="https://lianxhcn.github.io/dsfin/" class="sidebar-logo-link">
+      <img src="../../images/book-logo.png" alt="" class="sidebar-logo py-0 d-lg-inline d-none">
+      </a>
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../../">DS Finance</a> 
+        <div class="sidebar-tools-main tools-wide">
+    <a href="https://github.com/lianxhcn/dsfin" title="" class="quarto-navigation-tool px-1" aria-label=""><i class="bi bi-github"></i></a>
+    <a href="https://www.lianxh.cn" title="" class="quarto-navigation-tool px-1" aria-label=""><i class="bi bi-house-fill"></i></a>
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">封面</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/00_intro.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">📚课程资料</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/00_setup.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">📌课件使用指南</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/01_homework.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">🚀作业</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text"><strong>环境配置</strong></span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/00-setup/01_00_coding_with_AI.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">借助 AI 写代码</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/00-setup/01_01_install_anaconda.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Python：安装和环境配置</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/00-setup/01_02_jupyter_notebook.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Jupyter Notebook 的使用</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/00-setup/01_03_install_FAQs.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Python 安装常见问题</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/00-setup/01_04_markdown.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Markdown</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/00-setup/01_06_conda_env.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">虚拟环境管理</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
+ <span class="menu-text"><strong>数据分析</strong></span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/data_get_data/lecture_get_data.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">金融数据获取</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/data_get_data/data_02_get_data_GMD.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">获取数据：GMD</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/data_get_data/data_03_TS_SZ_index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">上证指数的时序特征</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/data_store_structure/lecture_data_management_organization.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">数据管理与组织</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/data_manage/lecture_data_management.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">数据管理：格式、存储与工作流</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/data_clean/lecture_data_clean.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">数据清洗</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true">
+ <span class="menu-text"><strong>可视化</strong></span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/data_visual/graph_01_intro.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Python 可视化：简介</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/data_visual/graph_dis_box_violin.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">箱型图和小提琴图</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/data_visual/graph_dis_histogram.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">直方图</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/data_visual/graph_dis_kdensity.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">核密度函数图</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/data_visual/lec_distribution.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">数据分布：原理与可视化</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/data_visual/lec_distribution_codes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">数据分布：原理与可视化 — 配套代码</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/data_visual/lec_visualization.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">数据可视化：一些基本原则</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true">
+ <span class="menu-text"><strong>数据爬取</strong></span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/crawing/craw_01_introduction.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">网络爬虫简介</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/crawing/craw_02_sec01_lingnan_prompt.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">实例-提示词模式：爬取岭南学院教师名录</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/crawing/craw_02_sec02_lingnan_dialog.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">实例-对话模式：爬取岭南学院教师名录</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true">
+ <span class="menu-text"><strong>线性回归分析</strong></span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/reg_ols/ols_visual_3D.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">二元线性回归的 3D 图示</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/reg_logit/probability_models.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">从回归模型到概率模型</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="true">
+ <span class="menu-text"><strong>面板模型：固定效应</strong></span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/panel_fe/panel_HDFE.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">HDFE：多维固定效应</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/panel_fe/panel_IntFE.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">交互固定效应模型</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="true">
+ <span class="menu-text"><strong>面板变系数模型</strong></span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/panel_xtplfc/01_Panel_threshold_01_theory.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">静态面板门槛模型：理论与方法</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/panel_xtplfc/02_Panel_threshold_02_codes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">静态面板门槛模型：Stata 实操</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/panel_xtplfc/04_xtplfc的直观解读及xthreg实现.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">变系数模型</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/panel_xtplfc/05_解读xtplfc的原理_样条基函数.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">30</span>&nbsp; <span class="chapter-title">样条基函数与变系数模型：Stata 实操</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/panel_xtplfc/Du_2021_EE_中文精要.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">31</span>&nbsp; <span class="chapter-title">非线性调节效应怎么做？部分线性函数型面板数据模型</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" role="navigation" aria-expanded="true">
+ <span class="menu-text"><strong>受限因变量</strong></span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-8" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/limit_dep_intro/01_overview_lec.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">32</span>&nbsp; <span class="chapter-title">离散变量和受限因变量：导论</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/limit_dep_intro/01_overview_codes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">33</span>&nbsp; <span class="chapter-title">附：codes</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/limit_dep_logit/02_a_binary_lec.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">34</span>&nbsp; <span class="chapter-title">二元选择模型</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/limit_dep_logit/02_b_binary_codes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">35</span>&nbsp; <span class="chapter-title">附：Codes</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/limit_dep_logit/02_c_binary_case.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">36</span>&nbsp; <span class="chapter-title">案例：上市公司债务违约分析</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/reg_logit/probability_models.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">从回归模型到概率模型</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-9" role="navigation" aria-expanded="true">
+ <span class="menu-text"><strong>估计方法</strong></span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-9" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-9" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/method_MLE/MLE_lec.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">38</span>&nbsp; <span class="chapter-title">最大似然估计 (MLE)</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/method_MLE/MLE_codes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">39</span>&nbsp; <span class="chapter-title">MLE_codes：图形与数据生成</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/method_MLE/MLE_case.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">40</span>&nbsp; <span class="chapter-title">MLE 应用案例</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-10" role="navigation" aria-expanded="true">
+ <span class="menu-text"><strong>文本分析</strong></span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-10" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-10" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/text_analysis/lecture_text_01_ailn.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">41</span>&nbsp; <span class="chapter-title">金融文本分析（上）——从文本到结构化数据</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/text_analysis/lecture_text_02_ailn.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">42</span>&nbsp; <span class="chapter-title">金融文本分析（下）——情感分析与文本建模</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/text_analysis/lecture_text_analysis_01_claude.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">43</span>&nbsp; <span class="chapter-title">文本数据处理基础</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/text_analysis/lecture_text_analysis_02_claude.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">44</span>&nbsp; <span class="chapter-title">文本分析：情感分析与主题建模</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-11" role="navigation" aria-expanded="true">
+ <span class="menu-text"><strong>附录：Python 提示词</strong></span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-11" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-11" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../appendix_python/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">概览</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../appendix_python/a1_setup.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">A1. 环境配置</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../appendix_python/a2_project.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">A2. 项目规划与版本控制</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../appendix_python/a3_concepts.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">A3. 提示词核心词汇</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../appendix_python/a4_data.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">A4. 数据获取与清洗</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../appendix_python/a5_visualization.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">A5. 数据可视化</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../appendix_python/a6_modeling.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">A6. 统计建模</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../appendix_python/a7_results.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">A7. 结果呈现与表格美化</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../appendix_python/a8_workflow.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">A8. 上下文管理与调试</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#导言" id="toc-导言" class="nav-link active" data-scroll-target="#导言"><span class="header-section-number">38.1</span> 导言</a></li>
+  <li><a href="#为什么需要最大似然估计" id="toc-为什么需要最大似然估计" class="nav-link" data-scroll-target="#为什么需要最大似然估计"><span class="header-section-number">38.2</span> 为什么需要最大似然估计</a>
+  <ul class="collapse">
+  <li><a href="#ols-的舒适区与局限" id="toc-ols-的舒适区与局限" class="nav-link" data-scroll-target="#ols-的舒适区与局限"><span class="header-section-number">38.2.1</span> OLS 的舒适区与局限</a></li>
+  <li><a href="#mle-的角色" id="toc-mle-的角色" class="nav-link" data-scroll-target="#mle-的角色"><span class="header-section-number">38.2.2</span> MLE 的角色</a></li>
+  </ul></li>
+  <li><a href="#mle-的基本思想概率似然与参数评分" id="toc-mle-的基本思想概率似然与参数评分" class="nav-link" data-scroll-target="#mle-的基本思想概率似然与参数评分"><span class="header-section-number">38.3</span> MLE 的基本思想：概率、似然与参数评分</a>
+  <ul class="collapse">
+  <li><a href="#从出行方式例子出发" id="toc-从出行方式例子出发" class="nav-link" data-scroll-target="#从出行方式例子出发"><span class="header-section-number">38.3.1</span> 从出行方式例子出发</a></li>
+  <li><a href="#似然函数的构造" id="toc-似然函数的构造" class="nav-link" data-scroll-target="#似然函数的构造"><span class="header-section-number">38.3.2</span> 似然函数的构造</a></li>
+  <li><a href="#为什么取对数" id="toc-为什么取对数" class="nav-link" data-scroll-target="#为什么取对数"><span class="header-section-number">38.3.3</span> 为什么取对数</a></li>
+  </ul></li>
+  <li><a href="#一个最简单的例子bernoulli-模型" id="toc-一个最简单的例子bernoulli-模型" class="nav-link" data-scroll-target="#一个最简单的例子bernoulli-模型"><span class="header-section-number">38.4</span> 一个最简单的例子：Bernoulli 模型</a>
+  <ul class="collapse">
+  <li><a href="#设定与数据" id="toc-设定与数据" class="nav-link" data-scroll-target="#设定与数据"><span class="header-section-number">38.4.1</span> 设定与数据</a></li>
+  <li><a href="#构造似然函数" id="toc-构造似然函数" class="nav-link" data-scroll-target="#构造似然函数"><span class="header-section-number">38.4.2</span> 构造似然函数</a></li>
+  <li><a href="#求最大值解析解与网格搜索" id="toc-求最大值解析解与网格搜索" class="nav-link" data-scroll-target="#求最大值解析解与网格搜索"><span class="header-section-number">38.4.3</span> 求最大值：解析解与网格搜索</a></li>
+  <li><a href="#mle-的三个基本步骤" id="toc-mle-的三个基本步骤" class="nav-link" data-scroll-target="#mle-的三个基本步骤"><span class="header-section-number">38.4.4</span> MLE 的三个基本步骤</a></li>
+  </ul></li>
+  <li><a href="#从单参数到回归模型参数如何与数据连接" id="toc-从单参数到回归模型参数如何与数据连接" class="nav-link" data-scroll-target="#从单参数到回归模型参数如何与数据连接"><span class="header-section-number">38.5</span> 从单参数到回归模型：参数如何与数据连接</a>
+  <ul class="collapse">
+  <li><a href="#一个具体的跨越从常数参数到条件参数" id="toc-一个具体的跨越从常数参数到条件参数" class="nav-link" data-scroll-target="#一个具体的跨越从常数参数到条件参数"><span class="header-section-number">38.5.1</span> 一个具体的跨越：从常数参数到条件参数</a></li>
+  <li><a href="#正态分布中的参数化" id="toc-正态分布中的参数化" class="nav-link" data-scroll-target="#正态分布中的参数化"><span class="header-section-number">38.5.2</span> 正态分布中的参数化</a></li>
+  <li><a href="#连接函数的统一视角" id="toc-连接函数的统一视角" class="nav-link" data-scroll-target="#连接函数的统一视角"><span class="header-section-number">38.5.3</span> 连接函数的统一视角</a></li>
+  </ul></li>
+  <li><a href="#正态模型线性回归与-ols-的关系" id="toc-正态模型线性回归与-ols-的关系" class="nav-link" data-scroll-target="#正态模型线性回归与-ols-的关系"><span class="header-section-number">38.6</span> 正态模型、线性回归与 OLS 的关系</a>
+  <ul class="collapse">
+  <li><a href="#正态均值模型的-mle" id="toc-正态均值模型的-mle" class="nav-link" data-scroll-target="#正态均值模型的-mle"><span class="header-section-number">38.6.1</span> 正态均值模型的 MLE</a></li>
+  <li><a href="#正态线性模型与-ols-的等价性" id="toc-正态线性模型与-ols-的等价性" class="nav-link" data-scroll-target="#正态线性模型与-ols-的等价性"><span class="header-section-number">38.6.2</span> 正态线性模型与 OLS 的等价性</a></li>
+  <li><a href="#为什么-logit-不能用-ols" id="toc-为什么-logit-不能用-ols" class="nav-link" data-scroll-target="#为什么-logit-不能用-ols"><span class="header-section-number">38.6.3</span> 为什么 Logit 不能用 OLS</a></li>
+  </ul></li>
+  <li><a href="#mle-的一般工作流程" id="toc-mle-的一般工作流程" class="nav-link" data-scroll-target="#mle-的一般工作流程"><span class="header-section-number">38.7</span> MLE 的一般工作流程</a>
+  <ul class="collapse">
+  <li><a href="#五步工作流程" id="toc-五步工作流程" class="nav-link" data-scroll-target="#五步工作流程"><span class="header-section-number">38.7.1</span> 五步工作流程</a></li>
+  </ul></li>
+  <li><a href="#如何解读软件输出中的似然指标" id="toc-如何解读软件输出中的似然指标" class="nav-link" data-scroll-target="#如何解读软件输出中的似然指标"><span class="header-section-number">38.8</span> 如何解读软件输出中的似然指标</a>
+  <ul class="collapse">
+  <li><a href="#python-输出示例statsmodels" id="toc-python-输出示例statsmodels" class="nav-link" data-scroll-target="#python-输出示例statsmodels"><span class="header-section-number">38.8.1</span> Python 输出示例（statsmodels）</a></li>
+  <li><a href="#log-likelihood对数似然值" id="toc-log-likelihood对数似然值" class="nav-link" data-scroll-target="#log-likelihood对数似然值"><span class="header-section-number">38.8.2</span> Log-Likelihood（对数似然值）</a></li>
+  <li><a href="#似然比检验lr-test" id="toc-似然比检验lr-test" class="nav-link" data-scroll-target="#似然比检验lr-test"><span class="header-section-number">38.8.3</span> 似然比检验（LR Test）</a></li>
+  <li><a href="#aic-与-bic信息准则" id="toc-aic-与-bic信息准则" class="nav-link" data-scroll-target="#aic-与-bic信息准则"><span class="header-section-number">38.8.4</span> AIC 与 BIC（信息准则）</a></li>
+  <li><a href="#pseudo-r²mcfadden-r2" id="toc-pseudo-r²mcfadden-r2" class="nav-link" data-scroll-target="#pseudo-r²mcfadden-r2"><span class="header-section-number">38.8.5</span> Pseudo R²（McFadden <span class="math inline">\(R^2\)</span>）</a></li>
+  <li><a href="#系数解释与边际效应" id="toc-系数解释与边际效应" class="nav-link" data-scroll-target="#系数解释与边际效应"><span class="header-section-number">38.8.6</span> 系数解释与边际效应</a></li>
+  </ul></li>
+  <li><a href="#使用-mle-时的常见问题" id="toc-使用-mle-时的常见问题" class="nav-link" data-scroll-target="#使用-mle-时的常见问题"><span class="header-section-number">38.9</span> 使用 MLE 时的常见问题</a>
+  <ul class="collapse">
+  <li><a href="#模型设定偏误最重要" id="toc-模型设定偏误最重要" class="nav-link" data-scroll-target="#模型设定偏误最重要"><span class="header-section-number">38.9.1</span> 模型设定偏误（最重要）</a></li>
+  <li><a href="#小样本偏误" id="toc-小样本偏误" class="nav-link" data-scroll-target="#小样本偏误"><span class="header-section-number">38.9.2</span> 小样本偏误</a></li>
+  <li><a href="#完全分离complete-separation" id="toc-完全分离complete-separation" class="nav-link" data-scroll-target="#完全分离complete-separation"><span class="header-section-number">38.9.3</span> 完全分离（Complete Separation）</a></li>
+  <li><a href="#收敛失败" id="toc-收敛失败" class="nav-link" data-scroll-target="#收敛失败"><span class="header-section-number">38.9.4</span> 收敛失败</a></li>
+  <li><a href="#局部极大值" id="toc-局部极大值" class="nav-link" data-scroll-target="#局部极大值"><span class="header-section-number">38.9.5</span> 局部极大值</a></li>
+  </ul></li>
+  <li><a href="#小结mle-为后续各类模型提供统一语言" id="toc-小结mle-为后续各类模型提供统一语言" class="nav-link" data-scroll-target="#小结mle-为后续各类模型提供统一语言"><span class="header-section-number">38.10</span> 小结：MLE 为后续各类模型提供统一语言</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../Lecture/method_MLE/MLE_lec.html"><strong>估计方法</strong></a></li><li class="breadcrumb-item"><a href="../../Lecture/method_MLE/MLE_lec.html"><span class="chapter-number">38</span>&nbsp; <span class="chapter-title">最大似然估计 (MLE)</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">38</span>&nbsp; <span class="chapter-title">最大似然估计 (MLE)</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="导言" class="level2" data-number="38.1">
+<h2 data-number="38.1" class="anchored" data-anchor-id="导言"><span class="header-section-number">38.1</span> 导言</h2>
+<p>学过线性回归的同学可能都有这样的经历：拿到一份数据，建好模型，用 OLS 一敲，系数就出来了。这套流程非常顺畅，以至于我们很少停下来思考一个问题——如果因变量不是连续的，OLS 还适用吗？</p>
+<p>比如，你想预测某位客户是否会违约（结果只有「是」和「否」两种），或者想分析某支股票在一个月内被分析师发布研报的次数（结果是 0、1、2、3……这样的整数）。把 OLS 硬套上去，给出的预测值可能是 1.3 或者 -0.2——这显然不是合格的「概率」，也不是合法的「次数」。</p>
+<p>这类问题在金融和经济学研究中极为常见。而解决它们的核心工具，几乎都指向同一种估计方法：<strong>最大似然估计</strong>（Maximum Likelihood Estimation，MLE）。</p>
+<p>本章的目标不是带大家推导公式，也不是要大家自己编程实现 MLE。我们的目标是建立一条完整的分析链条：</p>
+<p><span class="math display">\[
+\text{样本数据} \;\rightarrow\; \text{分布假设} \;\rightarrow\; \text{参数化} \;\rightarrow\; \text{似然函数} \;\rightarrow\; \hat{\theta}_{MLE} \;\rightarrow\; \text{推断与预测}
+\]</span></p>
+<p>读完这一章，你应当能够理解「Logit 模型用 MLE 估计」这句话背后的逻辑，能够看懂软件输出中的 <code>Log-Likelihood</code>、<code>LR chi2</code>、<code>AIC</code> 等指标，也能对后续将要学习的 Probit、Tobit、Poisson、Heckman 等模型有一个统一的认识框架。</p>
+<p>本章按「动机 → 概念 → 例子 → 流程 → 读懂输出 → 注意事项」逐步推进，建议顺序阅读前六节；第七、八节在遇到实际软件操作时按需查阅。</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+本章学完后你能做什么
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li>理解「Logit 模型用 MLE 估计」是什么意思</li>
+<li>看懂 Python/Stata 输出中的 <code>Log-Likelihood</code>、<code>LR chi2</code>、<code>AIC</code></li>
+<li>理解边际效应（marginal effect）和预测概率（predicted probability）是从哪里来的</li>
+<li>为后续 Probit、Tobit、Poisson、Heckman 等模型的学习做好准备</li>
+</ul>
+</div>
+</div>
+<hr>
+</section>
+<section id="为什么需要最大似然估计" class="level2" data-number="38.2">
+<h2 data-number="38.2" class="anchored" data-anchor-id="为什么需要最大似然估计"><span class="header-section-number">38.2</span> 为什么需要最大似然估计</h2>
+<section id="ols-的舒适区与局限" class="level3" data-number="38.2.1">
+<h3 data-number="38.2.1" class="anchored" data-anchor-id="ols-的舒适区与局限"><span class="header-section-number">38.2.1</span> OLS 的舒适区与局限</h3>
+<p>线性回归是大多数人接触计量经济学的第一站。它的基本形式是：</p>
+<p><span class="math display">\[
+y_i = x_i^\top\beta + \varepsilon_i
+\]</span></p>
+<p>目标是估计条件均值 <span class="math inline">\(E(y_i \mid x_i) = x_i^\top\beta\)</span>，使用的估计方法是最小化残差平方和（OLS）。在因变量连续、误差项大致满足正态分布的场景下，OLS 给我们一条「最优直线」，并且具备很好的统计性质。</p>
+<p>然而，OLS 的适用范围是有边界的。下表列出了三类在金融和经济学研究中非常常见的因变量类型，以及 OLS 在这些情形下遭遇的问题：</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 27%">
+<col style="width: 44%">
+<col style="width: 27%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">因变量类型</th>
+<th style="text-align: left;">金融/经济中的典型例子</th>
+<th style="text-align: left;">OLS 的问题</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">二元 0/1</td>
+<td style="text-align: left;">是否违约、是否购买理财产品</td>
+<td style="text-align: left;">预测值可能超出 <span class="math inline">\([0,1]\)</span>，无法解释为概率</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">非负计数</td>
+<td style="text-align: left;">月度交易次数、年内发债次数</td>
+<td style="text-align: left;">预测值可能为负，不符合数据的物理性质</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">截断/删失</td>
+<td style="text-align: left;">只观测到审批通过的贷款金额</td>
+<td style="text-align: left;">忽略截断机制会导致系数估计偏误</td>
+</tr>
+</tbody>
+</table>
+<p>问题的根源在于：OLS 背后隐含着「因变量连续、误差正态」的假设。一旦这个假设不成立，用残差平方和作为优化目标就失去了统计依据，估计结果也就失去了可靠性。</p>
+<p>这时候，我们需要一个更通用的估计框架——一种不依赖「因变量必须连续」的方法。这就是 MLE 的出发点。</p>
+</section>
+<section id="mle-的角色" class="level3" data-number="38.2.2">
+<h3 data-number="38.2.2" class="anchored" data-anchor-id="mle-的角色"><span class="header-section-number">38.2.2</span> MLE 的角色</h3>
+<p>MLE 的核心思想只有一句话：<strong>给数据选一个合适的分布，然后找出最能解释这份数据的参数。</strong></p>
+<p>这句话看起来很简单，但它意味着：只要我们能为因变量设定一个合理的概率分布，就能用 MLE 来估计模型参数——无论因变量是 0/1 的二元变量、非负整数，还是存在截断的连续变量。</p>
+<p>正是因为这种通用性，后续将要学习的 Logit、Probit、Tobit、Poisson、Heckman 等模型，本质上只是<strong>分布设定不同</strong>，但估计原则都是 MLE。理解了 MLE，就理解了这些模型的「共同语言」。</p>
+<p>下图展示了 MLE 分析的完整链条，也是本章的「导航图」：</p>
+<div id="fig-MLE-flowchart" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-MLE-flowchart-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./figs/method_MLE_fig01_flowchart.png" class="img-fluid figure-img" style="width:100.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-MLE-flowchart-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+图&nbsp;38.1: MLE 的完整分析链条
+</figcaption>
+</figure>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+本章学习目标
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>本章不要求手推 MLE 的一阶条件，也不要求自己编程实现。核心目标是理解「MLE 在做什么」，以及为什么后续各类模型都离不开它。</p>
+</div>
+</div>
+<hr>
+</section>
+</section>
+<section id="mle-的基本思想概率似然与参数评分" class="level2" data-number="38.3">
+<h2 data-number="38.3" class="anchored" data-anchor-id="mle-的基本思想概率似然与参数评分"><span class="header-section-number">38.3</span> MLE 的基本思想：概率、似然与参数评分</h2>
+<p>这一节是全章概念上最重要的内容。很多人第一次接触 MLE 时，会把「似然」和「概率」混为一谈，这会导致对后续所有内容的理解都出现偏差。我们需要把这个区分讲清楚。</p>
+<section id="从出行方式例子出发" class="level3" data-number="38.3.1">
+<h3 data-number="38.3.1" class="anchored" data-anchor-id="从出行方式例子出发"><span class="header-section-number">38.3.1</span> 从出行方式例子出发</h3>
+<p>先从一个非常具体的场景出发。</p>
+<blockquote class="blockquote">
+<p>某城市居民只有两种出行方式：步行（<span class="math inline">\(y=1\)</span>）和开车（<span class="math inline">\(y=0\)</span>）。设步行的概率为 <span class="math inline">\(\theta\)</span>。</p>
+</blockquote>
+<p>现在，基于完全相同的场景，我们可以提出两种截然不同的问题：</p>
+<p><strong>A. 概率视角的问题</strong>：我已经知道步行概率是 <span class="math inline">\(\theta = 0.6\)</span>，随机询问 5 个人，请问「恰好 3 人选择步行」的可能性有多大？</p>
+<p>这个问题中，参数 <span class="math inline">\(\theta = 0.6\)</span> 是固定的，我们在问：在这个固定参数下，各种可能的数据出现的概率是多少。答案是 <span class="math inline">\(P(Y=3 \mid \theta=0.6) = \binom{5}{3}(0.6)^3(0.4)^2 \approx 0.346\)</span>。</p>
+<p><strong>B. 似然视角的问题</strong>：我已经做完了调查——5 个人中有 3 人选择步行，2 人选择开车。现在我想问：哪个 <span class="math inline">\(\theta\)</span> 值最能解释这份数据？<span class="math inline">\(\theta=0.3\)</span> 更合理，还是 <span class="math inline">\(\theta=0.6\)</span>，还是 <span class="math inline">\(\theta=0.9\)</span>？</p>
+<p>这个问题中，数据 <span class="math inline">\(\{1,0,0,1,1\}\)</span> 是固定的，我们在问：在这份固定数据下，各种可能的参数值哪个更合理。</p>
+<p>这个「<strong>提问方向的反转</strong>」，就是概率（probability）与似然（likelihood）最根本的区别：</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th style="text-align: left;"></th>
+<th style="text-align: left;">概率（Probability）</th>
+<th style="text-align: left;">似然（Likelihood）</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">固定的</td>
+<td style="text-align: left;">参数 <span class="math inline">\(\theta\)</span></td>
+<td style="text-align: left;">数据 <span class="math inline">\(\{y_i\}\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">变化的</td>
+<td style="text-align: left;">数据（在数据空间上变化）</td>
+<td style="text-align: left;">参数（在参数空间上变化）</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">回答的问题</td>
+<td style="text-align: left;">给定参数，数据多常见？</td>
+<td style="text-align: left;">给定数据，哪个参数更合理？</td>
+</tr>
+</tbody>
+</table>
+<p>下图从图形角度展示了这两种视角的对比：</p>
+<div id="fig-MLE-prob-vs-lik" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-MLE-prob-vs-lik-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./figs/method_MLE_fig02_prob_vs_likelihood.png" class="img-fluid figure-img" style="width:100.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-MLE-prob-vs-lik-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+图&nbsp;38.2: 概率与似然的根本区别——出行方式例子
+</figcaption>
+</figure>
+</div>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+常见误解：似然不是概率
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>似然函数的值<strong>不是概率</strong>。它是一个「参数评分规则」——用来比较不同参数值对观测数据的解释能力。似然值可以大于 1，也不需要对参数空间积分等于 1。它唯一的作用是：<strong>哪个</strong> <span class="math inline">\(\theta\)</span> 对应的似然值更大，那个 <span class="math inline">\(\theta\)</span> 就更能解释数据。</p>
+<p>对于连续变量，似然函数中出现的 <span class="math inline">\(f(y_i \mid \theta)\)</span> 是概率<strong>密度</strong>值，不是概率。密度值可以大于 1，这与「似然不是概率」的结论完全一致。</p>
+</div>
+</div>
+</section>
+<section id="似然函数的构造" class="level3" data-number="38.3.2">
+<h3 data-number="38.3.2" class="anchored" data-anchor-id="似然函数的构造"><span class="header-section-number">38.3.2</span> 似然函数的构造</h3>
+<p>理解了「似然」的含义后，下一步是写出似然函数的数学表达式。</p>
+<p>在大多数模型中，我们假设各个观测是<strong>条件独立</strong>（i.i.d.）的：每个人的出行选择是独立做出的，不受他人影响。这个假设使得 <span class="math inline">\(n\)</span> 个人同时出现某种结果的联合概率，等于各自概率的乘积：</p>
+<ul>
+<li><strong>离散变量</strong>：<span class="math inline">\(L(\theta) = \prod_{i=1}^n P(y_i \mid \theta)\)</span></li>
+<li><strong>连续变量</strong>：<span class="math inline">\(L(\theta) = \prod_{i=1}^n f(y_i \mid \theta)\)</span></li>
+</ul>
+<p>这就是<strong>似然函数</strong>（likelihood function）。它以参数 <span class="math inline">\(\theta\)</span> 为自变量，以「在该参数下观测到当前样本的可能程度」为因变量。</p>
+</section>
+<section id="为什么取对数" class="level3" data-number="38.3.3">
+<h3 data-number="38.3.3" class="anchored" data-anchor-id="为什么取对数"><span class="header-section-number">38.3.3</span> 为什么取对数</h3>
+<p>直接使用似然函数 <span class="math inline">\(L(\theta)\)</span> 有两个实际困难：第一，<span class="math inline">\(n\)</span> 个概率值（都在 0 到 1 之间）连续相乘，乘积会极其接近零，计算机处理这类「数值下溢」时容易出错；第二，乘积形式的函数求导比较麻烦。</p>
+<p>取自然对数后，乘积变为加总，这两个问题都迎刃而解：</p>
+<p><span id="eq-loglik"><span class="math display">\[
+\ell(\theta) = \ln L(\theta) = \sum_{i=1}^n \ln f(y_i \mid \theta)
+\tag{38.1}\]</span></span></p>
+<p>这就是<strong>对数似然函数</strong>（log-likelihood function）。由于对数函数单调递增，<span class="math inline">\(\ell(\theta)\)</span> 和 <span class="math inline">\(L(\theta)\)</span> 在同一个 <span class="math inline">\(\theta\)</span> 处取得最大值——因此，最大化对数似然与最大化似然完全等价，但前者在数学和数值计算上都更方便。</p>
+<div id="fig-MLE-bernoulli-lik" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-MLE-bernoulli-lik-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./figs/method_MLE_fig03_bernoulli_likelihood.png" class="img-fluid figure-img" style="width:90.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-MLE-bernoulli-lik-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+图&nbsp;38.3: 对数似然函数的形状——Bernoulli 例子
+</figcaption>
+</figure>
+</div>
+<p><a href="#fig-MLE-bernoulli-lik" class="quarto-xref">Figure&nbsp;<span>38.3</span></a> 将在后面的 Bernoulli 例子中详细讨论，这里先留下一个印象：<span class="math inline">\(L(\theta)\)</span> 和 <span class="math inline">\(\ell(\theta)\)</span> 的峰值位置完全一致，但对数形式更规整，便于分析。</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+与机器学习语言的对应
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>机器学习中经常把「最大化对数似然」等价地写成「最小化负对数似然损失」（Negative Log-Likelihood Loss）。两者完全等价——加上负号，最大化问题变成最小化问题而已。</p>
+<p>因此，你在深度学习框架中看到的<strong>交叉熵损失</strong>（Cross-Entropy Loss），本质上就是 Bernoulli 分布的负对数似然。统计学、计量经济学和机器学习在这里用的是同一套逻辑，只是叫法不同。</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+提示词：理解似然函数
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>向 AI 助手（如 ChatGPT、Claude）提问时，可以用如下提示词帮助自己深化理解：</p>
+<blockquote class="blockquote">
+<p>请用「出行方式选择」这个例子，解释「概率」和「似然」的区别。5 个人中 3 人步行，参数 <span class="math inline">\(\theta\)</span> 代表步行概率。请分别写出概率视角和似然视角的提问方式，并画出似然函数 <span class="math inline">\(L(\theta) = \theta^3(1-\theta)^2\)</span> 的大致形状。</p>
+</blockquote>
+</div>
+</div>
+<hr>
+</section>
+</section>
+<section id="一个最简单的例子bernoulli-模型" class="level2" data-number="38.4">
+<h2 data-number="38.4" class="anchored" data-anchor-id="一个最简单的例子bernoulli-模型"><span class="header-section-number">38.4</span> 一个最简单的例子：Bernoulli 模型</h2>
+<p>抽象的定义总是不如一个具体的例子来得直观。本节用出行方式的例子，完整走一遍 MLE 的三个步骤，让大家第一次真正「看到」似然函数是如何工作的。</p>
+<section id="设定与数据" class="level3" data-number="38.4.1">
+<h3 data-number="38.4.1" class="anchored" data-anchor-id="设定与数据"><span class="header-section-number">38.4.1</span> 设定与数据</h3>
+<p>继续出行方式的场景。随机询问 5 个人，得到如下结果：</p>
+<p><span class="math display">\[
+\{y_1, y_2, y_3, y_4, y_5\} = \{1, 0, 0, 1, 1\}
+\]</span></p>
+<p>其中 1 代表「步行」，0 代表「开车」。假设每个人的选择是独立的，且步行概率均为 <span class="math inline">\(\theta\)</span>（未知）。我们的目标是用 MLE 估计 <span class="math inline">\(\theta\)</span>。</p>
+</section>
+<section id="构造似然函数" class="level3" data-number="38.4.2">
+<h3 data-number="38.4.2" class="anchored" data-anchor-id="构造似然函数"><span class="header-section-number">38.4.2</span> 构造似然函数</h3>
+<p>每个人的出行方式服从伯努利分布（Bernoulli distribution）：步行（<span class="math inline">\(y=1\)</span>）的概率为 <span class="math inline">\(\theta\)</span>，开车（<span class="math inline">\(y=0\)</span>）的概率为 <span class="math inline">\(1-\theta\)</span>。</p>
+<p>写出 5 个人的联合似然函数：</p>
+<p><span id="eq-bernoulli-lik"><span class="math display">\[
+L(\theta) = \theta \cdot (1-\theta) \cdot (1-\theta) \cdot \theta \cdot \theta = \theta^3(1-\theta)^2
+\tag{38.2}\]</span></span></p>
+<p>对应地，对数似然函数为：</p>
+<p><span id="eq-bernoulli-loglik"><span class="math display">\[
+\ell(\theta) = \ln L(\theta) = 3\ln\theta + 2\ln(1-\theta)
+\tag{38.3}\]</span></span></p>
+</section>
+<section id="求最大值解析解与网格搜索" class="level3" data-number="38.4.3">
+<h3 data-number="38.4.3" class="anchored" data-anchor-id="求最大值解析解与网格搜索"><span class="header-section-number">38.4.3</span> 求最大值：解析解与网格搜索</h3>
+<p><strong>A. 解析解</strong>：对 <a href="#eq-bernoulli-loglik" class="quarto-xref"><span>38.3</span></a> 求导，令导数为零：</p>
+<p><span class="math display">\[
+\frac{d\ell}{d\theta} = \frac{3}{\theta} - \frac{2}{1-\theta} = 0 \quad\Longrightarrow\quad \hat{\theta}_{MLE} = \frac{3}{5} = 0.6
+\]</span></p>
+<p>验证这确实是极大值：二阶导数 <span class="math inline">\(d^2\ell/d\theta^2 = -3\theta^{-2} - 2(1-\theta)^{-2} &lt; 0\)</span>，确认是极大值点。</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+结果有点出乎意料吗？
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><span class="math inline">\(\hat{\theta} = 3/5\)</span> 正好等于样本中「步行」的比例，也就是样本均值 <span class="math inline">\(\bar{y} = 3/5\)</span>。这不是巧合——对于 Bernoulli 分布，MLE 估计量恰好等于样本频率。这给了我们一个很好的直觉：<strong>MLE 在做的事情，就是找到「和样本最像」的参数值。</strong></p>
+</div>
+</div>
+<p><strong>B. 网格搜索</strong>：当模型没有解析解时，软件会在参数空间上系统地搜索最大值。下图展示了这个思路的简单形式：在 <span class="math inline">\(\theta\)</span> 的若干个候选值上，分别计算 <span class="math inline">\(\ell(\theta)\)</span>，找出最大值对应的点。</p>
+<div id="fig-MLE-loglik-shape" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-MLE-loglik-shape-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./figs/method_MLE_fig03_bernoulli_likelihood.png" class="img-fluid figure-img" style="width:90.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-MLE-loglik-shape-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+图&nbsp;38.4: 似然函数与对数似然函数的形状对比——Bernoulli 例子
+</figcaption>
+</figure>
+</div>
+<div id="fig-MLE-grid" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-MLE-grid-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./figs/method_MLE_fig04_bernoulli_grid.png" class="img-fluid figure-img" style="width:80.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-MLE-grid-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+图&nbsp;38.5: 网格搜索示意——在参数空间中寻找对数似然最大值
+</figcaption>
+</figure>
+</div>
+<p>从 <a href="#fig-MLE-loglik-shape" class="quarto-xref">Figure&nbsp;<span>38.4</span></a> 和 <a href="#fig-MLE-grid" class="quarto-xref">Figure&nbsp;<span>38.5</span></a> 可以看出：<span class="math inline">\(L(\theta)\)</span> 和 <span class="math inline">\(\ell(\theta)\)</span> 在 <span class="math inline">\(\hat{\theta}=0.6\)</span> 处同时取得最大值，与解析解完全一致。网格越密，搜索结果就越接近真实最大值点——这就是数值优化算法的基本思路，后续章节会详细介绍。</p>
+</section>
+<section id="mle-的三个基本步骤" class="level3" data-number="38.4.4">
+<h3 data-number="38.4.4" class="anchored" data-anchor-id="mle-的三个基本步骤"><span class="header-section-number">38.4.4</span> MLE 的三个基本步骤</h3>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+MLE 的三个基本步骤（以本例为示范）
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>Step 1</strong>：设定随机变量的分布。本例中 <span class="math inline">\(y_i \sim \text{Bernoulli}(\theta)\)</span>，即每次观测服从参数为 <span class="math inline">\(\theta\)</span> 的伯努利分布。</p>
+<p><strong>Step 2</strong>：写出联合对数似然函数： <span class="math display">\[\ell(\theta) = \sum_{i=1}^n \ln f(y_i \mid \theta)\]</span></p>
+<p><strong>Step 3</strong>：极大化 <span class="math inline">\(\ell(\theta)\)</span>，得到参数估计值 <span class="math inline">\(\hat{\theta}_{MLE}\)</span>。若存在解析解则直接求解，否则交给数值优化算法。</p>
+</div>
+</div>
+<p>这三步构成了 MLE 的核心框架，无论后续遇到什么样的分布假设，流程都是一样的。</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+提示词：生成 Bernoulli 似然函数图
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<blockquote class="blockquote">
+<p>请用 Python 绘制以下图形：横轴为 <span class="math inline">\(\theta \in (0,1)\)</span>，分别绘制 <span class="math inline">\(L(\theta) = \theta^3(1-\theta)^2\)</span>（上图）和 <span class="math inline">\(\ell(\theta) = 3\ln\theta + 2\ln(1-\theta)\)</span>（下图），用竖虚线标注 <span class="math inline">\(\hat{\theta}=0.6\)</span> 处的最大值，并在图中注明两者峰值位置相同。</p>
+</blockquote>
+</div>
+</div>
+<hr>
+</section>
+</section>
+<section id="从单参数到回归模型参数如何与数据连接" class="level2" data-number="38.5">
+<h2 data-number="38.5" class="anchored" data-anchor-id="从单参数到回归模型参数如何与数据连接"><span class="header-section-number">38.5</span> 从单参数到回归模型：参数如何与数据连接</h2>
+<p>前面的例子中，参数 <span class="math inline">\(\theta\)</span> 是一个常数——所有人的步行概率都相同。但现实中，步行概率显然因人而异：住得近的人更可能步行，收入更高的人可能更愿意开车。这就带来了一个关键问题：<strong>如何把个体差异引入分布参数？</strong></p>
+<p>这一节回答这个问题，它是理解 Logit、Probit、Poisson 等全部后续模型的理论基础。</p>
+<section id="一个具体的跨越从常数参数到条件参数" class="level3" data-number="38.5.1">
+<h3 data-number="38.5.1" class="anchored" data-anchor-id="一个具体的跨越从常数参数到条件参数"><span class="header-section-number">38.5.1</span> 一个具体的跨越：从常数参数到条件参数</h3>
+<p>我们用一个违约预测的例子来演示这个跨越。</p>
+<p>设客户 <span class="math inline">\(i\)</span> 的违约概率 <span class="math inline">\(p_i\)</span> 与其月收入 <span class="math inline">\(\text{income}_i\)</span> 和年龄 <span class="math inline">\(\text{age}_i\)</span> 有关，参数化为：</p>
+<p><span class="math display">\[
+p_i = \Lambda\!\left(-1 + 0.8 \cdot \text{income}_i - 0.5 \cdot \text{age}_i\right)
+\]</span></p>
+<p>其中 <span class="math inline">\(\Lambda(\cdot)\)</span> 是 Logistic 函数，<span class="math inline">\(\Lambda(z) = e^z/(1+e^z)\)</span>，其作用是把实数线上的值压缩到 <span class="math inline">\((0,1)\)</span> 之间，从而保证 <span class="math inline">\(p_i\)</span> 是合法的概率。</p>
+<p>这个设定里藏着三层含义，值得逐一理清：</p>
+<p><strong>第一层：个体差异</strong>。每位客户的违约概率 <span class="math inline">\(p_i\)</span> 不同，因为每个人的 income 和 age 不同。这和前面「所有人 <span class="math inline">\(\theta\)</span> 相同」的假设本质上不同。</p>
+<p><strong>第二层：降维</strong>。<span class="math inline">\(n\)</span> 位客户对应 <span class="math inline">\(n\)</span> 个不同的 <span class="math inline">\(p_i\)</span>，但这 <span class="math inline">\(n\)</span> 个概率全部由 3 个共同参数 <span class="math inline">\((-1, 0.8, -0.5)\)</span> 生成。把 <span class="math inline">\(n\)</span> 个参数降维为 3 个参数，才让估计成为可能。</p>
+<p><strong>第三层：可解释</strong>。系数 <span class="math inline">\(0.8\)</span> 说明收入越高，违约概率（通过 Logistic 函数）越大；系数 <span class="math inline">\(-0.5\)</span> 说明年龄越大，违约概率越低。</p>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+参数化的本质
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>我们不是直接估计每个人的违约概率 <span class="math inline">\(p_i\)</span>，而是估计一组共同参数 <span class="math inline">\(\beta\)</span>，再由这组参数生成每个人的概率。<strong>这组共同参数，就是 MLE 要估计的对象。</strong> 这一点理解了，后续所有非线性模型的逻辑就都通了。</p>
+</div>
+</div>
+</section>
+<section id="正态分布中的参数化" class="level3" data-number="38.5.2">
+<h3 data-number="38.5.2" class="anchored" data-anchor-id="正态分布中的参数化"><span class="header-section-number">38.5.2</span> 正态分布中的参数化</h3>
+<p>以连续变量 <span class="math inline">\(y_i \sim N(\mu_i, \sigma^2)\)</span> 为例，展示参数化的两种典型形式：</p>
+<p><strong>均值方程</strong>：通过 <span class="math inline">\(\mu_i = x_i^\top\beta\)</span> 刻画条件期望。这里 <span class="math inline">\(\mu_i\)</span> 随个体变化，但所有 <span class="math inline">\(\mu_i\)</span> 都由同一个参数向量 <span class="math inline">\(\beta\)</span> 生成——从 <span class="math inline">\(n\)</span> 个参数降维为 <span class="math inline">\(p\)</span> 个参数。</p>
+<p><strong>方差方程</strong>（允许异方差时）：通过 <span class="math inline">\(\sigma_i^2 = \exp(z_i^\top\gamma)\)</span> 刻画条件方差。使用 <span class="math inline">\(\exp(\cdot)\)</span> 是为了保证方差始终为正。</p>
+</section>
+<section id="连接函数的统一视角" class="level3" data-number="38.5.3">
+<h3 data-number="38.5.3" class="anchored" data-anchor-id="连接函数的统一视角"><span class="header-section-number">38.5.3</span> 连接函数的统一视角</h3>
+<p>不同的模型之所以「长得不一样」，本质上只是<strong>分布假设</strong>和<strong>连接函数</strong>不同，而参数化的逻辑完全相同。下表展示了从「常数参数」到「条件参数」的进化过程，这也是后续各章模型的「骨架」：</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">模型</th>
+<th style="text-align: left;">分布假设</th>
+<th style="text-align: left;">参数化方式</th>
+<th style="text-align: left;">连接函数</th>
+<th style="text-align: left;">参数约束</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Bernoulli（简单）</td>
+<td style="text-align: left;"><span class="math inline">\(y_i \sim \text{Bern}(\theta)\)</span></td>
+<td style="text-align: left;"><span class="math inline">\(\theta\)</span> 为常数</td>
+<td style="text-align: left;">—</td>
+<td style="text-align: left;"><span class="math inline">\(\theta \in (0,1)\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Logit</td>
+<td style="text-align: left;"><span class="math inline">\(y_i \sim \text{Bern}(p_i)\)</span></td>
+<td style="text-align: left;"><span class="math inline">\(p_i = \Lambda(x_i^\top\beta)\)</span></td>
+<td style="text-align: left;">Logistic</td>
+<td style="text-align: left;"><span class="math inline">\(p_i \in (0,1)\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">正态线性</td>
+<td style="text-align: left;"><span class="math inline">\(y_i \sim N(\mu_i, \sigma^2)\)</span></td>
+<td style="text-align: left;"><span class="math inline">\(\mu_i = x_i^\top\beta\)</span></td>
+<td style="text-align: left;">恒等</td>
+<td style="text-align: left;">无</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Poisson</td>
+<td style="text-align: left;"><span class="math inline">\(y_i \sim \text{Pois}(\lambda_i)\)</span></td>
+<td style="text-align: left;"><span class="math inline">\(\lambda_i = \exp(x_i^\top\beta)\)</span></td>
+<td style="text-align: left;">指数</td>
+<td style="text-align: left;"><span class="math inline">\(\lambda_i &gt; 0\)</span></td>
+</tr>
+</tbody>
+</table>
+<p><strong>连接函数</strong>（link function）的作用是保证参数化后的分布参数满足其数学约束：概率必须在 <span class="math inline">\([0,1]\)</span> 内，期望计数必须为正。不同的约束对应不同的连接函数。</p>
+<p>下图直观展示了这条变换链：</p>
+<div id="fig-MLE-parameterization" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-MLE-parameterization-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./figs/method_MLE_fig05_parameterization.png" class="img-fluid figure-img" style="width:90.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-MLE-parameterization-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+图&nbsp;38.6: 参数化变换链——连接函数的作用
+</figcaption>
+</figure>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+关于独立性假设
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>本章的似然函数均假设观测之间<strong>条件独立</strong>（conditionally independent），即在给定 <span class="math inline">\(x_i\)</span> 的条件下，<span class="math inline">\(y_i\)</span> 与 <span class="math inline">\(y_j\)</span>（<span class="math inline">\(i \neq j\)</span>）相互独立。这个假设在横截面数据中通常成立。若数据存在时间序列相关、面板相关或聚类相关，似然函数和推断方式需要相应调整，相关内容将在后续章节中讨论。</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+提示词：理解参数化与连接函数
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<blockquote class="blockquote">
+<p>请解释以下内容：在 Logit 模型中，为什么要使用 Logistic 函数 <span class="math inline">\(\Lambda(z) = e^z/(1+e^z)\)</span> 作为连接函数，而不是直接用线性函数 <span class="math inline">\(p_i = x_i^\top\beta\)</span>？请结合「违约概率必须在 <span class="math inline">\([0,1]\)</span> 之间」这个约束来说明。</p>
+</blockquote>
+</div>
+</div>
+<hr>
+</section>
+</section>
+<section id="正态模型线性回归与-ols-的关系" class="level2" data-number="38.6">
+<h2 data-number="38.6" class="anchored" data-anchor-id="正态模型线性回归与-ols-的关系"><span class="header-section-number">38.6</span> 正态模型、线性回归与 OLS 的关系</h2>
+<p>前面几节介绍了 MLE 作为「新工具」的概念框架。这一节要说明一件可能出乎意料的事：<strong>你其实早就用过 MLE 了</strong>。在正态误差假设下，线性回归的 OLS 估计等价于 MLE 估计——OLS 是 MLE 框架下的一个特例。</p>
+<section id="正态均值模型的-mle" class="level3" data-number="38.6.1">
+<h3 data-number="38.6.1" class="anchored" data-anchor-id="正态均值模型的-mle"><span class="header-section-number">38.6.1</span> 正态均值模型的 MLE</h3>
+<p>先从最简单的情形开始。设 <span class="math inline">\(n\)</span> 个观测值独立地来自同一个正态分布：</p>
+<p><span class="math display">\[
+y_i \sim N(\mu, \sigma^2), \quad i = 1, 2, \ldots, n
+\]</span></p>
+<p>假设 <span class="math inline">\(\sigma^2\)</span> 已知，目标是估计均值 <span class="math inline">\(\mu\)</span>。</p>
+<p>样本的对数似然函数为：</p>
+<p><span id="eq-normal-loglik"><span class="math display">\[
+\ell(\mu) = -\frac{n}{2}\ln(2\pi\sigma^2) - \frac{1}{2\sigma^2}\sum_{i=1}^n(y_i - \mu)^2
+\tag{38.4}\]</span></span></p>
+<p>由于第一项与 <span class="math inline">\(\mu\)</span> 无关，最大化 <span class="math inline">\(\ell(\mu)\)</span> 等价于最小化 <span class="math inline">\(\sum_{i=1}^n(y_i - \mu)^2\)</span>，其解为：</p>
+<p><span class="math display">\[
+\hat{\mu}_{MLE} = \bar{y} = \frac{1}{n}\sum_{i=1}^n y_i
+\]</span></p>
+<p>也就是样本均值——这与直觉完全一致。下图直观展示了这个结论：</p>
+<div id="fig-MLE-normal-fit" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-MLE-normal-fit-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./figs/method_MLE_fig06_normal_fit_mu.png" class="img-fluid figure-img" style="width:90.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-MLE-normal-fit-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+图&nbsp;38.7: 不同 <span class="math inline">\(\mu\)</span> 下的正态密度曲线——<span class="math inline">\(\mu=170\)</span> 时曲线最好地覆盖数据
+</figcaption>
+</figure>
+</div>
+<div id="fig-MLE-loglik-mu" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-MLE-loglik-mu-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./figs/method_MLE_fig07_loglik_mu_curve.png" class="img-fluid figure-img" style="width:80.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-MLE-loglik-mu-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+图&nbsp;38.8: 对数似然 <span class="math inline">\(\ell(\mu)\)</span> 的形状——峰值在样本均值处
+</figcaption>
+</figure>
+</div>
+<p><a href="#fig-MLE-normal-fit" class="quarto-xref">Figure&nbsp;<span>38.7</span></a> 展示了一批身高数据（来自 <span class="math inline">\(N(170, 25)\)</span>），以及三条分别以 <span class="math inline">\(\mu=160\)</span>、<span class="math inline">\(\mu=170\)</span>、<span class="math inline">\(\mu=180\)</span> 为中心的正态密度曲线。显然，<span class="math inline">\(\mu=170\)</span> 的曲线最好地覆盖了数据。<a href="#fig-MLE-loglik-mu" class="quarto-xref">Figure&nbsp;<span>38.8</span></a> 则从对数似然的角度验证了同样的结论：<span class="math inline">\(\ell(\mu)\)</span> 在 <span class="math inline">\(\bar{y}\)</span> 处取得最大值。</p>
+</section>
+<section id="正态线性模型与-ols-的等价性" class="level3" data-number="38.6.2">
+<h3 data-number="38.6.2" class="anchored" data-anchor-id="正态线性模型与-ols-的等价性"><span class="header-section-number">38.6.2</span> 正态线性模型与 OLS 的等价性</h3>
+<p>现在把 <span class="math inline">\(\mu_i = x_i^\top\beta\)</span> 代入（即引入解释变量），变成我们熟悉的线性回归模型：</p>
+<p><span class="math display">\[
+y_i \mid x_i \sim N(x_i^\top\beta, \sigma^2)
+\]</span></p>
+<p>对数似然为：</p>
+<p><span id="eq-normal-linear-loglik"><span class="math display">\[
+\ell(\beta, \sigma^2) = -\frac{n}{2}\ln(2\pi\sigma^2) - \frac{1}{2\sigma^2}\sum_{i=1}^n(y_i - x_i^\top\beta)^2
+\tag{38.5}\]</span></span></p>
+<p>关于 <span class="math inline">\(\beta\)</span> 最大化 <a href="#eq-normal-linear-loglik" class="quarto-xref"><span>38.5</span></a>，等价于最小化：</p>
+<p><span class="math display">\[
+\sum_{i=1}^n(y_i - x_i^\top\beta)^2 \quad\text{（残差平方和，RSS）}
+\]</span></p>
+<p>这正是 OLS 的目标函数！</p>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+OLS 是 MLE 的特例
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>在<strong>正态误差 + 同方差</strong>假设下，OLS 估计量等价于 MLE 估计量。</p>
+<p>换句话说：你每次做线性回归，其实已经在用 MLE 的逻辑了——只是正态假设使得「极大化似然」与「最小化残差平方和」碰巧给出了同样的结果。</p>
+<p>OLS 之所以看起来「简单」，不是因为它和 MLE 无关，恰恰相反——是因为在正态同方差假设下，MLE 恰好化简成了最小二乘。</p>
+</div>
+</div>
+<p>下图从图形角度验证这一等价性：</p>
+<div id="fig-MLE-ols-mle" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-MLE-ols-mle-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./figs/method_MLE_fig08_ols_is_mle.png" class="img-fluid figure-img" style="width:90.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-MLE-ols-mle-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+图&nbsp;38.9: OLS 与 MLE 给出相同的参数估计——两条曲线极值位置完全一致
+</figcaption>
+</figure>
+</div>
+</section>
+<section id="为什么-logit-不能用-ols" class="level3" data-number="38.6.3">
+<h3 data-number="38.6.3" class="anchored" data-anchor-id="为什么-logit-不能用-ols"><span class="header-section-number">38.6.3</span> 为什么 Logit 不能用 OLS</h3>
+<p>明白了「OLS 是 MLE 特例」之后，自然会问：对于 0/1 因变量，为什么不能直接用 OLS？</p>
+<p>原因有两层。第一层（浅）：强行用 OLS 做二元因变量的回归（即线性概率模型），给出的预测值可能超出 <span class="math inline">\([0,1]\)</span>，这在概率解释上是不合理的。第二层（深）：Bernoulli 分布的对数似然函数和正态分布的完全不同，极大化 Bernoulli 似然不等价于最小化残差平方和。因此，Logit/Probit 模型必须用 MLE，而不是 OLS。</p>
+<hr>
+</section>
+</section>
+<section id="mle-的一般工作流程" class="level2" data-number="38.7">
+<h2 data-number="38.7" class="anchored" data-anchor-id="mle-的一般工作流程"><span class="header-section-number">38.7</span> MLE 的一般工作流程</h2>
+<p>有了前几节的铺垫，现在可以把 MLE 的完整步骤整理成一个通用的「菜谱」。无论后续遇到什么模型，只要它用 MLE 估计，都可以按以下步骤来理解。</p>
+<section id="五步工作流程" class="level3" data-number="38.7.1">
+<h3 data-number="38.7.1" class="anchored" data-anchor-id="五步工作流程"><span class="header-section-number">38.7.1</span> 五步工作流程</h3>
+<p><strong>Step 1：识别因变量类型，选择分布假设</strong></p>
+<p>因变量的类型直接决定了分布假设的选择：</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th style="text-align: left;">因变量类型</th>
+<th style="text-align: left;">分布假设候选</th>
+<th style="text-align: left;">常见模型</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">连续型（近似对称）</td>
+<td style="text-align: left;">正态分布</td>
+<td style="text-align: left;">线性回归</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">二元 0/1</td>
+<td style="text-align: left;">伯努利分布</td>
+<td style="text-align: left;">Logit、Probit</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">有序多类别</td>
+<td style="text-align: left;">有序分布</td>
+<td style="text-align: left;">有序 Logit</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">无序多类别</td>
+<td style="text-align: left;">多项分布</td>
+<td style="text-align: left;">多项 Logit</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">非负计数</td>
+<td style="text-align: left;">泊松、负二项分布</td>
+<td style="text-align: left;">Poisson、NegBin</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">截断/删失连续</td>
+<td style="text-align: left;">截断正态</td>
+<td style="text-align: left;">Tobit</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">存在样本选择</td>
+<td style="text-align: left;">二元正态</td>
+<td style="text-align: left;">Heckman</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Step 2：设定条件分布</strong> <span class="math inline">\(f(y_i \mid x_i, \theta)\)</span></p>
+<p>选定分布族后，写出每个观测 <span class="math inline">\(y_i\)</span> 在给定 <span class="math inline">\(x_i\)</span> 下的条件分布。这是建模中最重要的假设——分布设定错误，参数估计就可能存在严重偏误。</p>
+<p><strong>Step 3：参数化——将分布参数写成</strong> <span class="math inline">\(x_i\)</span> 的函数</p>
+<p>选择合适的连接函数，把分布参数（如 <span class="math inline">\(\mu_i\)</span>、<span class="math inline">\(p_i\)</span>、<span class="math inline">\(\lambda_i\)</span>）与解释变量 <span class="math inline">\(x_i\)</span> 连接起来。这一步决定了模型的具体结构。</p>
+<p><strong>Step 4：写出对数似然函数</strong></p>
+<p><span id="eq-loglik-general"><span class="math display">\[
+\ell(\theta) = \sum_{i=1}^n \ln f(y_i \mid x_i, \theta)
+\tag{38.6}\]</span></span></p>
+<p><strong>Step 5：极大化，进行推断</strong></p>
+<ul>
+<li>若存在解析解：令一阶条件为零，解出 <span class="math inline">\(\hat{\theta}\)</span></li>
+<li>若无解析解（大多数非线性模型）：由软件的数值优化算法迭代求解</li>
+<li>输出：参数估计值 <span class="math inline">\(\hat{\theta}\)</span>、标准误、置信区间、检验统计量</li>
+</ul>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+关于数值优化
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Logit、Probit、Tobit 等模型的对数似然函数通常没有解析解。软件（Python 的 <code>statsmodels</code>、Stata）背后运行的是迭代优化算法（如 Newton-Raphson、BFGS 等），通过反复更新参数猜测值，直到找到使对数似然最大的参数。这些算法的细节将在「最优化方法」一章中详细介绍。</p>
+<p>收敛成功（<code>converged: True</code>）意味着算法找到了极值点。如果软件报告「did not converge」，则结果不可信，需要排查原因。</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+遇到「某模型用 MLE 估计」时，问自己这三个问题
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ol type="1">
+<li><strong>因变量是什么类型？</strong> → 决定分布假设</li>
+<li><strong>假定了什么条件分布？</strong> → 决定似然函数的形式</li>
+<li><strong>分布参数是如何写成</strong> <span class="math inline">\(x_i\)</span> 的函数的？ → 决定模型的具体结构</li>
+</ol>
+<p>能回答这三个问题，你就真正理解了这个模型的估计逻辑。</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+提示词：生成 MLE 工作流程图
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<blockquote class="blockquote">
+<p>请用 Python 的 <code>matplotlib</code> 绘制一张 MLE 工作流程图，包含以下六个步骤（用圆角矩形节点和箭头连接）：① 样本数据 {y_i, x_i} → ② 分布假设 f(y_i|x_i,θ) → ③ 参数化 θ_i = h(x_i, β) → ④ 对数似然 ℓ(β) = Σ ln f → ⑤ MLE: β̂ = argmax ℓ → ⑥ 推断/预测/比较。节点用淡蓝色填充，箭头用深蓝色。</p>
+</blockquote>
+</div>
+</div>
+<hr>
+</section>
+</section>
+<section id="如何解读软件输出中的似然指标" class="level2" data-number="38.8">
+<h2 data-number="38.8" class="anchored" data-anchor-id="如何解读软件输出中的似然指标"><span class="header-section-number">38.8</span> 如何解读软件输出中的似然指标</h2>
+<p>估计完模型，软件会输出一大堆数字。本节以 Logit 模型为例，逐一解读这些指标的含义，帮助大家把「看懂输出」这件事变成习惯。</p>
+<section id="python-输出示例statsmodels" class="level3" data-number="38.8.1">
+<h3 data-number="38.8.1" class="anchored" data-anchor-id="python-输出示例statsmodels"><span class="header-section-number">38.8.1</span> Python 输出示例（statsmodels）</h3>
+<p>以下是用 <code>statsmodels.Logit</code> 估计一个包含两个解释变量的违约模型时，典型的输出格式：</p>
+<pre><code>Optimization terminated successfully.
+         Current function value: 0.523104       ← 收敛时的负对数似然/n
+
+                           Logit Regression Results
+==============================================================================
+Dep. Variable:                default   No. Observations:                 1000
+Model:                          Logit   Df Residuals:                      997
+Method:                           MLE   Df Model:                            2
+Date:                        ...       Pseudo R-squ.:                  0.0754  ← McFadden R²
+Time:                        ...       Log-Likelihood:                -523.10  ← 对数似然值
+converged:                       True   LL-Null:                       -565.67  ← 零模型对数似然
+Covariance Type:            nonrobust   LLR p-value:                 1.23e-19  ← 似然比检验 p 值
+==============================================================================
+                 coef    std err          z      P&gt;|z|      [0.025      0.975]
+------------------------------------------------------------------------------
+const         -7.2341      0.821     -8.811      0.000      -8.843      -5.625
+income         1.3752      0.159      8.648      0.000       1.063       1.687
+age_std       -0.8203      0.097     -8.449      0.000      -1.011      -0.630
+==============================================================================</code></pre>
+<p>下面逐一解读这些关键指标。</p>
+</section>
+<section id="log-likelihood对数似然值" class="level3" data-number="38.8.2">
+<h3 data-number="38.8.2" class="anchored" data-anchor-id="log-likelihood对数似然值"><span class="header-section-number">38.8.2</span> Log-Likelihood（对数似然值）</h3>
+<p><code>Log-Likelihood: -523.10</code> 是 MLE 迭代收敛后，对数似然函数在 <span class="math inline">\(\hat{\theta}\)</span> 处的取值。</p>
+<p>几个要点：</p>
+<ul>
+<li>对数似然值通常是负数（因为每个 <span class="math inline">\(\ln f(y_i \mid \hat{\theta}) \leq 0\)</span>，求和后为负）</li>
+<li>对于<strong>同一数据集</strong>，对数似然越大（绝对值越小），说明模型拟合越好</li>
+<li>不同数据集之间的对数似然<strong>不可比较</strong>，因为数据规模不同</li>
+</ul>
+</section>
+<section id="似然比检验lr-test" class="level3" data-number="38.8.3">
+<h3 data-number="38.8.3" class="anchored" data-anchor-id="似然比检验lr-test"><span class="header-section-number">38.8.3</span> 似然比检验（LR Test）</h3>
+<p><code>LLR p-value: 1.23e-19</code> 是<strong>似然比检验</strong>（Likelihood Ratio Test）的 p 值。</p>
+<p>LR 检验是 MLE 框架下「是否加入这组变量显著改善模型」的标准检验，类比 OLS 中的 F 检验。其检验统计量为：</p>
+<p><span id="eq-LRT"><span class="math display">\[
+LR = -2\left[\ell(\hat{\theta}_R) - \ell(\hat{\theta}_U)\right] \sim \chi^2(q)
+\tag{38.7}\]</span></span></p>
+<p>其中 <span class="math inline">\(\hat{\theta}_R\)</span> 是约束模型（如只含截距的零模型）的参数估计，<span class="math inline">\(\hat{\theta}_U\)</span> 是非约束模型的参数估计，<span class="math inline">\(q\)</span> 是约束数量（即被检验参数的个数）。</p>
+<p>Python 输出中的 <code>LL-Null: -565.67</code> 就是零模型（只含截距）的对数似然。因此：</p>
+<p><span class="math display">\[
+LR = -2 \times (-565.67 - (-523.10)) = -2 \times (-42.57) = 85.14, \quad \chi^2(2) \text{ 下 p 值极小}
+\]</span></p>
+<p>这说明 income 和 age_std 两个变量联合显著。</p>
+</section>
+<section id="aic-与-bic信息准则" class="level3" data-number="38.8.4">
+<h3 data-number="38.8.4" class="anchored" data-anchor-id="aic-与-bic信息准则"><span class="header-section-number">38.8.4</span> AIC 与 BIC（信息准则）</h3>
+<p><span id="eq-AIC-BIC"><span class="math display">\[
+AIC = -2\ell(\hat{\theta}) + 2k, \qquad BIC = -2\ell(\hat{\theta}) + k\ln n
+\tag{38.8}\]</span></span></p>
+<p>其中 <span class="math inline">\(k\)</span> 是参数个数，<span class="math inline">\(n\)</span> 是样本量，<strong>值越小越好</strong>。</p>
+<p>AIC 和 BIC 的用途：</p>
+<ul>
+<li><strong>比较嵌套模型</strong>：虽然可以用 LR 检验，但 AIC/BIC 也常用</li>
+<li><strong>比较非嵌套模型</strong>（如 Logit vs.&nbsp;Probit）：LR 检验此时无法使用，只能用 AIC/BIC</li>
+<li>BIC 对参数数量的惩罚比 AIC 更重（<span class="math inline">\(k\ln n\)</span> vs.&nbsp;<span class="math inline">\(2k\)</span>），在大样本下更倾向选择简单模型</li>
+</ul>
+</section>
+<section id="pseudo-r²mcfadden-r2" class="level3" data-number="38.8.5">
+<h3 data-number="38.8.5" class="anchored" data-anchor-id="pseudo-r²mcfadden-r2"><span class="header-section-number">38.8.5</span> Pseudo R²（McFadden <span class="math inline">\(R^2\)</span>）</h3>
+<p><span id="eq-pseudo-R2"><span class="math display">\[
+R^2_{McFadden} = 1 - \frac{\ell(\hat{\theta})}{\ell(\hat{\theta}_0)}
+\tag{38.9}\]</span></span></p>
+<p>其中 <span class="math inline">\(\ell(\hat{\theta}_0)\)</span> 是零模型（只含截距）的对数似然。取值范围为 <span class="math inline">\([0,1)\)</span>。</p>
+<p><strong>重要提醒</strong>：Pseudo <span class="math inline">\(R^2\)</span> <strong>不能</strong>像 OLS 的 <span class="math inline">\(R^2\)</span> 那样解释为「方差解释比例」，两者的含义和量级都不同。它只是一个辅助参考指标，不宜过度解读。</p>
+</section>
+<section id="系数解释与边际效应" class="level3" data-number="38.8.6">
+<h3 data-number="38.8.6" class="anchored" data-anchor-id="系数解释与边际效应"><span class="header-section-number">38.8.6</span> 系数解释与边际效应</h3>
+<p>在 OLS 回归中，<span class="math inline">\(\hat{\beta}_j\)</span> 可以直接解释为「<span class="math inline">\(x_j\)</span> 增加一个单位，<span class="math inline">\(y\)</span> 的平均变化量」。</p>
+<p>但在 Logit、Poisson 等非线性模型中，<span class="math inline">\(\hat{\beta}_j\)</span> <strong>不能</strong>直接当作「单位变化效应」来读——因为连接函数是非线性的。例如，Logit 的系数 <span class="math inline">\(\hat{\beta}_j = 1.375\)</span> 并不意味着「收入增加 1 万元，违约概率增加 1.375 个百分点」。需要通过进一步计算（<strong>边际效应</strong>或<strong>预测概率</strong>）才能得到可解释的效应量。这部分内容将在后续 Logit/Probit 章节详细展开。</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-16-contents" aria-controls="callout-16" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Stata 输出对照
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-16" class="callout-16-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div class="sourceCode" id="cb2"><pre class="sourceCode stata code-with-copy"><code class="sourceCode stata"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>. <span class="kw">logit</span> <span class="kw">default</span> income age_std</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>Logistic regression                             Number <span class="kw">of</span> <span class="kw">obs</span>   =       1000</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>                                                LR <span class="fu">chi2</span>(2)      =      85.14</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>                                                Prob &gt; <span class="fu">chi2</span>     =     0.0000</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>Log likelihood = -523.104                       Pseudo R2       =     0.0751</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>------------------------------------------------------------------------------</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>     <span class="kw">default</span> |      Coef.   Std. Err.       z    P&gt;|z|   [95% Conf. Interval]</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>-------------+----------------------------------------------------------------</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>      income |   1.375204   .1590619     8.65   0.000    1.063448    1.686959</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>     age_std |  -.8202597   .0971019    -8.45   0.000   -1.010576   -.6299432</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>       <span class="dt">_cons</span> |  -7.234052   .8209012    -8.81   0.000   -8.842989   -5.625115</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>------------------------------------------------------------------------------</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Stata 中的 <code>LR chi2(2)</code> 对应 Python 的 <code>LLR p-value</code> 所依据的 <span class="math inline">\(\chi^2\)</span> 统计量（自由度 = 2）；<code>Pseudo R2</code> 与 Python 的 <code>Pseudo R-squ.</code> 含义相同；<code>Log likelihood</code> 与 Python 的 <code>Log-Likelihood</code> 对应。</p>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+提示词：解读软件输出
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<blockquote class="blockquote">
+<p>我用 Python 的 statsmodels 估计了一个 Logit 模型，输出中包含 Log-Likelihood、LL-Null、LLR p-value、Pseudo R-squ. 等指标。请逐一解释这些指标的含义，并说明如何利用它们来判断模型的拟合质量和统计显著性。</p>
+</blockquote>
+</div>
+</div>
+<hr>
+</section>
+</section>
+<section id="使用-mle-时的常见问题" class="level2" data-number="38.9">
+<h2 data-number="38.9" class="anchored" data-anchor-id="使用-mle-时的常见问题"><span class="header-section-number">38.9</span> 使用 MLE 时的常见问题</h2>
+<p>在实际操作中，MLE 不总是一帆风顺的。本节列出五类常见问题，帮助大家提前了解「踩坑」风险。</p>
+<section id="模型设定偏误最重要" class="level3" data-number="38.9.1">
+<h3 data-number="38.9.1" class="anchored" data-anchor-id="模型设定偏误最重要"><span class="header-section-number">38.9.1</span> 模型设定偏误（最重要）</h3>
+<p>MLE 的估计结果高度依赖分布假设。若所假定的分布与真实数据生成过程不符，参数估计可能严重偏误——软件不会自动告诉你「分布选错了」，它只会按照你给定的分布函数忠实地最大化似然。</p>
+<p><strong>典型例子</strong>：对交易次数（非负整数）强行使用正态分布假设，忽略了计数变量不能为负的性质，模型可能给出负的预测值，参数估计也会失真。正确做法是使用 Poisson 或负二项分布。</p>
+</section>
+<section id="小样本偏误" class="level3" data-number="38.9.2">
+<h3 data-number="38.9.2" class="anchored" data-anchor-id="小样本偏误"><span class="header-section-number">38.9.2</span> 小样本偏误</h3>
+<p>MLE 的优良统计性质（一致性、渐近正态性、有效性）均为<strong>大样本渐近</strong>结论。在样本量较小（通常 <span class="math inline">\(n &lt; 100\)</span>）时，MLE 可能存在偏误，置信区间的覆盖率也可能不准确。遇到小样本，需要格外谨慎解读结果。</p>
+</section>
+<section id="完全分离complete-separation" class="level3" data-number="38.9.3">
+<h3 data-number="38.9.3" class="anchored" data-anchor-id="完全分离complete-separation"><span class="header-section-number">38.9.3</span> 完全分离（Complete Separation）</h3>
+<p>这是 Logit/Probit 中的一个特殊问题：若某个自变量（或几个变量的某种组合）能<strong>完美区分</strong> <span class="math inline">\(y=0\)</span> 和 <span class="math inline">\(y=1\)</span> 的所有观测，似然函数在参数空间的边界处没有有限的最大值，MLE 不存在。</p>
+<p><strong>症状</strong>：软件给出异常大的系数估计（如 <span class="math inline">\(\hat{\beta} = 100\)</span>）和异常大的标准误，或发出不收敛警告。</p>
+<p><strong>处理</strong>：检查各变量与因变量的关系，看是否存在完美预测的情况；若有，删除该变量或对数据进行合并分组。</p>
+</section>
+<section id="收敛失败" class="level3" data-number="38.9.4">
+<h3 data-number="38.9.4" class="anchored" data-anchor-id="收敛失败"><span class="header-section-number">38.9.4</span> 收敛失败</h3>
+<p>软件报告「<code>did not converge</code>」或「<code>Hessian is not positive definite</code>」，说明数值优化算法未能找到极值点，结果不可信。</p>
+<p><strong>常见原因</strong>：变量之间存在多重共线性；各变量的量纲差异过大（如一个变量在 0-1 之间，另一个在 0-1000000 之间），导致梯度方向不一致；初始值选择不当。</p>
+<p><strong>处理思路</strong>：对变量进行标准化（均值为 0、标准差为 1）；检查多重共线性；尝试从多个不同初始值出发重新估计，比较结果是否一致。</p>
+</section>
+<section id="局部极大值" class="level3" data-number="38.9.5">
+<h3 data-number="38.9.5" class="anchored" data-anchor-id="局部极大值"><span class="header-section-number">38.9.5</span> 局部极大值</h3>
+<p>复杂模型（如混合模型、含随机效应的模型）的对数似然函数可能存在多个局部极大值，数值优化算法可能只找到其中一个，而不一定是全局最大值。</p>
+<p><strong>处理</strong>：从多组不同的初始值出发分别优化，比较各次收敛结果。若各次结果高度一致，则可以对全局最优有较大信心；若结果差异较大，则说明似然函数地形复杂，需要更仔细的分析。</p>
+<hr>
+</section>
+</section>
+<section id="小结mle-为后续各类模型提供统一语言" class="level2" data-number="38.10">
+<h2 data-number="38.10" class="anchored" data-anchor-id="小结mle-为后续各类模型提供统一语言"><span class="header-section-number">38.10</span> 小结：MLE 为后续各类模型提供统一语言</h2>
+<p>本章从 OLS 的局限性出发，逐步建立了 MLE 的概念框架。现在可以回过头来总结这条分析链条：</p>
+<p><span class="math display">\[
+\text{样本数据} \;\rightarrow\; \text{分布假设} \;\rightarrow\; \text{参数化} \;\rightarrow\; \text{似然函数} \;\rightarrow\; \hat{\theta}_{MLE} \;\rightarrow\; \text{推断与预测}
+\]</span></p>
+<p>有两句话值得特别记住：</p>
+<p><strong>第一</strong>：MLE 的核心不在于求导本身，而在于<strong>先设定</strong> <span class="math inline">\(y_i \mid x_i\)</span> 的分布，再用参数化方式把分布参数与 <span class="math inline">\(x_i\)</span> 连接起来。分布选对了，连接函数选对了，参数估计的逻辑就自然成立。</p>
+<p><strong>第二</strong>：后续许多看起来彼此不同的模型，其实共享同一套估计逻辑——<strong>分布设定不同，参数化方式不同，但估计原则仍然是极大化对数似然</strong>。</p>
+<p>下表是本章的核心成果，也是后续各章的「索引」：</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 16%">
+<col style="width: 16%">
+<col style="width: 16%">
+<col style="width: 16%">
+<col style="width: 16%">
+<col style="width: 16%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">模型</th>
+<th style="text-align: left;">因变量类型</th>
+<th style="text-align: left;">分布假设</th>
+<th style="text-align: left;">参数化方式</th>
+<th style="text-align: left;">连接函数</th>
+<th style="text-align: left;">待讲章节</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">线性回归（OLS）</td>
+<td style="text-align: left;">连续型</td>
+<td style="text-align: left;">正态 <span class="math inline">\(N(\mu_i, \sigma^2)\)</span></td>
+<td style="text-align: left;"><span class="math inline">\(\mu_i = x_i^\top\beta\)</span></td>
+<td style="text-align: left;">恒等</td>
+<td style="text-align: left;">已讲</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Logit</td>
+<td style="text-align: left;">二元 0/1</td>
+<td style="text-align: left;">伯努利 <span class="math inline">\(\text{Bern}(p_i)\)</span></td>
+<td style="text-align: left;"><span class="math inline">\(p_i = \Lambda(x_i^\top\beta)\)</span></td>
+<td style="text-align: left;">Logistic</td>
+<td style="text-align: left;">后续章节</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Probit</td>
+<td style="text-align: left;">二元 0/1</td>
+<td style="text-align: left;">伯努利 <span class="math inline">\(\text{Bern}(p_i)\)</span></td>
+<td style="text-align: left;"><span class="math inline">\(p_i = \Phi(x_i^\top\beta)\)</span></td>
+<td style="text-align: left;">正态 CDF</td>
+<td style="text-align: left;">后续章节</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Tobit</td>
+<td style="text-align: left;">截断连续</td>
+<td style="text-align: left;">截断正态</td>
+<td style="text-align: left;"><span class="math inline">\(y_i^* = x_i^\top\beta + \varepsilon_i\)</span></td>
+<td style="text-align: left;">恒等（带截断）</td>
+<td style="text-align: left;">后续章节</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Poisson</td>
+<td style="text-align: left;">非负计数</td>
+<td style="text-align: left;">泊松 <span class="math inline">\(\text{Pois}(\lambda_i)\)</span></td>
+<td style="text-align: left;"><span class="math inline">\(\lambda_i = \exp(x_i^\top\beta)\)</span></td>
+<td style="text-align: left;">指数</td>
+<td style="text-align: left;">后续章节</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Heckman</td>
+<td style="text-align: left;">有选择偏误</td>
+<td style="text-align: left;">二元正态</td>
+<td style="text-align: left;">两方程联立</td>
+<td style="text-align: left;">两阶段</td>
+<td style="text-align: left;">后续章节</td>
+</tr>
+</tbody>
+</table>
+<p><strong>分布不同 → 似然函数不同 → 估计结果不同；但「极大化对数似然」这一步，对所有模型都是一样的。</strong></p>
+<p>再次回到我们在第一节提出的那张图——</p>
+<div id="fig-MLE-flowchart-end" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-MLE-flowchart-end-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./figs/method_MLE_fig01_flowchart.png" class="img-fluid figure-img" style="width:100.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-MLE-flowchart-end-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+图&nbsp;38.10: MLE 的完整分析链条（回顾）
+</figcaption>
+</figure>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+延伸阅读
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>教材</strong>：</p>
+<ul>
+<li>Greene, W. H. (2012). <em>Econometric Analysis</em> (7th ed.). Pearson. Ch. 14.</li>
+<li>Cameron, A. C., &amp; Trivedi, P. K. (2005). <em>Microeconometrics: Methods and Applications</em>. Cambridge University Press. Ch. 5.</li>
+</ul>
+<p><strong>在线资源</strong>：</p>
+<ul>
+<li>DataCamp: <a href="https://www.datacamp.com/tutorial/maximum-likelihood-estimation-mle">What is Maximum Likelihood Estimation (MLE)?</a></li>
+<li>YouTube (StatQuest): <a href="https://www.youtube.com/watch?v=XepXtl9YKwc">Maximum Likelihood, clearly explained!!!</a></li>
+<li>课程主页：<a href="https://lianxhcn.github.io/dsfin/" class="uri">https://lianxhcn.github.io/dsfin/</a></li>
+</ul>
+</div>
+</div>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const disableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'prefetch';
+    }
+  }
+  const enableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'stylesheet';
+    }
+  }
+  const manageTransitions = (selector, allowTransitions) => {
+    const els = window.document.querySelectorAll(selector);
+    for (let i=0; i < els.length; i++) {
+      const el = els[i];
+      if (allowTransitions) {
+        el.classList.remove('notransition');
+      } else {
+        el.classList.add('notransition');
+      }
+    }
+  }
+  const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+    const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+    const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+    let newTheme = '';
+    if(darkModeDefault) {
+      newTheme = isAlternate ? baseTheme : alternateTheme;
+    } else {
+      newTheme = isAlternate ? alternateTheme : baseTheme;
+    }
+    const changeGiscusTheme = () => {
+      // From: https://github.com/giscus/giscus/issues/336
+      const sendMessage = (message) => {
+        const iframe = document.querySelector('iframe.giscus-frame');
+        if (!iframe) return;
+        iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+      }
+      sendMessage({
+        setConfig: {
+          theme: newTheme
+        }
+      });
+    }
+    const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+    if (isGiscussLoaded) {
+      changeGiscusTheme();
+    }
+  }
+  const toggleColorMode = (alternate) => {
+    // Switch the stylesheets
+    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+    manageTransitions('#quarto-margin-sidebar .nav-link', false);
+    if (alternate) {
+      enableStylesheet(alternateStylesheets);
+      for (const sheetNode of alternateStylesheets) {
+        if (sheetNode.id === "quarto-bootstrap") {
+          toggleBodyColorMode(sheetNode);
+        }
+      }
+    } else {
+      disableStylesheet(alternateStylesheets);
+      toggleBodyColorPrimary();
+    }
+    manageTransitions('#quarto-margin-sidebar .nav-link', true);
+    // Switch the toggles
+    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+    for (let i=0; i < toggles.length; i++) {
+      const toggle = toggles[i];
+      if (toggle) {
+        if (alternate) {
+          toggle.classList.add("alternate");     
+        } else {
+          toggle.classList.remove("alternate");
+        }
+      }
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455)
+    if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+      manageTransitions("body", false);
+      window.scrollTo(0, 1);
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        manageTransitions("body", true);
+      }, 40);  
+    }
+  }
+  const isFileUrl = () => { 
+    return window.location.protocol === 'file:';
+  }
+  const hasAlternateSentinel = () => {  
+    let styleSentinel = getColorSchemeSentinel();
+    if (styleSentinel !== null) {
+      return styleSentinel === "alternate";
+    } else {
+      return false;
+    }
+  }
+  const setStyleSentinel = (alternate) => {
+    const value = alternate ? "alternate" : "default";
+    if (!isFileUrl()) {
+      window.localStorage.setItem("quarto-color-scheme", value);
+    } else {
+      localAlternateSentinel = value;
+    }
+  }
+  const getColorSchemeSentinel = () => {
+    if (!isFileUrl()) {
+      const storageValue = window.localStorage.getItem("quarto-color-scheme");
+      return storageValue != null ? storageValue : localAlternateSentinel;
+    } else {
+      return localAlternateSentinel;
+    }
+  }
+  const darkModeDefault = false;
+  let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+  // Dark / light mode switch
+  window.quartoToggleColorScheme = () => {
+    // Read the current dark / light value 
+    let toAlternate = !hasAlternateSentinel();
+    toggleColorMode(toAlternate);
+    setStyleSentinel(toAlternate);
+    toggleGiscusIfUsed(toAlternate, darkModeDefault);
+  };
+  // Ensure there is a toggle, if there isn't float one in the top right
+  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+    const a = window.document.createElement('a');
+    a.classList.add('top-right');
+    a.classList.add('quarto-color-scheme-toggle');
+    a.href = "";
+    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+    const i = window.document.createElement("i");
+    i.classList.add('bi');
+    a.appendChild(i);
+    window.document.body.appendChild(a);
+  }
+  // Switch to dark mode if need be
+  if (hasAlternateSentinel()) {
+    toggleColorMode(true);
+  } else {
+    toggleColorMode(false);
+  }
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp("https:\/\/lianxhcn\.github\.io\/dsfin\/");
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+          // target, if specified
+          link.setAttribute("target", "_blank");
+          if (link.getAttribute("rel") === null) {
+            link.setAttribute("rel", "noopener");
+          }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../../Lecture/limit_dep_logit/02_c_binary_case.html" class="pagination-link" aria-label="案例：上市公司债务违约分析">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">36</span>&nbsp; <span class="chapter-title">案例：上市公司债务违约分析</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../../Lecture/method_MLE/MLE_codes.html" class="pagination-link" aria-label="MLE_codes：图形与数据生成">
+        <span class="nav-page-text"><span class="chapter-number">39</span>&nbsp; <span class="chapter-title">MLE_codes：图形与数据生成</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+      &nbsp;
+    </div>   
+    <div class="nav-footer-center">
+<p><a href="https://www.lianxh.cn">lianxh.cn</a></p>
+</div>
+    <div class="nav-footer-right">
+<p>Support: <a href="https://lianxhcn.github.io/quarto_book/">Quarto</a></p>
+</div>
+  </div>
+</footer>
+
+
+
+
+</body></html>

@@ -104,6 +104,13 @@ book:
         - Lecture/limit_dep_logit/02_c_binary_case.ipynb
         - Lecture/reg_logit/probability_models.qmd
 
+    - part: "**估计方法**"
+      chapters:
+        - Lecture/method_MLE/MLE_lec.qmd
+        - Lecture/method_MLE/MLE_codes.ipynb
+        - Lecture/method_MLE/MLE_case.ipynb
+
+
     - part: "**文本分析**"
       chapters:
         - Lecture/text_analysis/lecture_text_01_ailn.md
