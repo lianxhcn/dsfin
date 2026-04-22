@@ -1,0 +1,2491 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.6.39">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>39&nbsp; 受限因变量模型 – 金融数据分析与建模</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../Lecture/limit_dep_models/limit_dep_models_codes.html" rel="next">
+<link href="../../Lecture/limit_dep_tobit-plan/limit_dep_models_codes.html" rel="prev">
+<link href="../../images/book-logo.png" rel="icon" type="image/png">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-e8fb9d25728d58bfeac61b497e4a6629.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark-57a92833092fd6dc0d7710b6bdfff9c5.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-7ef202e96c563d31d9e5226e4d6cabf9.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark-490ba4e843cb1303a232ed0c676384f2.min.css" rel="prefetch" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script src="../../site_libs/quarto-diagram/mermaid.min.js"></script>
+<script src="../../site_libs/quarto-diagram/mermaid-init.js"></script>
+<link href="../../site_libs/quarto-diagram/mermaid.css" rel="stylesheet">
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../Lecture/limit_dep_intro/01_overview_lec.html"><strong>受限因变量</strong></a></li><li class="breadcrumb-item"><a href="../../Lecture/limit_dep_models/limit_dep_models_lec.html"><span class="chapter-number">39</span>&nbsp; <span class="chapter-title">受限因变量模型</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header sidebar-header-stacked">
+      <a href="https://lianxhcn.github.io/dsfin/" class="sidebar-logo-link">
+      <img src="../../images/book-logo.png" alt="" class="sidebar-logo py-0 d-lg-inline d-none">
+      </a>
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../../">DS Finance</a> 
+        <div class="sidebar-tools-main tools-wide">
+    <a href="https://github.com/lianxhcn/dsfin" title="" class="quarto-navigation-tool px-1" aria-label=""><i class="bi bi-github"></i></a>
+    <a href="https://www.lianxh.cn" title="" class="quarto-navigation-tool px-1" aria-label=""><i class="bi bi-house-fill"></i></a>
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">封面</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/00_intro.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">📚课程资料</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/00_setup.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">📌课件使用指南</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/01_homework.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">🚀作业</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text"><strong>环境配置</strong></span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/00-setup/01_00_coding_with_AI.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">借助 AI 写代码</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/00-setup/01_01_install_anaconda.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Python：安装和环境配置</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/00-setup/01_02_jupyter_notebook.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Jupyter Notebook 的使用</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/00-setup/01_03_install_FAQs.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Python 安装常见问题</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/00-setup/01_04_markdown.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Markdown</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/00-setup/01_06_conda_env.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">虚拟环境管理</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
+ <span class="menu-text"><strong>数据分析</strong></span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/data_get_data/lecture_get_data.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">金融数据获取</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/data_get_data/data_02_get_data_GMD.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">获取数据：GMD</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/data_get_data/data_03_TS_SZ_index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">上证指数的时序特征</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/data_store_structure/lecture_data_management_organization.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">数据管理与组织</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/data_manage/lecture_data_management.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">数据管理：格式、存储与工作流</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/data_clean/lecture_data_clean.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">数据清洗</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true">
+ <span class="menu-text"><strong>可视化</strong></span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/data_visual/graph_01_intro.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Python 可视化：简介</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/data_visual/graph_dis_box_violin.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">箱型图和小提琴图</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/data_visual/graph_dis_histogram.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">直方图</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/data_visual/graph_dis_kdensity.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">核密度函数图</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/data_visual/lec_distribution.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">数据分布：原理与可视化</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/data_visual/lec_distribution_codes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">数据分布：原理与可视化 — 配套代码</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/data_visual/lec_visualization.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">数据可视化：一些基本原则</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true">
+ <span class="menu-text"><strong>数据爬取</strong></span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/crawing/craw_01_introduction.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">网络爬虫简介</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/crawing/craw_02_sec01_lingnan_prompt.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">实例-提示词模式：爬取岭南学院教师名录</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/crawing/craw_02_sec02_lingnan_dialog.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">实例-对话模式：爬取岭南学院教师名录</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true">
+ <span class="menu-text"><strong>线性回归分析</strong></span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/reg_ols/ols_visual_3D.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">二元线性回归的 3D 图示</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="true">
+ <span class="menu-text"><strong>面板模型：固定效应</strong></span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/panel_fe/panel_HDFE.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">HDFE：多维固定效应</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/panel_fe/panel_IntFE.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">交互固定效应模型</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="true">
+ <span class="menu-text"><strong>面板变系数模型</strong></span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/panel_xtplfc/01_Panel_threshold_01_theory.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">静态面板门槛模型：理论与方法</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/panel_xtplfc/02_Panel_threshold_02_codes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">静态面板门槛模型：Stata 实操</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/panel_xtplfc/04_xtplfc的直观解读及xthreg实现.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">变系数模型</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/panel_xtplfc/05_解读xtplfc的原理_样条基函数.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">样条基函数与变系数模型：Stata 实操</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/panel_xtplfc/Du_2021_EE_中文精要.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">30</span>&nbsp; <span class="chapter-title">非线性调节效应怎么做？部分线性函数型面板数据模型</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" role="navigation" aria-expanded="true">
+ <span class="menu-text"><strong>受限因变量</strong></span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-8" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/limit_dep_intro/01_overview_lec.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">31</span>&nbsp; <span class="chapter-title">离散变量和受限因变量：导论</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/limit_dep_intro/01_overview_codes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">32</span>&nbsp; <span class="chapter-title">附：codes</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/limit_dep_logit/02_a_binary_lec.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">33</span>&nbsp; <span class="chapter-title">二元选择模型</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/limit_dep_logit/02_b_binary_codes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">34</span>&nbsp; <span class="chapter-title">附：Codes</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/limit_dep_logit/02_c_binary_case.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">35</span>&nbsp; <span class="chapter-title">案例：上市公司债务违约分析</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/reg_logit/probability_models.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">36</span>&nbsp; <span class="chapter-title">从回归模型到概率模型</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/limit_dep_tobit-plan/limit_dep_models_lec.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">37</span>&nbsp; <span class="chapter-title">受限因变量模型：从零值、样本选择到流量型结果</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/limit_dep_tobit-plan/limit_dep_models_codes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">38</span>&nbsp; <span class="chapter-title">附：Codes</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/limit_dep_models/limit_dep_models_lec.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">39</span>&nbsp; <span class="chapter-title">受限因变量模型</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/limit_dep_models/limit_dep_models_codes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">40</span>&nbsp; <span class="chapter-title">附：Codes</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-9" role="navigation" aria-expanded="true">
+ <span class="menu-text"><strong>估计方法</strong></span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-9" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-9" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/method_MLE/MLE_lec.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">41</span>&nbsp; <span class="chapter-title">最大似然估计 (MLE)</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/method_MLE/MLE_codes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">42</span>&nbsp; <span class="chapter-title">MLE_codes：图形与数据生成</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/method_MLE/MLE_case.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">43</span>&nbsp; <span class="chapter-title">MLE 应用案例</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-10" role="navigation" aria-expanded="true">
+ <span class="menu-text"><strong>文本分析</strong></span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-10" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-10" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/text_analysis/lecture_text_01_ailn.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">44</span>&nbsp; <span class="chapter-title">金融文本分析（上）——从文本到结构化数据</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/text_analysis/lecture_text_02_ailn.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">45</span>&nbsp; <span class="chapter-title">金融文本分析（下）——情感分析与文本建模</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/text_analysis/lecture_text_analysis_01_claude.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">46</span>&nbsp; <span class="chapter-title">文本数据处理基础</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/text_analysis/lecture_text_analysis_02_claude.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">47</span>&nbsp; <span class="chapter-title">文本分析：情感分析与主题建模</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-11" role="navigation" aria-expanded="true">
+ <span class="menu-text"><strong>附录：Python 提示词</strong></span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-11" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-11" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../appendix_python/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">概览</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../appendix_python/a1_setup.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">A1. 环境配置</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../appendix_python/a2_project.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">A2. 项目规划与版本控制</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../appendix_python/a3_concepts.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">A3. 提示词核心词汇</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../appendix_python/a4_data.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">A4. 数据获取与清洗</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../appendix_python/a5_visualization.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">A5. 数据可视化</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../appendix_python/a6_modeling.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">A6. 统计建模</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../appendix_python/a7_results.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">A7. 结果呈现与表格美化</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../appendix_python/a8_workflow.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">A8. 上下文管理与调试</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#sec-limit-intro" id="toc-sec-limit-intro" class="nav-link active" data-scroll-target="#sec-limit-intro"><span class="header-section-number">39.1</span> 引言：当因变量”不正常”时，OLS 会怎样？</a></li>
+  <li><a href="#sec-tobit" id="toc-sec-tobit" class="nav-link" data-scroll-target="#sec-tobit"><span class="header-section-number">39.2</span> Tobit 模型</a>
+  <ul class="collapse">
+  <li><a href="#为什么因变量堆积在零是个问题" id="toc-为什么因变量堆积在零是个问题" class="nav-link" data-scroll-target="#为什么因变量堆积在零是个问题"><span class="header-section-number">39.2.1</span> 为什么因变量”堆积在零”是个问题</a></li>
+  <li><a href="#模型设定潜在变量的思路" id="toc-模型设定潜在变量的思路" class="nav-link" data-scroll-target="#模型设定潜在变量的思路"><span class="header-section-number">39.2.2</span> 模型设定：潜在变量的思路</a></li>
+  <li><a href="#结果解释三类边际效应" id="toc-结果解释三类边际效应" class="nav-link" data-scroll-target="#结果解释三类边际效应"><span class="header-section-number">39.2.3</span> 结果解释：三类边际效应</a></li>
+  <li><a href="#应用案例企业-rd-投入的决定因素" id="toc-应用案例企业-rd-投入的决定因素" class="nav-link" data-scroll-target="#应用案例企业-rd-投入的决定因素"><span class="header-section-number">39.2.4</span> 应用案例：企业 R&amp;D 投入的决定因素</a></li>
+  <li><a href="#局限与注意事项" id="toc-局限与注意事项" class="nav-link" data-scroll-target="#局限与注意事项"><span class="header-section-number">39.2.5</span> 局限与注意事项</a></li>
+  </ul></li>
+  <li><a href="#sec-two-part" id="toc-sec-two-part" class="nav-link" data-scroll-target="#sec-two-part"><span class="header-section-number">39.3</span> Two-Part Model（两部分模型）</a>
+  <ul class="collapse">
+  <li><a href="#把一个决策拆成两步" id="toc-把一个决策拆成两步" class="nav-link" data-scroll-target="#把一个决策拆成两步"><span class="header-section-number">39.3.1</span> 把一个决策拆成两步</a></li>
+  <li><a href="#模型设定与结果解释" id="toc-模型设定与结果解释" class="nav-link" data-scroll-target="#模型设定与结果解释"><span class="header-section-number">39.3.2</span> 模型设定与结果解释</a></li>
+  <li><a href="#应用案例企业数字化转型投资决策" id="toc-应用案例企业数字化转型投资决策" class="nav-link" data-scroll-target="#应用案例企业数字化转型投资决策"><span class="header-section-number">39.3.3</span> 应用案例：企业数字化转型投资决策</a></li>
+  </ul></li>
+  <li><a href="#sec-hurdle" id="toc-sec-hurdle" class="nav-link" data-scroll-target="#sec-hurdle"><span class="header-section-number">39.4</span> Hurdle Model（门槛模型）</a>
+  <ul class="collapse">
+  <li><a href="#与两部分模型的关系以及计数数据的特殊性" id="toc-与两部分模型的关系以及计数数据的特殊性" class="nav-link" data-scroll-target="#与两部分模型的关系以及计数数据的特殊性"><span class="header-section-number">39.4.1</span> 与两部分模型的关系，以及计数数据的特殊性</a></li>
+  <li><a href="#模型设定与结果解释-1" id="toc-模型设定与结果解释-1" class="nav-link" data-scroll-target="#模型设定与结果解释-1"><span class="header-section-number">39.4.2</span> 模型设定与结果解释</a></li>
+  <li><a href="#应用案例企业创新专利申请" id="toc-应用案例企业创新专利申请" class="nav-link" data-scroll-target="#应用案例企业创新专利申请"><span class="header-section-number">39.4.3</span> 应用案例：企业创新专利申请</a></li>
+  </ul></li>
+  <li><a href="#sec-heckman" id="toc-sec-heckman" class="nav-link" data-scroll-target="#sec-heckman"><span class="header-section-number">39.5</span> Heckman 样本选择模型</a>
+  <ul class="collapse">
+  <li><a href="#样本选择问题你只看到了被选中的人" id="toc-样本选择问题你只看到了被选中的人" class="nav-link" data-scroll-target="#样本选择问题你只看到了被选中的人"><span class="header-section-number">39.5.1</span> 样本选择问题：你只看到了”被选中的人”</a></li>
+  <li><a href="#模型结构两个方程" id="toc-模型结构两个方程" class="nav-link" data-scroll-target="#模型结构两个方程"><span class="header-section-number">39.5.2</span> 模型结构：两个方程</a></li>
+  <li><a href="#两步估计的直觉" id="toc-两步估计的直觉" class="nav-link" data-scroll-target="#两步估计的直觉"><span class="header-section-number">39.5.3</span> 两步估计的直觉</a></li>
+  <li><a href="#结果解释" id="toc-结果解释" class="nav-link" data-scroll-target="#结果解释"><span class="header-section-number">39.5.4</span> 结果解释</a></li>
+  <li><a href="#应用案例企业慈善捐赠行为" id="toc-应用案例企业慈善捐赠行为" class="nav-link" data-scroll-target="#应用案例企业慈善捐赠行为"><span class="header-section-number">39.5.5</span> 应用案例：企业慈善捐赠行为</a></li>
+  </ul></li>
+  <li><a href="#sec-treatment" id="toc-sec-treatment" class="nav-link" data-scroll-target="#sec-treatment"><span class="header-section-number">39.6</span> 内生处理效应模型（Treatment Effect Model）</a>
+  <ul class="collapse">
+  <li><a href="#当右侧变量自己选择了自己" id="toc-当右侧变量自己选择了自己" class="nav-link" data-scroll-target="#当右侧变量自己选择了自己"><span class="header-section-number">39.6.1</span> 当右侧变量”自己选择了自己”</a></li>
+  <li><a href="#潜在结果框架看清楚我们在问什么" id="toc-潜在结果框架看清楚我们在问什么" class="nav-link" data-scroll-target="#潜在结果框架看清楚我们在问什么"><span class="header-section-number">39.6.2</span> 潜在结果框架：看清楚我们在问什么</a></li>
+  <li><a href="#模型设定" id="toc-模型设定" class="nav-link" data-scroll-target="#模型设定"><span class="header-section-number">39.6.3</span> 模型设定</a></li>
+  <li><a href="#估计思路与结果解释" id="toc-估计思路与结果解释" class="nav-link" data-scroll-target="#估计思路与结果解释"><span class="header-section-number">39.6.4</span> 估计思路与结果解释</a></li>
+  <li><a href="#应用案例政府研发补贴对企业创新的效应" id="toc-应用案例政府研发补贴对企业创新的效应" class="nav-link" data-scroll-target="#应用案例政府研发补贴对企业创新的效应"><span class="header-section-number">39.6.5</span> 应用案例：政府研发补贴对企业创新的效应</a></li>
+  </ul></li>
+  <li><a href="#sec-ppml" id="toc-sec-ppml" class="nav-link" data-scroll-target="#sec-ppml"><span class="header-section-number">39.7</span> PPMLHDFE：处理零值与高维固定效应</a>
+  <ul class="collapse">
+  <li><a href="#贸易和投资数据的两个顽疾" id="toc-贸易和投资数据的两个顽疾" class="nav-link" data-scroll-target="#贸易和投资数据的两个顽疾"><span class="header-section-number">39.7.1</span> 贸易和投资数据的两个”顽疾”</a></li>
+  <li><a href="#ppml-的核心直觉" id="toc-ppml-的核心直觉" class="nav-link" data-scroll-target="#ppml-的核心直觉"><span class="header-section-number">39.7.2</span> PPML 的核心直觉</a></li>
+  <li><a href="#模型设定与结果解释-2" id="toc-模型设定与结果解释-2" class="nav-link" data-scroll-target="#模型设定与结果解释-2"><span class="header-section-number">39.7.3</span> 模型设定与结果解释</a></li>
+  <li><a href="#应用案例企业跨地区投资流量" id="toc-应用案例企业跨地区投资流量" class="nav-link" data-scroll-target="#应用案例企业跨地区投资流量"><span class="header-section-number">39.7.4</span> 应用案例：企业跨地区投资流量</a></li>
+  </ul></li>
+  <li><a href="#sec-model-selection" id="toc-sec-model-selection" class="nav-link" data-scroll-target="#sec-model-selection"><span class="header-section-number">39.8</span> 模型选择指南</a>
+  <ul class="collapse">
+  <li><a href="#如何在实践中选择合适的模型" id="toc-如何在实践中选择合适的模型" class="nav-link" data-scroll-target="#如何在实践中选择合适的模型"><span class="header-section-number">39.8.1</span> 如何在实践中选择合适的模型</a></li>
+  <li><a href="#常见误用场景警示" id="toc-常见误用场景警示" class="nav-link" data-scroll-target="#常见误用场景警示"><span class="header-section-number">39.8.2</span> 常见误用场景警示</a></li>
+  <li><a href="#六类模型综合对比" id="toc-六类模型综合对比" class="nav-link" data-scroll-target="#六类模型综合对比"><span class="header-section-number">39.8.3</span> 六类模型综合对比</a></li>
+  <li><a href="#结语用数据生成过程指导建模" id="toc-结语用数据生成过程指导建模" class="nav-link" data-scroll-target="#结语用数据生成过程指导建模"><span class="header-section-number">39.8.4</span> 结语：用数据生成过程指导建模</a></li>
+  </ul></li>
+  <li><a href="#延伸阅读" id="toc-延伸阅读" class="nav-link" data-scroll-target="#延伸阅读"><span class="header-section-number">39.9</span> 延伸阅读</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../Lecture/limit_dep_intro/01_overview_lec.html"><strong>受限因变量</strong></a></li><li class="breadcrumb-item"><a href="../../Lecture/limit_dep_models/limit_dep_models_lec.html"><span class="chapter-number">39</span>&nbsp; <span class="chapter-title">受限因变量模型</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span id="chap-limit-dep-models" class="quarto-section-identifier"><span class="chapter-number">39</span>&nbsp; <span class="chapter-title">受限因变量模型</span></span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<blockquote class="blockquote">
+<p><strong>本章目标</strong>：建立”零值/截断/选择 → 模型设定 → 结果解释”的应用直觉，以金融与公司金融场景为贯穿案例，理解 Tobit、Two-Part Model、Hurdle Model、Heckman 样本选择模型、内生处理效应模型与 PPMLHDFE 的适用场景、模型设定和结果解释，并掌握借助 Python/Stata 的实现方法。</p>
+</blockquote>
+<hr>
+<section id="sec-limit-intro" class="level2" data-number="39.1">
+<h2 data-number="39.1" class="anchored" data-anchor-id="sec-limit-intro"><span class="header-section-number">39.1</span> 引言：当因变量”不正常”时，OLS 会怎样？</h2>
+<p>在前面的学习中，我们已经接触了线性回归（OLS）、Logit 模型和最大似然估计（MLE）。这些工具在大多数情况下表现良好，但有一类问题会让它们力不从心——当因变量的分布出现<strong>大量零值、截断、或者选择性缺失</strong>时，直接使用 OLS 会产生系统性偏误，且这种偏误不会随样本量增大而消失。</p>
+<p>本章要介绍的，正是针对这类”不正常因变量”专门设计的一组模型。在进入具体模型之前，先用三个真实场景来感受这类问题的普遍性。</p>
+<p><strong>场景一：企业 R&amp;D 投入</strong>。你想研究哪些因素影响企业的研发投入金额。打开数据一看，约 35% 的上市公司当年 R&amp;D 支出为零——不是数据缺失，而是这些企业真的没有投入研发。如果直接用 OLS 回归，模型会把这些零值当作普通观测值处理，导致斜率系数被低估。</p>
+<p><strong>场景二：企业慈善捐赠</strong>。你想分析企业特征如何影响捐赠金额。但数据里只有约 30% 的企业有捐赠记录，其余 70% 的 <span class="math inline">\(y\)</span> 是缺失的（不是真实的零，而是根本没被观测到）。这意味着样本不是随机的，而是经过了”筛选”，忽略这一点会产生选择偏误（selection bias）。</p>
+<p><strong>场景三：跨境投资流量</strong>。你在做引力模型，研究 A 省企业向全国各城市的投资金额。这类数据有两个特点：大量城市对之间的投资金额为零；少数城市对的金额极大，分布高度右偏。取对数可以处理右偏，但零值没法取对数——删掉零值，又回到了样本选择的问题。</p>
+<p><a href="#fig-ols-bias" class="quarto-xref">Figure&nbsp;<span>39.1</span></a> 用一个模拟例子说明了 OLS 在截断数据上的典型问题：当 <span class="math inline">\(y = \max(0, y^*)\)</span> 时，OLS 拟合线的斜率被系统性地低估——大量零值”压低”了低 <span class="math inline">\(x\)</span> 端的平均 <span class="math inline">\(y\)</span>，使得 OLS 看起来”斜率不够陡”。</p>
+<div id="fig-ols-bias" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-ols-bias-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./figs/limit_dep_models_fig01_ols_bias.png" class="img-fluid figure-img" style="width:80.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-ols-bias-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+图&nbsp;39.1: OLS 对截断数据的拟合偏差：蓝色实线（OLS 拟合）明显比红色虚线（真实关系）更平坦，系数被低估
+</figcaption>
+</figure>
+</div>
+<p>本章将依次介绍以下六类模型，覆盖从”零值截断”到”样本选择”再到”内生处理变量”的完整谱系：</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 23%">
+<col style="width: 38%">
+<col style="width: 38%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>模型</th>
+<th>核心问题</th>
+<th>典型场景</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Tobit 模型</td>
+<td>因变量在零点截断，零值是真实的零</td>
+<td>企业 R&amp;D 投入、股票持仓量</td>
+</tr>
+<tr class="even">
+<td>Two-Part Model</td>
+<td>是否参与和参与多少由不同机制决定</td>
+<td>企业数字化投资、医疗支出</td>
+</tr>
+<tr class="odd">
+<td>Hurdle Model</td>
+<td>计数型因变量含大量零值</td>
+<td>专利申请数量、并购次数</td>
+</tr>
+<tr class="even">
+<td>Heckman 样本选择模型</td>
+<td>因变量对部分样本不可观测（选择性缺失）</td>
+<td>企业捐赠行为、贷款利率</td>
+</tr>
+<tr class="odd">
+<td>内生处理效应模型</td>
+<td>右侧处理变量存在自选择，导致内生性</td>
+<td>政策补贴效果评估</td>
+</tr>
+<tr class="even">
+<td>PPMLHDFE</td>
+<td>流量数据含大量零值且高度右偏，含高维固定效应</td>
+<td>贸易流量、跨地区投资</td>
+</tr>
+</tbody>
+</table>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+提示词：用 AI 生成 OLS 截断偏差示意图
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>请帮我用 Python 生成一张图，直观说明 OLS 在截断数据上的估计偏差。要求：</p>
+<ol type="1">
+<li>生成模拟数据：<span class="math inline">\(x \sim \text{Uniform}(-2, 2)\)</span>，<span class="math inline">\(y^* = 1 + 2x + \varepsilon\)</span>，<span class="math inline">\(\varepsilon \sim N(0,1)\)</span>，令 <span class="math inline">\(y = \max(0, y^*)\)</span></li>
+<li>在同一张图中画出：散点图（截断后的观测值）、真实关系线（红色虚线）、OLS 拟合线（蓝色实线）</li>
+<li>标注两条线的图例，并在图注中注明”OLS 系数低估了真实斜率”</li>
+<li>图形风格简洁学术风，分辨率 300 dpi，宽度 1200 px</li>
+</ol>
+</div>
+</div>
+<hr>
+</section>
+<section id="sec-tobit" class="level2" data-number="39.2">
+<h2 data-number="39.2" class="anchored" data-anchor-id="sec-tobit"><span class="header-section-number">39.2</span> Tobit 模型</h2>
+<section id="为什么因变量堆积在零是个问题" class="level3" data-number="39.2.1">
+<h3 data-number="39.2.1" class="anchored" data-anchor-id="为什么因变量堆积在零是个问题"><span class="header-section-number">39.2.1</span> 为什么因变量”堆积在零”是个问题</h3>
+<p>在很多金融和企业研究中，因变量本质上是连续的，但有相当一部分观测值恰好等于零，其余观测值则形成一个连续的正值分布。这种”零值堆积”（zero mass）的现象，在统计上被称为<strong>截断（censoring）</strong>。</p>
+<p>以企业 R&amp;D 投入为例。对一家没有研发活动的企业来说，<span class="math inline">\(y = 0\)</span> 是真实的结果，不是数据缺失。但把这些零值和正值混在一起直接做 OLS，会产生系统性偏误：OLS 试图用一条直线拟合所有数据，在低 <span class="math inline">\(x\)</span> 端有大量零值把平均 <span class="math inline">\(y\)</span> “拉低”，使得 OLS 低估了 <span class="math inline">\(x\)</span> 对 <span class="math inline">\(y\)</span> 的真实效应。<strong>这种偏误不会随样本量增大而消失</strong>，是一种结构性不一致（inconsistency）。</p>
+<p><strong>Tobit 模型</strong>（Tobin, 1958）正是为解决这一问题而提出的。它以经济学家詹姆斯·托宾（James Tobin）的名字命名，最早用于分析家庭耐用品消费支出（大量家庭支出为零），时至今日已成为处理截断型因变量的标准工具。</p>
+</section>
+<section id="模型设定潜在变量的思路" class="level3" data-number="39.2.2">
+<h3 data-number="39.2.2" class="anchored" data-anchor-id="模型设定潜在变量的思路"><span class="header-section-number">39.2.2</span> 模型设定：潜在变量的思路</h3>
+<p>Tobit 模型的核心思想是引入一个<strong>潜在变量</strong>（latent variable）<span class="math inline">\(y^*\)</span>，代表个体”未被约束时”的真实意愿或能力。我们观测到的 <span class="math inline">\(y\)</span> 是 <span class="math inline">\(y^*\)</span> 被截断后的结果：</p>
+<p><span class="math display">\[y^* = X\beta + \varepsilon, \quad \varepsilon \sim N(0, \sigma^2)\]</span></p>
+<p><span class="math display">\[y = \begin{cases} y^* &amp; \text{若 } y^* &gt; 0 \\ 0 &amp; \text{若 } y^* \leq 0 \end{cases}\]</span></p>
+<p>不需要纠结估计细节。关键是理解这个框架传达的经济含义：<strong>零值不是”没有发生什么”，而是潜在意愿不足以跨越零点门槛的结果</strong>。一家企业 R&amp;D 为零，可能是因为它的潜在研发意愿 <span class="math inline">\(y^*\)</span> 为负——资金不足、缺乏技术能力、或战略上不重视创新。</p>
+<p><a href="#fig-tobit-dist" class="quarto-xref">Figure&nbsp;<span>39.2</span></a> 展示了截断正态分布的形态：原始的正态分布（灰色）被截断在零点左侧，截断掉的概率质量全部”堆积”到零点，形成一个混合分布——在零点有一个点质量（离散），在正值域有一个连续密度。</p>
+<div id="fig-tobit-dist" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-tobit-dist-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./figs/limit_dep_models_fig02_tobit_dist.png" class="img-fluid figure-img" style="width:80.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-tobit-dist-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+图&nbsp;39.2: 截断正态分布示意图：灰色曲线为完整正态分布，左侧截断部分的概率质量（阴影区域）堆积到零点，形成混合分布
+</figcaption>
+</figure>
+</div>
+</section>
+<section id="结果解释三类边际效应" class="level3" data-number="39.2.3">
+<h3 data-number="39.2.3" class="anchored" data-anchor-id="结果解释三类边际效应"><span class="header-section-number">39.2.3</span> 结果解释：三类边际效应</h3>
+<p>Tobit 模型的结果解读是最容易出错的地方。估计出来的系数 <span class="math inline">\(\hat{\beta}\)</span> <strong>不能</strong>直接解读为”<span class="math inline">\(x\)</span> 增加 1 个单位，<span class="math inline">\(y\)</span> 增加多少”。<span class="math inline">\(\hat{\beta}\)</span> 描述的是潜在变量 <span class="math inline">\(y^*\)</span> 对 <span class="math inline">\(x\)</span> 的反应，而我们感兴趣的通常是观测到的 <span class="math inline">\(y\)</span> 对 <span class="math inline">\(x\)</span> 的反应。</p>
+<p>实践中存在三类边际效应，含义各不相同：</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>边际效应类型</th>
+<th>含义</th>
+<th>适用场景</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>对 <span class="math inline">\(y^*\)</span> 的效应</td>
+<td><span class="math inline">\(x\)</span> 变化对潜在变量的影响，即 <span class="math inline">\(\hat{\beta}\)</span> 本身</td>
+<td>理论机制讨论</td>
+</tr>
+<tr class="even">
+<td>对 <span class="math inline">\(E(y \mid y&gt;0)\)</span> 的效应</td>
+<td>在正值样本中，<span class="math inline">\(x\)</span> 的影响</td>
+<td>研究”已参与”群体的行为</td>
+</tr>
+<tr class="odd">
+<td>对 <span class="math inline">\(E(y)\)</span> 的无条件效应</td>
+<td>对全样本平均 <span class="math inline">\(y\)</span> 的影响</td>
+<td><strong>通常汇报这个</strong></td>
+</tr>
+</tbody>
+</table>
+<p>三类边际效应的数值关系是：无条件效应 &lt; 对正值样本的效应 &lt; 潜在变量效应。这是因为无条件效应综合考虑了”很多人根本不参与”这一事实，因此会被”打折”。在大多数实证论文中，研究者汇报的是<strong>无条件平均边际效应（Average Marginal Effect, AME）</strong>。</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+提示词：用 AI 估计 Tobit 模型并输出边际效应
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>我有一份面板数据，因变量是企业 R&amp;D 投入强度（大量零值），请帮我：</p>
+<ol type="1">
+<li>用 Python 的 <code>statsmodels</code> 估计 Tobit 模型（下截断点为 0）</li>
+<li>输出三类边际效应：对潜在变量 <span class="math inline">\(y^*\)</span>、对正值样本条件均值 <span class="math inline">\(E(y \mid y&gt;0)\)</span>、对无条件均值 <span class="math inline">\(E(y)\)</span></li>
+<li>将 OLS 和 Tobit 的系数并排放在一张对比表中</li>
+<li>数据已保存为 <code>data.csv</code>，因变量列名为 <code>rd_intensity</code>，控制变量包括 <code>size</code>、<code>lev</code>、<code>roa</code>、<code>age</code></li>
+</ol>
+<p>请给出完整的 Python 代码，并解释每类边际效应的经济含义。</p>
+</div>
+</div>
+</section>
+<section id="应用案例企业-rd-投入的决定因素" class="level3" data-number="39.2.4">
+<h3 data-number="39.2.4" class="anchored" data-anchor-id="应用案例企业-rd-投入的决定因素"><span class="header-section-number">39.2.4</span> 应用案例：企业 R&amp;D 投入的决定因素</h3>
+<p><strong>数据背景</strong>：使用 A 股上市公司数据，因变量为 R&amp;D 投入强度（R&amp;D 支出 / 营业收入），约 35% 的企业当年 R&amp;D 支出为零。核心解释变量包括企业规模（总资产对数）、资产负债率、盈利能力（ROA）、企业年龄和行业竞争度（赫芬达尔指数）。</p>
+<p>这里的零值是真实的零——企业确实没有研发支出，而非数据缺失，正是 Tobit 的适用场景。</p>
+<p><a href="#fig-ols-tobit" class="quarto-xref">Figure&nbsp;<span>39.3</span></a> 展示了 OLS 与 Tobit 系数的对比。Tobit 的系数在量级上普遍大于 OLS，符合理论预期。以关键变量为例：企业规模的 Tobit 系数约为 OLS 的 1.4 倍，说明 OLS 显著低估了规模对研发的推动作用；资产负债率的负效应在 Tobit 中更为显著，说明融资约束对研发的抑制作用比 OLS 看起来更强。</p>
+<div id="fig-ols-tobit" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-ols-tobit-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./figs/limit_dep_models_fig03_ols_tobit_compare.png" class="img-fluid figure-img" style="width:85.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-ols-tobit-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+图&nbsp;39.3: OLS 与 Tobit 系数对比：Tobit 系数（橙色）在各变量上普遍大于 OLS 系数（蓝色），体现了截断数据对 OLS 估计的压缩效应
+</figcaption>
+</figure>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Stata 对应代码
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-3" class="callout-3-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div class="sourceCode" id="cb1"><pre class="sourceCode stata code-with-copy"><code class="sourceCode stata"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>* [Case 1] Tobit 模型：企业 R&amp;D 投入</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>* 数据读入</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>import delimited <span class="st">"./data/limit_dep_models_data01_rd.csv"</span>, <span class="kw">clear</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>* OLS 估计（对比基准）</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="kw">reg</span> rd_intensity <span class="kw">size</span> lev roa age hhi, <span class="kw">robust</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>* Tobit 估计（下截断点为 0）</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="kw">tobit</span> rd_intensity <span class="kw">size</span> lev roa age hhi, ll(0) <span class="kw">robust</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>* 无条件平均边际效应</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>margins, <span class="kw">dydx</span>(*) <span class="kw">predict</span>(<span class="fu">e</span>(0,.))</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>* 对正值样本的条件边际效应</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>margins, <span class="kw">dydx</span>(*) <span class="kw">predict</span>(<span class="fu">e</span>(0,.)) conditional(<span class="kw">if</span> rd_intensity &gt; 0)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<blockquote class="blockquote">
+<p><strong>说明</strong>：以上 Stata 代码与上方 Python 代码完成相同的分析任务，结果应高度一致。</p>
+</blockquote>
+</div>
+</div>
+</div>
+</section>
+<section id="局限与注意事项" class="level3" data-number="39.2.5">
+<h3 data-number="39.2.5" class="anchored" data-anchor-id="局限与注意事项"><span class="header-section-number">39.2.5</span> 局限与注意事项</h3>
+<p>Tobit 模型有一个重要假设：<strong>“是否为零”和”为多少”由完全相同的机制驱动</strong>。现实中，这个假设经常不成立。例如，企业是否启动研发，可能主要受战略定位和行业特征影响；而已经决定做研发的企业，投入多少则主要受现金流和融资能力驱动。如果两个决策的机制确实不同，强制使用 Tobit 会导致错误推断。</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tobit 与 Heckman 的区别
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>一个常见的混淆是把 Tobit 和 Heckman 当成同类模型。两者的本质区别在于：<strong>Tobit 的零是真实的零</strong>，我们知道 <span class="math inline">\(y=0\)</span> 的个体的结果；<strong>Heckman 的缺失是选择的结果</strong>，<span class="math inline">\(y\)</span> 对部分个体根本没有被观测到。错误地把样本选择问题当成截断问题来处理（用 Tobit 代替 Heckman），会导致不一致估计。</p>
+</div>
+</div>
+<hr>
+</section>
+</section>
+<section id="sec-two-part" class="level2" data-number="39.3">
+<h2 data-number="39.3" class="anchored" data-anchor-id="sec-two-part"><span class="header-section-number">39.3</span> Two-Part Model（两部分模型）</h2>
+<section id="把一个决策拆成两步" class="level3" data-number="39.3.1">
+<h3 data-number="39.3.1" class="anchored" data-anchor-id="把一个决策拆成两步"><span class="header-section-number">39.3.1</span> 把一个决策拆成两步</h3>
+<p>现实中，很多经济决策天然分为两个阶段：<strong>第一步，要不要参与；第二步，参与了要投入多少</strong>。这两步的驱动因素往往不同，用同一组系数来刻画它们（Tobit 的做法）可能过于限制。</p>
+<p>Two-Part Model（两部分模型，TPM）的思路非常直观：我们承认这两个决策相互独立，分别用两个模型来描述。第一部分用 Probit 或 Logit 建模”是否产生正值”的概率，第二部分仅在正值样本中用线性模型（通常对 <span class="math inline">\(y\)</span> 取对数）建模数量。两个部分<strong>分别独立估计，互不干扰</strong>——这既是 TPM 的优点（灵活、易于实现），也是它的核心假设。</p>
+</section>
+<section id="模型设定与结果解释" class="level3" data-number="39.3.2">
+<h3 data-number="39.3.2" class="anchored" data-anchor-id="模型设定与结果解释"><span class="header-section-number">39.3.2</span> 模型设定与结果解释</h3>
+<p><strong>第一部分（Probit/Logit）</strong>，建模参与决策：</p>
+<p><span class="math display">\[P(y_i &gt; 0 \mid X_i) = \Phi(X_i \gamma)\]</span></p>
+<p><strong>第二部分（线性回归，仅对正值样本）</strong>，建模数量决策：</p>
+<p><span class="math display">\[E(\ln y_i \mid y_i &gt; 0, X_i) = X_i \beta\]</span></p>
+<p>合并后，对全样本的无条件期望为 <span class="math inline">\(E(y_i \mid X_i) = P(y_i &gt; 0 \mid X_i) \cdot E(y_i \mid y_i &gt; 0, X_i)\)</span>，总边际效应通过乘法法则展开，综合了”参与概率变化”和”条件期望变化”两个渠道。</p>
+<p>Two-Part Model 产生<strong>两组系数</strong>，需要分别解读：第一部分系数（<span class="math inline">\(\hat{\gamma}\)</span>）反映变量对”是否参与”概率的影响，通常汇报平均边际效应（AME）；第二部分系数（<span class="math inline">\(\hat{\beta}\)</span>）反映在已参与样本中，变量对投入规模的影响，当因变量取对数时可近似解读为半弹性。</p>
+<p><strong>常见误区</strong>：当某个变量在两部分中的系数方向相反时，很多同学会觉得困惑。比如，企业规模可能正向影响”是否投入研发”（大企业更可能有研发），但在已有研发的企业中，规模对研发强度的影响可能为负（大企业研发强度反而更低）。这不是矛盾，而是两个不同问题的不同答案——不能把两组系数混为一谈。</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+提示词：用 AI 实现两部分模型
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>我想对企业数字化投资数据使用两部分模型，因变量 <code>digital_inv</code> 大量为零。请帮我：</p>
+<ol type="1">
+<li>第一部分：用 Probit 模型估计企业是否有数字化投资（<code>digital_inv &gt; 0</code>），解释变量包括 <code>size</code>、<code>age</code>、<code>roa</code>、<code>state_owned</code>，输出平均边际效应</li>
+<li>第二部分：在有数字化投资的子样本中，用 OLS 回归 <code>log(digital_inv)</code> 对相同解释变量</li>
+<li>分别输出两部分的回归系数表，并用一段文字解读两组系数的经济含义</li>
+<li>数据文件为 <code>digital_inv.csv</code>，请给出完整的 Python 代码</li>
+</ol>
+</div>
+</div>
+</section>
+<section id="应用案例企业数字化转型投资决策" class="level3" data-number="39.3.3">
+<h3 data-number="39.3.3" class="anchored" data-anchor-id="应用案例企业数字化转型投资决策"><span class="header-section-number">39.3.3</span> 应用案例：企业数字化转型投资决策</h3>
+<p><strong>数据背景</strong>：以 A 股上市公司为样本，因变量为企业当年数字化相关资本支出（万元），样本中约 45% 的企业该年数字化支出为零。核心解释变量为企业规模、年龄、盈利能力和所有制性质（国有 vs 民营）。</p>
+<p>选择 TPM 而非 Tobit 的直觉在于：启动数字化转型和决定投入多少是两个性质不同的决策。前者更多受行业数字化压力、高管认知和政策激励影响；后者则主要受企业财务能力和已有数字基础设施制约。Tobit 模型强制两者由相同系数驱动，可能掩盖这种异质性。</p>
+<p>估计结果呈现了一个有趣的规律：国有企业虚拟变量在第一部分显著为正（国企更可能启动数字化投资），但在第二部分显著为负（在已投资的企业中，国企的投资强度反而更低）。这一发现与 Tobit 给出的不显著结果形成鲜明对比，说明 Tobit 的限制性假设在这里确实过于严格。</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-6-contents" aria-controls="callout-6" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Stata 对应代码
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-6" class="callout-6-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div class="sourceCode" id="cb2"><pre class="sourceCode stata code-with-copy"><code class="sourceCode stata"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>* [Case 2] Two-Part Model：企业数字化转型投资</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>* 数据读入</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>import delimited <span class="st">"./data/limit_dep_models_data02_digital.csv"</span>, <span class="kw">clear</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>* 生成参与虚拟变量</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="kw">gen</span> d_digital = (digital_inv &gt; 0) <span class="kw">if</span> digital_inv != .</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>* 第一部分：Probit 估计参与决策</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="kw">probit</span> d_digital <span class="kw">size</span> age roa state_owned, <span class="kw">robust</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>margins, <span class="kw">dydx</span>(*)</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>* 第二部分：OLS 估计数量决策（仅限正值样本）</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="kw">gen</span> ln_digital = <span class="fu">log</span>(digital_inv) <span class="kw">if</span> digital_inv &gt; 0</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="kw">reg</span> ln_digital <span class="kw">size</span> age roa state_owned <span class="kw">if</span> digital_inv &gt; 0, <span class="kw">robust</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<blockquote class="blockquote">
+<p><strong>说明</strong>：以上 Stata 代码与上方 Python 代码完成相同的分析任务，结果应高度一致。</p>
+</blockquote>
+</div>
+</div>
+</div>
+<hr>
+</section>
+</section>
+<section id="sec-hurdle" class="level2" data-number="39.4">
+<h2 data-number="39.4" class="anchored" data-anchor-id="sec-hurdle"><span class="header-section-number">39.4</span> Hurdle Model（门槛模型）</h2>
+<section id="与两部分模型的关系以及计数数据的特殊性" class="level3" data-number="39.4.1">
+<h3 data-number="39.4.1" class="anchored" data-anchor-id="与两部分模型的关系以及计数数据的特殊性"><span class="header-section-number">39.4.1</span> 与两部分模型的关系，以及计数数据的特殊性</h3>
+<p>Hurdle Model 和 Two-Part Model 在结构上非常相似，都把因变量的生成过程分为”跨越门槛”和”正值数量”两步。<strong>在连续型因变量场景下，两者几乎等价</strong>，区别仅在第二部分的分布假设上略有差异。</p>
+<p>两者的实质性区别，主要体现在<strong>计数型（count）因变量</strong>的场景中。当 <span class="math inline">\(y\)</span> 是非负整数（如专利申请数、并购次数、诉讼案件数），且存在大量零值时，Hurdle Model 提供了更自然的框架。对计数数据，教科书通常推荐泊松回归，但泊松模型假设均值等于方差，现实数据往往违反这一假设，尤其是出现<strong>过度零值（excess zeros）</strong>时——零值的实际比例远超泊松分布的预测。</p>
+<p><a href="#fig-hurdle-count" class="quarto-xref">Figure&nbsp;<span>39.4</span></a> 展示了一组专利申请数据的实际分布与泊松拟合的对比：实际数据中零值比例约 60%，而泊松拟合值仅为 35%，差距巨大。Hurdle Model 通过把零值生成过程单独建模，完美地处理了这一问题。</p>
+<div id="fig-hurdle-count" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-hurdle-count-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./figs/limit_dep_models_fig05_hurdle_count.png" class="img-fluid figure-img" style="width:80.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-hurdle-count-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+图&nbsp;39.4: 计数数据零值分布与泊松拟合对比：实际数据（橙色）的零值比例远超泊松分布（蓝色）的预测，体现了过度零值问题
+</figcaption>
+</figure>
+</div>
+</section>
+<section id="模型设定与结果解释-1" class="level3" data-number="39.4.2">
+<h3 data-number="39.4.2" class="anchored" data-anchor-id="模型设定与结果解释-1"><span class="header-section-number">39.4.2</span> 模型设定与结果解释</h3>
+<p><strong>第一部分（跨门槛概率）</strong>：用 Probit/Logit 建模 <span class="math inline">\(P(y_i &gt; 0 \mid X_i)\)</span>，描述企业是否有专利申请行为。</p>
+<p><strong>第二部分（截断泊松，仅对 <span class="math inline">\(y &gt; 0\)</span> 的样本）</strong>：</p>
+<p><span class="math display">\[P(Y_i = k \mid Y_i &gt; 0, X_i) = \frac{e^{-\mu_i} \mu_i^k / k!}{1 - e^{-\mu_i}}, \quad k = 1, 2, 3, \ldots\]</span></p>
+<p>其中 <span class="math inline">\(\mu_i = \exp(X_i \beta)\)</span>，分母 <span class="math inline">\(1 - e^{-\mu_i}\)</span> 是截断修正项，确保概率在正整数上归一。</p>
+<p>与 Hurdle Model 相近的还有 Zero-Inflated Poisson（ZIP）模型。两者的直觉区别在于：Hurdle 模型认为零值和正值来自同一决策树的两个分支（先问”有没有”，再问”多少”）；ZIP 则假设零值来自两个来源——“结构性零值”和泊松过程碰巧产生的零。在大多数实证场景中，两者结果差异不大，Hurdle 模型的经济解释更为直观。</p>
+<p>同样，Hurdle Model 产生两组系数：第一部分汇报平均边际效应（对”是否申请专利”的影响）；第二部分系数近似解读为半弹性（<span class="math inline">\(\exp(\hat\beta) - 1\)</span> 为比例变化）。两组系数可能方向不一致，需要分别讨论。</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+提示词：用 AI 估计 Hurdle Poisson 模型
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>我有企业专利申请数据，因变量 <code>patent</code> 是非负整数，含大量零值（约 55%）。请帮我：</p>
+<ol type="1">
+<li>先做描述性统计，比较实际零值比例与泊松分布预测的零值比例</li>
+<li>估计 Hurdle Poisson 模型（用 Python 的 <code>statsmodels</code> 或 <code>pycount</code>）</li>
+<li>输出两部分系数，并计算平均边际效应</li>
+<li>与普通泊松回归结果并排对比，说明 Hurdle 模型在处理过度零值上的改进</li>
+</ol>
+<p>数据文件为 <code>patent.csv</code>，解释变量包括 <code>rd_intensity</code>、<code>size</code>、<code>age</code>、<code>lev</code>，请给出完整代码。</p>
+</div>
+</div>
+</section>
+<section id="应用案例企业创新专利申请" class="level3" data-number="39.4.3">
+<h3 data-number="39.4.3" class="anchored" data-anchor-id="应用案例企业创新专利申请"><span class="header-section-number">39.4.3</span> 应用案例：企业创新专利申请</h3>
+<p><strong>数据背景</strong>：使用 A 股上市制造业公司数据，因变量为企业当年发明专利申请数量，约 58% 的企业当年申请量为零。将研究问题拆分为两个子问题：什么因素决定企业是否有专利申请行为？在创新活跃的企业中，什么因素决定申请数量的多少？</p>
+<p>估计结果揭示了两个机制的差异。研发强度在两部分中均显著为正，但效应机制不同：对是否参与创新的影响体现为”有无效应”，对申请数量的影响则体现为”规模效应”。融资约束变量在第一部分显著为负，但在第二部分不显著——说明融资约束主要阻碍企业进入创新轨道，而非制约已经创新的企业的申请规模，这一机制在普通泊松回归中被完全平均化，无法识别。</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-8-contents" aria-controls="callout-8" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Stata 对应代码
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-8" class="callout-8-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div class="sourceCode" id="cb3"><pre class="sourceCode stata code-with-copy"><code class="sourceCode stata"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>* [Case 3] Hurdle Poisson：企业创新专利申请</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>* 数据读入</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>import delimited <span class="st">"./data/limit_dep_models_data03_patent.csv"</span>, <span class="kw">clear</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>* 普通泊松（对比基准）</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="kw">poisson</span> patent rd_intensity <span class="kw">size</span> age lev, <span class="kw">robust</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>* Hurdle Poisson：第一部分 Probit</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="kw">gen</span> d_patent = (patent &gt; 0)</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="kw">probit</span> d_patent rd_intensity <span class="kw">size</span> age lev, <span class="kw">robust</span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>margins, <span class="kw">dydx</span>(*)</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>* 第二部分：截断泊松（tpoisson）</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>tpoisson patent rd_intensity <span class="kw">size</span> age lev <span class="kw">if</span> patent &gt; 0, ll(0) <span class="kw">robust</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<blockquote class="blockquote">
+<p><strong>说明</strong>：以上 Stata 代码与上方 Python 代码完成相同的分析任务，结果应高度一致。</p>
+</blockquote>
+</div>
+</div>
+</div>
+<hr>
+</section>
+</section>
+<section id="sec-heckman" class="level2" data-number="39.5">
+<h2 data-number="39.5" class="anchored" data-anchor-id="sec-heckman"><span class="header-section-number">39.5</span> Heckman 样本选择模型</h2>
+<section id="样本选择问题你只看到了被选中的人" class="level3" data-number="39.5.1">
+<h3 data-number="39.5.1" class="anchored" data-anchor-id="样本选择问题你只看到了被选中的人"><span class="header-section-number">39.5.1</span> 样本选择问题：你只看到了”被选中的人”</h3>
+<p>前面三节讨论的都是因变量本身的截断问题——零值是真实的零，样本是完整的，只是 <span class="math inline">\(y\)</span> 的分布有特殊形态。本节要讨论一个性质不同的问题：<strong>样本本身不是随机的</strong>，<span class="math inline">\(y\)</span> 对部分个体根本无法被观测。</p>
+<p>考虑这样一个研究问题：企业向灾区捐赠的金额，受哪些因素影响？数据里约 70% 的企业没有捐赠记录，其 <span class="math inline">\(y\)</span> 是缺失的（不是零，是根本没有被观测到）。关键在于：没有捐赠记录的企业不是随机的——盈利能力强、媒体曝光度高、有政治关联的企业更可能捐赠。如果只用有捐赠记录的 30% 企业来回归，样本已经不代表整体总体，估计结果会产生<strong>选择偏误（selection bias）</strong>。</p>
+<p>这正是 Heckman（1979）样本选择模型要解决的问题。詹姆斯·赫克曼（James Heckman）因这一贡献荣获 2000 年诺贝尔经济学奖。</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tobit vs Heckman：一字之差，天壤之别
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>两个模型经常被混淆，区别的关键在于零值或缺失值的<strong>生成机制</strong>不同。<strong>Tobit</strong> 处理的是：<span class="math inline">\(y = 0\)</span> 是真实的、可观测的结果（如企业确实没有研发支出）。<strong>Heckman</strong> 处理的是：<span class="math inline">\(y\)</span> 对部分样本根本不可观测（如企业没有捐赠，<span class="math inline">\(y\)</span> 缺失），且”是否可观测”本身受到其他因素的影响。用 Tobit 处理样本选择问题，会导致不一致估计。</p>
+</div>
+</div>
+</section>
+<section id="模型结构两个方程" class="level3" data-number="39.5.2">
+<h3 data-number="39.5.2" class="anchored" data-anchor-id="模型结构两个方程"><span class="header-section-number">39.5.2</span> 模型结构：两个方程</h3>
+<p>Heckman 模型由两个方程组成。</p>
+<p><strong>选择方程（Selection Equation）</strong>：描述个体是否被选入样本，即 <span class="math inline">\(y\)</span> 是否可以被观测到：</p>
+<p><span class="math display">\[D_i = \begin{cases} 1 &amp; \text{若 } Z_i\gamma + u_i &gt; 0 \quad (y_i \text{ 可观测}) \\ 0 &amp; \text{若 } Z_i\gamma + u_i \leq 0 \quad (y_i \text{ 缺失}) \end{cases}\]</span></p>
+<p><strong>结果方程（Outcome Equation）</strong>：描述在 <span class="math inline">\(D_i = 1\)</span> 的样本中，<span class="math inline">\(y\)</span> 的决定因素：</p>
+<p><span class="math display">\[y_i = X_i\beta + \varepsilon_i, \quad \text{仅当 } D_i = 1 \text{ 时可观测}\]</span></p>
+<p>关键假设：误差项 <span class="math inline">\((u_i, \varepsilon_i)\)</span> 服从<strong>联合正态分布</strong>，相关系数为 <span class="math inline">\(\rho\)</span>。如果 <span class="math inline">\(\rho \neq 0\)</span>，直接只用 <span class="math inline">\(D_i = 1\)</span> 的样本做 OLS 会有偏。</p>
+<p><strong>识别变量（排除约束）的必要性</strong>：Heckman 模型要求选择方程 <span class="math inline">\(Z\)</span> 中至少包含一个不出现在结果方程 <span class="math inline">\(X\)</span> 中的变量。这个变量需要满足：一是显著影响”是否被选入样本”（相关性）；二是不直接影响结果变量（外生性）。识别变量的选择是实践中最难的部分，也是审稿人最常质疑的地方。</p>
+</section>
+<section id="两步估计的直觉" class="level3" data-number="39.5.3">
+<h3 data-number="39.5.3" class="anchored" data-anchor-id="两步估计的直觉"><span class="header-section-number">39.5.3</span> 两步估计的直觉</h3>
+<p>Heckman 两步法的思路不需要记住推导，只需理解直觉。</p>
+<p><strong>第一步</strong>：用 Probit 估计选择方程，由此构造<strong>逆米尔斯比（Inverse Mills Ratio, IMR）</strong>：</p>
+<p><span class="math display">\[\hat{\lambda}_i = \frac{\phi(\hat{Z}_i\gamma)}{\Phi(\hat{Z}_i\gamma)}\]</span></p>
+<p>其中 <span class="math inline">\(\phi\)</span> 是标准正态密度函数，<span class="math inline">\(\Phi\)</span> 是累积分布函数。直觉上，IMR 衡量了”这个观测值刚好被选入样本，本身就携带了多少信息”——如果一个企业被选入样本的概率很低，那它被观测到这一事实本身就说明它是”特殊的”。<a href="#fig-imr" class="quarto-xref">Figure&nbsp;<span>39.5</span></a> 展示了 IMR 随选择概率的变化：选择概率越低，IMR 越大（被观测到这件事本身信息量更多）；随着概率升高，IMR 迅速下降趋近于零。</p>
+<div id="fig-imr" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-imr-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./figs/limit_dep_models_fig07_imr.png" class="img-fluid figure-img" style="width:75.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-imr-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+图&nbsp;39.5: 逆米尔斯比（IMR）曲线：横轴为个体被选入样本的概率 <span class="math inline">\(\Phi(Z_i\gamma)\)</span>，纵轴为对应的 IMR 值。选择概率越低，IMR 越大
+</figcaption>
+</figure>
+</div>
+<p><strong>第二步</strong>：将 <span class="math inline">\(\hat{\lambda}_i\)</span> 作为额外控制变量加入结果方程做 OLS：</p>
+<p><span class="math display">\[y_i = X_i\beta + \delta\hat{\lambda}_i + \text{error}_i\]</span></p>
+<p><span class="math inline">\(\hat{\lambda}_i\)</span> 的系数 <span class="math inline">\(\hat{\delta}\)</span> 衡量了选择偏误的大小和方向——如果 <span class="math inline">\(\hat{\delta}\)</span> 显著不为零，说明样本选择问题确实存在，不能直接用截断样本做 OLS。</p>
+</section>
+<section id="结果解释" class="level3" data-number="39.5.4">
+<h3 data-number="39.5.4" class="anchored" data-anchor-id="结果解释"><span class="header-section-number">39.5.4</span> 结果解释</h3>
+<p>Heckman 模型的输出包括两部分，都需要汇报和解读。<strong>选择方程系数</strong>解读与 Probit 相同，通常汇报平均边际效应，说明哪些因素影响被观测到的概率（即影响企业是否捐赠）。<strong>结果方程系数</strong> <span class="math inline">\(\hat{\beta}\)</span> 在控制了选择偏误后，反映各变量对结果 <span class="math inline">\(y\)</span> 的净效应。</p>
+<p><span class="math inline">\(\rho\)</span> 的含义值得特别关注：<span class="math inline">\(\rho &gt; 0\)</span> 意味着”更倾向于被选入样本的个体，其结果也倾向于更高”（正向选择）；<span class="math inline">\(\rho &lt; 0\)</span> 则相反（负向选择）。IMR 系数 <span class="math inline">\(\hat{\delta}\)</span> 的显著性是判断样本选择问题是否存在的标准检验。</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+提示词：用 AI 实现 Heckman 两步法
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>我研究企业捐赠行为，约 70% 的企业没有捐赠记录（<span class="math inline">\(y\)</span> 缺失，非零），存在样本选择问题。请帮我：</p>
+<ol type="1">
+<li>用 Python 的 <code>statsmodels</code>（<code>Heckman</code> 类）实现 Heckman 两步法</li>
+<li>选择方程：<code>size</code>、<code>roa</code>、<code>media_exposure</code>、<code>political_connection</code>、<code>social_norm_index</code>（排除变量）</li>
+<li>结果方程：<code>size</code>、<code>roa</code>、<code>media_exposure</code>、<code>political_connection</code>（不含排除变量）</li>
+<li>输出两个方程的系数，并判断 IMR 系数是否显著（即样本选择是否存在）</li>
+<li>对比 Heckman 与直接用捐赠企业做 OLS 的系数差异</li>
+</ol>
+<p>请给出完整代码，并解释 IMR 系数及 <span class="math inline">\(\hat\rho\)</span> 的经济含义。</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+提示词：用 AI 评估排除变量的合理性
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>我在 Heckman 模型中使用”企业所在省份人均慈善捐赠额”作为排除变量。请帮我：</p>
+<ol type="1">
+<li>解释排除变量需要满足哪两个条件（相关性 + 外生性）</li>
+<li>设计一个检验相关性的方法（如第一步 Probit 中该变量的显著性）</li>
+<li>讨论这个排除变量可能存在的内生性问题（是否会直接影响捐赠金额）</li>
+<li>建议 2-3 个可能更合适的排除变量，并解释理由</li>
+</ol>
+<p>请用通俗语言解释，不需要公式推导。</p>
+</div>
+</div>
+</section>
+<section id="应用案例企业慈善捐赠行为" class="level3" data-number="39.5.5">
+<h3 data-number="39.5.5" class="anchored" data-anchor-id="应用案例企业慈善捐赠行为"><span class="header-section-number">39.5.5</span> 应用案例：企业慈善捐赠行为</h3>
+<p><strong>数据背景</strong>：使用 A 股上市公司数据，结合中国慈善联合会捐赠记录，约 68% 的企业在样本期内无捐赠记录（<span class="math inline">\(y\)</span> 缺失，非真实零）。选择方程包括企业规模、盈利能力、媒体曝光度、政治关联，以及排除变量——企业所在省份的社会信任指数（衡量当地捐赠文化，影响企业是否参与捐赠，但不直接决定捐赠规模）。结果方程不含社会信任指数。</p>
+<p>估计结果中，IMR 系数 <span class="math inline">\(\hat{\delta}\)</span> 显著为正（<span class="math inline">\(p &lt; 0.01\)</span>），确认了样本选择问题的存在。政治关联变量在选择方程中显著为正，但在结果方程中不显著——政治关联主要影响企业是否进行捐赠，而非捐多少。这一发现被直接 OLS 回归完全掩盖，正是忽略选择过程导致的误判。</p>
+<div id="tbl-heckman" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-heckman-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+表&nbsp;39.1: Heckman 两步法估计结果（主要系数，*** p&lt;0.01，** p&lt;0.05）
+</figcaption>
+<div aria-describedby="tbl-heckman-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th></th>
+<th>选择方程（是否捐赠）</th>
+<th>结果方程（捐多少）</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>企业规模</td>
+<td>0.312***</td>
+<td>0.428***</td>
+</tr>
+<tr class="even">
+<td>盈利能力（ROA）</td>
+<td>1.840***</td>
+<td>2.105**</td>
+</tr>
+<tr class="odd">
+<td>媒体曝光度</td>
+<td>0.156***</td>
+<td>0.183**</td>
+</tr>
+<tr class="even">
+<td>政治关联</td>
+<td>0.241***</td>
+<td>0.072</td>
+</tr>
+<tr class="odd">
+<td>社会信任指数（排除变量）</td>
+<td>0.389***</td>
+<td>—</td>
+</tr>
+<tr class="even">
+<td>IMR（<span class="math inline">\(\hat\lambda\)</span>）</td>
+<td>—</td>
+<td>0.312***</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-12-contents" aria-controls="callout-12" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Stata 对应代码
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-12" class="callout-12-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div class="sourceCode" id="cb4"><pre class="sourceCode stata code-with-copy"><code class="sourceCode stata"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>* [Case 4] Heckman 样本选择模型：企业捐赠行为</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>* 数据读入</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>import delimited <span class="st">"./data/limit_dep_models_data04_donation.csv"</span>, <span class="kw">clear</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>* 两步法 (<span class="kw">heckman</span>, twostep)</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="kw">heckman</span> ln_donation <span class="kw">size</span> roa media political, <span class="co">///</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>    select(<span class="kw">size</span> roa media political social_trust) <span class="co">///</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>    twostep</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>* MLE 估计（默认选项，效率更高）</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="kw">heckman</span> ln_donation <span class="kw">size</span> roa media political, <span class="co">///</span></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>    select(<span class="kw">size</span> roa media political social_trust)</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>* 输出中 /athrho 和 rho 即为相关系数估计，rho 显著说明选择偏误存在</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<blockquote class="blockquote">
+<p><strong>说明</strong>：以上 Stata 代码与上方 Python 代码完成相同的分析任务，结果应高度一致。</p>
+</blockquote>
+</div>
+</div>
+</div>
+<hr>
+</section>
+</section>
+<section id="sec-treatment" class="level2" data-number="39.6">
+<h2 data-number="39.6" class="anchored" data-anchor-id="sec-treatment"><span class="header-section-number">39.6</span> 内生处理效应模型（Treatment Effect Model）</h2>
+<section id="当右侧变量自己选择了自己" class="level3" data-number="39.6.1">
+<h3 data-number="39.6.1" class="anchored" data-anchor-id="当右侧变量自己选择了自己"><span class="header-section-number">39.6.1</span> 当右侧变量”自己选择了自己”</h3>
+<p>前一节讨论的 Heckman 样本选择模型，核心问题是因变量 <span class="math inline">\(y\)</span> 对部分样本缺失。本节要讨论一个看起来相似、实则不同的问题：<strong><span class="math inline">\(y\)</span> 对所有样本都可以观测，但有一个关键的解释变量 <span class="math inline">\(D\)</span>（处理变量）是内生的</strong>。</p>
+<p>这里的”内生”指自选择（self-selection）：个体不是被随机分配到处理组（<span class="math inline">\(D=1\)</span>）或控制组（<span class="math inline">\(D=0\)</span>），而是根据自身特征主动选择的。这意味着两组在接受处理之前就已经不同，直接比较两组的平均结果 <span class="math inline">\(y\)</span>，会把”选择效应”和”处理效应”混在一起。</p>
+<p>一个典型例子：评估政府研发补贴对企业创新的效果。政府倾向于把补贴给规模更大、技术实力更强、历史研发投入更多的企业——这些企业即使不获得补贴，创新产出也会更高。如果直接比较获补贴企业和未获补贴企业的专利数，会高估补贴的效果，因为”获补贴”本身就是企业实力强的信号。</p>
+<p><a href="#fig-treatment-bias" class="quarto-xref">Figure&nbsp;<span>39.6</span></a> 直观展示了这一偏误：即使处理效应（补贴的真实因果效应）为零，仅仅因为”能力强的企业更倾向于接受处理”，两组的结果均值之差也会为正。</p>
+<div id="fig-treatment-bias" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-treatment-bias-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./figs/limit_dep_models_fig08_treatment_bias.png" class="img-fluid figure-img" style="width:80.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-treatment-bias-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+图&nbsp;39.6: 自选择导致处理效应估计偏误：处理组（获补贴）在接受处理前本身结果就更高，直接比较会把选择效应误认为处理效应
+</figcaption>
+</figure>
+</div>
+</section>
+<section id="潜在结果框架看清楚我们在问什么" class="level3" data-number="39.6.2">
+<h3 data-number="39.6.2" class="anchored" data-anchor-id="潜在结果框架看清楚我们在问什么"><span class="header-section-number">39.6.2</span> 潜在结果框架：看清楚我们在问什么</h3>
+<p>理解处理效应模型，需要接受一个思想实验：假设每个企业 <span class="math inline">\(i\)</span> 都有两个<strong>潜在结果（potential outcomes）</strong>——<span class="math inline">\(y_i(1)\)</span>（如果获得补贴）和 <span class="math inline">\(y_i(0)\)</span>（如果没有获得补贴）。处理效应 = <span class="math inline">\(y_i(1) - y_i(0)\)</span>。</p>
+<p>问题在于，我们只能观测到一个结果：获补贴的企业只能告诉我们 <span class="math inline">\(y_i(1)\)</span>，没获补贴的只能告诉我们 <span class="math inline">\(y_i(0)\)</span>。<span class="math inline">\(y_i(0)\)</span> 对获补贴企业来说是<strong>反事实（counterfactual）</strong>，永远无法直接观测。</p>
+<p>我们能估计的是<strong>平均处理效应（ATE）</strong> = <span class="math inline">\(E[y_i(1) - y_i(0)]\)</span>，以及<strong>处理组平均处理效应（ATT）</strong> = <span class="math inline">\(E[y_i(1) - y_i(0) \mid D_i = 1]\)</span>。在政策评估中，<strong>ATT 通常更受关注</strong>——“补贴对实际获得补贴的企业的平均效果”，比对所有企业更有政策参考价值。</p>
+</section>
+<section id="模型设定" class="level3" data-number="39.6.3">
+<h3 data-number="39.6.3" class="anchored" data-anchor-id="模型设定"><span class="header-section-number">39.6.3</span> 模型设定</h3>
+<p>内生处理效应模型由两个方程组成，结构上与 Heckman 样本选择模型类似，但含义不同：</p>
+<p><strong>选择方程</strong>（决定谁接受处理）：</p>
+<p><span class="math display">\[D_i = 1(Z_i\gamma + u_i &gt; 0)\]</span></p>
+<p><strong>结果方程</strong>（所有样本都有 <span class="math inline">\(y\)</span>）：</p>
+<p><span class="math display">\[y_i = X_i\beta + \delta D_i + \varepsilon_i\]</span></p>
+<p><span class="math inline">\(D_i\)</span> 直接进入结果方程作为解释变量，<span class="math inline">\(\delta\)</span> 就是我们想要估计的<strong>处理效应</strong>。误差项 <span class="math inline">\((u_i, \varepsilon_i)\)</span> 的相关性 <span class="math inline">\(\rho \neq 0\)</span> 刻画了内生性：影响是否获补贴的不可观测因素与影响创新产出的不可观测因素相关，使得 OLS 对 <span class="math inline">\(\delta\)</span> 的估计有偏。</p>
+<p><a href="#tbl-heckman-vs-treatment" class="quarto-xref">Table&nbsp;<span>39.2</span></a> 对比了 Heckman 样本选择模型与内生处理效应模型的关键异同：</p>
+<div id="tbl-heckman-vs-treatment" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-heckman-vs-treatment-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+表&nbsp;39.2: Heckman 样本选择模型与内生处理效应模型的对比
+</figcaption>
+<div aria-describedby="tbl-heckman-vs-treatment-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th></th>
+<th>Heckman 样本选择</th>
+<th>内生处理效应</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">\(y\)</span> 的观测</td>
+<td>部分缺失（<span class="math inline">\(D=0\)</span> 时不可观测）</td>
+<td>所有样本都可观测</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(D\)</span> 的角色</td>
+<td>决定 <span class="math inline">\(y\)</span> 是否被观测</td>
+<td>作为结果方程中的解释变量</td>
+</tr>
+<tr class="odd">
+<td>核心问题</td>
+<td>截断样本的估计偏误</td>
+<td>内生解释变量的估计偏误</td>
+</tr>
+<tr class="even">
+<td>排除约束</td>
+<td>至少 1 个</td>
+<td>至少 1 个（通常要求更强）</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+</section>
+<section id="估计思路与结果解释" class="level3" data-number="39.6.4">
+<h3 data-number="39.6.4" class="anchored" data-anchor-id="估计思路与结果解释"><span class="header-section-number">39.6.4</span> 估计思路与结果解释</h3>
+<p>估计方法与 Heckman 类似，有两步法和 MLE 两种选择。两步法的逻辑：第一步用 Probit 估计选择方程，构造 IMR（<span class="math inline">\(\hat{\lambda}_i\)</span>）；第二步将 <span class="math inline">\(\hat{\lambda}_i\)</span> 加入结果方程，同时保留 <span class="math inline">\(D_i\)</span>。<span class="math inline">\(\hat{\lambda}_i\)</span> 的系数控制了选择偏误，<span class="math inline">\(D_i\)</span> 的系数 <span class="math inline">\(\hat{\delta}\)</span> 则是纠正后的处理效应估计。</p>
+<p>结果解读上，<span class="math inline">\(\hat{\delta}\)</span> 是控制自选择后 <span class="math inline">\(D\)</span> 对 <span class="math inline">\(y\)</span> 的净因果效应；<span class="math inline">\(\hat{\rho}\)</span> 的符号指示自选择的方向——<span class="math inline">\(\hat{\rho} &gt; 0\)</span> 说明”更容易获补贴的企业本身创新能力更强”（正向选择），忽略这一点会高估补贴效果；<span class="math inline">\(\hat{\rho} &lt; 0\)</span> 则为负向选择，OLS 会低估处理效应。</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+提示词：用 AI 实现内生处理效应模型
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>我想评估政府研发补贴对企业专利申请的因果效应，处理变量 <code>subsidy</code>（是否获得补贴）存在自选择。请帮我：</p>
+<ol type="1">
+<li>用 Python 实现内生处理效应模型（Heckman 框架的推广，<span class="math inline">\(y\)</span> 对所有样本可观测）</li>
+<li>选择方程：<code>size</code>、<code>roa</code>、<code>rd_history</code>、<code>fiscal_surplus</code>（地方财政盈余率，作为排除变量）</li>
+<li>结果方程：<code>size</code>、<code>roa</code>、<code>rd_history</code>、<code>subsidy</code>（<span class="math inline">\(D\)</span> 直接进入）</li>
+<li>输出处理效应系数 <span class="math inline">\(\hat{\delta}\)</span> 及其显著性，以及 <span class="math inline">\(\hat{\rho}\)</span> 的估计值</li>
+<li>与直接 OLS 对比，说明自选择带来的偏误方向和大小</li>
+</ol>
+<p>数据文件为 <code>subsidy.csv</code>，请给出完整代码。</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+提示词：用 AI 设计排除约束变量
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>我的研究中，处理变量是”企业是否获得政府数字化补贴”，结果变量是”企业数字化投资金额”。我需要找合适的工具变量（排除变量）。请帮我：</p>
+<ol type="1">
+<li>解释一个好的排除变量需要满足哪两个条件（相关性 + 外生性）</li>
+<li>从以下候选变量中评估哪些更合适：省级数字经济政策强度指数、地方官员数字化背景、同行业同规模企业的平均补贴获得率、企业与省会城市的距离</li>
+<li>解释如何用第一阶段 F 统计量检验”弱工具变量”问题</li>
+</ol>
+<p>请用通俗语言，不需要公式推导。</p>
+</div>
+</div>
+</section>
+<section id="应用案例政府研发补贴对企业创新的效应" class="level3" data-number="39.6.5">
+<h3 data-number="39.6.5" class="anchored" data-anchor-id="应用案例政府研发补贴对企业创新的效应"><span class="header-section-number">39.6.5</span> 应用案例：政府研发补贴对企业创新的效应</h3>
+<p><strong>数据背景</strong>：使用 A 股上市公司数据，处理变量 <span class="math inline">\(D_i\)</span> 为”当年是否获得政府研发补贴”（约 42% 的企业获补贴），结果变量 <span class="math inline">\(y_i\)</span> 为下一年发明专利申请数（对数）。由于大型、盈利能力强的企业更易获补贴，直接 OLS 会高估补贴效果。</p>
+<p><strong>识别变量设计</strong>：“地方政府当年财政盈余 / GDP”作为排除变量。逻辑是：财政充裕的地方政府更倾向于发放研发补贴（满足相关性），但地方财政状况不直接影响单个企业的创新能力（满足外生性，前提是控制了地区固定效应）。</p>
+<p>估计结果显示，OLS 估计的补贴效应为 0.38（显著），而内生处理效应模型的 <span class="math inline">\(\hat{\delta} = 0.21\)</span>（显著），较 OLS 低约 45%。<span class="math inline">\(\hat{\rho} = 0.31 &gt; 0\)</span> 且显著，确认了正向选择的存在。政策含义是：政府研发补贴确实促进了企业创新，但效果比简单比较看起来要温和得多。</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-15-contents" aria-controls="callout-15" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Stata 对应代码
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-15" class="callout-15-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div class="sourceCode" id="cb5"><pre class="sourceCode stata code-with-copy"><code class="sourceCode stata"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>* [Case 5] 内生处理效应模型：政府补贴与企业创新</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>* 数据读入</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>import delimited <span class="st">"./data/limit_dep_models_data05_subsidy.csv"</span>, <span class="kw">clear</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>* OLS（对比基准，忽略内生性）</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="kw">reg</span> ln_patent subsidy <span class="kw">size</span> roa rd_history, <span class="kw">robust</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>* 内生处理效应模型（treatreg）</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>* 选择方程排除变量：fiscal_surplus（地方财政盈余率）</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="kw">treatreg</span> ln_patent <span class="kw">size</span> roa rd_history, <span class="co">///</span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>    treat(subsidy = <span class="kw">size</span> roa rd_history fiscal_surplus) <span class="co">///</span></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>    twostep</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>* MLE 估计（默认，更有效率）</span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a><span class="kw">treatreg</span> ln_patent <span class="kw">size</span> roa rd_history, <span class="co">///</span></span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>    treat(subsidy = <span class="kw">size</span> roa rd_history fiscal_surplus)</span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>* 检验 rho 是否显著（/athrho 对应 <span class="fu">atanh</span>(rho)）</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<blockquote class="blockquote">
+<p><strong>说明</strong>：以上 Stata 代码与上方 Python 代码完成相同的分析任务，结果应高度一致。</p>
+</blockquote>
+</div>
+</div>
+</div>
+<hr>
+</section>
+</section>
+<section id="sec-ppml" class="level2" data-number="39.7">
+<h2 data-number="39.7" class="anchored" data-anchor-id="sec-ppml"><span class="header-section-number">39.7</span> PPMLHDFE：处理零值与高维固定效应</h2>
+<section id="贸易和投资数据的两个顽疾" class="level3" data-number="39.7.1">
+<h3 data-number="39.7.1" class="anchored" data-anchor-id="贸易和投资数据的两个顽疾"><span class="header-section-number">39.7.1</span> 贸易和投资数据的两个”顽疾”</h3>
+<p>研究企业跨地区投资或贸易流量时，研究者几乎无可避免地会遇到两个让 OLS 头疼的特征。</p>
+<p><strong>顽疾一：大量零值</strong>。企业 <span class="math inline">\(i\)</span> 对城市 <span class="math inline">\(j\)</span> 的投资额，绝大多数情况下是零——大多数企业不会在全国每个城市都设立子公司或开展投资。典型的企业-城市投资流量数据集，零值比例往往超过 80%。</p>
+<p><strong>顽疾二：高度右偏</strong>。非零投资额分布极不均匀，少数大型企业对少数核心城市的投资额占据总量的绝大部分，形成严重的右偏分布（<a href="#fig-ppml-dist" class="quarto-xref">Figure&nbsp;<span>39.7</span></a>）。</p>
+<p>面对这两个特征，研究者通常的第一反应是取对数。但问题来了：零值没法取对数。两种常见的”变通”做法均有严重缺陷：<strong>直接删除零值</strong>等于制造了样本选择偏误（大企业、规模效应强的城市更可能出现正值，删零导致样本不再随机）；<strong>用 <span class="math inline">\(\ln(1+y)\)</span> 代替 <span class="math inline">\(\ln y\)</span></strong>，在 <span class="math inline">\(y\)</span> 的数量级差异很大时会对小值产生系统性扭曲，导致系数有偏（Santos Silva &amp; Tenreyro, 2006）。</p>
+<div id="fig-ppml-dist" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-ppml-dist-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./figs/limit_dep_models_fig09_ppml_dist.png" class="img-fluid figure-img" style="width:90.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-ppml-dist-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+图&nbsp;39.7: 企业跨地区投资流量分布：约 83% 的企业-城市对投资额为零（左图），非零部分高度右偏（右图），两个特征共同使得 OLS 取对数的做法不可靠
+</figcaption>
+</figure>
+</div>
+</section>
+<section id="ppml-的核心直觉" class="level3" data-number="39.7.2">
+<h3 data-number="39.7.2" class="anchored" data-anchor-id="ppml-的核心直觉"><span class="header-section-number">39.7.2</span> PPML 的核心直觉</h3>
+<p>PPML（泊松伪最大似然，Poisson Pseudo-Maximum Likelihood）的核心想法是：<strong>不对 <span class="math inline">\(y\)</span> 取对数，而是直接对 <span class="math inline">\(y\)</span> 的期望值建立乘性模型</strong>：</p>
+<p><span class="math display">\[E(y_{ij} \mid X_{ij}) = \exp(X_{ij}\beta)\]</span></p>
+<p>这等价于说，系数 <span class="math inline">\(\beta\)</span> 作用在”指数尺度”上，自然保证了预测值 <span class="math inline">\(\hat{y}_{ij} &gt; 0\)</span>（即使 <span class="math inline">\(y_{ij} = 0\)</span> 也能处理）。估计时借用泊松分布的对数似然函数作为目标函数，但<strong>不要求数据真的服从泊松分布</strong>——只要均值模型设定正确，即使数据是连续的、有过度离散的，系数估计仍然一致（这就是”伪”最大似然的含义，也称拟最大似然估计 Quasi-MLE 的稳健性）。</p>
+<p><strong>PPMLHDFE</strong> 在 PPML 的基础上，加入了对<strong>高维固定效应（High-Dimensional Fixed Effects, HDFE）</strong>的处理能力，例如同时控制企业固定效应、城市固定效应、年份固定效应。传统 MLE 在高维固定效应场景下会因”附带参数问题（incidental parameter problem）“导致有偏，PPMLHDFE 通过迭代去均值算法绕开了这一问题。</p>
+</section>
+<section id="模型设定与结果解释-2" class="level3" data-number="39.7.3">
+<h3 data-number="39.7.3" class="anchored" data-anchor-id="模型设定与结果解释-2"><span class="header-section-number">39.7.3</span> 模型设定与结果解释</h3>
+<p>PPMLHDFE 的完整模型形式为：</p>
+<p><span class="math display">\[E(y_{ijt} \mid X_{ijt}) = \exp\left(X_{ijt}\beta + \alpha_i + \gamma_j + \delta_t\right)\]</span></p>
+<p>其中 <span class="math inline">\(\alpha_i\)</span> 是企业固定效应，<span class="math inline">\(\gamma_j\)</span> 是城市固定效应，<span class="math inline">\(\delta_t\)</span> 是年份固定效应。</p>
+<p><strong>系数解读</strong>：PPML 的系数 <span class="math inline">\(\hat{\beta}_k\)</span> 近似解读为半弹性——<span class="math inline">\(x_k\)</span> 增加 1 个单位，<span class="math inline">\(y\)</span> 变化约 <span class="math inline">\((\exp(\hat{\beta}_k) - 1) \times 100\%\)</span>。当 <span class="math inline">\(|\hat{\beta}_k|\)</span> 较小（小于 0.1）时，可以近似为 <span class="math inline">\(\hat{\beta}_k \times 100\%\)</span>。标准误通常按城市-年份双向聚类处理，以同时控制城市内相关性和时间序列相关性。</p>
+<p>在贸易引力模型的理论框架中，固定效应进入乘性结构（<span class="math inline">\(\exp(\alpha_i)\)</span>）比加性结构（<span class="math inline">\(+\alpha_i\)</span>）更符合经济学原理——企业规模对所有目的地的影响应该是等比例放大的，而不是加减一个常数。</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+提示词：用 AI 实现 PPMLHDFE 并对比 OLS
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>我有企业跨城市投资流量数据（大量零值，含高维固定效应），想用 PPMLHDFE 估计引力方程。请帮我：</p>
+<ol type="1">
+<li>用 Python 的 <code>pyfixest</code> 包实现 PPMLHDFE</li>
+<li>被解释变量：<code>inv_flow</code>（投资金额，含大量零值）</li>
+<li>解释变量：<code>ln_distance</code>（对数距离）、<code>inst_dist</code>（制度距离）、<code>cult_dist</code>（文化距离）、<code>ln_size</code>（企业规模）</li>
+<li>固定效应：企业固定效应 + 目的地城市固定效应 + 年份固定效应</li>
+<li>与”删去零值后 OLS 取对数”的结果并排对比，解释两者差异的来源</li>
+</ol>
+<p>数据文件为 <code>inv_flow.csv</code>，请给出完整代码。</p>
+</div>
+</div>
+</section>
+<section id="应用案例企业跨地区投资流量" class="level3" data-number="39.7.4">
+<h3 data-number="39.7.4" class="anchored" data-anchor-id="应用案例企业跨地区投资流量"><span class="header-section-number">39.7.4</span> 应用案例：企业跨地区投资流量</h3>
+<p><strong>数据背景</strong>：使用 A 股上市公司对全国地级市的投资流量数据（通过工商注册子公司信息构造），覆盖 2010–2022 年，共约 180 万个企业-城市-年份观测，其中约 83% 为零值。</p>
+<p>三种方法的估计结果对比如 <a href="#tbl-ppml-compare" class="quarto-xref">Table&nbsp;<span>39.3</span></a> 所示。距离系数从 OLS 的 -0.82 降至 PPMLHDFE 的 -0.47，说明 OLS 显著高估了距离对投资的阻碍效应——这正是删去零值带来的选择偏误所致。制度距离系数同样存在类似的高估问题。</p>
+<div id="tbl-ppml-compare" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-ppml-compare-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+表&nbsp;39.3: 三种方法估计结果对比
+</figcaption>
+<div aria-describedby="tbl-ppml-compare-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>方法</th>
+<th>样本</th>
+<th>距离系数</th>
+<th>制度距离系数</th>
+<th>主要问题</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>OLS（删零取对数）</td>
+<td>非零样本</td>
+<td>-0.82</td>
+<td>-0.31</td>
+<td>样本选择偏误</td>
+</tr>
+<tr class="even">
+<td>PPML（无固定效应）</td>
+<td>全样本</td>
+<td>-0.61</td>
+<td>-0.24</td>
+<td>遗漏固定效应</td>
+</tr>
+<tr class="odd">
+<td>PPMLHDFE</td>
+<td>全样本</td>
+<td>-0.47</td>
+<td>-0.18</td>
+<td><strong>推荐</strong></td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-17-contents" aria-controls="callout-17" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Stata 对应代码
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-17" class="callout-17-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div class="sourceCode" id="cb6"><pre class="sourceCode stata code-with-copy"><code class="sourceCode stata"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>* [Case 6] PPMLHDFE：企业跨地区投资流量</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>* 需要先安装：ssc install ppmlhdfe</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>* 数据读入</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>import delimited <span class="st">"./data/limit_dep_models_data06_invflow.csv"</span>, <span class="kw">clear</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>* OLS（删去零值，取对数，对比基准）</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="kw">gen</span> ln_inv = <span class="fu">log</span>(inv_flow) <span class="kw">if</span> inv_flow &gt; 0</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="kw">reg</span> ln_inv ln_distance inst_dist cult_dist ln_size <span class="co">///</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>    i.firm_id i.city_id i.<span class="fu">year</span> <span class="kw">if</span> inv_flow &gt; 0, <span class="kw">cluster</span>(city_id)</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>* PPML（无高维固定效应，对比）</span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a><span class="kw">poisson</span> inv_flow ln_distance inst_dist cult_dist ln_size i.<span class="fu">year</span>, <span class="kw">robust</span></span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>* PPMLHDFE（推荐）</span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>ppmlhdfe inv_flow ln_distance inst_dist cult_dist ln_size, <span class="co">///</span></span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>    absorb(firm_id city_id <span class="fu">year</span>) <span class="co">///</span></span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>    <span class="kw">cluster</span>(city_id <span class="fu">year</span>)</span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>* 系数解读：exp(coef) - 1 为比例变化</span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a><span class="kw">display</span> <span class="st">"距离效应："</span> (<span class="fu">exp</span>(_b[ln_distance]) - 1) * 100 <span class="st">"%"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<blockquote class="blockquote">
+<p><strong>说明</strong>：以上 Stata 代码与上方 Python 代码完成相同的分析任务，结果应高度一致。</p>
+</blockquote>
+</div>
+</div>
+</div>
+<hr>
+</section>
+</section>
+<section id="sec-model-selection" class="level2" data-number="39.8">
+<h2 data-number="39.8" class="anchored" data-anchor-id="sec-model-selection"><span class="header-section-number">39.8</span> 模型选择指南</h2>
+<section id="如何在实践中选择合适的模型" class="level3" data-number="39.8.1">
+<h3 data-number="39.8.1" class="anchored" data-anchor-id="如何在实践中选择合适的模型"><span class="header-section-number">39.8.1</span> 如何在实践中选择合适的模型</h3>
+<p>经过前面六节的介绍，我们有了一套完整的受限因变量模型工具箱。面对实际数据，判断用哪个模型的关键是回答以下几个问题：</p>
+<p><strong>第一问：<span class="math inline">\(y\)</span> 是连续的还是计数（整数）的？</strong> 如果是计数型且有大量零值，考虑 Hurdle Poisson 或 Zero-Inflated Poisson。如果是连续型，继续往下。</p>
+<p><strong>第二问：零值或缺失值是怎么产生的？</strong> 如果 <span class="math inline">\(y = 0\)</span> 是真实结果，考虑 <strong>Tobit</strong> 或 <strong>Two-Part Model</strong>；如果 <span class="math inline">\(y\)</span> 对部分样本不可观测（缺失），考虑 <strong>Heckman 样本选择模型</strong>；如果 <span class="math inline">\(y\)</span> 对所有人都可观测但右侧有关键变量内生，考虑 <strong>内生处理效应模型</strong>；如果因变量含大量零值且高度右偏（贸易 / 投资流量），考虑 <strong>PPMLHDFE</strong>。</p>
+<p><strong>第三问（仅 Tobit vs Two-Part）：“是否”和”多少”由相同机制驱动吗？</strong> 如果是，用 Tobit；如果两个决策明显由不同因素驱动，用 Two-Part Model。一个实用的检验方法是：分别估计两个模型，用 Vuong 检验比较拟合优度。</p>
+<p>下面的思维导图给出了一个简化的模型选择框架。它的目的不是替代正式的模型设定检验，而是帮助读者先从因变量类型、零值来源和样本选择机制等角度建立一个整体判断框架。</p>
+<div class="cell" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class="figure"><p></p>
+<div>
+<pre class="mermaid mermaid-js">flowchart LR
+    ROOT["因变量 y 是什么类型？"]
+
+    ROOT --&gt;|整数/计数| COUNT["计数型\n（非负整数）"]
+    ROOT --&gt;|连续/金额| CONT["连续型\n（含零值或缺失）"]
+
+    COUNT --&gt; ZEROS{"大量零值？\n零值比例 &gt; 20%"}
+    ZEROS --&gt;|是| HURDLE(["Hurdle Poisson\n/ ZIP 模型"])
+    ZEROS --&gt;|否| POIS(["普通 Poisson 回归"])
+
+    CONT --&gt; HOW{"零值/缺失\n是如何产生的？"}
+    HOW --&gt;|真实零| MECH{"'是否'与'多少'\n同一机制？"}
+    HOW --&gt;|样本缺失| HECK(["Heckman\n样本选择模型"])
+    HOW --&gt;|D 内生| ENDO(["内生处理\n效应模型"])
+    HOW --&gt;|流量数据\n零值&gt;60%| PPML(["PPMLHDFE"])
+
+    MECH --&gt;|是| TOBIT(["Tobit 模型"])
+    MECH --&gt;|否| TWOPART(["Two-Part Model"])
+
+    classDef decision fill:#C8D9EE,stroke:#2C5F8A,color:#1A1A1A
+    classDef model    fill:#FAE5A0,stroke:#C8960C,color:#1A1A1A
+    classDef altmodel fill:#DCDCDC,stroke:#888888,color:#1A1A1A
+
+    class ROOT,COUNT,CONT,ZEROS,HOW,MECH decision
+    class HURDLE,TOBIT,TWOPART,HECK,ENDO,PPML model
+    class POIS altmodel
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
+<p>图 <a href="#fig-limit-dep-model-selection" class="quarto-xref">Figure&nbsp;<span>39.8</span></a> 直观地呈现了各个模型的选择过程：</p>
+<div id="fig-limit-dep-model-selection" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-limit-dep-model-selection-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./figs/limit_dep_models_fig01_model_map.png" class="img-fluid figure-img" style="width:90.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-limit-dep-model-selection-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+图&nbsp;39.8: 受限因变量模型选择流程和依据
+</figcaption>
+</figure>
+</div>
+<p>进一步地，表 <a href="#tbl-limit-dep-models-selection" class="quarto-xref">Table&nbsp;<span>39.4</span></a> 对常见数据情形与对应模型进行了整理。</p>
+<div id="tbl-limit-dep-models-selection" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-limit-dep-models-selection-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+表&nbsp;39.4: 常见受限因变量模型的适用情形
+</figcaption>
+<div aria-describedby="tbl-limit-dep-models-selection-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">数据情形</th>
+<th style="text-align: left;">关键判断</th>
+<th style="text-align: left;">推荐模型</th>
+<th style="text-align: left;">说明</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">计数型因变量</td>
+<td style="text-align: left;">零值不多</td>
+<td style="text-align: left;">Poisson 回归</td>
+<td style="text-align: left;">适合一般计数数据</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">计数型因变量</td>
+<td style="text-align: left;">零值很多</td>
+<td style="text-align: left;">Hurdle / ZIP</td>
+<td style="text-align: left;">适合存在较多零值的计数数据</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">连续型因变量</td>
+<td style="text-align: left;">零值是真实结果，且“是否发生”与“发生多少”由同一机制决定</td>
+<td style="text-align: left;">Tobit 模型</td>
+<td style="text-align: left;">适合角点解或截断型结果</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">连续型因变量</td>
+<td style="text-align: left;">零值是真实结果，但“是否发生”与“发生多少”由不同机制决定</td>
+<td style="text-align: left;">Two-Part Model</td>
+<td style="text-align: left;">先建模是否发生，再建模正值部分</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">连续型因变量</td>
+<td style="text-align: left;">仅对部分样本观察到 <span class="math inline">\(y\)</span></td>
+<td style="text-align: left;">Heckman 样本选择模型</td>
+<td style="text-align: left;">样本选择问题是核心</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">连续型因变量</td>
+<td style="text-align: left;">处理变量 <span class="math inline">\(D\)</span> 内生</td>
+<td style="text-align: left;">内生处理效应模型</td>
+<td style="text-align: left;">处理效应估计需要纠正内生性</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">流量数据 / 引力模型</td>
+<td style="text-align: left;">零值很多，且需要控制高维固定效应</td>
+<td style="text-align: left;">PPMLHDFE</td>
+<td style="text-align: left;">更适合贸易流、专利流、迁移流等场景</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+</section>
+<section id="常见误用场景警示" class="level3" data-number="39.8.2">
+<h3 data-number="39.8.2" class="anchored" data-anchor-id="常见误用场景警示"><span class="header-section-number">39.8.2</span> 常见误用场景警示</h3>
+<p>实证研究中最常见的几类错误，值得特别注意：</p>
+<p><strong>A. 用 Tobit 处理样本选择问题</strong>：因变量对部分观测值缺失（不是零），应该用 Heckman；错用 Tobit 会导致不一致估计。</p>
+<p><strong>B. 删除零值后取对数做 OLS</strong>：对零值超过 30% 的数据，这等于人为制造样本选择问题，误差尤其严重。正确做法是 PPML 或 Two-Part Model。</p>
+<p><strong>C. 直接报告 Tobit 系数当作边际效应</strong>：Tobit 系数是潜在变量 <span class="math inline">\(y^*\)</span> 的效应，与观测变量 <span class="math inline">\(y\)</span> 的效应（AME）数值差距可能很大，需要额外计算。</p>
+<p><strong>D. Heckman 模型没有识别变量</strong>：没有排除约束的 Heckman 模型，识别完全依赖正态分布的函数形式假设，十分脆弱。至少要寻找一个有经济逻辑支撑的排除变量。</p>
+</section>
+<section id="六类模型综合对比" class="level3" data-number="39.8.3">
+<h3 data-number="39.8.3" class="anchored" data-anchor-id="六类模型综合对比"><span class="header-section-number">39.8.3</span> 六类模型综合对比</h3>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 10%">
+<col style="width: 19%">
+<col style="width: 28%">
+<col style="width: 19%">
+<col style="width: 21%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>模型</th>
+<th>因变量特征</th>
+<th>是否需要识别变量</th>
+<th>Stata 命令</th>
+<th>Python 实现</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Tobit</td>
+<td>连续，有零值截断</td>
+<td>否</td>
+<td><code>tobit</code></td>
+<td><code>statsmodels</code></td>
+</tr>
+<tr class="even">
+<td>Two-Part Model</td>
+<td>连续，两决策独立</td>
+<td>否</td>
+<td>Probit + OLS</td>
+<td>手动组合</td>
+</tr>
+<tr class="odd">
+<td>Hurdle Poisson</td>
+<td>计数，过度零值</td>
+<td>否</td>
+<td><code>tpoisson</code></td>
+<td><code>statsmodels</code></td>
+</tr>
+<tr class="even">
+<td>Heckman 样本选择</td>
+<td>结果对部分样本缺失</td>
+<td><strong>是</strong></td>
+<td><code>heckman</code></td>
+<td><code>statsmodels</code></td>
+</tr>
+<tr class="odd">
+<td>内生处理效应</td>
+<td><span class="math inline">\(y\)</span> 可观测，<span class="math inline">\(D\)</span> 内生</td>
+<td><strong>是</strong></td>
+<td><code>treatreg</code></td>
+<td><code>linearmodels</code></td>
+</tr>
+<tr class="even">
+<td>PPMLHDFE</td>
+<td>流量数据，零值多，高维 FE</td>
+<td>否（需 FE 变量）</td>
+<td><code>ppmlhdfe</code></td>
+<td><code>pyfixest</code></td>
+</tr>
+</tbody>
+</table>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+提示词：用 AI 推荐合适的受限因变量模型
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>我有一份数据，因变量是企业当年对外直接投资金额（OFDI），请帮我：</p>
+<ol type="1">
+<li>根据以下数据特征判断最合适的模型：约 72% 的企业 OFDI 为零；非零值分布高度右偏；部分零值是企业”不想投资”，部分是”没有资格 / 能力投资”；有企业固定效应和年份固定效应</li>
+<li>推荐 2-3 个候选模型，说明各自的适用条件和潜在问题</li>
+<li>告诉我应该做哪些诊断检验来最终确定模型选择</li>
+</ol>
+<p>请用中文回答，不需要公式推导。</p>
+</div>
+</div>
+</section>
+<section id="结语用数据生成过程指导建模" class="level3" data-number="39.8.4">
+<h3 data-number="39.8.4" class="anchored" data-anchor-id="结语用数据生成过程指导建模"><span class="header-section-number">39.8.4</span> 结语：用数据生成过程指导建模</h3>
+<p>本章介绍的六类模型，虽然形式各异，但背后有一个共同的精神：<strong>建模应该从数据的生成过程出发，而不是套用最熟悉的工具</strong>。</p>
+<p>OLS 是极其强大的工具，但它的适用前提是因变量在总体上有连续、对称的分布。当因变量存在截断、选择性缺失、内生处理变量，或是计数型且有过度零值时，直接用 OLS 会产生结构性偏误，且不会随样本量增大而消失。</p>
+<p>理解这些模型，不需要记住所有的公式推导。真正重要的是掌握三点：<strong>这类数据为什么会让 OLS 失效？这个模型是怎么修复问题的？估计出来的系数该怎么解读？</strong> 有了这三点认识，再借助 AI 工具和计量软件，就能在实证研究中灵活运用这些方法。</p>
+<hr>
+</section>
+</section>
+<section id="延伸阅读" class="level2" data-number="39.9">
+<h2 data-number="39.9" class="anchored" data-anchor-id="延伸阅读"><span class="header-section-number">39.9</span> 延伸阅读</h2>
+<ul>
+<li>Tobin, J. (1958). Estimation of relationships for limited dependent variables. <em>Econometrica</em>, 26(1), 24–36.</li>
+<li>Heckman, J. J. (1979). Sample selection bias as a specification error. <em>Econometrica</em>, 47(1), 153–161.</li>
+<li>Santos Silva, J. M. C., &amp; Tenreyro, S. (2006). The log of gravity. <em>Review of Economics and Statistics</em>, 88(4), 641–658.</li>
+<li>Wooldridge, J. M. (2010). <em>Econometric Analysis of Cross Section and Panel Data</em> (2nd ed.), Chapters 16–19. MIT Press.</li>
+<li>Cameron, A. C., &amp; Trivedi, P. K. (2005). <em>Microeconometrics: Methods and Applications</em>, Chapters 16–17. Cambridge University Press.</li>
+<li>Correia, S., Guimarães, P., &amp; Zylkin, T. (2020). Fast Poisson estimation with high-dimensional fixed effects. <em>Stata Journal</em>, 20(1), 95–115.</li>
+</ul>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const disableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'prefetch';
+    }
+  }
+  const enableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'stylesheet';
+    }
+  }
+  const manageTransitions = (selector, allowTransitions) => {
+    const els = window.document.querySelectorAll(selector);
+    for (let i=0; i < els.length; i++) {
+      const el = els[i];
+      if (allowTransitions) {
+        el.classList.remove('notransition');
+      } else {
+        el.classList.add('notransition');
+      }
+    }
+  }
+  const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+    const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+    const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+    let newTheme = '';
+    if(darkModeDefault) {
+      newTheme = isAlternate ? baseTheme : alternateTheme;
+    } else {
+      newTheme = isAlternate ? alternateTheme : baseTheme;
+    }
+    const changeGiscusTheme = () => {
+      // From: https://github.com/giscus/giscus/issues/336
+      const sendMessage = (message) => {
+        const iframe = document.querySelector('iframe.giscus-frame');
+        if (!iframe) return;
+        iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+      }
+      sendMessage({
+        setConfig: {
+          theme: newTheme
+        }
+      });
+    }
+    const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+    if (isGiscussLoaded) {
+      changeGiscusTheme();
+    }
+  }
+  const toggleColorMode = (alternate) => {
+    // Switch the stylesheets
+    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+    manageTransitions('#quarto-margin-sidebar .nav-link', false);
+    if (alternate) {
+      enableStylesheet(alternateStylesheets);
+      for (const sheetNode of alternateStylesheets) {
+        if (sheetNode.id === "quarto-bootstrap") {
+          toggleBodyColorMode(sheetNode);
+        }
+      }
+    } else {
+      disableStylesheet(alternateStylesheets);
+      toggleBodyColorPrimary();
+    }
+    manageTransitions('#quarto-margin-sidebar .nav-link', true);
+    // Switch the toggles
+    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+    for (let i=0; i < toggles.length; i++) {
+      const toggle = toggles[i];
+      if (toggle) {
+        if (alternate) {
+          toggle.classList.add("alternate");     
+        } else {
+          toggle.classList.remove("alternate");
+        }
+      }
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455)
+    if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+      manageTransitions("body", false);
+      window.scrollTo(0, 1);
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        manageTransitions("body", true);
+      }, 40);  
+    }
+  }
+  const isFileUrl = () => { 
+    return window.location.protocol === 'file:';
+  }
+  const hasAlternateSentinel = () => {  
+    let styleSentinel = getColorSchemeSentinel();
+    if (styleSentinel !== null) {
+      return styleSentinel === "alternate";
+    } else {
+      return false;
+    }
+  }
+  const setStyleSentinel = (alternate) => {
+    const value = alternate ? "alternate" : "default";
+    if (!isFileUrl()) {
+      window.localStorage.setItem("quarto-color-scheme", value);
+    } else {
+      localAlternateSentinel = value;
+    }
+  }
+  const getColorSchemeSentinel = () => {
+    if (!isFileUrl()) {
+      const storageValue = window.localStorage.getItem("quarto-color-scheme");
+      return storageValue != null ? storageValue : localAlternateSentinel;
+    } else {
+      return localAlternateSentinel;
+    }
+  }
+  const darkModeDefault = false;
+  let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+  // Dark / light mode switch
+  window.quartoToggleColorScheme = () => {
+    // Read the current dark / light value 
+    let toAlternate = !hasAlternateSentinel();
+    toggleColorMode(toAlternate);
+    setStyleSentinel(toAlternate);
+    toggleGiscusIfUsed(toAlternate, darkModeDefault);
+  };
+  // Ensure there is a toggle, if there isn't float one in the top right
+  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+    const a = window.document.createElement('a');
+    a.classList.add('top-right');
+    a.classList.add('quarto-color-scheme-toggle');
+    a.href = "";
+    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+    const i = window.document.createElement("i");
+    i.classList.add('bi');
+    a.appendChild(i);
+    window.document.body.appendChild(a);
+  }
+  // Switch to dark mode if need be
+  if (hasAlternateSentinel()) {
+    toggleColorMode(true);
+  } else {
+    toggleColorMode(false);
+  }
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp("https:\/\/lianxhcn\.github\.io\/dsfin\/");
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+          // target, if specified
+          link.setAttribute("target", "_blank");
+          if (link.getAttribute("rel") === null) {
+            link.setAttribute("rel", "noopener");
+          }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../../Lecture/limit_dep_tobit-plan/limit_dep_models_codes.html" class="pagination-link" aria-label="附：Codes">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">38</span>&nbsp; <span class="chapter-title">附：Codes</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../../Lecture/limit_dep_models/limit_dep_models_codes.html" class="pagination-link" aria-label="附：Codes">
+        <span class="nav-page-text"><span class="chapter-number">40</span>&nbsp; <span class="chapter-title">附：Codes</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+      &nbsp;
+    </div>   
+    <div class="nav-footer-center">
+<p><a href="https://www.lianxh.cn">lianxh.cn</a></p>
+</div>
+    <div class="nav-footer-right">
+<p>Support: <a href="https://lianxhcn.github.io/quarto_book/">Quarto</a></p>
+</div>
+  </div>
+</footer>
+
+
+
+
+</body></html>

@@ -1,4 +1,7 @@
 
+Claude 讨论：[Link](https://claude.ai/share/4fe88bad-30ce-4ac9-864e-3d4584a7b371)
+
+
 
 - Nicholas M. Kiefer. Economics 620, Lecture 20: Generalized Method of
 Moment (GMM). Cornell University. Slides. [PDF](https://courses.cit.cornell.edu/econ620/Beamer_Lec20.pdf)

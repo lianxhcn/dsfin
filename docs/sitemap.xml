@@ -109,10 +109,6 @@
     <lastmod>2026-04-11T14:04:26.810Z</lastmod>
   </url>
   <url>
-    <loc>https://lianxhcn.github.io/dsfin/Lecture/reg_logit/probability_models.html</loc>
-    <lastmod>2026-04-21T10:15:04.733Z</lastmod>
-  </url>
-  <url>
     <loc>https://lianxhcn.github.io/dsfin/Lecture/panel_fe/panel_HDFE.html</loc>
     <lastmod>2026-04-08T17:58:10.989Z</lastmod>
   </url>
@@ -159,6 +155,26 @@
   <url>
     <loc>https://lianxhcn.github.io/dsfin/Lecture/limit_dep_logit/02_c_binary_case.html</loc>
     <lastmod>2026-04-15T19:28:24.348Z</lastmod>
+  </url>
+  <url>
+    <loc>https://lianxhcn.github.io/dsfin/Lecture/reg_logit/probability_models.html</loc>
+    <lastmod>2026-04-21T10:15:04.733Z</lastmod>
+  </url>
+  <url>
+    <loc>https://lianxhcn.github.io/dsfin/Lecture/limit_dep_tobit-plan/limit_dep_models_lec.html</loc>
+    <lastmod>2026-04-22T18:41:08.596Z</lastmod>
+  </url>
+  <url>
+    <loc>https://lianxhcn.github.io/dsfin/Lecture/limit_dep_tobit-plan/limit_dep_models_codes.html</loc>
+    <lastmod>2026-04-22T18:33:55.913Z</lastmod>
+  </url>
+  <url>
+    <loc>https://lianxhcn.github.io/dsfin/Lecture/limit_dep_models/limit_dep_models_lec.html</loc>
+    <lastmod>2026-04-22T18:44:28.230Z</lastmod>
+  </url>
+  <url>
+    <loc>https://lianxhcn.github.io/dsfin/Lecture/limit_dep_models/limit_dep_models_codes.html</loc>
+    <lastmod>2026-04-22T18:22:44.595Z</lastmod>
   </url>
   <url>
     <loc>https://lianxhcn.github.io/dsfin/Lecture/method_MLE/MLE_lec.html</loc>

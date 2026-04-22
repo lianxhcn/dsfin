@@ -80,7 +80,6 @@ book:
     - part: "**线性回归分析**"
       chapters:
         - Lecture/reg_ols/ols_visual_3D.ipynb
-        - Lecture/reg_logit/probability_models.qmd
 
     - part: "**面板模型：固定效应**"
       chapters: 
@@ -103,6 +102,10 @@ book:
         - Lecture/limit_dep_logit/02_b_binary_codes.ipynb
         - Lecture/limit_dep_logit/02_c_binary_case.ipynb
         - Lecture/reg_logit/probability_models.qmd
+        - Lecture/limit_dep_tobit-plan/limit_dep_models_lec.qmd
+        - Lecture/limit_dep_tobit-plan/limit_dep_models_codes.ipynb
+        - Lecture/limit_dep_models/limit_dep_models_lec.qmd
+        - Lecture/limit_dep_models/limit_dep_models_codes.ipynb
 
     - part: "**估计方法**"
       chapters:
