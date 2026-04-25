@@ -1,0 +1,1859 @@
+\chapter{Lasso}
+
+ % 会在minitoc显示到sections
+  %todo 创建本章子目录
+
+%todo 参考资料
+%todo Book
+% https://web.stanford.edu/~hastie/StatLearnSparsity_files/SLS.pdf
+
+%todo 这篇 blog 的思路很好
+% 机器学习之正则化（Regularization） https://www.cnblogs.com/jianxinzhou/p/4083921.html
+
+%todo 补充内容 2022/3/18 9:36
+%ocmt --  Implements "A One Covariate at a Time, Multiple Testing Approach to Variable Selection in High-Dimensional Linear Regression Models" based on Chudik, Kapetanios and Pesaran (2018)
+% rep: https://www.econometricsociety.org/publications/econometrica/2018/07/01/one-covariate-time-multiple-testing-approach-variable-selection
+% Extension: http://qed.econ.queensu.ca/jae/2021-v36.6/nunez-otero/
+
+%todo L2正则化为什么能够使得模型更简单 https://zhuanlan.zhihu.com/p/140502600
+
+%todo l1 相比于 l2 为什么容易获得稀疏解？https://www.zhihu.com/question/37096933
+
+%todo https://zhuanlan.zhihu.com/p/25707761
+
+%todo Hastie 主页 https://web.stanford.edu/~hastie/lectures.htm
+
+%todo 提纲
+
+%  - 过拟合问题
+%
+%    - 研究目的：预测、解释和因果推断，此处以预测为主要目标 
+%               他们之间的关系是互相交叉的。比如，在因果推断中，我们经常采用 Rubin 的反事实框架建模，此时构造反事实的过程其实际就是「预测缺失值」的过程。
+%               又比如，在合成控制法中，我们需要寻找构造「合成控制组」的权重，而出发点就是要求在干预前能够用控制组个体的加权平均来拟合实验组的变化轨迹，
+%               此时，选中最优权重的过程其实也是一个预测的过程。 
+%    - 解决办法：变量筛选 正则化 (惩罚回归)
+%               在筛选调节参数 (如 λ) 的过程中，往往将样本外预测能力内化于筛选过程，比如 K折交叉验证 
+%
+%  - 惩罚回归的框架
+%
+%    - 框架：目标函数  min Loss + Penalization
+%
+%    - Loss function 
+%
+%      - 以 OLS 为例进行说明 参见  [简单而强大的线性回归详解](https://zhuanlan.zhihu.com/p/374654691)，介绍了从 OLS 和 MLE 角度对损失函数的解读
+%
+%      - 进而以 Probit 模型 (MLE) 进行扩展说明
+%    - 正则化 (惩罚)
+%      regularization的英英释义之一是: the condition of having been made regular (or more regular), 这里，可以理解为，把"不正常的"模型向"正常的"(或"更正常的")状态调整。   
+%
+%  - 岭回归
+%
+%  - Lasso 回归
+%
+%  - 弹性网
+%
+%  - Lasso IV  https://statalasso.github.io/docs/pdslasso/pdslasso_models/ 
+%  - fused lasso
+%  - 其他 Lasso 模型      
+%    - quantile lasso  R package RiskAnalytics
+%todo 基本概念
+%  - 稀疏性
+%  - 范数和惩罚项
+
+%todo Lasso—原理及最优解 https://zhuanlan.zhihu.com/p/116869931
+
+%todo st0400 from http://www.stata-journal.com/software/sj15-3
+%    SJ15-3 st0400. Penalized logistic regression 
+
+%net describe st0400_1, from(http://www.stata-journal.com/software/sj17-3)
+
+%SJ-20-1 st0594  . . Model selection and prediction with regularized regression
+% A. Ahrens, C. B. Hansen, and M. E. Schaffer,         (help cvlassologit, cvlasso, lasso2, lassologit, lassopack, rlassologit, rlasso if installed) SJ 20(1):176--235
+
+\section{简介}\label{sec:lassointro}
+
+\subsubsection{何谓 Lasso ?}
+Lasso 是“Least Absolute Shrinkage and Selection Operator” 的简称，由 Tibshirani (1996) 提出，主要用于预测 (prediction) 和模型筛选 (model selection)。其核心思想是在传统的回归分析中施加约束条件 (惩罚项)，以便滤除那些不重要变量 (使其系数强制为零)，最终筛选出相对精简的模型。若配合交叉验证等手段来选择参数，则 Lasso 得到的模型具有较强的样本外预测能力 (亦称“泛化能力”)。
+以 Lasso 为首的一系列方法被通称为“惩罚回归” (Penalized Regressions)。
+
+Lasso 的一个主要用途是解决「高维数据问题」， (note: % Belloni et al. (2014a) 对此类问题进行了梳理，并提供了几篇论文的重现资料。)
+主要包括两种情形：
+%\begin{itemize}
+%\item 
+
+其一，数据本身便包含很多个变量，以至于变量的个数可能超过样本数，如家庭金融数据库、劳动力动态调查数据库中都会包括数百个反映个体特征的变量。
+%\item 
+
+其二，虽然样本中的基础变量个数不多，但由于模型的具体形式未知，我们需要将变量的各种转换、高阶项、交叉项等 (称为衍生变量) 放入模型，并在由原变量和衍生变量构成的潜在模型集合中选出最优模型。当衍生变量数目众多，甚至超过样本数时，传统估计方法不再适用。此时，一个更为重要的目的是变量筛选，即从众多变量中筛选出有用的变量，剔除无用变量。Hsiao et al. (2012) 以及 Hisao and Zhou (2019) 提出的「回归控制法 (RCM)」便是一个典型的实例。为了获取最佳的样本外预测能力，可以采用交叉验证法测试现有的 $k$ 个解释变量的各种组合，确定最佳的模型设定形式。 
+%\end{itemize}
+
+在经济金融领域，Lasso 主要应用于第二种情形。以因果推断中最为常用的「反事实框架」为例，我们需要估计 (预测) 出实验个体在假想其不受政策干预的情况下的反事实结果 $y_0$，才能估计出政策效果 $\tau = y_1 - y_0$。借助 Lasso，我们可以筛选出具有最佳样本外预测能力的模型，从而得到反事实结果 $y_0$ 的估计值 $\widehat{y}_0$，进而得到 $\widehat{\tau}$。 (note: % 外部命令 scul 便采用 Lasso 方法估计了 Abadie et al. (2003, 2010) 提出的合成控制法。)
+又如，Lasso 也可以借助其变量筛选功能克服遗漏变量问题和弱工具变量问题，从而引申出了 Lasso-IV，双重机器学习 (DML) 等方法，详情参见 \ref{sec:lasso-IV} 和 \ref{sec:lasso-DML} 小节。 
+
+\subsubsection{几个基本概念}
+%有几个基本概念需要预先说明一下。
+
+其一，「数据挖掘 (data mining)」。其目的在于合理控制混杂因素的影响，以便对模型参数做出尽可能准确的统计推断。此时，应以基于样本外预测能力来评判模型优劣，而不是简单地关注样本内拟合情况 (这会导致过拟合和错误的统计推断)。惩罚回归符合奥卡姆剃刀原理 (Occam's razor)：在所有备选模型中，同等条件下，应优先选择尽可能简单的模型。
+
+其二，「稀疏性假设」。多数情况下，虽然数据中有很多变量，但真正有用 (有助于样本外预测) 的变量却非常有限。这就是所谓的稀疏性，即模型中具有非零系数的变量只占很小的比例。我们的任务就是通过各种方法找出这些「有用」的变量。这个过程也称为「降维」。 (note: % 例如，在 Abadie et al. (2010) 研究加州禁烟政策的案例中，他们用 38 个在样本期内没有实施过禁烟政策的州作为实验个体 (加州) 的潜在控制对象，并利用这些州的加权平均虚构出一个与真实加州颇为相似的「合成加州」，进而用「加州」与「合成加州」的人均香烟消费量之差来衡量政策效果。事实上，最终只有 5 个州具有非零权重，换言之，只需用这 5 个州的信息就可以很好地预测加州的香烟消费量。)
+对于高维数据，通常假设其满足稀疏性假设。更为宽松的是「近似稀疏性假设\label{page:稀疏性假设}」：部分 $\beta_{j}$ 系数近似于零 (不一定等于零)，并且近似误差足够“小”。
+%We can also use the weaker assumption of approximate sparsity: some of the $\beta_{j}$ coefficients are well-approximated by zero, and the approximation error is sufficiently 'small'.
+
+
+
+其三，「正则化」和「惩罚回归」。所谓正则化，按照英文单词 regularization 的字面意思是“the condition of having been made regular (or more regular)”，也就说把“不正常的”模型向“正常的”或“比较正常的”状态调整。“不正常”的典型表现就是当模型中的变量高度共线性或 $p>n$ 时，$\X'\X$ 呈现病态 (如不可逆)，致使 OLS 估计很不稳定。修正的基本思路是对 OLS 的系数施加约束，使其估计结果趋于稳定，以便预测和外推。施加约束的过程可以视为对原有估计量的惩罚，这也是把 Lasso 回归和岭回归等统称为「惩罚回归 (penalized regression)」的原因。惩罚回归的结果通常都是有偏估计，这是我们为了降低估计的方差 (提高估计的准确性) 而必须付出的代价。  
+
+简言之，当模型中的参数 (远) 大于样本数时 ($p>n$)，最小二乘估计量 $\widehat{\beta}_{\text {ols }}$ 没有唯一解。对于 $p<n$ 但解释变量很多且存在严重共线性时，$\widehat{\beta}_{\text {ols }}$ 会很不稳定。此时，需要转向 OLS 以外的估计方法，如本章将要介绍的岭回归、Lasso 回归、弹性网、Lasso-IV 等模型。 
+
+Lasso 的过程有点类似于捞鱼：网眼太小，虽然看似收获颇丰，但往往以小鱼小虾为主；%泥沙俱下，难获大鱼；
+网眼太大，又常致一无所获。%为此，需要经过经验积累和在不同的环境中摸爬滚打，确定一个最佳的网眼尺寸。
+
+
+%\hline 
+
+%todo HTW2015
+
+介绍 Lasso 的书籍和综述文章很多，本章内容主要参考了 Hastie et al. (2015) 和 Hansen (2021)。其它推荐阅读的资料还包括：Athey and Imbens (2019), Ahrens et al. (2020)，Belloni et al. (2014a)，Cerulli (2021b)，以及 Fan et al. (2021) 等。 (note: % Ahrens, A., C. B. Hansen, and M. E. Schaffer. 2020. lassopack: Model selection and prediction with regularized regression in Stata. Stata Journal 20: 176–235. PDF, PPT Athey, S., \& Imbens, G. W. (2019). Machine learning methods that economists should know about. Annual Review of Economics, 11, 685-725. Link, PDF Belloni, A., V. Chernozhukov, and C. B. Hansen. 2014a. High-dimensional methods and inference on structural and treatment effects. Journal of Economic Perspectives 28: 29–50. Link, PDF, Stata-codes Cerulli, G., 2021b. "Machine learning using Stata/Python," 2021 Stata Conference 25, Stata Users Group. PDF Fan, Jianqing, Runze Li, Cun-Hui Zhang, and Hui Zou. 2020. Statistical Foundations of Data Science. 1st Edition, Chapman and Hall/CRC. Link, PDF Hansen B E . 2021. Econometrics. Princeton University Press. Data and Contents, PDF Hastie, T. J., R. J. Tibshirani, and M. Wainwright. 2015. Statistical Learning with Sparsity: The Lasso and Generalizations. Boca Raton, FL: CRC Press. Link. PDF %)
+
+
+\section{预备知识}
+
+\subsection{预测偏差和方差的权衡}
+
+%todo Hagmann-2003-Introduction to nonparametric econometrics , p.12 讲的很清楚
+%
+
+
+\subsection{惩罚回归的目标函数}\label{sec:Lasso-goal-function}
+
+如前文所述，提高模型复杂度可以提高样本内拟合度，但很可能出现过拟合，表现为模型的样本外预测 (泛化) 能力有限。若将“预测不准确”视为一种风险，则从模型设定的角度来看，其实包含两种风险：经验风险和结构风险。
+
+比如，我们想建立一个模型来预测个体的就医次数。假设收集了 10,000 笔观察值，其中包含每个人过去一年的就医次数，$y_i = \{0,1,\cdots,18\}$，以及一些反映个人特征的变量，$\mathbf{x} = \{x_{1i},x_{2i},\cdots,x_{ki}\}$，如性别、年龄、职业、家庭收入、是否有高血压/高血糖/高血脂等。
+
+用以描述 $y$ 和 $\mathbf{x}$ 关系的备选模型很多，如简单线性回归模型、Poisson 模型、负二项回归模型等，区别在于对 $y_i$ 的分布特征的假设。 (note: % 例如，在简单线性回归模型中，通常假设 $y_i$ 服从正态分布；而在 Poisson 模型中则假设 $y_i$ 服从泊松分布。)
+显然，不同的模型设定会有不同的预测能力，这就是所谓的「经验风险」，它本质上是选择何种模型的问题。
+模型选定后，还需要考虑在模型中包含多少个参数的问题，这就是「结构风险」。 (note: % 例如，选定简单线性回归模型后，尚需考虑是否在模型中加入年龄的平方项，或年龄和性别以及职业的交叉项等模型设定问题。在此过程中，模型参数在增加，意味着结构风险在增大。)显然，二者经常会纠缠在一起。
+
+归结起来，所谓「结构风险 + 经验风险」，是给定样本量的情况下，在模型的拟合能力和复杂度之间进行平衡：对于拟合效果相近的模型，我们偏好复杂度低的；对于复杂度相同的模型，我们偏好拟合效果好的。
+因此，让损失函数 (Loss) 最小化显然不是最终目标，我们需要增加一个描述模型复杂度的惩罚项。因此，目标函数为：
+\begin{equation}\label{eq:Lasso-08}
+	\text{Loss}+\lambda \Omega(f)
+\end{equation}
+其中，$\Omega(f)$ 称为「正则化项」，$\lambda$ 为调节参数。
+从损失函数的构造角度来看，所谓正则化项，描述的其实是模型的复杂度，它越高，过拟合的风险也就越大，它主要衡量结构风险。看起来，整个思路非常类似于从 $R^2$ 到 $\bar{R}^2$ 的演变，也类似于 AIC 和 BIC 等信息准则的构造过程。 (note: % AIC 和 BIC 都试图在「拟合程度」和「模型复杂度」之间进行权衡。信息准则的通用表达式为： $$ IC = -2\ln(\mathrm{likelihood}) + c(n, K) $$ 其中，$n$ 和 $K$ 分别为样本数和参数个数。模型的拟合程度用负数项 $-2\ln(\mathrm{likelihood})$ 来衡量，值越小越好；而模型复杂度则用取值为正数的惩罚项 $c(n, K)$ 来衡量。不同信息准则的差别在于惩罚力度不同。例如，对于 $\mathrm{AlC}$ 准则，$c=2 K$；而对于 $\mathrm{BIC}$ 准则，$c=K \log (n)$。详情参见第 \ref{sec:lasso-lambda-ic} 小节。)
+
+下面介绍的各类惩罚回归模型的差别就在于 $\Omega(f)$ 的 Loss 的设定，以及二者如何权衡——取决于调节参数 $\lambda$。
+
+
+\section{Lasso 回归}
+
+%todo https://zhuanlan.zhihu.com/p/42122611?ivk_sa=1024320u
+%从英文的字面意思，Lasso 的字面意思是“（套捕马、牛等用的）套索”。统计学中的Lasso跟套马索没有任何关系，它只是个缩写而已，全称是“The Least Absolute Shrinkage and Selection Operator”，于1996年由Tibshrani提出。
+%这篇发表于著名统计学期刊的文章没有一个证明。有关Lasso理论性质的证明在之后被逐渐建立起来，感兴趣的读者可以阅读：“On Model Selection Consistency of Lasso”，文中给出了一个几乎充分且必要的条件，叫做“不可表示条件”。该条件限制了重要变量（也就是系数不为0的变量）与其他变量的相关关系。
+
+\subsection{模型设定} 
+
+给定一组包含 $N$ 个观察值的样本 $\left\{\left(x_{i}, y_{i}\right)\right\}_{i=1}^{N}$，Lasso 通过极小化如下目标函数来求解参数  $(\widehat{\beta}_{0}, \widehat{\beta})$ 
+\begin{equation}\label{eq:lasso-HTW2015-2-3}%HTW2015, 
+	\begin{gathered}
+%\underset{\beta_{0}, \beta}{\operatorname{minimize}}
+\underset{\beta_{0}, \beta}{\operatorname{min}}\,
+	\left\{\frac{1}{2 N} \sum_{i=1}^{N}\left(y_{i}-\beta_{0}-\sum_{j=1}^{p} x_{i j} \beta_{j}\right)^{2}\right\} \\
+	\text { subject to } \,\, \sum_{j=1}^{p}\left|\beta_{j}\right| \leq \tau
+	\end{gathered}
+\end{equation}
+此处，约束条件 $\sum_{j=1}^{p}\left|\beta_{j}\right| \leq \tau$ 可以用 $\ell_{1}$ 范数表示为：$\|\betaz\|_{1} \leq \tau$。(\ref{eq:lasso-HTW2015-2-3}) 尚可用矩阵方式表示为：
+\begin{equation}\label{eq:lasso-HTW2015-2-4}
+\begin{gathered}
+%\underset{\beta_{0}, \beta}{\operatorname{minimize}}
+\underset{\beta_{0}, \beta}{\operatorname{min}}\,
+\left\{\frac{1}{2 N}\left\|\mathbf{y}-\beta_{0} \mathbf{1}-\mathbf{X} \beta\right\|_{2}^{2}\right\} \\
+\text { subject to }\,\,\|\betaz\|_{1} \leq \tau,
+\end{gathered}
+\end{equation}
+%其中：$\mathbf{y}=\left(y_{1}, \ldots, y_{N}\right)$ denote the $N$-vector of responses, and $\mathbf{X}$ be an $N \times p$ matrix with $x_{i} \in \mathbb{R}^{p}$ in its $i^{t h}$ row, then the optimization problem (2.3) can be re-expressed as
+%where 1 is the vector of $N$ ones, and $\|\cdot\|_{2}$ denotes the usual Euclidean norm on vectors. The bound $t$ is a kind of "budget" it limits the sum of the absolute values of the parameter estimates. Since a shrunken parameter estimate corresponds to a more heavily-constrained model, this budget limits how well we can fit the data. It must be specified by an external procedure such as cross-validation, which we discuss later in the chapter.
+
+需要注意的是，由于 Lasso 的估计结果与变量的量纲有关，在估计前需要对所有解释变量进行标准化处理，即每个变量都需要减去其样本均值并除以样本标准差，使标准化后的变量均值为 0，标准差为 1。 %$x_k^s = (x_k-)$ 
+%Typically, we first standardize the predictors $\mathbf{X}$ so that each column is centered $\left(\frac{1}{N} \sum_{i=1}^{N} x_{i j}=0\right)$ and has unit variance $\left(\frac{1}{N} \sum_{i=1}^{N} x_{i j}^{2}=1\right)$. 
+%Without standardization, the lasso solutions would depend on the units (e.g., feet versus meters) used to measure the predictors. On the other hand, we typically would not standardize if the features were measured in-the same units. 
+此外，我们也会对 $y_{i}$ 进行去均值处理，以保证 $\frac{1}{N} \sum_{i=1}^{N} y_{i}=0$，此时，Lasso 最优化过程中就无需再加入常数项了。
+%For convenience, we also assume that the outcome values $y_{i}$ have been centered, meaning that $\frac{1}{N} \sum_{i=1}^{N} y_{i}=0 .$ These centering conditions are convenient, since they mean that we can omit the intercept term $\beta_{0}$ in the lasso optimization. 
+基于中心化后的数据得到最优 Lasso 估计值 $\widehat{\beta}$ 后，可以恢复原数据的参数估计：$\widehat{\beta}$ 不变，常数项 的估计值 $\widehat{\beta}_{0}$ 如下： (note: % 需要说明的是，该式只适用于以残差平方和为损失函数的线性回归。对于 Lasso-logit 等模型则不适用。)
+  %This is typically only true for linear regression with squared-error loss; it's not true, for example, for lasso logistic regression.
+%Given an optimal lasso solution $\widehat{\beta}$ on the centered data, we can recover the optimal solutions for the uncentered data: $\widehat{\beta}$ is the same, and the intercept $\widehat{\beta}_{0}$ is given by
+$$
+\widehat{\beta}_{0}=\bar{y}-\sum_{j=1}^{p} \bar{x}_{j} \widehat{\beta}_{j}
+$$
+其中，$\bar{y}$ 和 $\left\{\bar{x}_{j}\right\}_{1}^{p}$ 为原变量的样本均值。因此，后文中我们会略去常数项 $\beta_{0}$。
+
+将 (\ref{eq:lasso-HTW2015-2-4}) 式写成如下拉格朗日 (Lagrangian) 形式更易于求解：
+\begin{equation}\label{eq:lasso-HTW2015-2-5-A}
+%\underset{\beta \in \mathbb{R}^{p}}{\operatorname{minimize}}
+\underset{\beta}{\operatorname{min}}\,
+\left\{
+    \frac{1}{2 N}\|\mathbf{y}-\mathbf{X} \beta\|_{2}^{2}
+   +\lambda\left(\sum_{j=1}^{p}\left|\beta_{j}\right|-\tau\right)
+\right\}
+\end{equation}
+其中，$\lambda \geq 0$，通常称为“调节参数”。由于 $\lambda$ 与 $\tau$ 的乘积 $\lambda \tau$ 是一个常数，因此，(\ref{eq:lasso-HTW2015-2-5-A}) 与 (\ref{eq:lasso-HTW2015-2-5}) 的极小化问题是等价的， (note: % 此性质称为拉格朗日对偶性 (duality)。)
+\begin{equation}\label{eq:lasso-HTW2015-2-5}
+%\underset{\beta \in \mathbb{R}^{p}}{\operatorname{minimize}}
+\underset{\beta}{\operatorname{min}}\,
+\left\{\frac{1}{2 N}\|\mathbf{y}-\mathbf{X} \beta\|_{2}^{2}+\lambda\|\betaz\|_{1}\right\},
+\end{equation}
+可以证明，约束问题 (\ref{eq:lasso-HTW2015-2-3}) 和拉格朗日形式 (\ref{eq:lasso-HTW2015-2-5}) 之间存在一一对应的关系：对于约束集 $\|\beta\|_{1} \leq \tau$ 中的每一个 $\tau$ 值，都存在与之唯一对应的 $\lambda$ 值，二者在各自的约束场景下产生的结果完全相同。
+由于 $\lambda \tau$ 为常数，$\lambda$ 和 $\tau$ 产生的压缩作用是相反的：$\tau$ 越小压缩作用越强；至于 $\lambda$，则是值越大，压缩作用越强。
+
+
+
+%We note that in many descriptions of the lasso, the factor $1 / 2 N$ appearing in (2.3) and (2.5) is replaced by $1 / 2$ or simply 1. Although this makes no difference in (2.3), and corresponds to a simple reparametrization of $\lambda$ in (2.5), this kind of standardization makes $\lambda$ values comparable for different sample sizes (useful for cross-validation).
+需要注意的是，在很多介绍 Lasso 的文献中，(\ref{eq:lasso-HTW2015-2-3}) 和 (\ref{eq:lasso-HTW2015-2-5}) 中的因子 $1/2N$ 常常被简化为 $1/2$，甚至是 1。这对于求解 (\ref{eq:lasso-HTW2015-2-3}) 式没有任何影响，对于 (\ref{eq:lasso-HTW2015-2-5}) 式问题也不大，我们只需对参数 $\lambda$ 做一些简单的变换即可 (比如变成 $\lambda/2$)。然而，当使用交叉验证 (CV) 等方法在多个大小不同的样本之间进行比较时，采用 $1/2N$ 作为标准化因子有助于保证可比性。 
+
+\subsection{Lasso 的直观解释}
+
+Lasso 的变量筛选功能可以通过图 \ref{Fig-Lasso-Lassopath-lian}，图 \ref{Fig:Lasso-Ridge-regular-stata-a} 和图 \ref{Fig-Lasso-3D-HTW2015front} 进行直观解释。
+%对偶问题的
+(\ref{eq:lasso-HTW2015-2-3}) 式的约束集 $\left\{\|\beta\|_{1} \leq \tau\right\}$ 是一个类似于多面钻石的交叉多面体 (见图 \ref{Fig-Lasso-3D-HTW2015front})。 二维情形下的最小化问题如图 \ref{Fig-Lasso-Lassopath-lian} 所示。椭圆形是 $\{\beta_1,\beta_2\}$ 在不同取值组合时的平方误差对应的等高线，OLS 估计处于该椭圆集的中心点上 (此时 $\beta_1$ 和 $\beta_2$ 均不为零)。 (note: %todo 该图片随后删除，放入 OLS 那一章，在这里交叉引用 图 \ref{fig:Lasso-ols-RSS} 呈现了两变量情形下，OLS 的 RSS 随参数变动的三维图，有助于理解图 \ref{Fig-Lasso-Lassopath-lian}。)
+约束集 $\left\{\|\beta\|_{1} \leq \tau\right\}$ 是带阴影的正方形，它与椭圆的切点便是 Lasso 估计量。
+
+此外，图中的虚线显示了随着约束条件 ($\tau$) 的变动，Lasso 估计值的变动轨迹。$\lambda$ 的取值决定着正方形约束集的大小。显然，当 $\tau=0$ 时 (此时 $\lambda$ 无穷大)，所有的参数都被收缩到圆点处，即 $\beta_1=\beta_2=0$；而当 $\tau \to \infty$ 时 ($\lambda=0$)，则相当于没有对 OLS 估计施加任何约束，此时 Lasso 估计与 OLS 估计等价。因此，Lasso 估计也可以视为 OLS 估计的一般化。 
+
+{ \def\FigName{Fig-Lasso-Lassopath-lian}
+\begin{figure}
+	\centering
+	\includegraphics[width=0.7\textwidth]{\FigName.png} 
+	\caption{Lasso 求解过程图示 \\
+		Source: Hansen (2021, Fig 29.1), 采用 Tikz 宏包重新绘制} %caption是图片的标题
+	\label{\FigName} 
+\end{figure} }
+
+
+      %todo ================注释-------over-----
+
+
+%\def\subFigWide{5.5cm} %定义子图宽度
+\def\subFigWide{.65\textwidth}
+\begin{figure}[htb!]  %[htbp]
+\centering
+\subfigure[RSS ]{
+\includegraphics[width=\subFigWide]{Figs/Fig-OLS-RSS-3D-Hansen2021-Fig3-2-b}
+%\caption{fig1}
+}
+\quad
+\subfigure[RSS 等高线]{
+\includegraphics[width=\subFigWide]{Figs/Fig-OLS-RSS-3D-Hansen2021-Fig3-2-c}
+}
+\caption{OLS 回归的 RSS 及等高线 (Source: Hansen (2021, Fig 3-2))}
+\label{fig:Lasso-ols-RSS}
+\end{figure}
+%https://blog.csdn.net/a6822342/article/details/80533135
+
+
+
+%\def\subFigWide{5.5cm} %定义子图宽度
+\def\subFigWide{1\textwidth}
+\begin{figure}[htb!]  %[htbp]
+\centering
+\subfigure[Lasso]{
+\includegraphics[width=\subFigWide]{Figs/lasso-stata-regular01.png}
+\label{Fig:Lasso-Ridge-regular-stata-a}
+}
+\quad
+\subfigure[Ridge]{
+\includegraphics[width=\subFigWide]{Figs/lasso-stata-regular02.png}
+\label{Fig:Lasso-Ridge-regular-stata-b}
+}
+\caption{Lasso 和 Ridge 约束集对比 (Stata Codes)}
+\label{Fig:Lasso-Ridge-regular-stata}
+\end{figure}
+%https://blog.csdn.net/a6822342/article/details/80533135
+
+
+      %todo ================注释-------over-----
+
+
+\begin{figure}
+	\centering
+	\includegraphics[width=.8\textwidth]{Fig-Lasso-3D-HTW2015front.png}
+	\caption{3D 视角下的 Lasso} %caption是图片的标题
+	\label{Fig-Lasso-3D-HTW2015front} 
+\end{figure}
+
+%todo HTW2015 p.12
+%of squares has elliptical contours, centered at the full least-squares estimates. The constraint region for ridge regression is the disk $\beta_{1}^{2}+\beta_{2}^{2} \leq t^{2}$, while that for lasso is the diamond $\left|\beta_{1}\right|+\left|\beta_{2}\right| \leq t$. Both methods find the first point where the elliptical contours hit the constraint region. Unlike the disk, the diamond has corners; if the solution occurs at a corner, then it has one parameter $\beta_{j}$ equal to zero. When $p>2$, the diamond becomes a rhomboid, and has many corners, flat edges, and faces; there are many more opportunities for the estimated parameters to be zero (see Figure $4.2$ on page 58 .)
+
+  %todo ======================注释掉了========  
+
+%todo 在此处插入图片
+
+%\begin{figure}
+%	\centering
+%	\includegraphics[width=.8\textwidth]{Fig-Lasso-Ridge-Lasso-beta.png} 
+%	\caption{Transformations of least squares estimates by Selection, Ridge, and Lasso (Source: Hansen (2021), Figure 29.4)} %caption是图片的标题
+%	\label{Fig-Lasso-Ridge-Lasso-beta} 
+%\end{figure}
+
+
+
+
+\subsection{估计}
+多数情况下，必须通过数值方法求解 Lasso，如最小角回归法 (LARS)，坐标下降法等，只有附加一些严格的假设条件，才能获得 Lasso 的解析解。 (note: % 参见 Lasso 的解法。 不过，目前有很多高效快捷的算法。一个重要的性质是，当 $\lambda>0$ 时，即使 $p>n$，Lasso 估计量也具有唯一解。 若变换 $\X$ 矩阵使所有解释变量都彼此正交，即 $\boldsymbol{X}^{\prime} \boldsymbol{X}=\boldsymbol{I}_{p}$，则 Lasso 存在解析解。此时只要给定调节参数 $\lambda$，只对 OLS 估计结果稍作调整即可得到 Lasso 估计。我们可以采用信息准则或交叉验证来确定最佳调节参数，留待第 \ref{sec:lasso-lambda} 小节详述。一般情况下，尤其是 $p>n$ 时，需采用数值方法求解。)
+
+\subsubsection{估计思路}
+Lasso 估计可以通过极小化如下目标函数得到：
+\begin{equation}\label{eq:lasso-HTW2015-2-5-B}
+\underset{\beta}{\operatorname{min}}
+\, \mathrm{RSS}_1\left(\betaz,\lambda\right) = 
+\left\{\frac{1}{2 N}
+\sum_{i=1}^{N}\left(y_i - \x_1\beta_1 \cdots - \x_p\beta_p \right)^2
+   + \lambda \sum_{j=1}^{p}\left|\beta_{j}\right|\right\},
+\end{equation}
+一阶条件为：
+\begin{equation}\label{eq:Lasso-foc-01}
+\frac{\partial{\mathrm{RSS}_1(\betaz,\lambda)}}{\partial{\beta_j}} = 
+\boldsymbol{X}_{j}^{\prime}(\y-\boldsymbol{X} \betaz)+\lambda \operatorname{sgn}\left(\beta_{j}\right)=0	
+\end{equation}
+其中，$\X = (\x_1,\x_2,\cdots,\x_k)$，$\betaz=(\beta_1,\beta_2,\cdots,\beta_p)'$。$\operatorname{sgn}()$ 为“符号函数”，用于记录变量 $z$ 的符号：
+$$
+    \operatorname{sgn}(z) =
+    \begin{cases}
+      -1 & z < 0\\
+      +1 & z > 0\\
+      \,\,0 & z = 0
+    \end{cases},
+$$
+
+\subsubsection{次导数}
+这里有必要做个停顿，介绍一下“次导数”，它是求解 Lasso 过程中的一个重要概念。我们知道，虽然 $f(x)=|x|$ 是连续函数，但它在 $x=0$ 处不可导。引入次导数概念便是为了界定这类函数在某些特定点上的导数。 (note: % 在分位数 (quantile regression) 中，也需要利用次导数的概念。) 
+
+图 (\ref{Fig:Lasso-Subgradient-01}) 的左图是常规意义的连续可导函数，右图是上述 $\ell_{1}$ 范数，即 $f(x)=|x|$ 的情形。在右图最低点处 ($x=0$)，如果可以找到一条直线，使之要么与 $f(x)$ 的图像 (黑色线) 重合，要么在它的下方 (图中那些蓝色和红色的直线)，则称该直线的斜率为 $f(x)$ 在 $x=0$ 的次导数。因此，$f(x)=|x|$ 在 $x=0$ 处的次导数不再是一个特定的数值，而是一个非空闭区间：$[-1,+1]$，取值范围取决于 $f(x)$ 在 $x=0$ 左侧和右侧的偏导数。因此，次导数通常以集合的形式来表示，如  $\partial f(x) = \{\nabla f(x)\}$。同时，在 $x=0$ 两侧，都满足 $f(x) \geq f(0)$。 (note: % 有兴趣的读者可以自行绘制 $y=|3x|$ 的次导数图形。)
+
+\begin{figure}
+	\centering
+\begin{center}
+  \begin{tikzpicture}
+    \draw [->] (-1.5, -0.5) -- (1.5, -0.5);
+    \draw (-1, 1.5) parabola bend (0, 0) (1, 1.5) node [above] { $f$};
+    \node [circle] at (0.4, 0.25) {};
+    \draw [mred] (-0.7, -1) -- (1.5, 1.5);
+
+    \begin{scope}[shift={(4, 0)}]
+      \draw [->] (-1.5, -0.5) -- (1.5, -0.5);
+      \draw [opacity=0.8, mred!0!mblue] (-1, 0.6) -- (1, -0.6);
+      \draw [opacity=0.8, mred!16!mblue] (-1, 0.4) -- (1, -0.4);
+      \draw [opacity=0.8, mred!33!mblue] (-1, 0.2) -- (1, -0.2);
+      \draw [opacity=0.8, mred!50!mblue] (-1, 0) -- (1, 0);
+      \draw [opacity=0.8, mred!67!mblue] (-1, -0.2) -- (1, 0.2);
+      \draw [opacity=0.8, mred!84!mblue] (-1, -0.4) -- (1, 0.4);
+      \draw [opacity=0.8, mred!100!mblue] (-1, -0.6) -- (1, 0.6);
+
+      \draw (-1, 1.5) -- (0, 0) -- (1, 1.5) node [above] { $f$};
+    \end{scope}
+  \end{tikzpicture}
+\end{center}
+	\caption{次导数} %caption是图片的标题
+	\label{Fig:Lasso-Subgradient-01} 
+\end{figure}
+
+基于上述介绍可知：
+$$
+\lambda \frac{\partial\left|\beta_{j}\right|}{\partial{\beta_{j}}}
+= \lambda \operatorname{sgn}\left(\beta_{j}\right)
+=  
+\begin{cases}-\lambda & \beta_{j}<0 \\ {[-\lambda, \lambda]} & \beta_{j}=0 \\ \lambda & \beta_{j}>0\end{cases}
+$$
+由此可以看出调节参数 $\lambda$ 的作用，它可以控制图 \ref{Fig:Lasso-Subgradient-01} 中右图的开合状态，从而决定 $\beta_j=0$ 时惩罚的力度。下文的 (\ref{eq:Lasso-foc-03}) 式中非常直观地体现了这个作用。
+
+\subsubsection{坐标下降法}
+坐标下降法是目前应用最广的 Lasso 求解方法，其基本思路是：虽然模型中有 $p$ 个未知参数，但我们不必一次性求解，可以逐步更新：
+\begin{enumerate}
+\item 给定一组初始值，假设为 $(\beta_1,\beta_2,\cdots,\beta_p) = (0,0,\cdots,0)$；
+\item 固定 $(\beta_2,\cdots,\beta_p)$，针对 $\beta_1$ 进行一元最优化，如最小化 (\ref{eq:Lasso-foc-03}) 式，搜索得到 $\beta_1$ 的估计值 $\beta_1^*$；
+\item 固定 $(\beta_1^*,\beta_3,\cdots,\beta_p)$，针对 $\beta_2$ 进行一元最优化，得到 $\beta_2$ 的估计值 $\beta_2^*$；
+\item 持续更新剩余参数，直至满足迭代终止条件。
+\end{enumerate}
+ 
+我们可以借助图 \ref{Fig:lasso-03} (求解极大值) 来理解上述过程。
+假设我们想求取目标函数 $y=f(\beta_1, \beta_2)$ 的极大值。从图中可以看出，$f(\cdot)$ 对 $\beta_1$ 和 $\beta_2$ 都是可微的的。我们的目标是如何快速达到山顶。具体步骤如下 (用红色表示每一轮的更新值)：
+\begin{enumerate}
+\renewcommand{\labelenumi}{(\theenumi)} %todo 编号样式 (1)
+\item 设定 $\beta_1 = 1.5$，沿着 $\beta_2$ 轴的方向爬坡，达到最高点，假设为 $\{\beta_1=1.5, {\color{red}{\beta_2=-0.1}}\}$；
+\item 设定 $\beta_2 = -0.1$，沿着 $\beta_1$ 轴的方向爬坡，达到最高点，假设为 $\{{\color{red}{\beta_1=0.5}}, \beta_2=-0.1\}$；
+\item 设定 $\beta_1=0.5$，沿着 $\beta_2$ 轴的方向爬坡，达到最高点，假设为 $\{\beta_1=0.5, {\color{red}{\beta_2=0}}\}$；
+\item 持续进行上述过程，直至两次迭代之间的 $y$ 值之差小于预定的收敛判据，如 $|y_j - y_{j-1}|<10^{-4}$。
+\end{enumerate}
+ 
+
+
+ 和图 \ref{Fig-Lasso-坐标下降法-01}  来理解上述过程。 
+
+\begin{figure}
+	\centering
+\begin{tikzpicture}
+\begin{axis}[
+%title={$x \exp(-x^2-y^2)$},
+xlabel=$\beta_1$, ylabel=$\beta_2$,
+%small ,
+]
+\addplot3 [
+surf ,
+domain=0:2,
+domain y=-1.3:1.3,
+] {exp(-x^2-y^2)*x};
+\end{axis}
+\end{tikzpicture}
+	\caption{坐标下降法图示} %caption是图片的标题
+	\label{Fig:lasso-03} 
+\end{figure}
+
+\begin{figure}
+	\centering
+	\includegraphics[width=1.0\textwidth]{Fig-Lasso-坐标下降法-01.png} 
+	\caption{坐标下降法原理} %caption是图片的标题
+	\label{Fig-Lasso-坐标下降法-01} 
+\end{figure}
+
+
+坐标下降法可理解将梯度下降法进行分治处理，但其又不依赖于梯度，因此可以广泛用于不可微的凸函数优化问题中。
+假设目标优化凸函数 $Q$ 为 $f\left(x_1, x_2, \ldots x_n\right)$ ，则坐标下降法在完整计算过程为:
+\begin{enumerate}
+\item 选取 $x_2, x_3, \ldots, x_{\mathrm{n}}$ 的初值;
+\item 在每轮迭代中：
+  \begin{enumerate} 
+  \item 固定 $x_2, x_3, \ldots, x_{\mathrm{n}}$ ，将 $x_1$ 作为自变量，采用导数或线性搜索等方法，搜索得到arg $\underset{x_1^*}{ } \min \mathrm{f}\left(x_1, x_2, \ldots x_{\mathrm{n}}\right)$
+  \item 将得到的 $x_1^*$ 代入凸函数，同时固定 $x_3, x_4, \ldots, x_{\mathrm{n}}$ ，搜索得到 $\underset{x_2^*}{\min}\  \mathrm{f}\left(x_1^*, x_2, \ldots x_{\mathrm{n}}\right)$
+  \item 将得到的 $x_1^*, x_2^*$ 代入凸函数，同时固定 $x_4, \ldots, x_{\mathrm{n}}$ ，搜索得到 $\underset{x_3^*}{ } \min ^2\left(x_1^*, x_2^*, \ldots x_{\mathrm{n}}\right)$
+  \item 得到本轮迭代后的一组值 $x_1^*, x_2^*, \ldots, x_{\mathrm{n}}^*$
+  \item 若满足迭代终止条件，则得到最优值，否则进入下一轮迭代。
+  \end{enumerate}  
+\end{enumerate}
+
+
+
+坐标下降法中每一轮完整的迭代过程相当于梯度下降法中沿着负梯度方向的一次迭代。其区别在于，梯度下降法明确知道其迭代的方向为 梯度下降方向 (即函数变化最大的方向)，而坐标下降法只能交替着在各坐标上进行最小化的尝试。
+
+那么如何保证坐标下降法的每轮迭代都能够使函数值有所下降，下面简要的给出证明: 因为在每轮迭代过程中，均是沿着各坐标轴方向的 最小化过程，所以有:
+$$
+\mathrm{f}\left(x_1, x_2, \ldots, x_{\mathrm{n}}\right) \geq \mathrm{f}\left(x_1^*, x_2, \ldots x_{\mathrm{n}}\right) \geq \mathrm{f}\left(x_1^*, x_2^*, \ldots x_{\mathrm{n}}\right) \geq \mathrm{f}\left(x_1^*, x_2^*, \ldots x_{\mathrm{n}}^*\right)
+$$
+这表明了，坐标下降法的每步迭代都是有效的。
+
+
+Lasso-Coordinate-descent-01
+{ 
+  \def\FigName{Lasso-Coordinate-descent-01} %图片label
+  \def\Caption{} %图片文字标题
+\begin{figure}
+	\centering
+	\includegraphics[width=0.8\textwidth]{\FigName.png} 
+	\caption{\Caption} %caption是图片的标题
+	\label{\FigName} 
+\end{figure} 
+}
+
+
+
+
+\begin{equation}
+\begin{aligned}
+x_0^{(k)} &=\underset{x_0}{\arg \min } f\left(x_0, x_1^{(k-1)}, x_2^{(k-1)}, \ldots, x_n^{(k-1)}\right) \\
+x_1^{(k)} &=\underset{x_1}{\arg \min } f\left(x_0^{(k)}, x_1, x_2^{(k-1)}, \ldots, x_n^{(k-1)}\right) \\
+x_2^{(k)} &=\underset{x_2}{\arg \min } f\left(x_0^{(k)}, x_1^{(k)}, x_2, \ldots, x_n^{(k-1)}\right) \\
+\ldots & \\
+x_n^{(k)} &=\underset{x_n}{\arg \min } f\left(x_0^{(k)}, x_1^{(k)}, x_2^{(k)}, \ldots, x_n\right)
+\end{aligned}
+\end{equation}
+
+\subsubsection{Lasso的解析解}
+若变换 $\X$ 矩阵使所有解释变量都彼此正交，即 $\boldsymbol{X}^{\prime} \boldsymbol{X}=\boldsymbol{I}_{p}$，则 Lasso 存在解析解。
+%此时只要给定调节参数 $\lambda$，只对 OLS 估计结果稍作调整即可得到 Lasso 估计。
+%当 $\boldsymbol{X}^{\prime} \boldsymbol{X}=\boldsymbol{I}_{p}$ 时，
+此时，(\ref{eq:Lasso-foc-01}) 式中的一阶条件可以简化为：
+$$
+  \widehat{\beta}_{\mathrm{Lasso}, j}-\widehat{\beta}_{\mathrm{ols}, j} 
+  +\lambda \operatorname{sgn}\left(\widehat{\beta}_{\mathrm{Lasso}, j}\right)=0
+$$
+由此解得 (这里省略了下标 $_j$)：
+\begin{equation}\label{eq:Lasso-foc-03}
+\widehat{\beta}_{\text {Lasso, } j}=\left\{
+\begin{array}{cc}
+\widehat{\beta}_{\text {OLS }}-\lambda & \widehat{\beta}_{\text {OLS}}>\lambda \\
+0 & |\widehat{\beta}_{\text {OLS}}| \leq \lambda \\ 
+\widehat{\beta}_{\text {OLS }}+\lambda & \widehat{\beta}_{\text {OLS }}<-\lambda
+\end{array}\right.	
+\end{equation}
+
+可见，Lasso 估计是 OLS 估计的连续函数。当 OLS 系数的绝对值小于 $\lambda$ 时，Lasso 估计值被强制设定为 0 (这就是所谓的变量筛选功能)，而其它系数则被统一向零收缩 $\lambda$ 个单位。
+
+若引入“取正部”算子 $(\cdot)_{+}$，则 (\ref{eq:Lasso-foc-03}) 式的分段函数可以用更为简洁的方式表示如下：
+\begin{equation}\label{eq:Lasso-12}
+	\widehat{\beta}_{\text {Lasso, } j} = \operatorname{sgn}(\widehat{\beta}_{\text {OLS }})(\widehat{\beta}_{\text {OLS }} - \lambda )_{+}
+\end{equation}
+其中，“取正部”算子 $(\cdot)_{+}$ 定义为：
+$$
+(z)_{+}=\left\{
+\begin{array}{cc}
+z & \text{if}\ z\geq 0 \\
+0 & \text{if}\ z<0 \\
+\end{array}\right.	
+$$
+我们甚至可以进一步将 Lasso 估计值表示为：
+\begin{equation}\label{eq:Lasso-13}
+	\widehat{\beta}_{\text {Lasso, } j} =
+	\mathcal{S}(\widehat{\beta}_{\text {OLS}}, \lambda)
+\end{equation}
+其中，$\mathcal{S}(\beta,\lambda):=\operatorname{sgn}(\beta)(\beta-\lambda)_{+}$ 是“软阈值算子” (soft-thresholding operator)，在机器学习中有广泛应用。%todo 参见 HTW2015, pp.58, eq.(4.4) 
+
+图 \ref{Fig-Lasso-hard-bestsub-ols-01} 直观地展示了 Lasso 和 OLS 回归系数之间的关系。
+
+\begin{figure}
+	\centering
+	\includegraphics[width=1\textwidth]{Fig-Lasso-hard-bestsub-ols-01.png} 
+	\caption{最优子集、Lasso 与 OLS 估计系数的关系} %caption是图片的标题
+	%Transformations of least squares estimates by best subset Selection, and Lasso (Source: Hansen (2021), Figure 29.4)
+	\label{Fig-Lasso-hard-bestsub-ols-01} 
+\end{figure}
+
+%套索估计在经济学中的应用正在增长。 Belloni, Chernozhukov 和 Hansen (2014) 使用三个应用来说明该方法：（1）在工具变量框架中征用权对房价的影响，（2）使用框架重新审视堕胎对犯罪的影响 Donohue 和 Levitt (2001)，(3) 使用 Acemoglu、Johnson 和 Robinson (2001) 的框架重新审视民主对增长的影响。 Mullainathan 和 Spiess（2017 年）使用特征来说明使用房价预测模型的机器学习。 Oster (2018) 使用家用扫描仪数据来衡量糖尿病诊断对食品购买的影响。
+
+
+%\newpage
+
+\section{岭回归 (Ridge Regression)}
+
+%为了更好地理解 Lasso 的变量筛选功能，我们也可以看看另一个资历更老的估计方法：岭回归。
+Lasso 采用 $\ell_{1}$ 范数来约束参数，而岭回归采用的是 $\ell_{2}$ 范数，其目标函数为：
+\begin{equation}\label{eq:Lasso-ridge-01}
+	\begin{gathered}
+	\underset{\beta_{0}, \beta}{\operatorname{minimize}}\left\{\frac{1}{2 N} \sum_{i=1}^{N}\left(y_{i}-\beta_{0}-\sum_{j=1}^{p} x_{i j} \beta_{j}\right)^{2}\right\} \\
+	\text { subject to }\,\, \sum_{j=1}^{p} \beta_{j}^{2} \leq \tau^{2}
+	\end{gathered} 
+\end{equation}
+其中，$\tau>0$ 是收缩参数，约束效果呈现于图 \ref{Fig:Lasso-Ridge-regular-stata-b} 及图 \ref{fig:Lasso-ridge-compare-b}。用矩阵表示如下 (类比于 (\ref{eq:lasso-HTW2015-2-5}) 式)： (note: % 注意，约束条件是 $\|\betaz\|_{2}^2$，而不是 $\|\betaz\|_{2}$，前者表示系数的平方和，而后者则表示系数的平方和再开根号 (参见第 \ref{sec:Lasso-norm} 小节))
+\begin{equation}\label{eq:Lasso-ridge-01a}
+%\underset{\beta \in \mathbb{R}^{p}}{\operatorname{minimize}}
+\underset{\beta}{\operatorname{min}}\,
+\left\{\frac{1}{2 N}\|\mathbf{y}-\mathbf{X} \beta\|_{2}^{2}+\lambda\|\betaz\|_{2}^2\right\},
+\end{equation}
+
+%      %todo ================注释-------over-----
+
+
+
+
+      %todo ================注释----岭回归图示---over-----
+
+岭回归主要有两个用途。Hoerl and Kennard (1970) 最初提出该模型是为应对回归分析中的高度共线性问题。时至今日，则主要用于对高维数据和不可逆问题的正则化。
+
+\subsection{岭回归如何降低共线性？}
+如前所述，当 $p$ 很大时，$\boldsymbol{X}^{\prime} \boldsymbol{X}$ 为病态矩阵，致使 OLS 估计在数值上很不可靠。此时，可以施加约束条件 $\sum_{j=1}^{p} \beta_{j}^{2} \leq \tau^{2}$ 予以改善。
+
+(\ref{eq:Lasso-ridge-01a}) 式的一阶条件为：
+$$
+-2 \boldsymbol{X}^{\prime}(\boldsymbol{\y}-\boldsymbol{X} \beta)+2 \lambda \beta=0
+$$
+可推导出岭回归的估计量 $\widehat{\beta}_{\text {ridge}}$ 为：
+\begin{equation}\label{eq:Lasso-21}
+	\widehat{\beta}_{\text {ridge}} =\left(\boldsymbol{X}^{\prime} \boldsymbol{X}+\lambda \boldsymbol{I}_{p}\right)^{-1} \boldsymbol{X}^{\prime} \boldsymbol{\y}
+\end{equation}
+该估计量具有定义明确且不受多重共线性影响的特性。即使 $p>n$，岭回归估计量仍然有唯一解。具体而言，$\ell_{2}$ 范数惩罚项的加入可以让 $\left(X^{\prime} X+\lambda I\right)$ 满秩，保证了可逆，代价是系数估计不再满足无偏性，即 $E(\mathrm{\widehat{\beta}_{\text {ridge}}} \neq \beta$。因此，岭回归是以放弃无偏性、降低精度为代价来解决病态矩阵问题的。单位矩阵 $I$ 的对角线上全是 1 ，像一条山岭一样，“岭回归”也因此得名。
+
+\subsection{岭回归如何实现正则化？}
+
+收缩系数 $\lambda$ 的作用是实现正则化：当 $\lambda=0$ 时，$\widehat{\beta}_{\text {ridge}}=\widehat{\beta}_{\text {OLS}}$；当 $\lambda \to \infty$ 时 ($\tau \to 0$)，相当于把所有的系数都压缩到零，此时模型中只有一个常数项，其系数估计值估计出来就是 $y$ 的样本均值而已。
+
+%岭回归只能收缩系数，不能用于变量筛选。这是因为，
+由 (\ref{eq:Lasso-ridge-01}) 式可知，岭回归的约束集是一个以 $\sqrt{\tau}$ 为半径的圆 (见图 \ref{fig:Lasso-ridge-compare})，它与 OLS 系数的可行集 (椭圆) 很难相切于坐标轴上。也就是说，岭回归虽然具有收缩系数的作用，但并不会让某些变量的系数为零，也就不具有变量筛选的功能。这是它与 Lasso 最大的区别。   
+
+那么，$\lambda$ 的最优值如何确定呢？前面已经提到，我们常用 MSE (均方误差) 衡量模型的优劣，但 MSE 是模型的方差和偏差之和。
+%最优 $\lambda$ 其实就是让偏差和方差达到最佳权衡时  $\lambda$  的取值。 
+%随着模型复杂度的提升，在训练集上的效果就越好，即模型的偏差就越小; 但是同时模型的方差就越大。
+对于岭回归而言，$\lambda$ 越大, $(X'X+\lambda I)$ 越大， $\left(X'X+\lambda I\right)^{-1}$ 就越小, 模型的方差就越小。代价是，$\lambda$ 越大， $\widehat{\beta}_{\text {ridge}}$ 与真实值的偏离就越大，模型的偏差也就越大。
+我们可以基于 AIC，BIC 等信息准则，或交叉验证等数据驱动的方式来确定 $\lambda$ 的最优值，详见第 \ref{sec:lasso-lambda} 小节。
+
+在 Stata 中，可以用 lasso2 (Ahrens et al., 2020), ridgeregress, ridgereg (提供了丰富的假设检验结果) 实现常规的岭回归分析。
+
+IV 估计可以使用 ridge2sls 命令。 
+
+面板数据模型可以用 xtregfem, xtregmle 命令。 
+
+\subsection{岭回归、Lasso、最优子集与 OLS 的关系}
+
+%todo HTW2015，Section 2.8 给出了理论依据
+
+%可见，岭回归只是对 $\beta_{\mathrm{OLS}}$ 做了一个全局缩放，逐步回归法 (最优子集) 是做了一个硬阈值转换 (hard thresholding)，而 Lasso 则是做了一个软阈值转换 (soft thresholding)。
+%逐步回归等最优子集 (Best Sub-set) 筛选方法将绝对值小于 $\sqrt{2 \lambda}$ 的那些系数直接设置为零，其它系数维持原状；Lasso 将绝对值小于 $\lambda$ 的那些系数直接变成零，并将其它系数向零收缩 $\lambda$，而岭回归则是全局缩放，但较大的系数缩放程度更高。
+
+若变换 $\X$ 矩阵使所有解释变量都彼此正交，即 $\boldsymbol{X}^{\prime} \boldsymbol{X}=\boldsymbol{I}_{p}$，Lasso 和岭回归都存在解析解，且都是 OLS 估计的简单变换 (详见表 \ref{tab:lasso-01})：(1) 岭回归是将 OLS 系数统一缩小为原来的 $1/(1+\lambda)$ 倍；(2) Lasso 是先用常数因子 $\lambda$ 对 OLS 系数进行转换，进而在零处截断，也称为软阈值运算/转换；(3) 最优子集则是对 OLS 系数进行硬阈值转换：若 OLS 系数大于 $\sqrt{2 \lambda}$ 则保留原状，否则设置为零。
+
+简言之，Lasso 和最优子集 (逐步回归) 都能够产生稀疏解，具有变量筛选的功能，而岭回归则只具有系数压缩功能。同时，Lasso 和岭回归估计量都是连续函数，而逐步回归则是非连续函数。整体对比下来，在变量筛选功能方面，Lasso 占优。
+
+最后需要再次强调的是，Lasso 和岭回归都需要对变量进行标准化，使其均值为 0，方差为 1，因为 $\lambda$ 的含义会随着变量量纲的变化而改变，致使不同的数据和模型之间不具可比性 (比如，在 $K$ 折交叉验证中，同一个变量在每个细分组中的均值和方差都是有差异的)。当然，若使用 Stata 等软件，对变量执行标准化是默认动作。 
+
+\begin{table}
+  \begin{center}
+	\caption{矩阵$\X$ 正交时各估计量与 OLS 估计量的关系% \\
+	%Source: HTW2015, Table 2.3.%
+	}%HTW2015，table 2.3, pp.22
+	\label{tab:lasso-01}
+	\renewcommand\arraystretch{1.3}
+  \begin{tabular}{lllll}
+\hline$q$ & &Estimator & \quad &Formula \\
+\hline 0 & &Best subset & \quad & $\widehat{\beta}_{\text{OLS},\,j} \cdot \mathbf{1}[|\widehat{\beta}_{\text{OLS},\,j}|>\sqrt{2 \lambda}]$ \\
+1 & &Lasso & \quad &$\operatorname{sgn}(\widehat{\beta}_{\text{OLS},\,j})
+(|\widehat{\beta}_{\text{OLS},\,j}|-\lambda)_{+}$ \\
+2 & &Ridge & \quad &$\widehat{\beta}_{\text{OLS}, j} /(1+\lambda)$ \\
+\hline
+  \end{tabular} 
+  \end{center}
+\end{table}
+
+
+Lasso 和岭回归以及 OLS 系数之间的关系呈现于图 \ref{Fig-Lasso-hard-ridge-ols-02}。
+
+Lasso 和岭回归的系数与调节参数之间的关系参见图 \ref{Fig-Lasso-Ridge-shink}。
+
+\begin{figure}
+	\centering
+	\includegraphics[width=1.2\textwidth]{Fig-Lasso-hard-ridge-ols-02.png} 
+	\caption{岭回归、Lasso 与 OLS 估计系数的关系} %caption是图片的标题
+	\label{Fig-Lasso-hard-ridge-ols-02} 
+\end{figure}
+
+{ \def\FigName{Fig-Lasso-Ridge-shink}
+\begin{figure}
+	\centering
+	\includegraphics[width=1.0\textwidth]{\FigName.png} 
+	\caption{Lasso与岭回归系数与调节参数之间的关系 \\
+	Source: HTW2015, Figure $2.1$ Left: Coefficient path for the lasso, plotted versus the $\ell_{1}$ norm of the coefficient vector, relative to the norm of the unrestricted least-squares estimate $\tilde{\beta}$. Right: Same for ridge regression, plotted against the relative $\ell_{2}$ norm.} %caption是图片的标题
+	\label{\FigName} 
+\end{figure} }
+
+%Applications of Lasso estimation in economics are growing. Belloni, Chernozhukov and Hansen (2014) illustrate the method using three application: (1) the effect of eminent domain on housing prices in an instrumental variables framework, (2) a re-examination of the effect of abortion on crime using the framework of Donohue and Levitt (2001), (3) a re-examination of the the effect of democracy on growth using the framework of Acemoglu, Johnson and Robinson (2001). Mullainathan and Spiess (2017) illustrate machine learning using a prediction model for housing prices using characteristics. Oster (2018) uses household scanner data to measure the effect of a diabetes diagnosis on food purchases.
+
+
+%todo HTW2015 p.22
+
+%In the special case of an orthonormal model matrix X, all three procedures have explicit solutions. Each method applies a simple coordinate-wise transformation to the least-squares estimate $\tilde{\beta}$, as detailed in Table 2.9. Ridge regression does a proportional shrinkage. The lasso translates each coefficient by a constant factor $\lambda$ and truncates at zero, otherwise known as soft thresholding. Best-subset selection applies the hard thresholding operator: it leaves the coefficient alone if it is bigger than $\sqrt{2 \lambda}$, and otherwise sets it to zero.
+
+%todo D:\CtexLive\ex\Cambridge_notes\modern_statistical_methods
+%todo http://dec41.user.srcf.net/notes/III_M/modern_statistical_methods.pdf
+
+\subsection{Lasso 的独特之处}
+Lasso 的约束集是 $\ell_1$范数，岭回归是 $\ell_2$ 范数，那么一个很自然的推广就是考虑 $\ell_q$ 范数族：
+\[
+  \|\beta\|_q = \left(\sum_{k = 1}^p \beta_k^q\right)^{1/q}.
+\]
+图 \ref{Fig:Lasso-lq-norm-ball} 列示了一些典型范数的约束集。 
+
+{ \def\FigName{Fig:Lasso-lq-norm-ball}
+\begin{figure}
+	\centering
+\begin{center}
+  \begin{tikzpicture}
+    \begin{scope}[shift={(0, 0)}]
+      \draw (-1, 0) -- (1, 0);
+      \draw (0, -1) -- (0, 1);
+      \draw [domain=-0.8:0.8, mred, fill, fill opacity=0.4] plot [smooth] (\x, {(0.8^0.5 - (abs(\x))^0.5)^2});
+      \draw [domain=-0.8:0.8, mred, fill, fill opacity=0.4] plot [smooth] (\x, {-(0.8^0.5 - (abs(\x))^0.5)^2});
+
+      \node at (0, -1.5) {$q = 0.5$};
+    \end{scope}
+    \begin{scope}[shift={(3, 0)}]
+      \draw (-1, 0) -- (1, 0);
+      \draw (0, -1) -- (0, 1);
+      \draw [mred, fill, fill opacity=0.4] (0.8, 0) -- (0, 0.8) -- (-0.8, 0) -- (0, -0.8) -- cycle;
+
+      \node at (0, -1.5) {$q = 1$};
+    \end{scope}
+    \begin{scope}[shift={(6, 0)}]
+      \draw (-1, 0) -- (1, 0);
+      \draw (0, -1) -- (0, 1);
+      \draw [domain=-0.8:0.8, mred, fill, fill opacity=0.4] plot [smooth] (\x, {(0.8^1.5 - (abs(\x))^1.5)^(1/1.5)});
+      \draw [domain=-0.8:0.8, mred, fill, fill opacity=0.4] plot [smooth] (\x, {-(0.8^1.5 - (abs(\x))^1.5)^(1/1.5)});
+
+      \node at (0, -1.5) {$q = 1.5$};
+    \end{scope}
+    \begin{scope}[shift={(9, 0)}]
+      \draw (-1, 0) -- (1, 0);
+      \draw (0, -1) -- (0, 1);
+      \draw [mred, fill, fill opacity=0.4] circle [radius=0.8];
+
+      \node at (0, -1.5) {$q = 2$};
+    \end{scope}
+
+  \end{tikzpicture}
+\end{center}
+	\caption{$\ell_q$ 范数的约束集} %caption是图片的标题
+	\label{\FigName} 
+\end{figure} }
+
+可以看出，若要确保约束集有尖角 (有变量筛选能力)，$q$ 的最小取值为 $q=1$；同时，若要使约束集为凸 (convex) (以便于求解)，$q$ 的最大取值也为 $1$。因此，$q=1$ 对应的是兼具变量筛选能力和求解便利性的最佳约束集。这也是 Lasso 被广泛应用的原因所在。
+%We see that $q = 1$ is the smallest value of $q$ for which there are corners, and also the largest value of $q$ for which the constraint set is still convex. Thus, $q = 1$ is the sweet spot for doing regression.
+
+      %todo ================注释-------over-----
+
+
+
+\section{调节参数 $\lambda$ 的选择}\label{sec:lasso-lambda}
+
+在惩罚回归中，系数估计和变量筛选 (模型设定) 都取决于调节参数 $\lambda$。\ref{sec:lasso-lambda-intro} 节先整体介绍选择 $\lambda$ 的基本规则和流程，随后分别在 \ref{sec:lasso-lambda-ic}、\ref{sec:lasso-lambda-cv} 和 \ref{sec:lasso-plugin} 小节介绍基于信息准则、交叉验证和经验法则确定 $\lambda$ 的理论背景和计算方法。 
+
+\subsection{基本经验规则和流程}\label{sec:lasso-lambda-intro}
+
+确定最优值 $\lambda^*$ 的方法主要分为三类：
+\begin{enumerate}
+\item \textbf{信息准则 (IC)}：选择使信息准则 $\mathrm{AIC}, \mathrm{AlCc}, \mathrm{BIC}$ 或 $\mathrm{EBIC}$ 极小化的 $\lambda$ 的值。%$\rightarrow$ 在 lasso2 中实现。
+\item \textbf{交叉验证 (CV)}：它属于数据驱动方法，更为关注模型的样本外预测能力，所需的假设条件较为宽松，在样本量较小的情况下尤为适用。%在 cvlasso 中实现。
+\item \textbf{理论推演 (plugin)：} 在一些常规的假设条件下，推导出理论上的 $\lambda^*$ 值，因此不必再执行 CV 和 IC 方法的搜索过程，颇为省时。此法更倾向于选出精简的模型。
+%Belloni et al. (2012, Econometrica), Belloni, Chernozhukov, and Hansen (2014a, 2014b) 等针对异方差和非高斯误差下的最优 $\lambda$ 开发理论和可行算法。 可行的算法可用于 LASSO 和平方根 LASSO。
+它是 Stata 中 Lasso 系列命令的标配，也被外部命令 rlasso 所采用 (Arhens et al., 2020)。
+\end{enumerate}
+
+\subsubsection{选择依据}
+上述方法各有优劣，因此，采用何种方法确定 $\lambda^*$，取决于研究目的：是做样本外预测还是模型筛选？前者是 Lasso 的主要用途，如预测信贷违约率、病毒感染率等，后者旨在从大量备选模型中挑选出正确的模型设定形式, 如后文要介绍的 Lasso-IV，双重 Lasso 等基于 Lasso 的因果推断方法。
+
+通常而言，以样本外预测为目标时，应选择以交叉验证为基础的方法，如下文介绍的 CV 和 adaptive-CV；以模型筛选为目标时，可以选择理论推演值 (plugin) 或信息准则 (如 BIC)，前者速度极快，后者在稀疏性较强的情况下表现稳定。 (note: % 这个结论主要根据笔者的模拟分析和实证经验而得，尚需查阅相关文献做进一步确认。)
+
+当然，我们也要兼顾计算成本 (时耗和可行性)。为此，可以在初步分析或测试阶段使用 plugin，亦可以用基于 plugin 得到的 $\lambda^*$ 作为 CV 等耗时较高的方法的初始值。%此时 plugin 是最佳选择，而交叉验证等颇为耗时的方法则作为备选。
+
+Stata 中的 lasso, lasso2 等命令基本上覆盖了文献中的主流方法。
+\subsubsection{主要经验规则}
+
+%todo Ahrens-2020-StataJournal-lassopack-Model selection and prediction.pdf
+
+在介绍技术细节之前，这里先简要介绍 Stata 中确定 $\lambda^*$ 的主要方法以及它们的特点和应用场景。
+
+Stata 中的 Lasso 系列命令 (如 lasso, elasticnet, poregress, xporegress, telasso, dsregress 等) 都可以用 selection(sel\_method) 选项来指定 $\lambda^*$ 的选择方法，包括： (note: 上述功能依赖于 Stata 16 以上版本，其中 bic 需要 Stata 17 以上版本。)
+$$
+
+\begin{array}{ll}
+sel\_method  & \text { Description } \\
+\hline  cv & \text { select $\lambda^*$ using CV; the default } \\
+\texttt { adaptive } & \text { select $\lambda^*$ using an adaptive lasso } \\
+\texttt { plugin} & \text { select $\lambda^*$ using a plugin iterative formula } \\
+\texttt { bic} & \text { select $\lambda^*$ using BIC function } \\
+\texttt { none } & \text { do not select $\lambda^*$ } \\
+\hline 
+\end{array}
+$$
+
+%\noindent
+
+具体说明如下：
+cv：用 Lasso 做预测时，CV 是首选。
+adaptive：它是 $\mathrm{CV}$ 的变体，在每一步中它都先采用 CV 得到一个初步的 $\lambda^{*}$，进而使用自适应 Lasso 模型作进一步调整：放大重要系数，压缩不重要的系数。adaptive-CV 具有 CV 的样本外推能力 (因为在选择 $\lambda$ 的过程中，评价标准就是样本外 MSE 的大小)，同时根据变量的相对重要性做出二次调整。因此，它选出的模型比基于 CV 得到的模型更精简，但预测能力却不会有太多折损。我们将在第 \ref{sec:adaptive-lasso} 介绍 Adaptive Lasso。
+plugin：当研究目的不是样本外预测，而是模型筛选时，plugin 的应用最广。因为其 $\lambda^*$ 是基于理论推演得到的，省去了搜索过程。
+bic：是 Stata 17 新增的功能，应用较少。因为它和 CV 一样，都很耗时；但样本外预测能力又不如 CV。
+
+Stata 手册对 Lasso 的模型筛选过程进行了详细介绍，参见 
+Lasso 整体介绍：[lasso] lasso
+Lasso 模型筛选：[lasso] lasso model selection
+
+此外，实现各类 Lasso 模型的 Stata外部命令，如 lasso2, rlasso, elasticregress, pdslasso, ivlasso 等，也都内置了 $\lambda^*$ 的选择方法。 
+
+
+综上所述，确定 $\lambda^{*}$ 的基本\textbf{经验规则}是：
+
+
+(1) 若研究目的是模型筛选，则 plugin 是很好的选择。
+
+(2) 若研究目的是预测，则可以在测试阶段 (此时对结果的准确度要求不高) 使用 plugin，以节省计算时间。随后，可以采用 adaptive-CV 和普通 cv 做更严格的测试。
+
+(3) 当样本较小时 (比如 $n<500$)，cv 和 adaptive-CV 表现都很不稳定，甚至无法搜索到合适的 $\lambda$ 值，此时可以使用 plugin 和信息准则。
+
+\subsubsection{$\lambda^*$ 的选择流程}
+
+这里先以形式相对简单的岭回归为例，简要说明确定  $\lambda^*$ 的基本流程 (采用 BIC 准则作为模型评估标准)。为便于说明，将
+(\ref{eq:Lasso-21}) 式重列如下：
+\begin{equation}\label{eq:Lasso-21-1}
+	\widehat{\beta}_{\text {ridge}} =\left(\boldsymbol{X}^{\prime} \boldsymbol{X}+\lambda \boldsymbol{I}_{p}\right)^{-1} \boldsymbol{X}^{\prime} \boldsymbol{\y}
+\end{equation}
+显然，$\widehat{\beta}_{\text {ridge}}$ 中包含未知参数 $\lambda$。由于 $\lambda>0$，我们可以预设一个范围，比如 $\lambda_j \in \{0.01, 0.02, \cdots, 8\}$，相应的 $j$ 标记为 $j=1,2\cdots J$。然后依次将 $\lambda_j$ 带入 (\ref{eq:Lasso-21-1})，计算出相应的 BIC$_j$，最终，$\{\mathrm{BIC}_j\}$ 的最小值对应的 $\lambda$ 便是其最优值 $\lambda^*$。
+
+若采用 CV 确定 $\lambda^*$，则需要增加一些步骤：针对每一个 $\lambda_j\ (j=1,2\cdots J)$，将样本随机等分为 $K$ 份 (如，10 份)，每次用其中的 $K-1$ 份做岭回归 (或 Lasso 估计)，剩下的一份做样本外预测，并计算其 $\mathrm{MSE}_k$。计算出 $K$ 个 $\{\mathrm{MSE}_k\}\ (k=1,2\cdots K)$，以及它们的均值 $\overline{\mathrm{MSE}}(\lambda_j)$。所有 $\overline{\mathrm{MSE}}(\lambda_j)\ (j=1,2\cdots J)$ 的最小值对应的 $\lambda$ 即为 $\lambda^*$。
+
+有关 Stata 中 $\lambda^*$ 的计算流程，参见 [lasso] lasso model selection, pp.4。帮助文件为 help lasso\#\#selmethod。
+
+%若采用交叉验证 (CV)，则可以把样本随机等分为 $K$ 组(折)，比如 $K=10$，对于每一个 $\lambda$ 值，执行一次交叉验证估计：选用 10 组子样本中的 9 组估计 (\ref{eq:Lasso-21-1}) 式，得到 $MSE_$
+
+%有几点需要说明：通常把能够使所有变量的系数均为零时的 $\lambda$ 值设为其最小值，然后在选取一个相对较大的数值，二者形成区间 $[\lambda_{\operatorname{gmin}},\lambda_{\operatorname{gmax}}]$，然后在此区间内进行网格搜索 (grid search)
+
+\subsection{基于信息准则确定 $\lambda^*$}\label{sec:lasso-lambda-ic}
+      %todo ================注释-------over-----
+
+简要回顾一下 AIC, BIC, HQIC 等信息准则的计算公式： (note: % 关于 AIC，BIC 以及 Best subset 估计量的推导过程和详细来由，参见 Fan et al. (2020), Section 3.1 Classical Variable Selection Criteria。%)
+
+%
+AIC (Akaike Information Criterion)：赤池信息准则
+$$\mathrm{AIC} = -2 \ln(L) + 2 k$$
+
+%
+BIC (Bayesian Information Criterion)：贝叶斯信息准则
+$$\mathrm{BIC}=-2 \ln(L) + \ln(n)k$$
+
+%
+HQIC (Quinn Criterion)：汉南-奎因信息准则
+$$\mathrm{HQIC}=-2 \ln(L) + \ln(\ln(n))k$$
+其中，$\ln(L)$ 是模型的对数似然函数值，$n$ 是样本数，$k$ 是模型的参数个数。从构造上来看，上述信息准则其实都是在 $\ln(L)$ 基础上施加惩罚后得到的。当 $n>8$ 时， $\ln(n)>2$，因此，多数情况下 BIC 对模型参数的惩罚都比 AIC 大，更倾向于选择精简模型。
+%它们主要局限在于惩罚项都是 $\ell_{0}$范式
+
+%在模型拟合时，增加参数可使得似然概率增大，但是却引入了额外的变量，因此 AIC 和 BIC 都在目标式中添加了模型参数个数的惩罚项，也就是第二项。
+在 Lasso 情境中，AIC 和 BIC 可表示为 (Schwarz 1978, BIC)：
+      %todo ================注释-------over-----
+%
+\begin{equation}\label{eq:lasso-aic}
+\begin{aligned}
+&\operatorname{AIC}(\lambda)=n \ln \widehat{\sigma}^{2}(\lambda)+2 \operatorname{df}(\lambda) \\
+&\operatorname{BIC}(\lambda)=n \ln \widehat{\sigma}^{2}(\lambda)+\operatorname{df}(\lambda) \ln (n)
+\end{aligned}
+\end{equation}
+%
+其中，$\widehat{\sigma}^{2}(\lambda)=n^{-1} \sum_{i=1}^{n} \widehat{\varepsilon}_{i}^{2}$ ($\widehat{\varepsilon}_{i}$ 是残差)。$\operatorname{df}(\lambda)$ 是有效自由度，用以衡量模型复杂度，可以用模型中非零系数的个数来代替 (Zou, Hastie and Tibshirani, 2007)，后者是 $\operatorname{df}(\lambda)$ 的无偏且一致估计。即使 $p>n$，这一结论仍然成立 (Tibshirani and Taylor, 2012)。
+
+$\mathrm{AlC}$ 和 $\mathrm{BIC}$ 都不太适合“大 $p$ 小$N$” 情形， (note: % 这句话的准确意思是 $p \gg n$，是个相对概念。因此，“大 $p$ 小$N$” 并不意味着 $N$ 一定很小。)
+因为它们倾向于保留过多的变量。$\mathrm{AIC}_{c}$ 有助于克服 $\mathrm{AIC}$ 存在的小样本偏差，因此，在 $n$ 很小或 $n$ 虽不小但 $p\gg n$ 时，应该优先使用 (Sugiura, 1978；Hurvich and Tsai, 1989)。
+%鉴于 AIC 在小样本中是有偏的，文献中常用纠偏 AIC (Sugiura 1978; Hurvich and Tsai 1989),
+\begin{equation}\label{eq:lasso-aicc}
+\operatorname{AIC}_{c}(\lambda)=n \ln \widehat{\sigma}^{2}(\lambda)+2 \operatorname{df}(\lambda) \frac{n}{n-\operatorname{df}(\lambda)}
+\end{equation}
+%The bias can be severe if $d f$ is large relative to $n$, and thus the $\mathrm{AIC}_{c}$ should be favored when $n$ is small or with high-dimensional data.
+%当 $n$ 较小或具有高维数据时，应优先使用 $\mathrm{AIC}_{c}$。
+
+%The BIC relies on the assumption that each model has the same prior probability. This assumption seems reasonable when the researcher has no prior knowledge, yet it contradicts the principle of parsimony and becomes problematic if $p$ is large. To see why, consider the case where $p=1000$ (following Chen and Chen [2008]): There are 1,000 models for which one parameter is nonzero $(s=1)$, while there are $1000 \times 999 / 2$ models for which $s=2$. Thus, the prior probability of $s=2$ is greater than the prior probability of $s=1$ by a factor of $999 / 2$. More generally, because the prior probability that $s=j$ is greater than the probability that $s=j-1$ (up to the point where $j=p / 2$ ), the BIC is likely to overselect variables. To address this shortcoming, Chen and Chen (2008) introduce the extended BIC (EBIC), defined as
+%BIC 假设每个模型出现的概率相同。在我们对模型设定没有任何先验信息时，该假设有其合理性，但
+在高维情境下，BIC 也会过度选入变量 (over-select)。为此，
+Chen and Chen (2008) 提出了 EBIC (Extended BIC)，它对参数数量施加了更为严格的惩罚，选出的模型更为精简，当 $p>n$ 时效果更为明显。EBIC 定义为：
+%大大降低了选择臃肿模型的概率。
+\begin{equation}\label{eq:lasso-ebic}
+\operatorname{EBIC}_{\xi}(\lambda)=n \ln \widehat{\sigma}^{2}(\lambda)+\operatorname{df}(\lambda) \ln (n)+2 \xi \mathrm{df}(\lambda) \ln (p)
+\end{equation}
+%which imposes an additional penalty on the size of the model. The prior distribution is chosen such that the probability of a model with dimension $j$ is inversely proportional to the total number of models for which $s=j$. The additional parameter, $\xi \in[0,1]$, controls the size of the additional penalty. ${ }^{4}$ Chen and Chen (2008) show in simulation studies that the $\mathrm{EBIC}_{\xi}$ outperforms the traditional BIC, which exhibits a higher false-discovery rate when $p$ is large relative to $n$.
+其中，参数 $\xi \in[0,1]$ 用于控制惩罚力度。Chen and Chen (2008, p.768) 的设定为 $\xi=1-\ln (n) /\{2 \ln (p)\}$。
+
+
+\subsection{交叉验证 (CV)}\label{sec:lasso-lambda-cv}
+交叉验证的基本思想是把原始数据(dataset)进行分组，一部分做为训练集(train set)，另一部分做为验证集 (validation set or test set)，首先用训练集对模型进行估计，再利用验证集来测试训练得到的模型(model)，以此评估模型的表现。 (note: % CV 主要用在数据不是很充足的情况下。如果样本较大 (如超过 10000 笔观察值)，可以直接将其随机分成三份：A. 训练集 (Training Set)；B. 验证集 (Validation Set)；C. 测试集 (Test Set)。用 A 来训练 (估计) 模型；用 B 来评估模型的预测能力、进行模型选择和变量筛选；进而把得到的模型用于 C，最终决定使用哪个模型以及对应参数。)
+
+%todo https://www.stata.com/manuals/lassolassofitting.pdf#lassolassofitting
+
+根据切分的方法不同，交叉验证分为下面三种： (note: % 多数情况下，交叉验证都是作为特定估计量的内嵌程序而执行的。若需单独做交叉验证，或希望单独执行以切身理解计算过程，可以使用 cv\_kfold 命令，其他命令还包括：crossfold, crossvalidate, cv\_regress, kfoldclass 等。)
+
+\begin{enumerate}
+\item \textbf{简单交叉验证。}所谓的简单，是和其他交叉验证方法相对而言的。首先，我们随机的将样本数据分为两部分 (比如： 70\%的训练集，30\%的测试集)，然后用训练集来训练模型，在测试集上验证模型及参数。接着，把样本打乱，重新选择训练集和测试集，继续训练数据和检验模型。最后，基于损失函数确定最优模型和参数。
+\item \textbf{K 折交叉验证} (K-Folder Cross Validation，K-CV)。不同于第一种方法，K-CV 会把样本数据随机分成 $K$ 份，每次随机选择 $K-1$ 份作为训练集，剩下的 1 份做测试集。当这一轮完成后，重新随机选择 $K-1$ 份来训练数据。经过若干轮 (小于 $K$) 后，选择目标损失函数评估最优的模型和参数。
+\item \textbf{去一法交叉验证} (Leave-one-out Cross Validation，LOO-CV)。这本质上就是“刀切法 (Jackknife)”。它是第二种情况的特例，此时 $K$ 等于样本数 $N$，即，每次选择 $N-1$ 个观测值来训练数据，留一个观测值来验证模型的预测效果。此方法主要用于样本量非常少的情况，如 $N<50$。
+\end{enumerate}
+
+Lasso 中最常用的是 $K$ 折交叉验证 (简称为 CV)，过程如下：
+%交叉验证是机器学习中测试误差估计的主力。这个想法是将初始数据集随机分成 $K$ 大小相等的部分，称为折叠。此过程建议省略折叠 $k$ 并将模型拟合到其他 $(K-1)$ 折叠（完全组合），然后获得对遗漏的第 $k$ 折叠的预测。这对每个折叠 $k=1,2, \ldots, K$ 依次进行，然后通过对误差的 $(K-1)$ 估计值进行平均来组合结果。交叉验证过程可以如下进行 (参见图 \ref{Fig-Lasso-CV01})：
+\begin{enumerate}
+\item 将初始数据集随机拆分为 $K$ 组(折)，记为 $\{G_{1}, G_{2}, \ldots,G_{K}\}$，假设第 $k$ 组 ($G_{k}$) 中有 $n_{k}$ 个观察值。如果 $N$ 是 $K$ 的倍数，则 $n_{k}=N / K$，否则各组的样本数会略有差异。
+\item 把第 $k$ 组作为验证集，而其他 $K-1$ 组做为训练集，计算其 MSE：
+$$
+\mathrm{MSE}_{k}(\lambda) =
+\frac{1}{n_k}\sum_{i \in G_{k}}\left(y_{i}-\widehat{y}_{i}\right)^{2}
+= \frac{1}{n_k}\sum_{i \in G_{k}}\left(y_{i}-\x_i' \widehat{\beta}_{-k}(\lambda)\right)^{2}
+$$
+%其中，$\widehat{\beta}_{-k}(\lambda)$ 是基于除第 $k$ 组以外的其它 $K-1$ 组的观察值得到的模型参数估计值。 
+\item 计算 $K$ 组的平均 MSE：
+$$
+\mathrm{CV}_{K}(\lambda)=\sum_{k=1}^{K} \frac{n_{k}}{N} \mathrm{MSE}_{k}(\lambda), \  k=1,2,\cdots,K
+$$
+\item 假设 $\lambda$ 的可能取值范围为 $[\lambda_{\text{min}},\lambda_{\text{max}}]$，则我们可以将其等分成 $J$ 份。对于每一个 $\lambda_j\ (j=1,2,\ldots,J)$，计算 $\mathrm{CV}_{K}(\lambda_j)$，从中选择最小值，由此可以确定 $\lambda^*$。
+\end{enumerate}
+
+以 $K=10$ 折，$J=50$ 为例，上述过程大概需要进行 $500$ 次估计。
+
+%在稳健性测试时，还经常使用所谓的“1se法则”：选取 $[$\lambda^*$-\sd() ]$为了防止上述方法选出的 $\lambda^*$ An alternative common rule is to use the largest value of $\lambda$ that is within one standard deviation of the minimum, which leads to a more parsimonious model.
+
+显然，当 $K=N$ 时，便是上文介绍的去一法交叉验证 (LOO-CV)。
+%另外，因为 $C V_{K}$ 是一个估计真实的测试误差，估计它的标准误差对于提供置信区间和测试准确度的不确定性是有用的。
+
+%若损失函数是基于 MLE 估计而定义的，CV 最后，对于 ML 分类目的，交叉验证过程遵循相同的路线，除了考虑 MCE 代替 MSE。
+
+%todo Thach-2021_Book_Data-Science-For-Financial-Econometrics, Sec 4.4 Cross-Validation
+%todo Ahrens 2020, Stata Jounral 
+\begin{figure}
+	\centering
+	\includegraphics[width=1.2\textwidth]{Fig-Lasso-CV01.png} 
+	\caption{K 折交叉验证示意图 \\
+	Source: Ahrens et al. (2020)} %caption是图片的标题
+	\label{Fig-Lasso-CV01} 
+\end{figure}
+
+      %todo ================注释-------over-----
+
+
+\textbf{几点说明：}
+
+其一，执行 $K$ 折交叉验证需要将观察值随机分成 $K$ 组。因此，当样本数较少时，CV 选出的 $\lambda^*$ 具有较大的不确定性。此时，可以通过 set seed \# 设定种子值，以保证实证结果的可复制性。当然，需要确保实证结果不会对种子值的选取太敏感。一般来说，设定较大的 $K$ 值有助于降低这种敏感性，但当样本数较小时，这其实也不太可行。Stata 的默认值是 $K=10$，这也是多数软件和文献的基本设定。实证分析中可以适当修改之以测试结果的稳健性。另一种方法是使用“重复 CV 法”，即把上述 CV 过程重复做多次，取平均，以降低随机分组和 $K$ 值选取带来的影响。
+
+% one se 规则
+
+其二，面板数据通常具有较强的组内相关性，需要以组别为单位进行 CV，而对于时间序列，问题可能更为复杂，需要使用滚动 CV 或分块 CV 等方法，参见 Ahrens et al. (2020, Section 4)。 
+
+其三，需要再次强调的是，CV 的设计思想使其更适用于以“样本外预测”为主要目标的应用场景，因此，若分析重点是样本内的解释力，CV 未必是最优选择，此时 BIC 等信息准则或许更合适。
+
+其四，就 CV 的性质而言，Chetverikov, Liao and Chernozhukov (2020) 证明了 CV 在 Lasso 估计中的渐近一致性。Arhens et al. (2020) 的模拟分析表明，基于 CV 选出的变量偏多，即 CV 是相对保守的筛选规则。 
+
+有关 CV 的更深入的介绍，参见 Ahrens et al. (2020, Section 4)，以及 Hansen (2021, Section 28.9)。
+
+      %todo ================注释-------over-----
+
+\subsection{理论推演值-plugin}\label{sec:lasso-plugin}
+
+%Stata 16 及以上版本用户，可以使用 lasso, select(plugin) 命令
+%Stata 15 及以下用户，可以用外部命令 rlasso 
+
+%todo 参考 Ahrens2020 SJ，补充理论基础
+%Regularization event. The third central condition concerns the choice of the penalty level $\lambda$ and the predictor-specific penalty loadings $\psi_{j}$. The idea is to select the penalty parameters to control the random part of the problem in the sense that
+%$$
+%\frac{\lambda}{n} \geq c \max _{1 \leq j \leq p}\left|\psi_{j}^{-1} S_{j}\right| \quad \text { where } \quad S_{j}=\frac{2}{n} \sum_{i=1}^{n} x_{i j} \varepsilon_{i}
+%$$
+
+若主要目标是变量筛选 (如后文介绍的 Lasso-IV，或 Double Selection)，采用由理论上推导出的经验值 $\lambda_{\text{plugin}}^*$ 既省时又省力，因为这无需执行任何搜索程序。尤其是当 CV 无法使用或很不稳定时，$\lambda_{\text{plugin}}^*$ 是很好的替代。 (note: % 例如，当样本较小时，基于 CV 的方法会对随机分组非常敏感，且经常因为无法找出合适的 $\lambda$ 而导致程序中止。此时，Stata 会显示错误提示信息：{\\ Note: No lambda selected. lassoselect can be used to select lambda. \\ Note: Minimum of CV function not found; lambda selected based on stop() stopping criterion.})
+此外，相对于 CV 和 BIC，plugin 选出的变量都更少，因此模型更为精简。
+
+%此时，plugin 就会非常奏效，因为它给出的 $\lambda^*$ 是从理论上直接推到出来的，。Belloni et al. (2014a, JEP) 文末提供的 lassoShooting.ado 程序 (Stata-codes) 便采用了基于 plugin 的 $\lambda^*$， (note: % % 该程序的功能可以用 Stata 16 以上版本中的 lasso linear, select(plugin) 命令完全替代，不必另外下载。)
+%计算公式见 (\ref{eq:lasso-plugin-01}) 和 (\ref{eq:lasso-plugin-02}) 式。
+
+$\lambda_{\text{plugin}}^*$ 的推导和证明过程都比较复杂，这里仅列出一些 Stata 手册 [lasso] lasso, pp.27-30 
+中的基本结果，以便大家了解其设定思想。详情参阅 Belloni and Chernozhukov (2011), Belloni et al. (2012), and Belloni, Chernozhukov, and Wei (2016)。
+
+%In all the implemented methods described below, we use the following notation:
+%$c=1.1$ per the recommendation of Belloni and Chernozhukov (2011);
+%$N$ is the sample size;
+%$\gamma=0.1 / \ln [\max \{p, N\}]$ is the probability of not removing a variable when it has a coefficient of zero;
+%$p$ is the number of candidate covariates in the model.
+
+%Stata 中的 Lasso 系列命令基本上都支持 selection(plugin) 选项，具体设定方式及含义如下：
+
+在 Stata 中，若采用 lasso linear，则有两个 plugin 估计量可供选择：
+\begin{itemize}
+\item selection(plugin, homoskedastic) 选项：
+此时，假设干扰项为同方差，$\lambda^*$ 的估计式为：
+\begin{equation}\label{eq:lasso-plugin-01}
+	\lambda_{\text {homoskedastic }}=\frac{c \widehat{\sigma}}{\sqrt{N}} \Phi^{-1}\left(1-\frac{\gamma}{2 p}\right)
+\end{equation}
+其中，$\widehat{\sigma}$ 是误差项方差参数的估计值。
+\item selection(plugin, heteroskedastic) 选项：
+此时，假设干扰项存在异方差，$\lambda^*$ 的估计式为：
+\begin{equation}\label{eq:lasso-plugin-02}
+\lambda_{\text {heteroskedastic }}=\frac{c}{\sqrt{N}} \Phi^{-1}\left(1-\frac{\gamma}{2 p}\right)
+\end{equation}
+\end{itemize}
+其中，
+$c=1.1$ (Belloni and Chernozhukov (2011) 建议的数值)；
+$N$ 是样本量；
+$\gamma=0.1 / \ln [\max \{p, N\}]$ 为系数为零时不移除该变量的概率；
+$p$ 是模型中备选变量的个数。
+
+
+
+
+
+      %todo ================注释-------over-----
+
+
+\section{Lasso扩展模型}
+
+\subsection{弹性网}\label{sec:lasso-enet}
+%todo Hansen 29.10
+%The difference between Lasso and ridge regression is that the Lasso uses the 1-norm penalty while ridge uses the 2 -norm penalty. Since both procedures have advantages it seems reasonable that further improvements may be obtained by a compromise. Taking a weighted average of the penalties we obtain the Elastic Net criterion
+%$$
+%\operatorname{SSE}(\beta, \lambda, \alpha)=(\boldsymbol{Y}-\boldsymbol{X} \beta)^{\prime}(\boldsymbol{Y}-\boldsymbol{X} \beta)+\lambda\left(\alpha\|\beta\|_{2}^{2}+(1-\alpha)\|\beta\|_{1}\right)
+%$$
+%with weight $0 \leq \alpha \leq 1$. This includes Lasso $(\alpha=0)$ and ridge regression $(\alpha=1)$ as special cases. For small but positive $\alpha$ the constraint sets are similar to "rounded" versions of the Lasso constraint sets.
+%
+%Typically the parameters $(\alpha, \lambda)$ are selected by joint minimization of the $\mathrm{K}$-fold cross-validation criterion. Since the elastic net penalty is linear-quadratic the solution is computationally similar to Lasso.
+%Elastic net can be implemented in $\mathrm{R}$ with the glmnet command. In Stata use elasticnet or the downloadable package lassopack.
+
+
+
+%todo HTW2015 4.2
+如前所述，岭回归具有压缩系数的能力，可以在很大程度上避免高度共线性导致的系数估计不稳定问题；而 Lasso 则在压缩系数的同时，还具有「变量筛选」能力——在稀疏性假设下，可以将部分变量的系数设定为零。但 Lasso 也有一个重要的局限：若模型中包含一组高度相关的变量 (如一组反应公司文化特征的变量；或一组反映人的免疫能力的基因特征)，则 Lasso 只能随机地选择其中的一个或几个，而无法整体选入。这也是在 Lasso 提出不久就被广泛讨论和质疑的问题。
+
+Zhao and Yu (2006)，Meinshausen and Bühlmann (2006) 发现，只有在非常严格的假设条件下 (主要是限定解释变量之间的相关性不能太高)，Lasso 估计才具有一致性。他们把这条件称为「不可表示条件 (irrepresentable condition, \textbf{IRC})」，核心观点在于：如果两个变量高度相关，Lasso 将无法区分它们。
+
+如前文所言，Lasso 主要用于预测和模型筛选 (变量筛选)，后者的难度远高于前者。显然，若作为预测工具，比如控制混杂因素或估计（“预测”）工具变量或反事实结果，变量之间的高度共线性不会引起太严重的偏差。但若把 Lasso 作为变量筛选工具，高度共线性问题会导致 Lasso 无法找出正确的模型。
+%本节介绍的“弹性网”和随后介绍的“自适应 Lasso” 都可以在一定程度上解决这个问题。 
+
+%既然岭回归不会丢弃任何一个变量，而 Lasso 会丢掉很多，
+Zou and Hastie (2005) 提出的弹性网 (Elastic Net, 简称 ENet) 有助于克服上述问题， (note: % 另一个可以解决此类问题的方法是“群组 Lasso” (Group Lasso)，其基本思想是，若预先明确知道哪些变量存在较强的相关性，则可以在设定惩罚项时将他们放在同一组，用 $\ell_{2}$ 范数约束它们，而组别之间则使用 $\ell_{1}$ 范数来约束。相比之下， ENet 则适用于无法预先依据相关性对变量分组的情形。)%
+其想法很直接：把岭回归和 Lasso 结合起来。模型设定如下：
+\begin{equation}\label{eq:lasso-enet-01}
+\underset{\left(\beta_{0}, \beta\right)}{\operatorname{minimize}}\left\{\frac{1}{2} \sum_{i=1}^{N}\left(y_{i}-\beta_{0}-x_{i}' \beta\right)^{2}
++\lambda\left[\frac{1}{2}(1-\alpha)\|\beta\|_{2}^{2}+\alpha\|\beta\|_{1}\right]\right\}
+\end{equation}
+%The elastic net makes a compromise between the ridge and the lasso penalties (Zou and Hastie 2005 ); it solves the convex program
+%where $\alpha \in[0,1]$ is a parameter that can be varied. By construction, the penalty applied to an individual coefficient (disregarding the regularization weight $\lambda>0$ ) is given by
+其中，$\alpha \in[0,1]$ 是一个可变参数。
+%为便于理解，我们可以把惩罚项通过构造，应用于单个系数的惩罚 (忽略正则化权重 $\lambda$)：
+%$$
+%\sum_{j=1}^p \frac{1}{2}(1-\alpha) \beta_{j}^{2}+\alpha\left|\beta_{j}\right|
+%$$
+显然，Lasso 和岭回归都是弹性网 (ENet) 的特例：当 $\alpha=1$ 时，ENet 退化成 Lasso；而当 $\alpha=0$ 时，则变成了岭回归。模型中的参数 $\alpha$ 和 $\beta$ 也都可以采用前面介绍的 K 折交叉验证法来确定调节参数的最佳取值，求解过程与 Lasso 相似，多用循环坐标下降法。
+%, it reduces to the $\ell_{1}$-norm or lasso penalty, and with $\alpha=0$, it reduces to the squared $\ell_{2}$-norm, corresponding to the ridge penalty. 
+
+{ \def\FigName{Fig-Lasso-enet-HTW2015-Fig4-1}
+\begin{figure}
+	\centering
+	\includegraphics[width=1\textwidth]{\FigName.png} 
+	\caption{Source: Hastie, Tibshirani and Wainwright (2015). Statistical Learning with Sparsity: The Lasso and
+	Generalizations. Boca Raton, FL: CRC Press. Link. PDFHTW2015, Figure 4.1 Six variables, highly correlated in groups of three. The lasso estimates $(\alpha=1)$, as shown in the left panel, exhibit somewhat erratic behavior as the regularization parameter $\lambda$ is varied. In the right panel, the elastic net with $(\alpha=0.3)$ includes all the variables, and the correlated groups are pulled together.} %caption是图片的标题
+	\label{\FigName} 
+%Source: HTW2015, Figure 4.1 Six variables, highly correlated in groups of three. The lasso estimates $(\alpha=1)$, as shown in the left panel, exhibit somewhat erratic behavior as the regularization parameter $\lambda$ is varied. In the right panel, the elastic net with $(\alpha=0.3)$ includes all the variables, and the correlated groups are pulled together.
+\end{figure} }
+
+
+
+图 \ref{Fig-Lasso-enet-HTW2015-Fig4-1} 呈现了 Lasso 与 ENet 在筛选两组高度相关的变量时的差异。
+
+图 \ref{fig:Lasso-ball-enet-lasso} 呈现了弹性网与 Lasso 约束集的三维视图。
+%\def\subFigWide{5.5cm} %定义子图宽度
+\def\subFigWide{.45\textwidth}
+\begin{figure}[htb!]  %[htbp]
+\centering
+\subfigure[弹性网]{
+\includegraphics[width=\subFigWide]{Figs/Fig-Lasso-ball-enet}
+%\caption{fig1}
+}
+\quad
+\subfigure[Lasso]{
+\includegraphics[width=\subFigWide]{Figs/Fig-Lasso-ball-lasso}
+}
+\caption{Source: HTW2015. Figure 4.2 The elastic-net ball with $\alpha=0.7$ (left panel) in $\mathbb{R}^{3}$, compared to the $\ell_{1}$ ball (right panel). The curved contours encourage strongly correlated variables to share coefficients.}
+\label{fig:Lasso-ball-enet-lasso}
+\end{figure}
+%https://blog.csdn.net/a6822342/article/details/80533135
+
+%todo 其它模型的一般化通用表述，参见 ihelp lasso, p.23
+
+      %todo ================注释-------over-----
+
+%\subsubsection{Irrepresentable Condition (IRC)}
+%
+%Zhao and (2006) 
+
+
+
+
+
+\subsection{平方根 Lasso}\label{sec:sqrt-lasso}
+
+%平方根 Lasso (
+Square-root Lasso (简称 sqrt-Lasso) 由 Belloni, Chernozhukov and Wang (2011) 提出。
+
+普通 Lasso 的目标函数为：
+$$
+\frac{1}{2 N}\left(\mathbf{y}-\mathbf{X} \boldsymbol{\beta}^{\prime}\right)^{\prime}\left(\mathbf{y}-\mathbf{X} \boldsymbol{\beta}^{\prime}\right)+\lambda \sum_{j=1}^{p}\left|\beta_{j}\right|
+$$
+
+sqrt-Lasso 的目标函数为：
+\begin{equation}\label{eq:lasso-sqrt}
+	\sqrt{\frac{1}{N}\left(\mathbf{y}-\mathbf{X} \boldsymbol{\beta}^{\prime}\right)^{\prime}\left(\mathbf{y}-\mathbf{X} \boldsymbol{\beta}^{\prime}\right)}+\frac{\lambda}{N} \sum_{j=1}^{p}\left|\beta_{j}\right|
+\end{equation}
+
+这种设定可以让扰动项的标准差成为一个常数， (note: % 类似于对随机变量进行标准化，使其方差为 1，从而可以将其从目标函数中拿掉。)
+更易于求解调节参数 $\lambda$ 的理论最优值 $\lambda^*$。 (note: % 即第 \ref{sec:lasso-plugin} 小节的 plugin 估计值。)
+该值可以为双重 Lasso (double-selection)、偏出 Lasso (partialing-out methods) 等需要多次 Lasso 估计的方法提供 $\lambda$ 的初始值，提高求解效率。因此，sqrt-Lasso 通常是配合其他方法来使用，很少单独使用。比如，对于 \ref{sec:lasso-DSL} 小节介绍的 Double Selection Lasso，可以在 dsregress 命令中附加 sqrtlasso 选项，用 sqrt-Lasso 进行变量筛选。
+
+若需独立估计 sqrt-Lasso 模型，可以用 sqrtlasso 命令，详见 [lasso] sqrtlasso。
+
+% sqrt-Lasso 更易从理论上估计最优调节参数 $\lambda^*$)，但在实际应用中往往会选出于预测能力的考虑而选择交叉验证法来选择调节参数，致使 sqrt-Lasso 较少使用。
+
+%In the square-root formulation, the standard deviation of the error term becomes a multiplicative constant that drops out of the minimization. This lack of dependence facilitates the derivation of plugin estimators for the lasso penalty parameter $\lambda^{*}$ because there is no need to estimate the standard deviation of the error term as part of the plugin formula.
+%
+%Square-root lasso is primarily used in combination with a plugin estimator for $\lambda^{*}$. The resulting square-root lasso estimation can be used with the double-selection or partialing-out methods described in [LASSO] Lasso inference intro.
+
+
+      %todo ================注释-------over-----
+
+
+
+
+\subsection{自适应 Lasso}\label{sec:adaptive-lasso}
+%todo  Stata Journal 20-4 https://statalasso.github.io/pdf/StataConference2018_AhrensSchaffer.pdf
+%Model selection is a much more difficult problem than prediction. The LASSO is only model selection consistent under the rather strong irrepresentable condition (Zhao and Yu, 2006; Meinshausen and Bühlmann, 2006).
+%在第 \ref{sec:lasso-enet} 小节已经提到，作为变量筛选工具，Lasso 只有在非常严格的假设条件下才能保证一致性 (Zhao and Yu, 2006; Meinshausen and Bühlmann, 2006)。
+
+Zou (2006) 提出的“自适应 Lasso” (Adaptive Lasso，简称 ALasso) 适用于比传统 Lasso 更稀疏的模型。%todo HTW2015 p.86, eq. (4.76)%
+它会在传统 Lasso 估计的基础上做二次甚至多次惩罚处理：对较小的系数给予更严厉的惩罚。因此，ALasso 选出的模型比传统 Lasso 更为精简，在“超稀疏”数据中有更好的变量筛选能力。
+
+ALasso 的目标函数为：%todo HTW2015 p.86, eq. (4.76)
+\begin{equation}\label{eq:lasso-ALasso-01}
+	\underset{\beta \in \mathbb{R}^{p}}{\operatorname{minimize}}\left\{\frac{1}{2}\|\mathbf{y}-\mathbf{X} \beta\|_{2}^{2}+\lambda \sum_{j=1}^{p} w_{j}\left|\beta_{j}\right|\right\},
+\end{equation}
+$$w_{j}=1 / |\widetilde{\beta}_{j}|^{\theta}$$  
+其中，$w_{j}$ 为新增的惩罚因子，$\widetilde{\beta}_{j}$ 是基于 Lasso 或 OLS (甚至是单变量 OLS 估计) 得到的初始估计值。显然，对于变量 $j$，初始系数 $\widetilde{\beta}_{j}$ 越小，其二次惩罚权重 $w_{j}$ 就越大，在后续筛选中被删去的可能性越大。
+
+%ALasso 的惩罚项可以近似为 $\ell_{q}$ 范数 ($q=1-\theta$)。
+ALasso 本质上仍为基于 $\ell_{1}$ 范数的惩罚方法，目标函数 (\ref{eq:lasso-ALasso-01}) 是 $\beta$ 的凸函数，具有全局最优解。因此，传统的 Lasso 方法都适用于求解 ALasso (Zou, 2006, p.420)。
+%其优点在于，给定初始值 $\widetilde{\beta}_{j}$，目标函数 (\ref{eq:lasso-ALasso-01}) 是 $\beta$ 的凸函数，因此易于求解。
+此外，若 $\widetilde{\beta}_{j}$ 具有 $\sqrt{N}$ 一致性，则 ALasso 可以在比传统 Lasso 更为宽松的假设条件下筛选出真实模型，或曰其模型筛选过程具有一致性 (Zou, 2006)。
+
+初始参数 $\widetilde{\beta}_{j}$ 的获取方法包括：若 $p<N$，则可以用 OLS 获取；若 $p \geq N$，可以使用传统的 Lasso 估计参数，也可以直接用单变量 OLS 进行估计。在特定条件下，单变量 OLS 表现良好 (Huang, Ma and Zhang 2008)。
+
+简言之，ALasso 主要用于超稀疏情形，可以在更一般化的条件下确保模型筛选的一致性。这种“自适应”的想法也被用于弹性网络和岭回归 (Zou and Zhang 2009)。自适应 Lasso 被广泛应用于模型筛选，比如确定 $\lambda^*$，它是 Stata 中用于确定 $\lambda^*$ 的四种方法之一。详见 Stata 手册 Lasso fitting, pp.11。%在 Stata 中，ALasso 是选择 $\lambda^*$ 的一个重要手段。
+
+图 \ref{fig:Alasso-01} 呈现了传统 Lasso、岭回归与自适应 Lasso 惩罚效果的差别，由此可以看出，ALasso 对系数进行了差异化的惩罚：越不重要的变量受到的惩罚越严重。
+
+
+%\def\subFigWide{5.5cm} %定义子图宽度
+\def\subFigWide{.45\textwidth}
+\begin{figure}[htb!]  %[htbp]
+\centering
+\subfigure[Lasso]{
+\includegraphics[width=\subFigWide]{Figs/Fig-Alasso-01-lasso}
+%\caption{fig1}
+}
+\quad
+\subfigure[Ridge]{
+\includegraphics[width=\subFigWide]{Figs/Fig-Alasso-02-ridge}
+}
+\quad
+\subfigure[Adaptive Lasso ($\theta=0.5$)]{
+\includegraphics[width=\subFigWide]{Figs/Fig-Alasso-03-alasso-theta-p5}
+}
+\quad
+\subfigure[Adaptive Lasso ($\theta=2$)]{
+\includegraphics[width=\subFigWide]{Figs/Fig-Alasso-04-alasso-theta-2}
+}
+\caption{Lasso, 岭回归与自适应 Lasso 惩罚效果对比 \\
+         Source: Zou (2006), Figure 1}
+\label{fig:Alasso-01}
+\end{figure}
+
+Stata 中可以用 lasso, selection(adaptive, steps(\#)) 命令估计 ALasso 模型，\# 表示 Lasso 的次数，数值越大产生的模型越稀疏。对于 Stata 15 及以下版本的用户，可以使用外部命令 lasso2 (Ahrens et al., 2020, PDF)。
+
+%todo https://www.stata.com/manuals/lassolassofitting.pdf#lassolassofitting
+      %todo ================注释-------over-----
+
+%\newpage
+
+\subsection{其它扩展模型}
+
+其它扩展模型都是在第 \ref{sec:Lasso-goal-function} 小节的模型框架下展开的。
+
+如第 \ref{sec:Lasso-goal-function} 小节所述，各类惩罚回归的目标函数可以统一表述为：
+\begin{equation}\label{eq:Lasso-08-a}
+	\text{Loss}+\lambda \Omega(f)
+\end{equation}
+其中，$\text{Loss}$ 为损失函数，而 $\Omega(f)$ 称为「正则化项」，$\lambda$ 为调节参数。我们需要选择合适的调节参数 $\lambda$，以便在模型的拟合能力 ($\text{Loss}$) 和复杂度 ($\Omega(f)$) 之间获得最佳的平衡。
+
+第 \ref{sec:lasso-enet}，\ref{sec:sqrt-lasso} 和  \ref{sec:adaptive-lasso} 小节中介绍的弹性网、平方根 Lasso 和自适应 Lasso 都是从正则化项 $\Omega(f)$ 入手构造模型的。显然，我们也可以从损失函数 ($\text{Loss}$) 入手构造模型，包括 Logit, Probit, 计数模型等的 Lasso 版本。 
+
+%todo 这部分内容主要参考 Stata 手册  
+
+
+
+
+\section{Lasso 在经济金融中的应用}\label{sec:lassoApp}
+Lasso 既可以用于预测，也可以用于变量筛选，这是其在因果推断中发挥着重要作用，比如估计反事实结果，克服冗余工具变量问题等。 (note: % 在 Stata 中输入 help lasso，帮助文件顶部显示的信息为：lasso -- Lasso for prediction and model selection。)
+
+多数研究中，我们感兴趣的变量都很明确，通常只有 1-2 个。但为了排除混淆因素的影响，往往还需要在模型中放置很多控制变量，或设定很多工具变量，此时便可用 Lasso 处理如下两种情况：
+
+
+(1) 选择控制变量，以解决遗漏变量偏误。
+
+(2) 选择工具变量，以解决工具变量众多引起的弱工具变量问题。
+
+
+
+后续的几个小节便是沿着这个思路展开的。
+
+%Stata 专门提供了 telasso 命令来实现各类基于 Lasso 的处理效应模型。
+
+
+\subsection{Post-Lasso}\label{sec:lasso-post-lasso}
+
+%todo Hansen2021 29.14 Post-Lasso
+%The Lasso estimator $\widehat{\beta}_{\text {Lasso }}$ simultaneously selects variables and shrinks coefficients. Shrinkage introduces bias into estimation. This bias can be reduced by applying least squares after Lasso selection. This is known as the Post-Lasso estimator.
+Lasso 估计量 $\widehat{\beta}_{\text{Lasso}}$ 在进行变量筛选的同时也对系数进行了收缩 (惩罚)。收缩会引入偏差。为此，我们可以先用 Lasso 筛选变量，进而对选出的变量集执行 OLS 估计，谓之 Post-Lasso 估计。具体包括两个步骤：
+
+%The procedure takes two steps. First, estimate the model $Y=X^{\prime} \beta+e$ by Lasso. Let $X_{S}$ denote the variables in $X$ which have non-zero coefficients in $\widehat{\beta}_{\text {Lasso }}$. Let $\beta_{S}$ denote the corresponding coefficients in $\beta$. Second, the coefficient $\beta_{S}$ is estimated by least squares, thus $\widehat{\beta}_{S}=\left(\boldsymbol{X}_{S}^{\prime} \boldsymbol{X}_{S}\right)^{-1}\left(\boldsymbol{X}_{S}^{\prime} \boldsymbol{Y}\right) .$ This is the Post-Lasso least squares estimator. Belloni and Chernozhukov (2013) provide conditions under which the post-Lasso estimator has the same convergence rates as the Lasso estimator.
+
+第一步，用 Lasso 估计如下模型：
+$$Y=X^{\prime} \beta+e$$
+将筛选出的 (Selected) 具有非零系数的变量集记为 $X_{S}$。
+
+第二步，用 $Y$ 对 $X_{S}$ 执行 OLS 估计，得到系数估计值， (note: % Belloni and Chernozhukov (2013) 提供了 Post-Lasso 与 Lasso 估计量具有相同收敛率的前提条件。)
+$$\widehat{\beta}_{S}=\left(\boldsymbol{X}_{S}^{\prime} \boldsymbol{ X}_{S}\right)^{-1}\left(\boldsymbol{X}_{S}^{\prime} \boldsymbol{Y}\right)$$
+
+% Hansen2021
+Post-Lasso 可以视为一个硬阈值 (hard thresholding) 估计量，也可以视为一个变量筛选模型 (post-model-selection, PMS)。当各个解释变量正交时，Post-Lasso 估计量与 PMS 估计量完全等价，如图 \ref{Fig-Lasso-hard-bestsub-ols-01} 所示。因此，Post-Lasso 估计量与 PMS 估计量具有相同的统计特性：高方差和非标准分布。
+
+可以看出，所谓的 Post-Lasso，本质上是借助 Lasso 进行变量筛选，进而用 OLS 对选出的变量执行传统的线性回归。问题的关键在于第一步是否能筛选出正确的模型。因此，在某些情况下，第一步可以换用弹性网 (\ref{sec:lasso-enet} 小节) 或自适应 Lasso (\ref{sec:adaptive-lasso} 小节)，以保证变量筛选的一致性。
+
+需要特别强调的是，Post-Lasso 的价值主要在于其背后的估计思想，若直接应用 Post-Lasso 反而会有很多局限 (详见 [lasso] Lasso intro, pp.7)：
+
+其一，Post-Lasso 属于两步估计法，第一阶段的 Lasso 过程存在随机性 (更换样本或选择不同的 $\lambda$ 确定方法都会导致结果的变化)，这种“sample-to-sample
+variability”导致的偏误需要在第二阶段的 OLS 回归中予以考虑，比如，采用纠偏后的标准误，然而，这是个很有挑战的工作。
+
+其二，Lasso 会删去很多“不重要 (系数较小)”的变量，或者在一组高度相关的变量中随机删除其中的一部分 (见 \ref{sec:lasso-enet} 小节)。若研究目的是预测，这些处理不会产生太大的影响，甚至是必须的，但对于模型筛选而言，则会导致遗漏变量偏误 (详见 \ref{sec:lasso-IV} 和 \ref{sec:lasso-DSL} 小节)。
+
+或许是基于上述考虑，Stata 并未提供用于单独执行 Post-Lasso 的命令，而是在执行完 lasso 后，使用 lassocoef, display(coef, postselection) 来呈现其估计系数，详见 help lassocoef。
+若使用外部命令 rlasso 或 lasso2，则只需附加 ols 选项即可。 
+%todo Ahrens, 2020, p.184
+%where $\widetilde{\beta}_{j}$ is a sparse first-step estimator such as the lasso. Thus, postestimation OLS treats the first-step estimator as a genuine model-selection technique. For lasso with theory-driven regularization, Belloni and Chernozhukov (2013) have shown that postestimation OLS, also referred to as postlasso, achieves the same convergence rates as the lasso and can outperform the lasso in situations where consistent model selection is feasible (see also Belloni et al. [2012]). Similar results hold for the square-root lasso (Belloni, Chernozhukov, and Wang 2011, 2014).
+
+
+      %todo ================注释-------over-----
+
+
+
+\subsection{Double Selection Lasso (DS-Lasso)}\label{sec:lasso-DSL}
+
+%todo Hansen2021 29.20 Double Selection Lasso
+
+\subsubsection{Post-Lasso 的局限}
+第 \ref{sec:lasso-post-lasso} 小节介绍的 Post-Lasso (或曰 Lasso-OLS 两步估计法) 虽然达到了筛选变量的目的，也易于操作，但当模型筛选目的是因果推断时，该方法存在严重的缺陷。
+给定如下模型：
+\begin{equation}\label{eq:lasso-DS-01}
+\begin{aligned}%Hansen, 2021, 29.22
+Y =D \theta + X_1^{\prime} \beta_1 + X_2^{\prime} \beta_2 + e \\
+\mathrm{E}[e \mid D, X_1, X_2] =0
+\end{aligned}
+\end{equation}
+其中，变量 $D$ 是我们重点关注的变量 (比如政策虚拟变量)。
+%，其中还可以包含多个变量 (但个数不会太多)。
+控制变量集为 $X = (X_1, X_2)$，其数量可能很庞大，甚至超过样本数 (基础控制变量本身加上它们的各类函数转换和交互项等)。
+%假设这些变量中只有一小部分的系数不为零，即满足稀疏性假设，我们
+
+假设%采用 Group-Lasso，
+在控制核心变量 $D$ 的情况下， (note: % 也就是说，变量 $D$ 不参与 Lasso 筛选。可以用 lasso, offset(D) 命令来实现。)
+采用 Lasso 对控制变量 $X$ 进行筛选，最终得到系数非零的变量集为 $X_1$。
+在第二阶段的 OLS 回归中，我们估计的模型如下 (Post-Lasso)：
+\begin{equation}\label{eq:lasso-DS-02}
+Y =D \widetilde{\theta} + X_1^{\prime} \gamma_1 + u, \quad u= X_2^{\prime} \beta_2 + e
+\end{equation}
+显然，这里很可能存在遗漏变量偏误。因为，如果 $\mathrm{corr}(D,X_2) \neq 0$，则意味着 $\mathrm{corr}(D,u)\neq 0$，并进而导致 ${\widetilde{\theta}}$ 的 OLS 估计不再是 $\theta$ 的无偏估计。 
+
+为此，Belloni, Chernozhukov, and Hansen (2014b, RES) 提出了 Double Selection Lasso (简称 DS-Lasso)。基本思想是：分别用 $Y$ 和 $D$ 对 $X$ 执行 Lasso 回归，并将两次筛选出的变量的并集作为最终的控制变量集 $X_{DS}$。最终，用 $Y$ 对 $D$ 和 $X_{DS}$ 执行 OLS 回归即可。
+
+Belloni et al. (2014b) 的理论分析表明，若 $Y$, $D$ 与 $X$ 之间都满足近似稀疏性假设 (模型可以用数量有限的一组变量来很好地近似)，则 DS-Lasso 估计量及其 $t$ 值都渐进地服从正态分布。因此，常规的统计推断方法仍然适用。注意，这些结论都以 $N \to \infty$ 为前提，在有限样本下仍然可能存在较大的偏差。%同时，上述结果也近似稀疏性假设 
+
+%Belloni, Chernozhukov, and Hansen (2014b) show that when both (29.22) and (29.23) satisfy an approximate sparsity structure (so that the regressions are well approximated by a finite set of regressors) then the double-selection estimator $\widehat{\theta}_{\mathrm{DS}}$ and its t-ratio are asymptotically normal so conventional inferernce methods are valid. Their proof is technically tedious so not repeated here. The essential idea is that since $\widetilde{X}$ includes the variables in $X_{2}$, the estimator $\widehat{\theta}_{\mathrm{DS}}$ is asymptotically equivalent to the regression where $D$ is replaced with the error $V$ from (29.23). Since $V$ is uncorrelated with the regressors $X$ the estimator and t-ratio satisfy the conventional non-selection asymptotic distribution.
+%
+%It should be emphasized that this distributional claim is asymptotic; finite sample inferences remain distorted from nominal levels. Furthermore, the result rests on the adequacy of the approximate sparsity assumption for both the structural equation (29.22) and the auxillary regression (29.23).
+
+% (\ref{eq:lasso-DS-01})
+
+\subsubsection{DS-Lasso 估计过程}
+%todo Stata 手册 ihelp dsregress, p.6
+% https://www.stata.com/manuals/lassodsregress.pdf 
+下面摘取 Stata 手册 [lasso] dsregress (p.6) 中的表述来说明 DS-Lasso 的实现过程。
+
+考虑如下回归模型：
+\begin{equation}\label{eq:Lasso-DS-01}
+	\mathbf{E}[y \mid \mathbf{d}, \mathbf{x}]=\mathbf{d} \boldsymbol{\alpha}^{\prime}+\beta_{0}+\mathbf{x} \boldsymbol{\beta}^{\prime}
+\end{equation}
+其中，$\mathbf{d}$ 中包含 $J$ 个我们要重点研究的变量 (多数情况下 $J=1$ 或只有 $2-3$ 个)。$\mathbf{x}$ 中包含 $p$ 个控制变量，$p$ 可以很大，甚至超过样本数 ($p\gg n$) 或可以随着样本数的增加而增加。但是，数据本身必须满足稀疏性或近似稀疏性假设，即 $\boldsymbol{\beta}$ 中所包含的不为零的系数非常有限。
+
+
+DS-Lasso 的实现过程如下：
+\begin{enumerate}
+\item 用 $y$ 对 $\mathbf{x}$ 执行线性 Lasso 估计 (Stata命令为：lasso linear y x*), 将选出的变量集记为 $\widetilde{\mathbf{x}}_{y}$。
+\item 对 $\mathbf{d}$ 中的每个变量 $d_{j} (j=1, \ldots, J)$ 依次执行 Lasso 变量筛选,即，用 $d_{j}$ 对 $\mathbf{x}$ 进行 Lasso 回归，选出的变量集记为 $\widetilde{\mathbf{x}}_{j}$。
+\item 将第一步和第二步中筛选出来的所有变量集取并集，得到最终的控制变量集，即  $\widehat{\mathbf{x}} = \left\{\widetilde{\mathbf{x}}_{1} \cup \widetilde{\mathbf{x}}_{1} \cdots \widetilde{\mathbf{x}}_{J} \cup \widetilde{\mathbf{x}}_{y}\right\}$。
+\item 用 $y$ 对 $\mathbf{d}$ 和 $\widehat{\mathbf{x}}$ 执行线性回归，对应的系数估计估计值记为 $\widehat{\boldsymbol{\alpha}}$ 和 $\widehat{\boldsymbol{\beta}}$。Stata 中默认计算稳健性标准误，即 reg y d x\_hat, vce(robust)。
+\end{enumerate}
+补充两点说明：
+
+其一，第 1-2 步中的 Lasso 估计可以用第 \ref{sec:lasso-lambda} 小节介绍的 cv, plugin, adaptive 等方法确定调节参数 $\lambda^*$。若不做设定，则 Stata 默认采用 plugin 方法获选择 $\lambda^*$，即 (\ref{eq:lasso-plugin-02}) 式中的 $\lambda_{\text {heteroskedastic}}$。
+
+其二，第 3 步中之所以「取并集」，是为了避免遗漏变量偏误。换言之，无论是对 $y$ 还是对 $d_j$ 有影响的变量都应保留，相当于做了个「双保险」。这是 DS-Lasso 用以克服 Post-Lasso 局限的主要手段。
+ 
+
+      %todo ================注释-------over-----
+
+Stata 中可以用 dsregress 命令得到 DS-Lasso 估计量，详见 [lasso] dsregress。外部命令为 pdslasso。
+
+
+      %todo ================注释-------over-----
+
+
+
+%\section{拆出 (Partialing-out Lasso, PO-Lasso)}
+\subsection{Partialing-out Lasso (PO-Lasso)}\label{sec:polasso}
+
+%todo Hansen 2021, Section 29.21 Post-Regularization Lasso
+
+%[lasso] poregress 
+
+
+Belloni et al. (2012), Chernozhukov, Hansen, and Spindler (2015a, b) 提出的“后正则化 Lasso (Post-Regularization Lasso)”对 DS-Lasso 做了进一步优化。作者将他们的方法称为“工具变量方法”。
+
+Stata 手册将该模型称为「偏出 Lasso (Partialing-out Lasso)」， (note: % 参见 [lasso] Lasso\_intro，以及 [lasso] poregress。)。
+一方面是因为该方法的核心思想源于著名的 Frisch-Waugh-Lovell 定理 (Frisch and  Waugh, 1933; Lovell, 1963; Yamada, 2017))， (note: % 参见 图示线性回归系数：Frisch-Waugh定理与部分回归图。)
+使用该名称更具跨学科性；另一方面，且当协变量外生时，这些方法不需要外部工具变量。
+
+后文将此类模型统称为 PO-Lasso，以便与 Stata 手册中的称呼 (POLR) 保持一致。 
+
+PO-Lasso 的处理方法与 DS-Lasso 非常相似。我们要研究的模型与 DS-Lasso 相同，即 (\ref{eq:lasso-DS-01}) 式，重列如下：
+\begin{equation}\label{eq:lasso-DS-01A}
+\begin{aligned}%Hansen, 2021, 29.22
+Y =D \theta + X \beta + e \\
+\mathrm{E}[e \mid D, X] =0
+\end{aligned}
+\end{equation}
+
+为便于理解 PO-Lasso 的处理思路，这里将它与前文介绍的 DS-Lasso 做详细对比：
+
+
+\textbf{DS-Lasso} 的做法是：
+
+\begin{enumerate}
+\item 用 $Y$ 对 $X$ 执行 Lasso 回归，筛选出变量集 $\widetilde{X}_1$；
+\item 用 $D$ 对 $X$ 执行 Lasso 回归，筛选出变量集 $\widetilde{X}_2$，进而与第一步得到的控制变量集 $\widetilde{X}_1$ 合并，得到最终的控制变量集 $\widetilde{X}_{DS} = \widetilde{X}_1 \cup \widetilde{X}_2$；
+\item 用 $Y$ 对 $D$ 和 $\widetilde{X}_{DS}$ 执行 OLS 回归。变量 $D$ 的系数 $\widehat{\theta}_{DS}$ 便是(\ref{eq:lasso-DS-01A}) 式中参数 $\theta$ 的一致估计。
+\end{enumerate}
+
+
+\textbf{PO-Lasso} 的做法是：\label{page:lasso-polasso}
+
+\begin{enumerate}
+\item 用 $Y$ 对 $X$ 执行 Lasso 估计，筛选出变量集 $\widetilde{X}_1$，进而用 $Y$ 对 $\widetilde{X}_1$ 执行 OLS 回归，得到残差 $\widehat{E}_Y$；
+\item 用 $D$ 对 $X$ 执行 Lasso 估计，筛选出变量集 $\widetilde{X}_2$，进而用 $D$ 对 $\widetilde{X}_2$ 执行 OLS 回归，得到残差 $\widehat{E}_D$；
+\item 用 $\widehat{E}_Y$ 对 $\widehat{E}_D$ 执行 OLS 估计，则 $\widehat{E}_D$ 的系数 $\widehat{\theta}$ 便是 (\ref{eq:lasso-DS-01A}) 式中参数 $\theta$ 的一致估计。常规的统计推断依然适用。
+\end{enumerate}
+
+显然，第一步和第二步分别采用部分回归 (partial regression) 将控制变量 $X$ 中的主要控制变量从 $Y$ 和 $D$ 中过滤掉。
+%todo 这里还没想清楚如何用 DAG 呈现上述过程
+%借助图 \ref{Fig-lasso-poreg-01} 中的有向无环图更容易理解其处理过程。
+ 
+%{ \def\FigName{Fig-lasso-poreg-01}
+%\begin{figure}
+%	\centering
+%	\includegraphics[width=0.45\textwidth]{\FigName.png} 
+%	\caption{PO-Lasso DAG} %caption是图片的标题
+%	\label{\FigName} 
+%\end{figure} }
+
+
+{ \def\FigName{Fig-lasso-poreg-01}
+%\begin{figure}
+%	\centering
+%	%\includegraphics[width=0.45\textwidth]{\FigName.png} 
+%	
+%	\begin{tikzpicture}
+%		\node  (1) {$ X_1 $};
+%		\node [right =of 1] (2) {$ W_1 $};
+%		\node [below =of 1] (3) {$ D $};
+%		\node [left =of 3] (4) {$ Y $};
+%		\node [right =of 3] (5) {$ X_3 $};
+%		\node [right =of 5] (6) {$ W_3 $};
+%		\node [below =of 3] (7) {$ X_2 $};
+%		\node [right =of 7] (8) {$ W_2 $};
+%		
+%		\draw[->] (2) -- (1);
+%		\draw[->] (1) -- (3);
+%		\draw[->] (3) -- (4);
+%		\draw[->] (5) -- (3);
+%		\draw[->] (6) -- (5);
+%		\draw[->] (7) -- (4);
+%		\draw[->] (7) -- (3);
+%		\draw[->] (8) -- (7);
+%	\end{tikzpicture}
+%		
+%	\caption{PO-Lasso DAG} %caption是图片的标题
+%	\label{\FigName} 
+%\end{figure} }
+
+
+
+%双选 Lasso 的一个潜在改进是 Chernozhukov, Hansen and Spindler (2015) 的后正则化 Lasso 估计器，它在 Stata 手册中被标记为局部化 Lasso。 对于部分线性模型（参见第 19.24 节），估计量与 Robinson (1988) 基本相同，但通过套索而不是核回归进行估计。
+
+当然，实际估计过程中可以做很多变化。比如，第 1-2 步的变量筛选可以用sqrt-Lasso，adaptive-Lasso 等方法，$\lambda^*$ 的选取也有多种方式。此外，若 $D$ 中包含多个变量% $\left{D_j\right}_{j=1}^J$，
+，则可以按照第 2 步的处理方式求取每个变量对 $X$ 进行 Lasso 回归后的残差向量，进而悉数加入到第三步的 OLS 回归中即可。
+
+Stata 中的处理过程与此相似，参见 [lasso] poregress, p.7-8。外部命令为 pdslasso。
+
+上述方法也可以扩展到模型中包含内生变量的情形，此时便是“偏出 IV-Lasso”估计。参见第 \ref{sec:lasso-IV} 小节，Chernozhukov, Hansen, and Spindler (2015a, b)，以及 [lasso] poivregress, pp. 7。Stata 命令为 poivregress。 
+
+
+      %todo ================注释-------over-----
+
+
+
+
+
+      %todo ================注释-------over-----
+
+
+\subsection{Lasso IV}\label{sec:lasso-IV}
+
+%todo Hansen 2021 
+\subsubsection{冗余工具变量问题}
+多数情况下，我们都很难找到合适的工具变量。在有些情形下，会有很备选工具变量，但它们中只有一小部分与内生变量存在较强的相关性，其它的都是“弱工具变量”。
+
+比如，在动态面板估计中，若 $T$ 较大，比如 $T>40$，则在使用 SYS-GMM 且不对工具变量的取舍做任何限制时，往往会导致在一个只有 $NT=30 \times 40 = 1200$ 个观察值的样本中，被 Stata 的 xtabond2 或 xtdpdsys 自动选入的工具变量数超过 300 个。这会导致严重的自由度损耗，也会导致后续的过度识别检验和序列相关检验无法通过 (意味着这些工具变量不全是“干净”的 IV)。虽然可以人为地限制工具变量个数，但过于主观。就模型设定角度而言，这种做法也可能遗漏一些重要的 IV，导致参数的识别度有限。
+
+又如，在产业经济学和空间计量的研究中，经常使用行业均值、同伴均值以及他们的滞后项、高阶项作为工具变量。显然，这些工具变量的各类组合也都是理论上合理的工具变量。如此一来，工具变量的个数也会激增，但同样存在稀疏性特征：只有为数不多的几个工具变量真正有用。我们的目标便是筛选出这些有用的 IV。
+
+\subsubsection{Lasso-IV 估计量}
+Belloni, Chen, Chernozhukov, and Hansen (2012) 将 Lasso 引入 IV 估计，为解决上述问题提供了一种可能的思路，这主要源于 Lasso 的变量筛选功能。为了便于说明，考虑如下基本的 IV 模型设定：
+\begin{equation}\label{eq:lasso-iv-01}
+	\begin{aligned}
+	Y &=X^{\prime} \beta+e,  \quad \mathbf{E}[e \mid Z] =0 \\
+	X &=\Gamma^{\prime} Z+U, \quad \mathbf{E}[U \mid Z] =0
+	\end{aligned}
+\end{equation}
+%where $\beta$ is $k \times 1$ (fixed) and $\Gamma$ is $p \times n$ with $p$ large. If $p>n$ the 2SLS estimator equals least squares. If $p<n$ but large the 2SLS estimator suffers from the "many instruments" problem. The authors' recommendation is to estimate $\Gamma$ by Lasso or post-Lasso. (note: % % As they discuss, any machine learning estimator can be used, though the specific assumptions listed in their paper are for Lasso estimation.)
+其中，$\beta$ 为 $k\times 1$ (固定)，而$\Gamma$为$p\times n$。关键在于，$p$ 可以很大。如果 $p>n$，则 2SLS 估计量与 OLS 估计等价。有些情况下，虽然 $p<n$，但 $p$ 仍然较大，则2SLS估计量存在“冗余工具变量 (many instruments)”问题。此时，Lasso 就派上用场了：Belloni et al. (2012) 建议使用 Lasso 或 Post-Lasso 估计 $\Gamma$。 (note: % 当然，诚如作者所言，Lasso 不是唯一选择，也可以使用其它机器学习方法进行变量筛选。)
+
+如果 $X$ 中包含多个内生变量，则可以依次执行 Lasso 筛选，即让它们分别对 $Z$ 进行 Lasso 回归。
+设第 $j$ 个内生变量与工具变量之间的回归方程为：
+$$X_{j}=\gamma_{j}^{\prime}Z+U_{j}$$
+Lasso 后的系数估计值为 $\widehat{\gamma}_{j}$ ($j=1,2,\cdots,J$)。我们可以将这 $J$ 个系数统一放置在矩阵 $\widehat{\Gamma}_{\text {Lasso }}$ 中，从而得到 $X$ 的预测值 (类似于 2SLS 中第一阶段得到的拟合值)：
+$$\widehat{\boldsymbol{X}}_{\text {Lasso }}=\boldsymbol{Z} \widehat{\Gamma}_{\text {Lasso }}$$
+%The reduced form equations for the endogenous regressors are $X_{j}=\gamma_{j}^{\prime} Z+U_{j}$. Each is estimated separately by Lasso yielding coefficient estimates $\widehat{\gamma}_{j}$ which are stacked into the matrix $\widehat{\Gamma}_{\text {Lasso }}$ and used to form the predicted values $\widehat{\boldsymbol{X}}_{\text {Lasso }}=\boldsymbol{Z} \widehat{\Gamma}_{\text {Lasso }}$. 
+最终，Lasso-IV 估计量可以表示为：
+$$
+\widehat{\beta}_{\text {Lasso-IV }}=\left(\widehat{\boldsymbol{X}}_{\text {Lasso }}^{\prime} \boldsymbol{X}\right)^{-1}\left(\widehat{\boldsymbol{X}}_{\text {Lasso }}^{\prime} \boldsymbol{Y}\right) .
+$$
+
+简言之，Lasso-IV 其实就是在传统的 2SLS 基础上增加了一个基于 Lasso 的变量筛选环节。然而，这个看似简单的步骤却可以很好地解决困扰大家已久的「冗余工具变量」问题。例如，Belloni, Chernozhukov and Hansen (2014)
+使用 Lasso-IV 方法重新估计了 Chen and Yeh (2012, PDF) 的模型后，
+发现虽然备选工具变量有 144 个，但采用 Lasso 筛选后真正有用的 IV 其实只有一个。考虑到原文的样本中只有 185 个观察值，将 IV 个数从 144 减少为 1 个，估计值的有效性将大幅提高。
+% (note: % % Belloni, Chernozhukov and Hansen (2014) 还用 Lasso-IV 重新审视了 Acemoglu, Johnson, and Robinson (2004), Donohue and Levitt (2001) 文中的估计结果。 %)
+
+
+\subsubsection{Stata 实操}
+Stata 官方命令为 poivregress，采用第 \ref{sec:polasso} 小节介绍的 PO-Lasso 来执行 IV 估计。
+%用以实现 Belloni et al. (2012) 以及 Belloni et al. (2014a) 文中的方法。适用于 Stata 16 以上版本的用户。 
+%上述方法也可以扩展到模型中包含内生变量的情形，此时便是“偏出 IV-Lasso”估计。
+详见 Chernozhukov, Hansen, and Spindler (2015a, b) 以及 [lasso] poivregress, pp. 7。
+%Stata 命令为 poivregress。 
+
+外部命令为 ivlasso，用以实现  Chernozhukov, Hansen, and Spindler (2015a) 文中的估计方法，适用于 Stata 13 及以上版本。作者在帮助文件中用 Lasso-IV 重现了几篇使用传统 IV 方法的经典论文，包括 Angrist and Keueger (1991)。该命令的一大优势是附加了用以控制个体效应的选项 fe，可以很方便地应用到面板数据中。 
+
+另一个外部命令是 sivreg，用以实现 Windmeijer et al. (2019) 文中的方法。应用该方法的论文有：Caner et al. (2021)，详见文中脚注 9 中的相关说明。
+
+\subsection{Double/Debiased Machine Learning}\label{sec:lasso-DML}
+%todo Hansen2021 29.22 Double/Debiased Machine Learning
+由 Chernozhukov, Chetverikov, Demirer, Duflo, Hansen, Newey, and Robins (2018) 提出的“双重机器学习” (Double/Debiased machine learning, DML) 在近几年中获得了广泛的关注，可能是目前最拉风的估计量了。% (note: % %这篇文章的作者全部是超级大牛，本想写「最牛叉的……」，最后改成了「最拉风的……」，\^{}=\^{}。) 
+
+我们要研究的目标模型与 DS-Lasso 以及 PO-Lasso 相同：
+\begin{equation}\label{eq:lasso-DS-01B}
+\begin{aligned}%Hansen, 2021, 29.22
+%\Y = \D \theta + \X \beta + \e \\
+%\mathrm{E}[\e \mid \D, \X] =0
+Y = D \theta + X \beta + e \\
+\mathrm{E}[e \mid D, X] =0
+\end{aligned}
+\end{equation}
+相比于 PO-Lasso，DML 的主要改进在于增加了“样本拆分” (samplesplitting) 环节，这可以降低 DS-Lasso 和 PO-Lasso 中两次 Lasso 之间的相关性，从而提高估计量的表现。
+%The DML estimator extends the post-regularization estimator of the previous section by adding samplesplitting similarly to the split-sample IV estimator (see Section 29.19). The authors argue that this reduces the dependence between the estimation stages and can improve performance.
+
+为了便于说明其估计流程，这里先增加一个辅助方程：
+\begin{equation}\label{eq:lasso-Hansen2021-29-23}
+D=X^{\prime} \gamma+V, \quad \mathrm{E}[V \mid X]=0
+\end{equation}
+把 (\ref{eq:lasso-Hansen2021-29-23}) 带入 (\ref{eq:lasso-DS-01B})，可得：
+\begin{equation}\label{eq:lasso-Hansen2021-29-24}
+Y=X^{\prime} \eta+U, \quad \mathrm{E}[U \mid X]=0
+\end{equation}
+其中，$\eta=\beta+\gamma \theta$, $U=e+V \theta$。
+% dsl,1= DS-Lasso ，pol,1= PO-Lasso
+
+DS-Lasso 的做法是：分别对 (\ref{eq:lasso-Hansen2021-29-23}) 和 (\ref{eq:lasso-Hansen2021-29-24}) 进行 Lasso 回归，进而用二者选出变量的并集作为控制变量，进行 $Y$ 对 $D$ 的 OLS 估计，得到 (\ref{eq:lasso-DS-01B}) 式中 $\theta$ 的一致估计。
+
+PO-Lasso 的做法是：分别对 (\ref{eq:lasso-Hansen2021-29-23}) 和 (\ref{eq:lasso-Hansen2021-29-24}) 进行 Lasso 或 Post-Lasso 回归，得到残差 $\widehat{E}_D$ 和 $\widehat{E}_Y$，进而用 $\widehat{E}_Y$ 对 $\widehat{E}_D$ 执行 OLS，得到 $\theta$ 的一致估计。
+
+DML 则更进了一步，引入了交叉验证的思想，进行了所谓的“K-折切分” (K-fold partitioning)，估计流程如下：
+    
+    
+    \begin{center}
+	\begin{tikzpicture}
+		\draw (1,2) rectangle (6,1);
+		\draw (2,1) -- (2,2);
+		\draw[->] (1.5,2) -- (1.5,2.4);
+		\draw (1.5,2.4)coordinate (A)node[above] {$\widehat{Y_{k}}=X_k\widehat{\eta}_{-k}\ \to \ \widehat{U}_{k}$};
+		\draw[->] (4,1) -- (4,0.6);
+		\draw (4,0)coordinate (B)node[above] {$\widehat{\eta}_{-k}$};
+		\draw[->] (3.6,0.3) -- (1.5,0.8);
+		\draw (1.5,1.2)coordinate (C)node[above]{$S_k$};
+		\draw (4.3,1.2)coordinate (D)node[above]{$\S_{-k}$};
+		\fill (3.0,1.5) circle (1pt);
+		\fill (3.3,1.5) circle (1pt);
+		\fill (3.6,1.5) circle (1pt);
+		%\fill (3.9,1.5) circle (1pt);
+		%\fill (4.2,1.5) circle (1pt);
+		%\fill (4.5,1.5) circle (1pt);
+		\fill (4.8,1.5) circle (1pt);
+		\fill (5.1,1.5) circle (1pt);
+		\fill (5.4,1.5) circle (1pt);
+	\end{tikzpicture}
+    \end{center}
+%As presented in the previous section, the post-regularization estimator first estimates the coefficients $\gamma$ and $\eta$ in the models (29.23) and (29.24) and then estimates the coefficient $\theta$. The split-sample estimator performs these estimation steps using separate samples. The DML estimator takes this a step further by using K-fold partitioning. The estimation algorithm is as follows.
+\begin{enumerate}
+\item  把样本随机等分为 $K$ 组 (通常取 $K=10$)，将第 $k$ 组样本标记为 $S_{k}\ (k=1, \ldots, K)$, 每组的样本数约为 $N / K$；将第 $k$ 组以外的其它 $K-1$ 个组构成的样本标记为 $\S_{-k}$；
+\item 将每组的数据写为矩阵形式 $\left(\boldsymbol{Y}_{k}, \boldsymbol{D}_{k}, \boldsymbol{X}_{k}\right)$；
+\item 对于每个子样本 $S_{k}\ (k=1, \ldots, K)$，执行如下估计：
+   \begin{enumerate}
+   \item 去一折估计 (leave-one-fold-out)。针对样本 $\S_{-k}$，使用 Lasso 或 Post-Lasso 分别估计 (\ref{eq:lasso-Hansen2021-29-23}) 和 (\ref{eq:lasso-Hansen2021-29-24}) 式，得到 $\gamma$ and $\eta$ 的估计值，记为$\hat{\gamma}_{-k}$ and $\widehat{\eta}_{-k}$。 
+   \item 获取第 $k$ 折样本的残差。将 $\hat{\gamma}_{-k}$ 和 $\widehat{\eta}_{-k}$ 带入第 $k$ 折样本 $S_{k}$，计算 (\ref{eq:lasso-Hansen2021-29-23}) 和 (\ref{eq:lasso-Hansen2021-29-24}) 式对应的残差  $\widehat{\boldsymbol{V}}_{k}=\boldsymbol{D}_{k}-\boldsymbol{X}_{k} \widehat{\gamma}_{-k}$ and $\widehat{\boldsymbol{U}}_{k}=\boldsymbol{Y}_{k}-\boldsymbol{X}_{k} \widehat{\eta}_{-k}$。简言之，采用基于 $\S_{-k}$ 样本估得的参数来预测 $S_k$ 样本中的残差。
+   \end{enumerate}
+\item 将 $K$ 组样本中的残差 $\widehat{\boldsymbol{V}}_{k}$ 和 $\widehat{\boldsymbol{U}}_{k}$ 堆叠起来，形成 $N \times 1$ 向量 $\widehat{\boldsymbol{V}}$ 和 $\widehat{\boldsymbol{U}}$，进而用 $\widehat{\boldsymbol{U}}$ 对 $\widehat{\boldsymbol{V}}$ 执行 OLS 估计，得到 (\ref{eq:lasso-DS-01B}) 式中 $\theta$ 的一致估计，记为  $\widehat{\theta}_{\mathrm{DML}}=\left(\sum_{k=1}^{K} \widehat{\boldsymbol{V}}_{k}^{\prime} \widehat{\boldsymbol{V}}_{k}\right)^{-1}\left(\sum_{k=1}^{K} \widehat{\boldsymbol{V}}_{k}^{\prime} \widehat{\boldsymbol{U}}_{k}\right)$ 或 $\widehat{\theta}_{\mathrm{DML}}=(\widehat{\boldsymbol{V}}^{\prime} \widehat{\boldsymbol{V}})^{-1}(\widehat{\boldsymbol{V}}^{\prime} \widehat{\boldsymbol{U}})$。
+\item 计算 $\widehat{\theta}_{\mathrm{DML}}$ 的异方差稳健标准误，进行统计推断。这与传统回归分析无异。
+\end{enumerate}
+
+作者将上述估计式称为 $\widehat{\theta}_{\mathrm{DML2}}$，重列如下：
+\begin{equation}\label{eq:lasso-DML-01}
+	 \widehat{\theta}_{\mathrm{DML2}}
+	 =
+	 \left(\sum_{k=1}^{K} \widehat{\boldsymbol{V}}_{k}^{\prime} \widehat{\boldsymbol{V}}_{k}\right)^{-1}\left(\sum_{k=1}^{K} \widehat{\boldsymbol{V}}_{k}^{\prime} \widehat{\boldsymbol{U}}_{k}\right)
+	 =
+	 \left(\widehat{\boldsymbol{V}}^{\prime} \widehat{\boldsymbol{V}}\right)^{-1}\left(\widehat{\boldsymbol{V}}^{\prime} \widehat{\boldsymbol{U}}\right)
+\end{equation}
+
+他们还提供了一个估计式：称之为 $\widehat{\theta}_{\mathrm{DML1}}$：
+\begin{equation}\label{eq:lasso-DML-02}
+	 \widehat{\theta}_{\mathrm{DML1}}
+	 = 
+	 \frac{1}{K}
+	 	 \sum_{k=1}^{K}\widehat{\theta}_k
+	 = 
+	 \frac{1}{K}
+	 \sum_{k=1}^{K}\left(\widehat{\boldsymbol{V}}_{k}^{\prime} \widehat{\boldsymbol{V}}_{k}\right)^{-1}\left(\widehat{\boldsymbol{V}}_{k}^{\prime} \widehat{\boldsymbol{U}}_{k}\right)
+\end{equation}
+$\widehat{\theta}_{\mathrm{DML1}}$ 其实就是 $K$ 个子样本组中得到的 $\widehat{\theta}_k$ 估计值的简单平均。具体而言，用第 3-(2) 步中得到的 $\widehat{\boldsymbol{V}}_{k}$ 对 $\widehat{\boldsymbol{U}}_{k}$ 执行 OLS 得到 $\widehat{\theta}_k$，即第 $k$ 折的子样本估计值，最终求得 $\left\{\widehat{\theta}_1, \widehat{\theta}_2, \ldots, \widehat{\theta}_K \right\}$ 的平均值，作为 (\ref{eq:lasso-DS-01B}) 式中 $\theta$ 的一致估计量。
+
+作者建议用 $\widehat{\theta}_{\mathrm{DML2}}$，它也是 Stata 中 xporegress 命令的默认估计量。 
+
+\subsubsection{DML 简要评价}
+不难看出，DML 的估计过程和思路与第 \pageref{page:lasso-polasso} 页介绍的 PO-Lasso 非常相似，唯一的差别就是残差向量的获取方式：DML 引入了 $K$-折交叉估计来获取残差向量，而 PO-Lasso 则是直接使用样本内估得的残差向量。
+
+Chernozhukov et al. (2018) 的理论分析表明，在常规的假设条件下，$\widehat{\theta}_{\mathrm{DML}}$ 渐进服从正态分布，且收敛速度优于 PO-Lasso 估计量。相比于后者，DML 估计量的主要优势在于通过样本分割消除了两个估计步骤之间的相关性，从而减少了两步估计带来的模型选择偏差 (post-model-selection bias)。
+
+具体而言，无论是 DS-Lasso，还是 PO-Lasso 或 DML，本质上都是两阶段估计：第一阶段通过  Lasso 筛选变量 (模型筛选)，第二阶段执行 OLS 或 IV 估计。因此，如果第一阶段的估计存在较大的偏差 (比如，有些重要的变量在第一阶段未被选中)，自然会将这些偏差引入第二阶段的估计之中，从而导致第二阶段的估计结果存在较大的偏差或方差。DML 之所以能够降低这种偏误，在于它引入了交叉验证的思想，最终的估计结果其实可以视为 K 折估计的加权平均。换个角度来看，这种处理其实也借鉴了近十年来颇受关注的 “模型均化” (Model Averaging) 的思想。 (note: % 所谓“模型均化” (Model Averaging) 是指以多种方法得到的估计或预测结果的平均值作为最终估计量。之所以如此，是因为没有任何一种模型可以绝对优于其它模型，此时采用它们的平均值作为估计量，便成为一种次优选择。详情参见 Hansen (2007), Moral-Benito (2015), Steel (2020)。)
+
+DML 也有一些潜在的局限。其一，由于 $K$ 折分组是随机的，导致最终的估计值也具有随机性。这就要求我们将 $K$ 设置成较大的数值。问题在于，这一方面会增加计算成本，另一方面，也是更为尴尬的，很多研究的样本量本身就不大，过多的分组会导致参数估计的方差变大。这意味着 DML 更适于 $N$ 较大的场景。同时，在稳健性测试阶段，应该确保估计结果不会对 $K$ 的选择过于敏感。一个可行的办法就是使用循环交叉验证的思想：执行多次 (如 100 次) DML，进而取它们平均值作为最终结果。
+
+
+Stata 提供了多种模型的 DML 估计方法，相关命令均以 xpo 开头，包括：xporegress (线性回归), xpologit (Logit 模型), xpopoisson (泊松模型), xpoivregress (IV 估计)，详见 [lasso] xporegress。
+
+Stata 手册以 Wooldridge (2010, ex. 5.3) 为例，使用 Mroz (1987) 文中的数据演示了 xpoivregress 的使用方法。详见 
+xpoivregress Exmaple 6。
+
+
+
+
+      %todo ================注释-------over-----
+
+
+
+
+
+
+
+
+%\section{Lasso with clustered data}
+
+%see Stata 17 new feature: Lasso with clustered data
+
+
+
+      %todo ================注释-------over-----
+
+
+
+      %todo ================注释-------over-----
+
+
+\section{Stata 实操}
+%todo https://www.stata.com/manuals/lassolassofitting.pdf#lassolassofitting
+
+\subsection{Lasso 命令族}
+Stata 中的 Lasso 命令基本上覆盖了主流的 Lasso 方法，且在不断更新，其 Lasso 专属手册有 300 多页，涉及几十个命令。因此，为避免陷入各种盲目尝试的漩涡，实操之前，务必深入理解原理。
+
+开始使用 Stata 的 Lasso 系列命令之前，可用如下命令了解整体框架：
+
+
+
+$\quad \circ$ 
+         help lasso intro
+         
+$\quad \circ$ 
+         help lasso
+
+ 
+
+%使用 help Lasso intro 命令可以对 Stata 中的 Lasso 系列命令和功能有个整体认知。
+
+%
+Stata 中执行 Lasso 估计的三条最基本的命令是:
+
+
+$\quad \circ$  
+lasso, 
+sqrtlasso, 
+elasticnet
+
+
+第 \ref{sec:lassoApp} 节介绍的各类模型对应的命令为：
+
+
+$\quad \circ$  
+\textbf{DS-Lasso}：
+   dsregress, 
+   dslogit, 
+   dspoisson
+
+$\quad \circ$ 
+\textbf{PO-Lasso}：
+   poregress, 
+   poivregress, 
+   pologit, 
+   popoisson
+
+$\quad \circ$ 
+\textbf{DML}：
+   xporegress, 
+   xpoivregress, 
+   xpologit, 
+   xpopoisson
+
+
+\noindent
+如下手册中的介绍值得认真研读：
+
+
+[lasso] lasso：Lasso 和相关命令的整体介绍 (简明易懂)；
+
+[lasso] lasso intro：有关 Lasso 方法的 Stata 命令概览；  
+
+[lasso] lasso fitting：Lasso 的模型拟合过程：
+
+[lasso] lasso glossary：Lasso 中的各类术语 
+
+[te] telasso：Lasso 因果推断，如计算 ATE, ATET, POMs 等。
+
+
+此外，Stata 17 中的 Lasso 都能应对聚类数据 (clustered data)，这对于多数研究中使用的面板数据尤为重要。详情参见： Stata 17 new feature: Lasso with clustered data。
+
+
+如下几篇文章对 Stata 中 Lasso 应用做了入门介绍，有助于快速了解 lasso 系列命令的主要功能。
+
+Ahrens A., Hansen C.B., Schaffer M.E. (2020). lassopack: Model selection and prediction with regularized regression in Stata. The Stata Journal. 20(1):176-235. PDF1, PDF2, Slides, Github
+
+Drukker, D. M., and D. Liu. 2019. An introduction to the lasso in Stata. The Stata Blog.
+Link.
+
+Drukker, D. M., and D. Liu. 2019. Using the lasso for inference in high-dimensional models. The Stata Blog.
+Link
+
+      %todo ================注释-------over-----
+
+
+
+\subsection{Lasso 应用}
+
+Lasso 在经济金融领域的应用正在快速增长。例如，Belloni, Chernozhukov and Hansen (2014) 便应用 Lasso 重现了三篇经典论文中的关键结果，得到了不少有趣的发现。
+
+%\noindent
+Belloni, A., V. Chernozhukov, and C. B. Hansen. 2014. 
+High-dimensional methods and inference on structural and treatment effects. 
+Journal of Economic Perspectives 28: 29–50. Link, PDF, Stata-codes
+
+
+重现的三篇论文为：
+Acemoglu, D., S. Johnson, and J. A. Robinson. 2001. "The Colonial Origins of Comparative Development: An Empirical Investigation." American Economic Review 91(5): 1369-1401. Link,  PDF, replication
+Chen, Daniel L., and Susan Yeh. 2012. "Growth under the Shadow of Expropriation? The Economic Impacts of Eminent Domain." Link
+Donohue, John J., and Steven D. Levitt. 2001. "The Impact of Legalized Abortion on Crime." Quarterly Journal of Economics 116(2): 379-420. Link, PDF (堕胎合法化对犯罪的影响)
+Comment, Literature Review
+
+
+
+此外，如下文章提供了 Stata 重现代码，可以作为理解 Lasso 应用的阅读材料。
+
+\subsubsection{Paravisini, et al. (2015, PDF)}
+
+Paravisini, D., V. Rappoport, P. Schnabl, D. Wolfenzon. 2015. Dissecting the effect of credit supply on trade: Evidence from matched credit-export data. The Review of Economic Studies, 82 (1): 333-359. Link, Link, PDF, Replication
+
+该文采用 \ref{sec:lasso-IV} 小节介绍的 Lasso-IV 研究了信贷供给对贸易行为的影响。  
+
+\subsubsection{Myers, K. (2020, PDF)}
+
+Myers, K. 2020. The elasticity of science. American Economic Journal: Applied Economics, 12 (4): 103-134. Link, Link, PDF, Replication
+
+该文使用 pdslasso (post-selection and post-regularization Lasso-IV，见 \ref{sec:polasso} 小节)，rlasso (sqrt-Lasso，见 \ref{sec:sqrt-lasso} 小节)，ivlasso (见 \ref{sec:lasso-IV} 小节) 等外部命令进行了 Lasso-IV 估计。
+  
+
+
+\section{本章小结}
+
+Lasso 家族还有很多成员，比如：对变量进行分组惩罚的 Group Lasso、考虑群组特征的 Lasso (Lasso with clustered data)、适用于时间序列分析的 fused lasso (Tibshirani et al., 2005) 等。有兴趣的读者可以参阅第 \ref{sec:lassointro} 小节提及的文献。
+
+一个不容置疑的趋势是，Lasso 会越来越深地融入到因果推断之中，以至于 Stata 单列了一本手册介绍相关模型： [te] telasso。传统的估计 ATE, ATET, POMs 的方法都融入了 Lasso 基因。
+
+Lasso 不是大数据专属，只要 $p$ 相对于 $N$ 较大，且满足稀疏性假设或近似稀疏性假设 (别看变量很多，有用的却很少)，就有  Lasso  的用武之地。
+
+
+%\fi
+
+
+%
+%\section{HDFE + ML}
+%%todo 基于 Lasso 的高维固定效应模型，待更新，2022/7/4 10:46
+%
+%Chiang, H. D., K. Kato, Y. Ma, Y. Sasaki (2022, PDF)
+
+
+
+%\newpage
+
+\section{参考文献}
+
+
+Acemoglu, D., S. Johnson, and J. A. Robinson. 2001. The Colonial Origins of Comparative Development: An Empirical Investigation. American Economic Review 91(5): 1369-1401. Link,  PDF, replication
+
+Ahrens, A., C. B. Hansen, and M. E. Schaffer. 2018. pdslasso: Stata module for post-selection and post-regularization
+OLS or IV estimation and inference. Boston College Department of Economics, Statistical Software Components
+S458459. Link.
+
+Angrist, J. D., \& Keueger, A. B. (1991). Does compulsory school attendance affect schooling and earnings?. The Quarterly Journal of Economics, 106(4), 979-1014. Link, PDF
+
+Athey, S., \& Imbens, G. W. (2019). Machine learning methods that economists should know about. Annual Review of Economics, 11, 685-725. Link, PDF
+
+Ahrens, A., C. B. Hansen, and M. E. Schaffer. 2020. lassopack: Model selection and prediction with regularized regression in Stata. Stata Journal 20: 176–235. PDF, PPT
+
+Athey, S., Imbens, G. W., \& Wager, S. (2018). Approximate residual balancing: debiased inference of average treatment effects in high dimensions. Journal of the Royal Statistical Society: Series B (Statistical Methodology), 80(4), 597-623. Link, PDF         
+
+Akaike, H. 1974. A new look at the statistical model identification.  IEEE Transactions on Automatic Control 19: 716-723. Link, PDF.
+
+Belloni, A., D. Chen, V. Chernozhukov, and C. B. Hansen. 2012. Sparse models and methods for optimal instruments
+with an application to eminent domain. Econometrica 80: 2369–2429. Link, PDF %Stata codes
+
+Belloni, A., and V. Chernozhukov. 2011. High dimensional sparse econometric models: An Introduction. In Inverse
+Problems of High-Dimensional Estimation, ed. P. Alguier, E. Gautier, and G. Stoltz, 121–156. Berlin: Springer.
+
+
+Belloni, A., Chernozhukov, V., Fernández‐Val, I., \& Hansen, C. (2017). Program evaluation and causal inference with high‐dimensional data. Econometrica, 85(1), 233-298. Link, PDF
+
+Belloni, A., V. Chernozhukov, and C. B. Hansen. 2014a. High-dimensional methods and inference on structural and
+treatment effects. Journal of Economic Perspectives 28: 29–50. Link, PDF, Stata-codes
+
+Belloni, A., V. Chernozhukov, and C. B. Hansen. 2014b. Inference on treatment effects after selection among high-dimensional controls. Review of Economic Studies 81: 608–650. Link, PDF
+
+Belloni, A., V. Chernozhukov, and K. Kato. 2015. Uniform post-selection inference for least absolute deviation regression and other Z-estimation problems. Biometrika 102: 77-94. Link, PDF
+
+Belloni, A., V. Chernozhukov, and L. Wang. 2011. Square-root lasso: Pivotal recovery of sparse signals via conic programming. Biometrika 98: 791–806. Link, PDF
+
+Belloni, A., V. Chernozhukov, and Y. Wei. 2016. Post-selection inference for generalized linear models with many controls. Journal of Business \& Economic Statistics 34: 606–619.  Link, PDF
+
+
+Bickel, P. J., Y. Ritov, and A. B. Tsybakov. 2009. Simultaneous analysis of Lasso and Dantzig selector. Annals of
+Statistics 37: 1705–1732. Link, PDF
+
+Buhlmann, P., and S. van de Geer. 2011. Statistics for High-Dimensional Data: Methods, Theory and Applications.
+Berlin: Springer.
+
+Caner, M., Fan, Q., \& Grennes, T. (2021). Partners in debt: An endogenous non-linear analysis of the effects of public and private debt on growth. International Review of Economics \& Finance, 76, 694-711. Link, PDF
+
+Cerulli, G., 2021a. "Improving econometric prediction by machine learning," Applied Economics Letters, 28(16): 1419-1425. PDF
+
+Cerulli, G., 2021b. "Machine learning using Stata/Python," 2021 Stata Conference 25, Stata Users Group. PDF
+
+Chen, Daniel L., and Susan Yeh. 2012. "Growth under the Shadow of Expropriation? The Economic Impacts of Eminent Domain." PDF
+
+Chen, J., and Z. Chen. 2008. Extended Bayesian information criteria for model selection
+with large model spaces. Biometrika 95: 759–771. Link, PDF
+
+Chernozhukov, V., D. Chetverikov, M. Demirer, E. Duflo, C. B. Hansen, W. K. Newey, and J. M. Robins. 2018.
+Double/debiased machine learning for treatment and structural parameters. Econometrics Journal 21: C1–C68.
+Link, PDF, Cited
+
+Chernozhukov, V., C. B. Hansen, and M. Spindler. 2015a. 
+Post-selection and post-regularization inference in linear models with many controls and instruments. American Economic Review 105: 486-490. 
+Link, PDF
+
+Chernozhukov, V., C. B. Hansen, and M. Spindler. 
+2015b. Valid post-selection and post-regularization inference: An elementary, general approach. Annual Review of Economics 7: 649-688. Link, PDF
+
+
+Chiang, H. D., K. Kato, Y. Ma, Y. Sasaki, 2022, Multiway cluster robust double/debiased machine learning, Journal of Business \& Economic Statistics, 40 (3): 1046-1056. -Link-, -PDF-, Replication-R codes, Stata: findit crhdreg
+
+Daubechies, I., M. Defrise, and C. D. Mol. 2004. An iterative thresholding algorithm for linear inverse
+problems with a sparsity constraint. Communications on Pure and Applied Mathematics 57: 1413–1457.
+Link, PDF
+
+Donohue, John J., and Steven D. Levitt. 2001. "The Impact of Legalized Abortion on Crime." Quarterly Journal of Economics 116(2): 379-420. Link, PDF (堕胎合法化对犯罪的影响)
+Comment, Literature Review
+
+Drukker, D. M., and D. Liu. 2019. An introduction to the lasso in Stata. The Stata Blog: Not Elsewhere Classified.
+Link.
+
+Fan, Jianqing, Runze Li, Cun-Hui Zhang, and Hui Zou. 2020. Statistical Foundations of Data Science. 1st Edition, Chapman and Hall/CRC. Link, PDF
+
+Frisch, R., \& Waugh, F. V. (1933). Partial time regressions as compared with individual trends. Econometrica: Journal of the Econometric Society, 387-401. PDF 
+
+Friedman, J. H., T. J. Hastie, H. Hofling, and R. J. Tibshirani. 2007. Pathwise coordinate optimization. ¨ Annals of
+Applied Statistics 1: 302–332. Link. PDF
+
+Friedman, J. H., T. J. Hastie, and R. J. Tibshirani. 2010. Regularization paths for generalized linear models via
+coordinate descent. Journal of Statistical Software 33: 1–22. Link. PDF
+
+Fu, W. J. 1998. Penalized regressions: The bridge versus the lasso. Journal of Computational and Graphical Statistics
+7: 397–416. Link. PDF
+
+Hansen B E . 2021. Econometrics. Princeton University Press, forthcoming. Data and Contents, PDF
+
+Hastie, T. J., R. J. Tibshirani, and M. Wainwright. 2015. Statistical Learning with Sparsity: The Lasso and
+Generalizations. Boca Raton, FL: CRC Press. Link. PDF
+
+Leeb, H., and B. M. Potscher. 2008. Sparse estimators and the oracle property, or the return of Hodges’ estimator. ¨
+Journal of Econometrics 142: 201–211. Link PDF
+
+Lovell, M. C. (1963). Seasonal adjustment of economic time series and multiple regression analysis. Journal of the American Statistical Association, 58(304), 993-1010. PDF
+
+McConnell, K. J., \& Lindner, S. (2019). Estimating treatment effects with machine learning. Health services research, 54(6), 1273-1282.
+
+Mroz, T. A. 1987. The sensitivity of an empirical model of married women’s hours of work to economic and statistical
+assumptions. Econometrica 55: 765–799. Link, PDF
+
+
+Nelder, J. A., and R. W. M. Wedderburn. 1972. Generalized linear models. Journal of the Royal Statistical Society,
+Series A 135: 370–384. Link. PDF
+
+Sunyer, J., E. Suades-Gonzalez, R. Garcıa-Esteban, I. Rivas, J. Pujol, M. Alvarez-Pedrerol, J. Forns, X. Querol, and
+X. Basagana. 2017. Traffic-related air pollution and attention in primary school children: Short-term association. ˜
+Epidemiology 28: 181–189. Link.
+PDF
+
+Quandt, R. E. 1984. Computational problems and methods. In Vol. 2 of Handbook of Econometrics, ed. Z. Griliches
+and M. D. Intriligator, 699–764. Amsterdam: Elsevier. Link. PDF
+
+Tibshirani, R. J. 1996. Regression shrinkage and selection via the lasso. Journal of the Royal Statistical Society,
+Series B 58: 267–288. Link. PDF
+
+Tibshirani, Robert, Michael D Saunders, Saharon Rosset, Ji Zhu, and Keith Knight. 2005. “Sparsity and Smoothness via the Fused Lasso.” Journal of The Royal Statistical Society Series B - Statistical Methodology 67 (1): 91–108. -Link-, -PDF-
+
+Windmeijer, F., Farbmacher, H., Davies, N., \& Davey Smith, G. (2019). On the use of the lasso for instrumental variables estimation with some invalid instruments. Journal of the American Statistical Association, 114(527), 1339-1350. Link, PDF
+
+Windmeijer, F., Liang, X., Hartwig, F. P., \& Bowden, J. (2021). The confidence interval method for selecting valid instrumental variables. Journal of the Royal Statistical Society: Series B (Statistical Methodology), 83(4), 752-776.
+
+
+Wooldridge, J. M. 2010. Econometric Analysis of Cross Section and Panel Data. 2nd ed. Cambridge, MA: MIT Press.
+
+Yamada, H. 2017.  The Frisch-Waugh-Lovell Theorem for the lasso and the ridge regression.  Communications in Statistics - Theory and Methods 46(21): 10897-10902. Link, PDF.
+
+Yamaka, W. 2021. Variable selection and estimation in kink regression model, in N. Ngoc Thach, V. Kreinovich,N. D. Trung eds, Data science for financial econometrics (Springer International Publishing, Cham), 151-164. Link, PDF.
+
+Zhang, Y., R. Li, and C.-L. Tsai. 2010. Regularization parameter selections via generalized information criterion.
+Journal of the American Statistical Association 105: 312–323. Link. PDF
+
+
+Zhao P, Yu B. On model selection consistency of Lasso[J]. The Journal of Machine Learning Research, 2006, 7: 2541-2563. PDF
+
+Zou, H. 2006. The adaptive lasso and its oracle properties. Journal of the American Statistical Association 101:
+1418–1429. Link. PDF
+
+Zou, H., T. Hastie, and R. Tibshirani. 2007. On the “degrees of freedom” of the lasso.
+Annals of Statistics 35: 2173–2192. Link, PDF
+
+Zou, H., and H. H. Zhang. 2009. On the adaptive elastic-net with a diverging number of
+parameters. Annals of Statistics 37: 1733–1751. Link, PDF
