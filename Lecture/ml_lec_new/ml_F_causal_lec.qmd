@@ -1,0 +1,569 @@
+---
+title: "Chapter F  机器学习与因果推断"
+subtitle: "《金融数据分析与建模》Part V · 机器学习"
+author: "连玉君（中山大学岭南学院）"
+date: today
+date-format: "YYYY年MM月DD日"
+
+format:
+  html:
+    theme: cosmo
+    toc: true
+    toc-depth: 3
+    toc-title: "本章目录"
+    toc-location: left
+    number-sections: true
+    number-depth: 3
+    code-fold: true
+    code-tools: true
+    code-copy: true
+    highlight-style: github
+    fig-align: center
+    fig-cap-location: bottom
+    fig-width: 7
+    fig-height: 4.5
+    embed-resources: false
+    smooth-scroll: true
+    link-external-newwindow: true
+    html-math-method: mathjax
+
+execute:
+  echo: true
+  eval: false
+  warning: false
+  message: false
+
+bibliography: refs_mlV.bib
+csl: apa-6th-edition.csl
+lang: zh
+
+crossref:
+  fig-prefix: "图"
+  tbl-prefix: "表"
+  eq-prefix: "式"
+  sec-prefix: "节"
+---
+
+## 本章概览 {.unnumbered}
+
+::: {.callout-note appearance="minimal"}
+**学习目标**
+
+完成本章学习后，你应该能够：
+
+1. 解释高维控制变量问题和函数形式误设问题，说明机器学习在因果推断中的两类辅助角色
+2. 识别 Post-Lasso 在因果推断中的核心局限（单边变量筛选导致的遗漏变量偏误）
+3. 描述 DS-Lasso 的四步估计流程，解释"对 $Y$ 和 $D$ 分别做 Lasso 取并集"如何修复 Post-Lasso 的局限
+4. 陈述 FWL 定理并解释其几何含义，描述 PO-Lasso 的估计流程
+5. 解释 DML 中交叉拟合（Cross-Fitting）的必要性——说明没有交叉拟合时第一阶段偏差如何污染因果估计
+6. 区分 DML 和 DDML：说明 DDML 将第一阶段推广到任意机器学习方法的动机及适用条件
+7. 解释 Lasso-IV 的思路（从高维候选工具变量中筛选有效 IV）及其与传统 2SLS 的关系
+8. 解释条件平均处理效应（CATE）的含义，说明因果森林的"诚实估计"如何区别于普通随机森林
+9. 用 `doubleml` 包实现 DS-Lasso 和 DML，解读输出结果
+
+**与其他章节的关系**
+
+- 前置知识：Chapter A §A.2（预测 vs 因果）；Chapter B（Lasso/Ridge，必须先读）；Chapter C §C.2（随机森林，用于 DDML 第一阶段）
+- 本章是 Part V 的理论高峰，DS-Lasso、DML、因果森林在金融实证中应用日益广泛
+- 参考手册：Python 实现见 `ml_ref_python.ipynb` 第 6 节
+:::
+
+---
+
+## 引言：机器学习与因果推断的交汇 {#sec-F-intro}
+
+### 两类挑战
+
+金融实证中的因果推断长期面临两类挑战，机器学习方法的引入为解决这两类挑战提供了新工具。
+
+**挑战一：高维控制变量问题。** 理想的因果估计需要控制所有可观测的混淆因素。但在现代金融数据中，潜在的控制变量往往多达数百个（企业财务指标、行业特征、宏观变量……），远超样本量。传统 OLS 无法处理 $p > n$ 的情形，而即使 $p < n$，过多的控制变量也会导致估计极不稳定。
+
+**挑战二：函数形式误设问题。** 传统方法假设控制变量与结果变量之间是线性关系。若真实关系是非线性的，线性控制会产生"函数形式误设偏误"——本质上也是一种遗漏变量偏误（遗漏了非线性项）。当控制变量维度很高时，手工构造非线性项几乎不可能。
+
+### ML 在因果推断中的两种角色
+
+机器学习方法在因果推断中扮演**辅助角色**，而非替代传统因果框架：
+
+**角色一：高维变量筛选。** 当控制变量维度很高时，Lasso 可以自动筛选出真正重要的控制变量，然后在筛选后的变量集上做 OLS（Post-Lasso），实现既控制混淆因素又保持统计推断有效性的目标（DS-Lasso，见 @sec-F-dslasso）。
+
+**角色二：非参数控制。** 当真实的函数形式未知时，随机森林、XGBoost 等方法可以非参数地估计干扰函数 $g(\mathbf{x}) = \mathbb{E}[Y \mid \mathbf{x}]$ 和 $m(\mathbf{x}) = \mathbb{E}[D \mid \mathbf{x}]$，从而消除函数形式误设带来的偏差（DML/DDML，见 @sec-F-dml 和 @sec-F-ddml）。
+
+### 本章的核心假设
+
+本章所有方法共享同一个核心假设：**条件独立性（条件外生性）**
+
+$$
+\mathbb{E}[\varepsilon \mid D, \mathbf{X}] = 0
+$$
+
+即在给定所有控制变量 $\mathbf{X}$ 的条件下，处理变量 $D$ 与误差 $\varepsilon$ 不相关。这意味着：**本章方法无法处理不可观测的遗漏变量**——如果真正的混淆因素不在 $\mathbf{X}$ 中，上述方法依然给出有偏估计。此时应转向工具变量方法（Lasso-IV，见 @sec-F-lasso-iv）。
+
+### 本章方法全景
+
+| 方法 | 解决的问题 | 核心机制 | 工具包 |
+|------|----------|---------|--------|
+| **Post-Lasso** | 高维控制（有局限）| Lasso 筛选 → OLS | `sklearn` |
+| **DS-Lasso** | 高维控制（改进版）| 双边 Lasso → OLS | `doubleml` |
+| **PO-Lasso** | 高维控制（FWL 框架）| 残差化 → OLS | `doubleml` |
+| **DML** | 高维控制 + 函数形式误设 | 交叉拟合 + 残差化 | `doubleml` |
+| **DDML** | 同 DML（更一般）| 非参数第一阶段 | `doubleml` + RF/XGBoost |
+| **Lasso-IV** | 弱工具变量筛选 | Lasso 筛 IV → 2SLS | `doubleml` |
+| **因果森林** | 异质性处理效应（CATE）| Honest RF + 诚实估计 | `econml` |
+
+---
+
+## Post-Lasso：思路与局限 {#sec-F-post-lasso}
+
+### 基本思路
+
+Post-Lasso（两步估计）的逻辑很直接：先用 Lasso 筛选变量，再对筛选出的变量做 OLS。用于因果推断时，设定如下：
+
+$$
+Y_i = D_i \theta + \mathbf{X}_i' \boldsymbol{\beta} + \varepsilon_i
+$$
+
+目标是估计处理效应 $\theta$（$D_i$ 的系数），$\mathbf{X}_i$ 是高维控制变量。
+
+**两步流程**：
+
+1. **第一步（筛选）**：对 $Y$ 对所有变量（含 $D$）做 Lasso，得到非零系数变量集 $\hat{\mathcal{S}}$
+2. **第二步（估计）**：对 $\{D\} \cup \hat{\mathcal{S}}$ 做 OLS，得到 $\hat{\theta}^{\text{post}}$
+
+**优势**：Post-Lasso 消除了 Lasso 的收缩偏差。对于被选入的变量，OLS 系数是无偏的，而 Lasso 系数是有偏的（系数被向零收缩）。
+
+### 核心局限
+
+Post-Lasso 用于因果推断时存在一个关键的**遗漏变量风险**：
+
+Lasso 以 $Y$ 为目标筛选变量，会选入对 $Y$ 预测有帮助的变量，但可能**遗漏**那些对 $D$ 有重要影响、对 $Y$ 影响相对微弱的变量。这些被遗漏的变量——即便它们与 $D$ 高度相关——不会出现在第二步的回归中，因此造成遗漏变量偏误，使 $\hat{\theta}^{\text{post}}$ 有偏。
+
+用一个具体的例子说明：设 $X_k$ 是一个重要的混淆变量——它对 $D$ 有强烈影响，但对 $Y$ 的直接影响相对较弱（在 Lasso 的高维竞争中未能入选）。若 $X_k$ 未被控制，$\hat{\theta}$ 就吸收了 $X_k$ 通过 $D$ 传递的效应，产生遗漏变量偏误。
+
+这个局限正是 DS-Lasso 的出发点。
+
+---
+
+## 双重选择 Lasso（DS-Lasso） {#sec-F-dslasso}
+
+### 核心思想：双边筛选
+
+**DS-Lasso（Double Selection Lasso，Belloni, Chernozhukov & Hansen, 2014）**的修复方案简洁而有力：**不仅对 $Y$ 做 Lasso，还对 $D$ 做 Lasso**，将两次 Lasso 选中的变量取**并集**作为控制变量集，再做 OLS。
+
+直觉：遗漏变量偏误的来源是"对 $D$ 有影响但对 $Y$ 影响弱"的变量。对 $D$ 做 Lasso 正是专门筛选这类变量——它们对 $D$ 有预测力，因而能被第二次 Lasso 选中。取并集则保证两类重要变量（与 $Y$ 相关、与 $D$ 相关）都不被遗漏。
+
+### 四步估计流程
+
+@fig-F-dsl-flow 展示了 DS-Lasso 的完整流程：
+
+![DS-Lasso 四步估计流程图。](figs/fig_F_dsl_flow.png){#fig-F-dsl-flow width=85%}
+
+**Step 1**：对 $Y$ 在所有控制变量 $\mathbf{X}$ 上做 Lasso（不含 $D$），得到变量集 $\hat{\mathcal{S}}_1$：
+
+$$
+\hat{\boldsymbol{\beta}}_1 = \arg\min_{\boldsymbol{\beta}} \left\{ \frac{1}{2n}\|Y - \mathbf{X}\boldsymbol{\beta}\|^2 + \lambda_1 \|\boldsymbol{\beta}\|_1 \right\}
+$$
+
+$$
+\hat{\mathcal{S}}_1 = \{j : \hat{\beta}_{1j} \neq 0\}
+$$
+
+**Step 2**：对 $D$ 在所有控制变量 $\mathbf{X}$ 上做 Lasso，得到变量集 $\hat{\mathcal{S}}_2$：
+
+$$
+\hat{\boldsymbol{\gamma}}_1 = \arg\min_{\boldsymbol{\gamma}} \left\{ \frac{1}{2n}\|D - \mathbf{X}\boldsymbol{\gamma}\|^2 + \lambda_2 \|\boldsymbol{\gamma}\|_1 \right\}
+$$
+
+$$
+\hat{\mathcal{S}}_2 = \{j : \hat{\gamma}_{1j} \neq 0\}
+$$
+
+**Step 3**：取并集 $\hat{\mathcal{S}} = \hat{\mathcal{S}}_1 \cup \hat{\mathcal{S}}_2$
+
+**Step 4**：对 $Y$ 在 $D$ 和 $\hat{\mathcal{S}}$ 上做 OLS，得到处理效应估计 $\hat{\theta}^{\text{DS}}$：
+
+$$
+(\hat{\theta}^{\text{DS}}, \hat{\boldsymbol{\beta}}^{\text{DS}}) = \arg\min_{\theta, \boldsymbol{\beta}} \frac{1}{n} \|Y - D\theta - \mathbf{X}_{\hat{\mathcal{S}}}\boldsymbol{\beta}\|^2
+$$
+
+### 理论保证
+
+在近似稀疏性假设下，Belloni et al.（2014）证明了 $\hat{\theta}^{\text{DS}}$ 渐近正态：
+
+$$
+\sqrt{n}(\hat{\theta}^{\text{DS}} - \theta_0) \xrightarrow{d} N(0, V)
+$$
+
+其中方差 $V$ 可以用异方差稳健标准误估计。这意味着可以对处理效应做正态近似的置信区间和假设检验。
+
+::: {.callout-important}
+## ⚠️ DS-Lasso 的有限样本局限
+
+DS-Lasso 的理论保证依赖渐近理论（$n \to \infty$）。在有限样本中，以下情况需要特别注意：
+
+1. **Lasso 的漏选**：若真正重要的控制变量因与其他变量高度共线而未被任何一次 Lasso 选中，DS-Lasso 依然会产生偏误
+2. **选择噪声**：在小样本中，两次 Lasso 可能选入许多噪声变量，导致第四步 OLS 中变量过多，估计不稳定
+3. **Plugin λ**：DS-Lasso 通常用 Plugin 方法选择 λ（而非 CV），以保证理论性质成立
+
+**实践建议**：当 $n < 500$ 时，DS-Lasso 的结果应谨慎解读；当变量真实非线性时，应考虑 DML/DDML 作为稳健性检验。
+:::
+
+---
+
+## 部分消除 Lasso（PO-Lasso） {#sec-F-po-lasso}
+
+### FWL 定理 {#sec-F-fwl}
+
+**Frisch-Waugh-Lovell（FWL）定理**是理解 PO-Lasso 乃至 DML 的理论基石。它揭示了在多元回归中如何将某个变量的效应从其他变量的"干扰"中分离出来。
+
+**定理陈述**：在线性模型 $Y = D\theta + \mathbf{X}\boldsymbol{\beta} + \varepsilon$ 中，对处理变量 $D$ 的 OLS 系数估计量 $\hat{\theta}$ 等于以下三步的结果：
+
+1. 将 $Y$ 对 $\mathbf{X}$ 做 OLS，得到残差 $\tilde{Y} = Y - \mathbf{X}(\mathbf{X}'\mathbf{X})^{-1}\mathbf{X}'Y$
+2. 将 $D$ 对 $\mathbf{X}$ 做 OLS，得到残差 $\tilde{D} = D - \mathbf{X}(\mathbf{X}'\mathbf{X})^{-1}\mathbf{X}'D$
+3. 将 $\tilde{Y}$ 对 $\tilde{D}$ 做简单 OLS（无截距），得到 $\hat{\theta} = (\tilde{D}'\tilde{D})^{-1}\tilde{D}'\tilde{Y}$
+
+FWL 定理的含义：$\hat{\theta}$ 度量的是 $D$ 中**无法被 $\mathbf{X}$ 解释的部分**（残差 $\tilde{D}$）对 $Y$ 中**无法被 $\mathbf{X}$ 解释的部分**（残差 $\tilde{Y}$）的影响。这正是"控制了 $\mathbf{X}$"的精确含义。
+
+@fig-F-fwl-venn 用 Venn 图直观展示了三个变量方差的分解关系：
+
+![FWL 定理 Venn 图。$Y$ 和 $D$ 的方差分别分解为可被 $\mathbf{X}$ 解释的部分和残差部分。$\hat{\theta}$ 对应的是两个残差之间的关系。](figs/fig_F_fwl_venn.png){#fig-F-fwl-venn width=70%}
+
+### PO-Lasso 估计流程
+
+**PO-Lasso（Partialing-Out Lasso）**将 FWL 定理的"OLS 残差化"替换为"Lasso 残差化"，从而适应高维控制变量的场景：
+
+**Step 1**：对 $Y$ 在 $\mathbf{X}$ 上做 Lasso，得到残差 $\tilde{Y} = Y - \hat{g}(\mathbf{X})$（其中 $\hat{g}$ 是 Lasso 拟合值）
+
+**Step 2**：对 $D$ 在 $\mathbf{X}$ 上做 Lasso，得到残差 $\tilde{D} = D - \hat{m}(\mathbf{X})$
+
+**Step 3**：将 $\tilde{Y}$ 对 $\tilde{D}$ 做简单 OLS，得到 $\hat{\theta}^{\text{PO}}$
+
+### DS-Lasso vs PO-Lasso
+
+两种方法在有限样本中会给出略不同的结果，但在大样本下渐近等价：
+
+| 维度 | DS-Lasso | PO-Lasso |
+|------|---------|---------|
+| **基础框架** | 变量选择 → OLS | FWL 定理 → 残差回归 |
+| **对控制变量的处理** | 选入并集，进入 OLS | 用 Lasso 拟合后残差化 |
+| **对非线性的扩展** | 困难（第一阶段仍是线性）| 自然（Step 1、2 可替换为任意 ML 方法，即 DML）|
+| **`doubleml` 中的类** | `DoubleMLPLR`（`score='partialling out'`）| 同左（默认）|
+
+---
+
+## 双重去偏机器学习（DML） {#sec-F-dml}
+
+### DS-Lasso 和 PO-Lasso 的共同局限
+
+DS-Lasso 和 PO-Lasso 的第一阶段都是线性 Lasso，存在两个共同问题：
+
+**问题一：函数形式误设**。若 $g(\mathbf{x}) = \mathbb{E}[Y \mid \mathbf{x}]$ 或 $m(\mathbf{x}) = \mathbb{E}[D \mid \mathbf{x}]$ 是非线性的，线性 Lasso 无法充分拟合，残余误差进入残差项，污染第二阶段对 $\theta$ 的估计。
+
+**问题二：第一阶段偏差的"污染效应"**。Lasso 估计本身是有偏的（收缩偏差）。在 PO-Lasso 的 Step 1 中，$\hat{g}(\mathbf{X})$ 的偏差会传递到残差 $\tilde{Y}$ 中，进而污染 $\hat{\theta}^{\text{PO}}$。当样本量较小或 Lasso 偏差较大时，这个污染效应不可忽视。
+
+### DML 的改进：K 折交叉拟合
+
+**双重去偏机器学习（Double/Debiased Machine Learning，DML，Chernozhukov et al., 2018）**的核心改进是引入**K 折交叉拟合（Cross-Fitting）**，消除第一阶段偏差对第二阶段的污染。
+
+**为什么交叉拟合能解决问题？** 传统方法中，第一阶段（估计 $\hat{g}$ 和 $\hat{m}$）和第二阶段（用残差估计 $\theta$）使用**同一组样本**。这导致：第一阶段的"记忆"（对训练样本的过拟合）会系统性地影响第二阶段的残差，即便是小的正则化偏差也会在 $\sqrt{n}$ 尺度上产生非忽略的影响。
+
+交叉拟合通过**样本分割**打破这种"记忆"：第二阶段使用的残差是由**另一折**数据训练的模型来计算的——对于计算残差的那批样本，第一阶段模型从未"见过"它们，因此不存在系统性的拟合偏差。
+
+@fig-F-dml-crossfit 展示了 K=5 折的交叉拟合过程：
+
+![DML K 折交叉拟合示意图（K=5）。每轮用 4 折训练第一阶段模型，在第 5 折上计算残差。5 轮结束后汇总所有残差，做统一的第二阶段回归。](figs/fig_F_dml_crossfit.png){#fig-F-dml-crossfit width=85%}
+
+### 三方程模型设定
+
+DML 的标准设定是**部分线性回归（Partially Linear Regression，PLR）**模型：
+
+$$
+Y_i = D_i \theta_0 + g(\mathbf{X}_i) + \varepsilon_i, \quad \mathbb{E}[\varepsilon_i \mid D_i, \mathbf{X}_i] = 0
+$$ {#eq-F-plr-y}
+
+$$
+D_i = m(\mathbf{X}_i) + v_i, \quad \mathbb{E}[v_i \mid \mathbf{X}_i] = 0
+$$ {#eq-F-plr-d}
+
+其中 $g(\cdot)$ 和 $m(\cdot)$ 是**未知的非线性函数**（干扰函数，Nuisance Functions），$\theta_0$ 是感兴趣的处理效应参数。
+
+### DML2 估计量
+
+DML 的估计量有两个版本（DML1 和 DML2），推荐使用 **DML2**：
+
+将数据随机等分为 $K$ 折 $\{\mathcal{I}_k\}_{k=1}^K$。对每折 $k$：
+
+1. 用 $\mathcal{I}_k^c$（除第 $k$ 折外的所有数据）训练 $\hat{g}_{-k}$ 和 $\hat{m}_{-k}$
+2. 在第 $k$ 折上计算残差：$\tilde{Y}_i = Y_i - \hat{g}_{-k}(\mathbf{X}_i)$，$\tilde{D}_i = D_i - \hat{m}_{-k}(\mathbf{X}_i)$，$i \in \mathcal{I}_k$
+
+汇总所有折的残差后，DML2 估计量为：
+
+$$
+\hat{\theta}^{\text{DML2}} = \left(\sum_{k=1}^{K} \sum_{i \in \mathcal{I}_k} \tilde{D}_i^2\right)^{-1} \sum_{k=1}^{K} \sum_{i \in \mathcal{I}_k} \tilde{D}_i \tilde{Y}_i
+$$ {#eq-F-dml2}
+
+**DML2 的渐近性质**：在适当的正则条件下（第一阶段估计误差的收敛速度足够快），$\hat{\theta}^{\text{DML2}}$ 渐近正态，可以用异方差稳健标准误构造置信区间。
+
+### 交叉拟合的效果：蒙特卡洛验证
+
+@fig-F-dml-mc-normal 通过蒙特卡洛模拟验证了交叉拟合的必要性：在非线性 DGP 下，没有交叉拟合的 PO-Lasso 估计 $\hat{\theta}$ 的分布出现系统性偏移（均值偏离真实值）；引入交叉拟合后，DML2 估计的分布以真实值为中心，接近正态分布。
+
+![DML 蒙特卡洛：有无交叉拟合的估计量分布对比（1000 次模拟，真实 $\theta_0 = 0.5$）。](figs/fig_F_dml_mc_normal.png){#fig-F-dml-mc-normal width=80%}
+
+::: {.callout-important}
+## ⚠️ DML 的假设边界
+
+DML 和 DDML 共同依赖以下假设，**违反时结论不成立**：
+
+**能解决的问题：**
+
+- 函数形式误设（$g(\mathbf{X})$ 和 $m(\mathbf{X})$ 非线性）：第一阶段用 ML 方法非参数估计即可处理
+- 第一阶段正则化偏差对因果估计的"污染"：交叉拟合解决
+
+**不能解决的问题：**
+
+- **不可观测的遗漏变量**：若真正的混淆因素不在 $\mathbf{X}$ 中，$\mathbb{E}[\varepsilon \mid D, \mathbf{X}] = 0$ 不成立，DML 估计仍然有偏。此时应使用工具变量方法（见 @sec-F-lasso-iv）
+
+**实操建议：**
+
+- 重复 $S \geq 5$ 次（不同的随机分折），取 $\hat{\theta}$ 的中位数，降低交叉拟合随机性的影响
+- 报告不同重复次数下结果的稳健性
+:::
+
+### Python 实操（doubleml 包）
+
+```python
+import doubleml as dml
+from sklearn.linear_model import LassoCV
+from sklearn.ensemble import RandomForestRegressor
+
+# 构造 DoubleML 数据对象
+obj_dml = dml.DoubleMLData.from_arrays(X, y, d)
+
+# DML（Lasso 第一阶段）
+lasso = LassoCV(cv=5, n_alphas=50, random_state=42)
+dml_plr = dml.DoubleMLPLR(obj_dml,
+                           ml_l=lasso,   # 拟合 g(X)：Y ~ X
+                           ml_m=lasso,   # 拟合 m(X)：D ~ X
+                           n_folds=5,
+                           n_rep=3)      # 重复 3 次取均值
+dml_plr.fit()
+print(dml_plr.summary)
+```
+
+---
+
+## 双重去偏机器学习扩展：DDML {#sec-F-ddml}
+
+### 推广：第一阶段可替换为任意 ML 方法
+
+DML 的理论框架（Neyman 正交矩条件 + 交叉拟合）并不依赖于第一阶段用哪种方法——只要 $\hat{g}$ 和 $\hat{m}$ 的估计误差以足够快的速度收敛（通常要求 $\|\hat{g} - g\|_{L_2} \cdot \|\hat{m} - m\|_{L_2} = o(n^{-1/2})$），$\hat{\theta}^{\text{DML2}}$ 就渐近正态。
+
+**DDML（Double/Debiased ML with Nonparametric Nuisance Functions）**就是这一推广的统称：将 DML 的第一阶段从 Lasso 替换为**任意机器学习方法**——随机森林、XGBoost、神经网络等——`doubleml` 包原生支持所有 `sklearn` 兼容的估计器。
+
+### DML vs DDML 的选择
+
+| 维度 | DML（Lasso 第一阶段）| DDML（RF/XGBoost 第一阶段）|
+|------|---------------------|--------------------------|
+| **适用数据结构** | 线性稀疏：少数变量驱动 $g$ 和 $m$ | 非线性/高维交互：线性假设不合理 |
+| **稀疏性要求** | 需要近似稀疏性假设 | 不需要，适用于稠密信号结构 |
+| **计算成本** | 低 | 高（需要调超参数）|
+| **小样本表现** | 相对稳健 | 依赖足够样本量 |
+| **解释性** | Lasso 选出的变量有一定解释性 | 黑箱，需结合 SHAP |
+
+@fig-F-ddml-vs-dml 展示了在真实 $g(\mathbf{X})$ 为非线性的 DGP 下，DML（Lasso）和 DDML（随机森林）的估计分布对比——线性 Lasso 因函数形式误设出现偏差，随机森林能更好地拟合非线性干扰函数：
+
+![非线性 DGP 下 DML（Lasso）vs DDML（随机森林）的估计量分布对比（500 次模拟）。真实 $\theta_0 = 0.5$，DDML 偏差更小。](figs/fig_F_ddml_vs_dml.png){#fig-F-ddml-vs-dml width=80%}
+
+::: {.callout-note}
+## DDML 的广义理解
+
+DDML 的核心贡献不是某个具体的估计算法，而是一个**框架**：只要第一阶段估计足够精确（收敛速度满足要求），无论用什么方法，第二阶段的 $\hat{\theta}$ 都渐近正态。这使得因果推断和机器学习预测在理论上得到了统一——研究者可以在第一阶段自由地使用最先进的预测方法，而不必担心影响因果估计的有效性。
+:::
+
+---
+
+## Lasso 工具变量（Lasso-IV） {#sec-F-lasso-iv}
+
+### 弱工具变量与高维 IV
+
+工具变量（IV）方法是处理**不可观测遗漏变量**的标准工具（DML 无法处理这类问题）。传统 IV 估计依赖强工具变量——与内生变量高度相关，但与误差项无关。
+
+然而，在高维数据中，研究者往往面临**候选工具变量很多但每个都很弱**的困境（如政策评估中的多个历史法规条文、跨国研究中的多个地理工具变量）。直接使用全部候选 IV 会导致严重的弱工具变量问题，甚至使 2SLS 估计比 OLS 更差。
+
+**Lasso-IV（Belloni, Chernozhukov & Hansen, 2012）**的思路：从高维候选 IV 集合 $\mathbf{Z}$（$n \times r$，$r$ 可能很大）中，用 Lasso 自动筛选出与内生变量 $D$ 相关性最强的子集，再对筛选后的 IV 做 2SLS。
+
+### 估计流程
+
+**Step 1**：对 $D$ 在控制变量 $\mathbf{X}$ 和候选 IV $\mathbf{Z}$ 上做 Lasso，筛选有效 IV：
+
+$$
+\hat{\boldsymbol{\pi}} = \arg\min_{\boldsymbol{\pi}} \left\{ \frac{1}{2n}\|D - \mathbf{X}\boldsymbol{\alpha} - \mathbf{Z}\boldsymbol{\pi}\|^2 + \lambda\|\boldsymbol{\pi}\|_1 \right\}
+$$
+
+$$
+\hat{\mathcal{Z}} = \{j : \hat{\pi}_j \neq 0\}
+$$
+
+**Step 2**：对 $D$ 在 $\mathbf{X}$ 和 $\hat{\mathcal{Z}}$ 上做 OLS，得到拟合值 $\hat{D}$（第一阶段）
+
+**Step 3**：对 $Y$ 在 $\hat{D}$ 和 $\mathbf{X}$ 上做 OLS，得到 $\hat{\theta}^{\text{IV}}$（第二阶段）
+
+@fig-F-lasso-iv-path 展示了随 $\lambda$ 变化，被选中的有效 IV 数量的变化路径：
+
+![Lasso-IV：λ 变化时选中的有效 IV 数量。λ 越小选入 IV 越多，但过小会引入弱工具变量；最优 λ 通过交叉验证确定。](figs/fig_F_lasso_iv_path.png){#fig-F-lasso-iv-path width=75%}
+
+### 适用边界
+
+::: {.callout-important}
+## ⚠️ Lasso-IV 的核心假设
+
+Lasso-IV 能解决**弱工具变量**问题（候选 IV 太多），但有两个前提假设必须满足：
+
+1. **工具变量的外生性**：筛选出的 IV 必须满足 $\mathbb{E}[\varepsilon \mid \mathbf{Z}] = 0$（与误差无关）。Lasso 只能筛选与 $D$ 相关的 IV，**无法检验或保证 IV 的外生性**——这仍需要研究者的理论论证
+2. **相关性（强工具变量条件）**：筛选后的 IV 集合 $\hat{\mathcal{Z}}$ 必须与 $D$ 有足够强的相关性。可以通过第一阶段 $F$ 统计量检验
+:::
+
+---
+
+## 异质性处理效应 {#sec-F-hte}
+
+### 为什么平均处理效应（ATE）不够
+
+前面几节估计的 $\theta$ 是**平均处理效应（Average Treatment Effect，ATE）**——所有个体的平均效果。但政策效果对不同群体往往截然不同：
+
+- 同一项货币政策对高负债企业和低负债企业的影响可能方向相反
+- 同一项补贴政策可能对小企业效果显著，对大企业几乎无效
+
+**条件平均处理效应（Conditional Average Treatment Effect，CATE）** $\tau(\mathbf{x})$ 捕捉的正是这种异质性：
+
+$$
+\tau(\mathbf{x}) = \mathbb{E}[Y_i(1) - Y_i(0) \mid \mathbf{X}_i = \mathbf{x}]
+$$
+
+其中 $Y_i(1)$、$Y_i(0)$ 是个体 $i$ 在处理/对照状态下的潜在结果（潜在结果框架）。
+
+### 因果森林（Causal Forest）
+
+**因果森林（Causal Forest，Wager & Athey, 2018）**将随机森林的思想引入 CATE 估计，但做了关键修改：
+
+**关键修改一："诚实估计"（Honest Estimation）**。普通随机森林用同一批样本既决定树的分裂方式，也估计叶节点的预测值——这导致叶节点均值是有偏的。因果森林将样本**分成两半**：一半用于决定树的结构（分裂），另一半用于估计叶节点的处理效应——这个"诚实"分离确保了 CATE 估计的渐近无偏性。
+
+**关键修改二：双重稳健估计**。每棵树在叶节点内，因果森林采用类似 DML 的残差化方法估计处理效应，而非直接比较处理组和对照组的均值。这使估计量对混淆偏误更具稳健性。
+
+因果森林还提供**渐近有效的置信区间**（基于 Bootstrap），这是普通 ML 方法难以做到的。
+
+@fig-F-cate-dist 展示了因果森林估计的 CATE 分布——不同个体的处理效应存在显著异质性：
+
+![因果森林估计的 CATE 分布直方图。真实 $\tau(\mathbf{x})$ 因个体特征不同而异，因果森林能捕捉这种异质性。红色虚线为 ATE（各 CATE 的均值），仅用 ATE 会掩盖重要的异质性信息。](figs/fig_F_cate_dist.png){#fig-F-cate-dist width=75%}
+
+### Python 实操（econml 包）
+
+```python
+from econml.dml import CausalForestDML
+from sklearn.ensemble import RandomForestRegressor, RandomForestClassifier
+
+cf = CausalForestDML(
+    model_y=RandomForestRegressor(n_estimators=200, random_state=42),
+    model_t=RandomForestRegressor(n_estimators=200, random_state=42),
+    n_estimators=500,
+    random_state=42
+)
+cf.fit(Y=y, T=d, X=X_cate, W=X_controls)
+
+# 估计每个样本的 CATE
+tau_hat = cf.effect(X_cate)
+
+# 置信区间
+lb, ub = cf.effect_interval(X_cate, alpha=0.05)
+```
+
+::: {.callout-tip}
+## 💬 提示词模板 #10：因果森林 CATE 估计
+
+```
+背景：估计处理效应的异质性（CATE），数据来自观测研究。
+
+我的数据：
+- Y：结果变量（连续）
+- d：处理变量（0/1 二元）
+- X_cate：异质性特征矩阵（用于估计 CATE 的变量）
+- X_controls：控制变量矩阵（用于去除混淆）
+
+请帮我：
+1. 用 econml 的 CausalForestDML 拟合模型
+   （model_y 和 model_t 均用 RandomForestRegressor，
+   n_estimators=500，random_state=42）
+2. 估计测试集每个样本的 CATE 及 95% 置信区间
+3. 绘制 CATE 分布直方图，标注 ATE（均值）和中位数
+4. 绘制前2个最重要特征的 CATE 散点图
+   （x 轴为特征值，y 轴为估计的 CATE）
+5. 打印 ATE 估计值和 95% 置信区间
+6. 识别"高受益群体"（CATE > ATE + 1*std）的样本比例和特征画像
+7. 所有代码中文注释，random_state=42
+```
+:::
+
+---
+
+## 方法选择的决策框架 {#sec-F-decision}
+
+### 综合对比
+
+@tbl-F-method-compare 汇总了本章所有方法的核心属性：
+
+| 方法 | 解决问题 | 核心假设 | 关键局限 | 推荐场景 |
+|------|---------|---------|---------|---------|
+| **Post-Lasso** | 高维控制 | 条件外生性 + 稀疏性 | 单边筛选可能遗漏重要控制变量 | 仅作为基准对比 |
+| **DS-Lasso** | 高维控制 | 条件外生性 + 稀疏性 | 线性第一阶段；小样本不稳定 | 线性稀疏场景的首选 |
+| **PO-Lasso** | 高维控制 | 条件外生性 + 稀疏性 | 同 DS-Lasso | 与 DS-Lasso 结果互相验证 |
+| **DML** | 高维控制 + 轻度非线性 | 条件外生性 + 稀疏性 | 严重非线性时第一阶段失效 | n≥500，有一定非线性 |
+| **DDML** | 高维控制 + 任意非线性 | 条件外生性（不需稀疏性）| 计算成本高；需要较大样本 | n≥1000，强非线性 |
+| **Lasso-IV** | 弱工具变量 + 不可观测遗漏变量 | IV 外生性 + 稀疏性 | 无法验证 IV 外生性 | 有合理 IV，但数量很多 |
+| **因果森林** | 异质性处理效应（CATE）| 条件外生性（不需稀疏性）| 需要足够样本量；解释性弱 | 研究政策效果的异质性 |
+
+: 本章方法综合对比 {#tbl-F-method-compare}
+
+### 方法选择决策流程
+
+```
+第一步：是否存在不可观测的遗漏变量？
+    ├─ 是 → 使用 Lasso-IV（需要有效 IV）
+    └─ 否（条件外生性成立）→ 进入第二步
+
+第二步：研究目标是 ATE 还是 CATE？
+    ├─ CATE（异质性处理效应）→ 因果森林（econml）
+    └─ ATE → 进入第三步
+
+第三步：第一阶段关系是线性还是非线性？
+    ├─ 线性稀疏，n 较小（< 500）→ DS-Lasso / PO-Lasso
+    ├─ 轻度非线性，n 适中（500-1000）→ DML（Lasso 第一阶段）
+    └─ 强非线性，n 较大（> 1000）→ DDML（RF/XGBoost 第一阶段）
+
+第四步：无论用哪种方法，均建议：
+    ① 用 Post-Lasso 做基准对比
+    ② 多种方法结果一致时，结论更可信
+    ③ 重复多次（n_rep≥5），报告系数的稳定性
+```
+
+@fig-F-method-compare 以横向误差棒图形式汇总了五种方法对同一数据集的估计结果，直观展示了方法选择对推断结论的影响：
+
+![多方法处理效应估计对比（横向误差棒图）。点为估计值，横线为 95% 置信区间。真实 $\theta_0 = 0.5$（红色虚线）。](figs/fig_F_method_compare.png){#fig-F-method-compare width=80%}
+
+---
+
+## 本章小结 {#sec-F-summary}
+
+本章在 Part V 的理论高峰处，将机器学习与因果推断的最新进展系统性地整合在一起。
+
+**核心结论一：从 Post-Lasso 到 DML/DDML 是一条清晰的理论演进线**。Post-Lasso 有单边筛选的遗漏变量风险 → DS-Lasso 用双边筛选修复 → PO-Lasso 引入 FWL 残差化框架 → DML 引入交叉拟合消除偏差污染 → DDML 推广到任意非参数第一阶段。每一步都是对前一步局限的精准修复。
+
+**核心结论二：DML/DDML 解决的是函数形式误设和第一阶段偏差污染，不是不可观测遗漏变量**。这是使用这类方法时最容易被误解的地方。条件外生性是所有方法的共同假设；当存在不可观测混淆变量时，必须使用工具变量方法（Lasso-IV）。
+
+**核心结论三：因果森林开辟了政策评估的新维度**。ATE 只告诉我们"平均而言政策有效"，CATE 告诉我们"对谁最有效"——这对政策精准施策具有直接价值。"诚实估计"原则和渐近有效置信区间，使因果森林在方法论上有坚实的理论基础。
+
+**本章的边界**：本章假设处理变量 $D$ 是单一的（标量），多处理变量的情形需要额外的方法扩展；所有方法都假设稳定单元处理价值假设（SUTVA），即个体间无溢出效应——这在网络效应显著的金融市场中可能不成立。
+
+## 参考文献 {.unnumbered}
+
+::: {#refs}
+:::

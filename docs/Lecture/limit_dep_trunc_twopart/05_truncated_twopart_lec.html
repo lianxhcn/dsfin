@@ -1,0 +1,2810 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.6.39">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>39&nbsp; Tobit 之后：截断、两部模型与比例因变量 – 金融数据分析与建模</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script><script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../Lecture/limit_dep_trunc_twopart/05_truncated_twopart_codes.html" rel="next">
+<link href="../../Lecture/limit_dep_tobit/04_tobit_model_codes.html" rel="prev">
+<link href="../../images/book-logo.png" rel="icon" type="image/png">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-e8fb9d25728d58bfeac61b497e4a6629.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark-57a92833092fd6dc0d7710b6bdfff9c5.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-7ef202e96c563d31d9e5226e4d6cabf9.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark-490ba4e843cb1303a232ed0c676384f2.min.css" rel="prefetch" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
+
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../Lecture/limit_dep_intro/01_overview_lec.html"><strong>受限因变量</strong></a></li><li class="breadcrumb-item"><a href="../../Lecture/limit_dep_trunc_twopart/05_truncated_twopart_lec.html"><span class="chapter-number">39</span>&nbsp; <span class="chapter-title">Tobit 之后：截断、两部模型与比例因变量</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header sidebar-header-stacked">
+      <a href="https://lianxhcn.github.io/dsfin/" class="sidebar-logo-link">
+      <img src="../../images/book-logo.png" alt="" class="sidebar-logo py-0 d-lg-inline d-none">
+      </a>
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../../">DS Finance</a> 
+        <div class="sidebar-tools-main tools-wide">
+    <a href="https://github.com/lianxhcn/dsfin" title="" class="quarto-navigation-tool px-1" aria-label=""><i class="bi bi-github"></i></a>
+    <a href="https://www.lianxh.cn" title="" class="quarto-navigation-tool px-1" aria-label=""><i class="bi bi-house-fill"></i></a>
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">封面</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/00_intro.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">📚课程资料</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/00_setup.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">📌课件使用指南</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/01_homework.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">🚀作业</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text"><strong>环境配置</strong></span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/00-setup/01_00_coding_with_AI.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">借助 AI 写代码</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/00-setup/01_01_install_anaconda.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Python：安装和环境配置</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/00-setup/01_02_jupyter_notebook.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Jupyter Notebook 的使用</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/00-setup/01_03_install_FAQs.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Python 安装常见问题</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/00-setup/01_04_markdown.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Markdown</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/00-setup/01_06_conda_env.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">虚拟环境管理</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
+ <span class="menu-text"><strong>数据分析</strong></span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/data_get_data/lecture_get_data.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">金融数据获取</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/data_get_data/data_02_get_data_GMD.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">获取数据：GMD</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/data_get_data/data_03_TS_SZ_index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">上证指数的时序特征</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/data_store_structure/lecture_data_management_organization.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">数据管理与组织</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/data_manage/lecture_data_management.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">数据管理：格式、存储与工作流</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/data_clean/lecture_data_clean.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">数据清洗</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true">
+ <span class="menu-text"><strong>可视化</strong></span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/data_visual/graph_01_intro.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Python 可视化：简介</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/data_visual/graph_dis_box_violin.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">箱型图和小提琴图</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/data_visual/graph_dis_histogram.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">直方图</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/data_visual/graph_dis_kdensity.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">核密度函数图</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/data_visual/lec_distribution.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">数据分布：原理与可视化</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/data_visual/lec_distribution_codes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">数据分布：原理与可视化 — 配套代码</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/data_visual/lec_visualization.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">数据可视化：一些基本原则</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true">
+ <span class="menu-text"><strong>数据爬取</strong></span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/crawing/craw_01_introduction.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">网络爬虫简介</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/crawing/craw_02_sec01_lingnan_prompt.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">实例-提示词模式：爬取岭南学院教师名录</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/crawing/craw_02_sec02_lingnan_dialog.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">实例-对话模式：爬取岭南学院教师名录</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true">
+ <span class="menu-text"><strong>线性回归分析</strong></span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/reg_ols/ols_visual_3D.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">二元线性回归的 3D 图示</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="true">
+ <span class="menu-text"><strong>面板模型：固定效应</strong></span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/panel_fe/panel_HDFE.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">HDFE：多维固定效应</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/panel_fe/panel_IntFE.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">交互固定效应模型</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="true">
+ <span class="menu-text"><strong>面板变系数模型</strong></span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/panel_xtplfc/01_Panel_threshold_01_theory.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">静态面板门槛模型：理论与方法</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/panel_xtplfc/02_Panel_threshold_02_codes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">静态面板门槛模型：Stata 实操</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/panel_xtplfc/04_xtplfc的直观解读及xthreg实现.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">变系数模型</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/panel_xtplfc/05_解读xtplfc的原理_样条基函数.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">样条基函数与变系数模型：Stata 实操</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/panel_xtplfc/Du_2021_EE_中文精要.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">30</span>&nbsp; <span class="chapter-title">非线性调节效应怎么做？部分线性函数型面板数据模型</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" role="navigation" aria-expanded="true">
+ <span class="menu-text"><strong>受限因变量</strong></span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-8" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/limit_dep_intro/01_overview_lec.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">31</span>&nbsp; <span class="chapter-title">离散变量和受限因变量：导论</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/limit_dep_intro/01_overview_codes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">32</span>&nbsp; <span class="chapter-title">附：codes</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/limit_dep_logit/02_a_binary_lec.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">33</span>&nbsp; <span class="chapter-title">二元选择模型</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/limit_dep_logit/02_b_binary_codes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">34</span>&nbsp; <span class="chapter-title">附：Codes</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/limit_dep_logit/02_c_binary_case.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">35</span>&nbsp; <span class="chapter-title">案例：上市公司债务违约分析</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/reg_logit/probability_models.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">36</span>&nbsp; <span class="chapter-title">从回归模型到概率模型</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/limit_dep_tobit/04_tobit_model_lec.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">37</span>&nbsp; <span class="chapter-title">Tobit 模型：受限因变量、潜变量与边际效应</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/limit_dep_tobit/04_tobit_model_codes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">38</span>&nbsp; <span class="chapter-title">附：Codes .{unnumbered}</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/limit_dep_trunc_twopart/05_truncated_twopart_lec.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">39</span>&nbsp; <span class="chapter-title">Tobit 之后：截断、两部模型与比例因变量</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/limit_dep_trunc_twopart/05_truncated_twopart_codes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">40</span>&nbsp; <span class="chapter-title">附：Codes .{unnumbered}</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/limit_dep_heckman/06_heckman_lec.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">41</span>&nbsp; <span class="chapter-title">Heckman 选择模型：样本选择偏误与两阶段估计</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/limit_dep_heckman/06_heckman_codes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">42</span>&nbsp; <span class="chapter-title">附：Codes .{unnumbered}</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-9" role="navigation" aria-expanded="true">
+ <span class="menu-text"><strong>估计方法</strong></span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-9" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-9" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/method_MLE/MLE_lec.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">43</span>&nbsp; <span class="chapter-title">最大似然估计 (MLE)</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/method_MLE/MLE_codes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">44</span>&nbsp; <span class="chapter-title">MLE_codes：图形与数据生成</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/method_MLE/MLE_case.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">45</span>&nbsp; <span class="chapter-title">MLE 应用案例</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-10" role="navigation" aria-expanded="true">
+ <span class="menu-text"><strong>文本分析</strong></span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-10" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-10" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/text_analysis/lecture_text_01_ailn.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">46</span>&nbsp; <span class="chapter-title">金融文本分析（上）——从文本到结构化数据</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/text_analysis/lecture_text_02_ailn.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">47</span>&nbsp; <span class="chapter-title">金融文本分析（下）——情感分析与文本建模</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/text_analysis/lecture_text_analysis_01_claude.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">48</span>&nbsp; <span class="chapter-title">文本数据处理基础</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/text_analysis/lecture_text_analysis_02_claude.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">49</span>&nbsp; <span class="chapter-title">文本分析：情感分析与主题建模</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-11" role="navigation" aria-expanded="true">
+ <span class="menu-text"><strong>附录：Python 提示词</strong></span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-11" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-11" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../appendix_python/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">概览</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../appendix_python/a1_setup.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">A1. 环境配置</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../appendix_python/a2_project.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">A2. 项目规划与版本控制</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../appendix_python/a3_concepts.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">A3. 提示词核心词汇</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../appendix_python/a4_data.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">A4. 数据获取与清洗</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../appendix_python/a5_visualization.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">A5. 数据可视化</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../appendix_python/a6_modeling.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">A6. 统计建模</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../appendix_python/a7_results.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">A7. 结果呈现与表格美化</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../appendix_python/a8_workflow.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">A8. 上下文管理与调试</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#从模型地图开始" id="toc-从模型地图开始" class="nav-link active" data-scroll-target="#从模型地图开始"><span class="header-section-number">39.1</span> 从模型地图开始</a></li>
+  <li><a href="#贷款金额案例为什么不是-tobit" id="toc-贷款金额案例为什么不是-tobit" class="nav-link" data-scroll-target="#贷款金额案例为什么不是-tobit"><span class="header-section-number">39.2</span> 贷款金额案例：为什么不是 Tobit</a></li>
+  <li><a href="#数据生成机制企业是否借款与借款规模" id="toc-数据生成机制企业是否借款与借款规模" class="nav-link" data-scroll-target="#数据生成机制企业是否借款与借款规模"><span class="header-section-number">39.3</span> 数据生成机制：企业是否借款与借款规模</a></li>
+  <li><a href="#truncated-regression样本被截断" id="toc-truncated-regression样本被截断" class="nav-link" data-scroll-target="#truncated-regression样本被截断"><span class="header-section-number">39.4</span> Truncated regression：样本被截断</a></li>
+  <li><a href="#two-part-model是否发生与发生多少" id="toc-two-part-model是否发生与发生多少" class="nav-link" data-scroll-target="#two-part-model是否发生与发生多少"><span class="header-section-number">39.5</span> Two-part model：是否发生与发生多少</a></li>
+  <li><a href="#hurdle-model-与-zero-inflated-count-model" id="toc-hurdle-model-与-zero-inflated-count-model" class="nav-link" data-scroll-target="#hurdle-model-与-zero-inflated-count-model"><span class="header-section-number">39.6</span> Hurdle model 与 zero-inflated count model</a></li>
+  <li><a href="#fractional-response-model比例因变量的自然边界" id="toc-fractional-response-model比例因变量的自然边界" class="nav-link" data-scroll-target="#fractional-response-model比例因变量的自然边界"><span class="header-section-number">39.7</span> Fractional response model：比例因变量的自然边界</a></li>
+  <li><a href="#模型选择指南" id="toc-模型选择指南" class="nav-link" data-scroll-target="#模型选择指南"><span class="header-section-number">39.8</span> 模型选择指南</a></li>
+  <li><a href="#附录python-中的截断回归简易实现" id="toc-附录python-中的截断回归简易实现" class="nav-link" data-scroll-target="#附录python-中的截断回归简易实现"><span class="header-section-number">39.9</span> 附录：Python 中的截断回归简易实现</a></li>
+  <li><a href="#小结" id="toc-小结" class="nav-link" data-scroll-target="#小结"><span class="header-section-number">39.10</span> 小结</a></li>
+  <li><a href="#参考文献" id="toc-参考文献" class="nav-link" data-scroll-target="#参考文献"><span class="header-section-number">39.11</span> 参考文献</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../Lecture/limit_dep_intro/01_overview_lec.html"><strong>受限因变量</strong></a></li><li class="breadcrumb-item"><a href="../../Lecture/limit_dep_trunc_twopart/05_truncated_twopart_lec.html"><span class="chapter-number">39</span>&nbsp; <span class="chapter-title">Tobit 之后：截断、两部模型与比例因变量</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">39</span>&nbsp; <span class="chapter-title">Tobit 之后：截断、两部模型与比例因变量</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<blockquote class="blockquote">
+<p>本讲义用于《金融数据分析与建模》课程。配套文件 <code>05_truncated_twopart_codes.ipynb</code> 用于生成 <code>./figs/</code> 中的配图和 <code>./data/limitdep_alt_sim.csv</code>。</p>
+</blockquote>
+<p>Tobit 模型提供了一种处理删失型连续因变量的标准方法。但在金融和企业数据中，很多变量虽然看起来“受限”或“有很多 0”，其背后的数据生成机制却不一定是删失。若不区分观测机制，很容易把 Tobit 用到并不适合的场景中。</p>
+<p>本章围绕一个问题展开：当 Tobit 不是最合适选择时，应该如何根据数据生成机制选择替代模型？重点讨论三类模型：</p>
+<ul>
+<li>Truncated regression：样本被截断，部分样本根本没有进入数据；</li>
+<li>Two-part model：是否发生和发生多少由两个过程决定；</li>
+<li>Fractional response model：因变量是位于 <span class="math inline">\([0,1]\)</span> 的比例变量。</li>
+</ul>
+<p>本章主案例是企业银行贷款金额。企业贷款金额有大量 0，但这些 0 通常不是删失结果，而是企业没有获得贷款或没有借款的真实状态。此时，更自然的建模方式是先解释企业是否借款，再解释借款企业的贷款规模。</p>
+<section id="从模型地图开始" class="level2" data-number="39.1">
+<h2 data-number="39.1" class="anchored" data-anchor-id="从模型地图开始"><span class="header-section-number">39.1</span> 从模型地图开始</h2>
+<p>受限因变量模型的选择，关键不在于因变量是否有很多 0，而在于这些 0、边界值或缺失值是如何产生的。</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="./figs/limit_dep_alt_fig01_model_map.png" class="img-fluid figure-img"></p>
+<figcaption>受限因变量模型选择地图</figcaption>
+</figure>
+</div>
+<p>可以从以下几个问题出发：</p>
+<ul>
+<li>样本是否全部进入数据？</li>
+<li>因变量是否被完整观测？</li>
+<li>0 是真实经济选择，还是边界外取值被合并后的结果？</li>
+<li>是否参与和参与后的强度是否由同一机制决定？</li>
+<li>结果变量是连续变量、比例变量，还是计数变量？</li>
+</ul>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+避坑指南：不要把“很多 0”自动等同于 Tobit
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Tobit 适合的是“潜在连续变量被删失”的情形。如果 0 本身就是一个真实选择结果，例如企业没有借款、没有捐赠、没有申请专利，那么 Two-part model 往往更自然。若未选择样本中的结果变量根本不可观测，则问题更接近 Heckman selection。</p>
+</div>
+</div>
+</section>
+<section id="贷款金额案例为什么不是-tobit" class="level2" data-number="39.2">
+<h2 data-number="39.2" class="anchored" data-anchor-id="贷款金额案例为什么不是-tobit"><span class="header-section-number">39.2</span> 贷款金额案例：为什么不是 Tobit</h2>
+<p>考虑一个公司金融问题：哪些企业能够获得银行贷款？在获得贷款后，企业的贷款金额由哪些因素决定？</p>
+<p>设企业 <span class="math inline">\(i\)</span> 的银行贷款金额为 <span class="math inline">\(loan_i\)</span>。在数据中，经常可以看到大量企业满足：</p>
+<p><span class="math display">\[
+loan_i=0
+\]</span></p>
+<p>这可能来自两类完全不同的机制。</p>
+<p>第一类机制是删失。假设存在一个潜在连续变量 <span class="math inline">\(loan_i^*\)</span>，当 <span class="math inline">\(loan_i^*\leq 0\)</span> 时，数据库记录为 0；当 <span class="math inline">\(loan_i^*&gt;0\)</span> 时，记录为 <span class="math inline">\(loan_i=loan_i^*\)</span>。这是 Tobit 的思路。</p>
+<p>第二类机制是两阶段决策。企业先经历一个是否借款或是否获得贷款的过程；只有在 <span class="math inline">\(borrow_i=1\)</span> 时，才进入贷款金额决定过程：</p>
+<p><span class="math display">\[
+borrow_i =
+\begin{cases}
+1, &amp; \text{firm } i \text{ obtains a bank loan}\\
+0, &amp; \text{otherwise}
+\end{cases}
+\]</span></p>
+<p><span class="math display">\[
+loan_i =
+\begin{cases}
+0, &amp; borrow_i=0\\
+loan_i^+, &amp; borrow_i=1
+\end{cases}
+\]</span></p>
+<p>在银行信贷场景中，第二种机制通常更贴近现实，原因在于：</p>
+<ul>
+<li>企业是否获得贷款，取决于银行审批、企业抵押品、银企关系、地区银行网点密度、政策性金融服务窗口等因素；</li>
+<li>获得贷款以后，贷款金额又取决于企业资金需求、项目规模、资产负债表约束和银行授信额度。</li>
+</ul>
+<p>因此，贷款金额为 0 并不一定表示潜在贷款金额被“压到 0”，而可能表示企业没有进入正值贷款金额的决定阶段。</p>
+</section>
+<section id="数据生成机制企业是否借款与借款规模" class="level2" data-number="39.3">
+<h2 data-number="39.3" class="anchored" data-anchor-id="数据生成机制企业是否借款与借款规模"><span class="header-section-number">39.3</span> 数据生成机制：企业是否借款与借款规模</h2>
+<p>本章的主案例采用如下 two-part 数据生成过程。</p>
+<p>第一部分是是否借款：</p>
+<p><span class="math display">\[
+borrow_i^*
+=
+z_i'\gamma
++
+v_i
+\]</span></p>
+<p><span class="math display">\[
+borrow_i =
+\begin{cases}
+1, &amp; borrow_i^*&gt;0\\
+0, &amp; borrow_i^*\leq 0
+\end{cases}
+\]</span></p>
+<p>第二部分是在借款企业中的贷款金额：</p>
+<p><span class="math display">\[
+\log(loan_i)
+=
+x_i'\beta
++
+u_i,\quad borrow_i=1
+\]</span></p>
+<p>最终观测到的贷款金额为：</p>
+<p><span class="math display">\[
+loan_i =
+\begin{cases}
+0, &amp; borrow_i=0\\
+\exp(x_i'\beta+u_i), &amp; borrow_i=1
+\end{cases}
+\]</span></p>
+<p>这里 <span class="math inline">\(z_i\)</span> 和 <span class="math inline">\(x_i\)</span> 不一定完全相同。影响企业是否借款的变量，可能包括抵押品、本地银行服务可得性、政银企对接窗口等；影响贷款金额的变量，则更侧重企业规模、资产负债率、盈利能力、现金持有和抵押品价值。</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="./figs/limit_dep_alt_fig02_loan_amount_distribution.png" class="img-fluid figure-img"></p>
+<figcaption>贷款金额分布</figcaption>
+</figure>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="./figs/limit_dep_alt_fig03_twopart_mechanism.png" class="img-fluid figure-img"></p>
+<figcaption>Two-part 机制</figcaption>
+</figure>
+</div>
+<div id="654f904e" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-04-28T10:28:45.738182Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-04-28T10:28:45.737937Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-04-28T10:28:47.811734Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-04-28T10:28:47.810602Z&quot;}" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ============================================================</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="co"># 导入包与读取模拟数据</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co"># ============================================================</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> statsmodels.api <span class="im">as</span> sm</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> statsmodels.iolib.summary2 <span class="im">import</span> summary_col</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.stats <span class="im">import</span> norm</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.optimize <span class="im">import</span> minimize</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="co"># ------------------------------------------------------------</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="co"># 中文字体设置</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="co"># ------------------------------------------------------------</span></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="co"># 说明：</span></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="co"># 1. Windows 本地优先使用 SimHei，避免中文乱码；</span></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="co"># 2. macOS / Linux 自动寻找可用中文字体；</span></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="co"># 3. 本 notebook 在服务器环境下会自动使用 Noto Sans CJK JP，</span></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="co">#    该字体可以正常显示中文。</span></span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> platform</span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.font_manager <span class="im">as</span> fm</span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> set_chinese_font():</span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> platform.system() <span class="op">==</span> <span class="st">"Windows"</span>:</span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>        candidates <span class="op">=</span> [<span class="st">"SimHei"</span>, <span class="st">"Microsoft YaHei"</span>, <span class="st">"SimSun"</span>]</span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>    <span class="cf">elif</span> platform.system() <span class="op">==</span> <span class="st">"Darwin"</span>:</span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>        candidates <span class="op">=</span> [<span class="st">"PingFang SC"</span>, <span class="st">"Heiti SC"</span>, <span class="st">"Songti SC"</span>, <span class="st">"Arial Unicode MS"</span>]</span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>        candidates <span class="op">=</span> [</span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>            <span class="st">"Noto Sans CJK SC"</span>,</span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>            <span class="st">"Noto Sans CJK JP"</span>,</span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>            <span class="st">"Noto Sans CJK TC"</span>,</span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>            <span class="st">"WenQuanYi Micro Hei"</span>,</span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>            <span class="st">"Microsoft YaHei"</span>,</span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a>            <span class="st">"SimHei"</span>,</span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a>            <span class="st">"Arial Unicode MS"</span>,</span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a>        ]</span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a>    available_fonts <span class="op">=</span> {font.name <span class="cf">for</span> font <span class="kw">in</span> fm.fontManager.ttflist}</span>
+<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> font_name <span class="kw">in</span> candidates:</span>
+<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> font_name <span class="kw">in</span> available_fonts:</span>
+<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a>            plt.rcParams[<span class="st">"font.family"</span>] <span class="op">=</span> <span class="st">"sans-serif"</span></span>
+<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a>            plt.rcParams[<span class="st">"font.sans-serif"</span>] <span class="op">=</span> [font_name]</span>
+<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a>            plt.rcParams[<span class="st">"axes.unicode_minus"</span>] <span class="op">=</span> <span class="va">False</span></span>
+<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> font_name</span>
+<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 若没有找到中文字体，则退回 DejaVu Sans；此时英文和负号正常，但中文可能仍无法显示</span></span>
+<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a>    plt.rcParams[<span class="st">"font.family"</span>] <span class="op">=</span> <span class="st">"sans-serif"</span></span>
+<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a>    plt.rcParams[<span class="st">"font.sans-serif"</span>] <span class="op">=</span> [<span class="st">"DejaVu Sans"</span>]</span>
+<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a>    plt.rcParams[<span class="st">"axes.unicode_minus"</span>] <span class="op">=</span> <span class="va">False</span></span>
+<span id="cb1-52"><a href="#cb1-52" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="st">"DejaVu Sans"</span></span>
+<span id="cb1-53"><a href="#cb1-53" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-54"><a href="#cb1-54" aria-hidden="true" tabindex="-1"></a>FONT_FAMILY <span class="op">=</span> set_chinese_font()</span>
+<span id="cb1-55"><a href="#cb1-55" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"当前使用字体: </span><span class="sc">{</span>FONT_FAMILY<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb1-56"><a href="#cb1-56" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-57"><a href="#cb1-57" aria-hidden="true" tabindex="-1"></a>pd.set_option(<span class="st">"display.max_columns"</span>, <span class="dv">100</span>)</span>
+<span id="cb1-58"><a href="#cb1-58" aria-hidden="true" tabindex="-1"></a>pd.set_option(<span class="st">"display.width"</span>, <span class="dv">120</span>)</span>
+<span id="cb1-59"><a href="#cb1-59" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-60"><a href="#cb1-60" aria-hidden="true" tabindex="-1"></a><span class="co"># 需要先运行 05_truncated_twopart_codes.ipynb，生成该数据文件</span></span>
+<span id="cb1-61"><a href="#cb1-61" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_csv(<span class="st">"./data/limitdep_alt_sim.csv"</span>)</span>
+<span id="cb1-62"><a href="#cb1-62" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-63"><a href="#cb1-63" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df.shape)</span>
+<span id="cb1-64"><a href="#cb1-64" aria-hidden="true" tabindex="-1"></a>df.head().<span class="bu">round</span>(<span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>当前使用字体: Noto Sans CJK JP
+(3000, 18)</code></pre>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="1">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">firm_id</th>
+<th data-quarto-table-cell-role="th">size</th>
+<th data-quarto-table-cell-role="th">cash</th>
+<th data-quarto-table-cell-role="th">lev</th>
+<th data-quarto-table-cell-role="th">profit</th>
+<th data-quarto-table-cell-role="th">collateral</th>
+<th data-quarto-table-cell-role="th">bankbranch</th>
+<th data-quarto-table-cell-role="th">policy_window</th>
+<th data-quarto-table-cell-role="th">borrow_latent</th>
+<th data-quarto-table-cell-role="th">borrow</th>
+<th data-quarto-table-cell-role="th">ln_loan_amt_latent</th>
+<th data-quarto-table-cell-role="th">loan_amt</th>
+<th data-quarto-table-cell-role="th">ln_loan_amt</th>
+<th data-quarto-table-cell-role="th">contract_latent</th>
+<th data-quarto-table-cell-role="th">contract_observed</th>
+<th data-quarto-table-cell-role="th">reported</th>
+<th data-quarto-table-cell-role="th">green_share</th>
+<th data-quarto-table-cell-role="th">green_patents</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>1</td>
+<td>-0.365</td>
+<td>0.084</td>
+<td>0.630</td>
+<td>0.335</td>
+<td>0.334</td>
+<td>-1.280</td>
+<td>0</td>
+<td>0.611</td>
+<td>1</td>
+<td>1.451</td>
+<td>4.268</td>
+<td>1.451</td>
+<td>1.547</td>
+<td>1.547</td>
+<td>1</td>
+<td>0.106</td>
+<td>0</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1</td>
+<td>2</td>
+<td>0.896</td>
+<td>0.631</td>
+<td>0.360</td>
+<td>-0.378</td>
+<td>0.739</td>
+<td>0.766</td>
+<td>1</td>
+<td>1.698</td>
+<td>1</td>
+<td>3.719</td>
+<td>41.214</td>
+<td>3.719</td>
+<td>1.030</td>
+<td>NaN</td>
+<td>0</td>
+<td>0.437</td>
+<td>1</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2</td>
+<td>3</td>
+<td>0.376</td>
+<td>0.320</td>
+<td>0.204</td>
+<td>0.159</td>
+<td>0.610</td>
+<td>0.946</td>
+<td>1</td>
+<td>0.836</td>
+<td>1</td>
+<td>2.764</td>
+<td>15.861</td>
+<td>2.764</td>
+<td>2.220</td>
+<td>2.220</td>
+<td>1</td>
+<td>0.412</td>
+<td>0</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">3</td>
+<td>4</td>
+<td>0.346</td>
+<td>0.052</td>
+<td>0.224</td>
+<td>0.624</td>
+<td>0.200</td>
+<td>0.326</td>
+<td>1</td>
+<td>-0.069</td>
+<td>0</td>
+<td>2.096</td>
+<td>0.000</td>
+<td>NaN</td>
+<td>2.250</td>
+<td>2.250</td>
+<td>1</td>
+<td>0.241</td>
+<td>0</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">4</td>
+<td>5</td>
+<td>-0.315</td>
+<td>0.482</td>
+<td>0.133</td>
+<td>-0.168</td>
+<td>0.180</td>
+<td>-0.585</td>
+<td>0</td>
+<td>-2.481</td>
+<td>0</td>
+<td>2.271</td>
+<td>0.000</td>
+<td>NaN</td>
+<td>2.110</td>
+<td>2.110</td>
+<td>1</td>
+<td>0.414</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<div id="fd8da608" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-04-28T10:28:47.814731Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-04-28T10:28:47.814531Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-04-28T10:28:47.824459Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-04-28T10:28:47.823689Z&quot;}" data-execution_count="2">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ============================================================</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co"># 贷款金额变量的基本描述</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co"># ============================================================</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>desc <span class="op">=</span> pd.DataFrame({</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">"统计量"</span>: [</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>        <span class="st">"样本量"</span>,</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>        <span class="st">"有贷款企业数量"</span>,</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>        <span class="st">"有贷款企业比例"</span>,</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>        <span class="st">"贷款金额均值"</span>,</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>        <span class="st">"贷款金额中位数"</span>,</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>        <span class="st">"正值贷款金额均值"</span>,</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>        <span class="st">"正值贷款金额中位数"</span>,</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>    ],</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>    <span class="st">"数值"</span>: [</span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>        <span class="bu">len</span>(df),</span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>        <span class="bu">int</span>(df[<span class="st">"borrow"</span>].<span class="bu">sum</span>()),</span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>        df[<span class="st">"borrow"</span>].mean(),</span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>        df[<span class="st">"loan_amt"</span>].mean(),</span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>        df[<span class="st">"loan_amt"</span>].median(),</span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>        df.loc[df[<span class="st">"borrow"</span>] <span class="op">==</span> <span class="dv">1</span>, <span class="st">"loan_amt"</span>].mean(),</span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>        df.loc[df[<span class="st">"borrow"</span>] <span class="op">==</span> <span class="dv">1</span>, <span class="st">"loan_amt"</span>].median(),</span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>    ]</span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>}).<span class="bu">round</span>(<span class="dv">3</span>)</span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a>desc</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="2">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">统计量</th>
+<th data-quarto-table-cell-role="th">数值</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>样本量</td>
+<td>3000.000</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1</td>
+<td>有贷款企业数量</td>
+<td>1490.000</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2</td>
+<td>有贷款企业比例</td>
+<td>0.497</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">3</td>
+<td>贷款金额均值</td>
+<td>10.456</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">4</td>
+<td>贷款金额中位数</td>
+<td>0.000</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">5</td>
+<td>正值贷款金额均值</td>
+<td>21.053</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">6</td>
+<td>正值贷款金额中位数</td>
+<td>14.992</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<div id="66ee7e6f" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-04-28T10:28:47.826520Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-04-28T10:28:47.826369Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-04-28T10:28:47.842560Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-04-28T10:28:47.841588Z&quot;}" data-execution_count="3">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ============================================================</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="co"># 借款企业与未借款企业的特征对比</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="co"># ============================================================</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>compare_vars <span class="op">=</span> [<span class="st">"size"</span>, <span class="st">"cash"</span>, <span class="st">"lev"</span>, <span class="st">"profit"</span>, <span class="st">"collateral"</span>, <span class="st">"bankbranch"</span>, <span class="st">"policy_window"</span>]</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>compare_table <span class="op">=</span> (</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>    df.groupby(<span class="st">"borrow"</span>)[compare_vars]</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>      .agg([<span class="st">"mean"</span>, <span class="st">"std"</span>])</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>      .T</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>compare_table.columns <span class="op">=</span> [<span class="st">"未借款企业"</span>, <span class="st">"借款企业"</span>]</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>compare_table.<span class="bu">round</span>(<span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="3">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">未借款企业</th>
+<th data-quarto-table-cell-role="th">借款企业</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td rowspan="2" data-quarto-table-cell-role="th" data-valign="top">size</td>
+<td data-quarto-table-cell-role="th">mean</td>
+<td>-0.402</td>
+<td>0.403</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">std</td>
+<td>0.913</td>
+<td>0.927</td>
+</tr>
+<tr class="odd">
+<td rowspan="2" data-quarto-table-cell-role="th" data-valign="top">cash</td>
+<td data-quarto-table-cell-role="th">mean</td>
+<td>0.269</td>
+<td>0.294</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">std</td>
+<td>0.151</td>
+<td>0.161</td>
+</tr>
+<tr class="odd">
+<td rowspan="2" data-quarto-table-cell-role="th" data-valign="top">lev</td>
+<td data-quarto-table-cell-role="th">mean</td>
+<td>0.384</td>
+<td>0.341</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">std</td>
+<td>0.185</td>
+<td>0.175</td>
+</tr>
+<tr class="odd">
+<td rowspan="2" data-quarto-table-cell-role="th" data-valign="top">profit</td>
+<td data-quarto-table-cell-role="th">mean</td>
+<td>-0.083</td>
+<td>0.097</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">std</td>
+<td>0.534</td>
+<td>0.539</td>
+</tr>
+<tr class="odd">
+<td rowspan="2" data-quarto-table-cell-role="th" data-valign="top">collateral</td>
+<td data-quarto-table-cell-role="th">mean</td>
+<td>0.366</td>
+<td>0.542</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">std</td>
+<td>0.239</td>
+<td>0.249</td>
+</tr>
+<tr class="odd">
+<td rowspan="2" data-quarto-table-cell-role="th" data-valign="top">bankbranch</td>
+<td data-quarto-table-cell-role="th">mean</td>
+<td>-0.243</td>
+<td>0.267</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">std</td>
+<td>0.972</td>
+<td>1.003</td>
+</tr>
+<tr class="odd">
+<td rowspan="2" data-quarto-table-cell-role="th" data-valign="top">policy_window</td>
+<td data-quarto-table-cell-role="th">mean</td>
+<td>0.387</td>
+<td>0.534</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">std</td>
+<td>0.487</td>
+<td>0.499</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+</section>
+<section id="truncated-regression样本被截断" class="level2" data-number="39.4">
+<h2 data-number="39.4" class="anchored" data-anchor-id="truncated-regression样本被截断"><span class="header-section-number">39.4</span> Truncated regression：样本被截断</h2>
+<p>截断 (truncation) 和删失 (censoring) 是最容易混淆的两个概念。删失数据中，边界外样本仍然在数据中，只是因变量被记录为边界值；截断数据中，边界外样本根本没有进入数据。</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="./figs/limit_dep_alt_fig04_censor_trunc_select.png" class="img-fluid figure-img"></p>
+<figcaption>删失、截断与选择的观测机制对比</figcaption>
+</figure>
+</div>
+<p>设潜在结果变量为：</p>
+<p><span class="math display">\[
+y_i^*=x_i'\beta+u_i,\quad u_i\sim N(0,\sigma^2)
+\]</span></p>
+<p>如果只有满足 <span class="math inline">\(y_i^*&gt;c\)</span> 的样本才进入数据，则观测到的是：</p>
+<p><span class="math display">\[
+y_i=y_i^*\quad \text{only if } y_i^*&gt;c
+\]</span></p>
+<p>在这种情况下，普通 OLS 面临的问题不是把边界值当成普通连续值，而是样本本身已经经过筛选。正确的似然函数应当使用截断正态分布的密度：</p>
+<p><span class="math display">\[
+f(y_i\mid y_i&gt;c,x_i)
+=
+\frac{
+\frac{1}{\sigma}
+\phi\left(
+\frac{y_i-x_i'\beta}{\sigma}
+\right)
+}{
+1-\Phi\left(
+\frac{c-x_i'\beta}{\sigma}
+\right)
+}
+,\quad y_i&gt;c
+\]</span></p>
+<p>在金融数据中，截断回归适合处理“只有超过报告门槛的合同才进入样本”“只观察到资产规模超过某一门槛的企业”等问题。它和 Heckman selection 的区别在于：截断规则通常直接由结果变量本身或固定门槛决定，而 Heckman selection 由另一个选择方程决定。</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+概念辨析：截断不是正值样本 OLS
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>只保留 <span class="math inline">\(y_i&gt;0\)</span> 的样本做 OLS，并不等于截断回归。截断回归明确使用 <span class="math inline">\(y_i&gt;c\)</span> 这一进入样本条件来修正条件密度。若只是删掉边界外样本再回归，通常仍然会产生偏误。</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Stata 对应命令：<code>truncreg</code>
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<div class="sourceCode" id="cb5"><pre class="sourceCode stata code-with-copy"><code class="sourceCode stata"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>*------------------------------------------------------------</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>* 读取模拟数据</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>*------------------------------------------------------------</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>import delimited <span class="st">"./data/limitdep_alt_sim.csv"</span>, <span class="kw">clear</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>*------------------------------------------------------------</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>* 截断回归示例：</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>* contract_observed 只有在超过报告门槛时才可观测</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>* ll(1.25) 表示左截断点为 1.25</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>*------------------------------------------------------------</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a><span class="kw">truncreg</span> contract_observed <span class="kw">size</span> lev collateral, <span class="co">///</span></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>    ll(1.25) <span class="kw">vce</span>(<span class="kw">robust</span>)</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>margins, <span class="kw">dydx</span>(<span class="kw">size</span> lev collateral)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</section>
+<section id="two-part-model是否发生与发生多少" class="level2" data-number="39.5">
+<h2 data-number="39.5" class="anchored" data-anchor-id="two-part-model是否发生与发生多少"><span class="header-section-number">39.5</span> Two-part model：是否发生与发生多少</h2>
+<p>Two-part model 将结果变量的生成过程拆成两个部分。</p>
+<p>第一部分解释是否为正：</p>
+<p><span class="math display">\[
+P(loan_i&gt;0\mid z_i)=F(z_i'\gamma)
+\]</span></p>
+<p>其中 <span class="math inline">\(F(\cdot)\)</span> 可以是标准正态分布函数 (Probit)，也可以是 Logistic 分布函数 (Logit)。</p>
+<p>第二部分解释正值样本中的结果大小：</p>
+<p><span class="math display">\[
+E(loan_i\mid loan_i&gt;0,x_i)=g(x_i'\beta)
+\]</span></p>
+<p>如果正值贷款金额明显右偏，常见做法是对正值部分取对数：</p>
+<p><span class="math display">\[
+\log(loan_i)=x_i'\beta+u_i,\quad loan_i&gt;0
+\]</span></p>
+<p>最终，非条件期望可以写成：</p>
+<p><span class="math display">\[
+E(loan_i\mid x_i,z_i)
+=
+P(loan_i&gt;0\mid z_i)
+\times
+E(loan_i\mid loan_i&gt;0,x_i)
+\]</span></p>
+<p>这就是 Two-part model 的核心。它允许“是否借款”和“借款多少”由不同机制决定，也允许两部分使用不同解释变量。</p>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+避坑指南：Two-part model 不等于 Heckman
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Two-part model 通常把 0 看作真实结果，第一部分解释是否为正，第二部分解释正值大小。Heckman selection 则处理结果变量只在被选择样本中可观测的问题。如果未借款企业的贷款金额可以合理记为 0，问题更接近 Two-part；如果研究的是贷款利率，未借款企业没有贷款利率，问题更接近 Heckman。</p>
+</div>
+</div>
+<div id="ccd74cd6" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-04-28T10:28:47.844615Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-04-28T10:28:47.844449Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-04-28T10:28:47.869390Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-04-28T10:28:47.867826Z&quot;}" data-execution_count="4">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ============================================================</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Two-part model：第一部分，是否借款</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="co"># ============================================================</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="co"># 第一部分变量：解释企业是否获得银行贷款</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>first_vars <span class="op">=</span> [<span class="st">"size"</span>, <span class="st">"cash"</span>, <span class="st">"lev"</span>, <span class="st">"profit"</span>, <span class="st">"collateral"</span>, <span class="st">"bankbranch"</span>, <span class="st">"policy_window"</span>]</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>Z <span class="op">=</span> sm.add_constant(df[first_vars])</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>probit_model <span class="op">=</span> sm.Probit(df[<span class="st">"borrow"</span>], Z)</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>probit_res <span class="op">=</span> probit_model.fit(disp<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(probit_res.summary())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                          Probit Regression Results                           
+==============================================================================
+Dep. Variable:                 borrow   No. Observations:                 3000
+Model:                         Probit   Df Residuals:                     2992
+Method:                           MLE   Df Model:                            7
+Date:                Tue, 28 Apr 2026   Pseudo R-squ.:                  0.2483
+Time:                        10:28:47   Log-Likelihood:                -1563.1
+converged:                       True   LL-Null:                       -2079.4
+Covariance Type:            nonrobust   LLR p-value:                1.138e-218
+=================================================================================
+                    coef    std err          z      P&gt;|z|      [0.025      0.975]
+---------------------------------------------------------------------------------
+const            -0.4465      0.097     -4.597      0.000      -0.637      -0.256
+size              0.5257      0.035     15.037      0.000       0.457       0.594
+cash              0.7539      0.166      4.530      0.000       0.428       1.080
+lev              -0.9261      0.145     -6.386      0.000      -1.210      -0.642
+profit            0.5428      0.049     11.089      0.000       0.447       0.639
+collateral        0.9008      0.128      7.040      0.000       0.650       1.152
+bankbranch        0.3768      0.027     13.809      0.000       0.323       0.430
+policy_window     0.3258      0.053      6.150      0.000       0.222       0.430
+=================================================================================</code></pre>
+</div>
+</div>
+<div id="f903730e" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-04-28T10:28:47.871902Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-04-28T10:28:47.871683Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-04-28T10:28:47.887938Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-04-28T10:28:47.886359Z&quot;}" data-execution_count="5">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ============================================================</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Two-part model：第二部分，正值贷款金额</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="co"># ============================================================</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="co"># 第二部分变量：解释借款企业的贷款规模</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>second_vars <span class="op">=</span> [<span class="st">"size"</span>, <span class="st">"cash"</span>, <span class="st">"lev"</span>, <span class="st">"profit"</span>, <span class="st">"collateral"</span>, <span class="st">"bankbranch"</span>]</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>df_pos <span class="op">=</span> df.loc[df[<span class="st">"borrow"</span>] <span class="op">==</span> <span class="dv">1</span>].copy()</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>X_pos <span class="op">=</span> sm.add_constant(df_pos[second_vars])</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>log_amt_model <span class="op">=</span> sm.OLS(df_pos[<span class="st">"ln_loan_amt"</span>], X_pos)</span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>log_amt_res <span class="op">=</span> log_amt_model.fit(cov_type<span class="op">=</span><span class="st">"HC1"</span>)</span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(log_amt_res.summary())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                            OLS Regression Results                            
+==============================================================================
+Dep. Variable:            ln_loan_amt   R-squared:                       0.508
+Model:                            OLS   Adj. R-squared:                  0.506
+Method:                 Least Squares   F-statistic:                     264.9
+Date:                Tue, 28 Apr 2026   Prob (F-statistic):          1.93e-230
+Time:                        10:28:47   Log-Likelihood:                -1299.9
+No. Observations:                1490   AIC:                             2614.
+Df Residuals:                    1483   BIC:                             2651.
+Df Model:                           6                                         
+Covariance Type:                  HC1                                         
+==============================================================================
+                 coef    std err          z      P&gt;|z|      [0.025      0.975]
+------------------------------------------------------------------------------
+const          2.2925      0.056     40.726      0.000       2.182       2.403
+size           0.5679      0.020     27.888      0.000       0.528       0.608
+cash           0.1793      0.093      1.920      0.055      -0.004       0.362
+lev           -0.3685      0.082     -4.472      0.000      -0.530      -0.207
+profit         0.2075      0.028      7.484      0.000       0.153       0.262
+collateral     0.4068      0.077      5.294      0.000       0.256       0.557
+bankbranch     0.1006      0.015      6.573      0.000       0.071       0.131
+==============================================================================
+Omnibus:                        1.493   Durbin-Watson:                   2.007
+Prob(Omnibus):                  0.474   Jarque-Bera (JB):                1.384
+Skew:                          -0.056   Prob(JB):                        0.501
+Kurtosis:                       3.100   Cond. No.                         9.63
+==============================================================================
+
+Notes:
+[1] Standard Errors are heteroscedasticity robust (HC1)</code></pre>
+</div>
+</div>
+<div id="4e750b9e" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-04-28T10:28:47.890420Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-04-28T10:28:47.890193Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-04-28T10:28:47.972886Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-04-28T10:28:47.971063Z&quot;}" data-execution_count="6">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ============================================================</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="co"># 对比：直接对全部样本做 OLS，以及只在正值样本上做 OLS</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="co"># ============================================================</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>X_all <span class="op">=</span> sm.add_constant(df[second_vars])</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>ols_all <span class="op">=</span> sm.OLS(df[<span class="st">"loan_amt"</span>], X_all).fit(cov_type<span class="op">=</span><span class="st">"HC1"</span>)</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>ols_pos_level <span class="op">=</span> sm.OLS(df_pos[<span class="st">"loan_amt"</span>], X_pos).fit(cov_type<span class="op">=</span><span class="st">"HC1"</span>)</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>table <span class="op">=</span> summary_col(</span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>    [ols_all, probit_res, log_amt_res, ols_pos_level],</span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>    model_names<span class="op">=</span>[<span class="st">"OLS 全样本"</span>, <span class="st">"Probit 借款"</span>, <span class="st">"Log OLS 正值"</span>, <span class="st">"OLS 正值"</span>],</span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>    stars<span class="op">=</span><span class="va">True</span>,</span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>    float_format<span class="op">=</span><span class="st">"</span><span class="sc">%0.3f</span><span class="st">"</span>,</span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>    info_dict<span class="op">=</span>{</span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>        <span class="st">"N"</span>: <span class="kw">lambda</span> x: <span class="ss">f"</span><span class="sc">{</span><span class="bu">int</span>(x.nobs)<span class="sc">}</span><span class="ss">"</span>,</span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(table)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+=======================================================
+                OLS 全样本  Probit 借款 Log OLS 正值   OLS 正值 
+-------------------------------------------------------
+const          8.006***  -0.446*** 2.293***   13.319***
+               (0.845)   (0.097)   (0.056)    (1.294)  
+size           7.924***  0.526***  0.568***   11.328***
+               (0.397)   (0.035)   (0.020)    (0.632)  
+cash           4.062**   0.754***  0.179*     1.735    
+               (1.603)   (0.166)   (0.093)    (2.443)  
+lev            -7.627*** -0.926*** -0.369***  -8.778***
+               (1.336)   (0.145)   (0.082)    (2.210)  
+profit         4.873***  0.543***  0.207***   4.416*** 
+               (0.537)   (0.049)   (0.028)    (0.893)  
+collateral     8.889***  0.901***  0.407***   8.517*** 
+               (1.186)   (0.128)   (0.077)    (1.806)  
+bankbranch     2.884***  0.377***  0.101***   2.278*** 
+               (0.234)   (0.027)   (0.015)    (0.391)  
+policy_window            0.326***                      
+                         (0.053)                       
+R-squared      0.365               0.508      0.370    
+R-squared Adj. 0.364               0.506      0.367    
+N              3000      3000      1490       1490     
+=======================================================
+Standard errors in parentheses.
+* p&lt;.1, ** p&lt;.05, ***p&lt;.01</code></pre>
+</div>
+</div>
+<p>上面的结果表有三个读法。</p>
+<p>第一，<code>OLS 全样本</code> 把 0 和正值贷款金额混在一个线性模型中，容易掩盖“是否借款”和“借款多少”的机制差异。</p>
+<p>第二，<code>Probit 借款</code> 解释的是企业进入正值贷款金额状态的概率。抵押品、本地银行服务可得性和政策窗口覆盖，通常更适合放在这一部分，因为它们更直接影响贷款可得性。</p>
+<p>第三，<code>Log OLS 正值</code> 解释的是借款企业内部的贷款规模。此处的系数是正值样本上的条件关系，不应直接解释为对全样本贷款金额的平均影响。</p>
+<p>非条件影响需要把两部分合并起来理解：一个变量既可能提高借款概率，也可能影响正值贷款金额。</p>
+<div id="eaac1a4d" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-04-28T10:28:47.976050Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-04-28T10:28:47.975835Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-04-28T10:28:47.995704Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-04-28T10:28:47.994325Z&quot;}" data-execution_count="7">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ============================================================</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Two-part model：计算非条件预测 E(loan_amt | x)</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="co"># ============================================================</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="co"># 第一部分：预测借款概率</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>df[<span class="st">"pred_prob_borrow"</span>] <span class="op">=</span> probit_res.predict(Z)</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a><span class="co"># 第二部分：预测正值贷款金额</span></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a><span class="co"># 若第二部分使用 log(loan_amt)，回到金额尺度时需要考虑 lognormal 修正项</span></span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>sigma_hat <span class="op">=</span> log_amt_res.resid.std(ddof<span class="op">=</span><span class="bu">int</span>(log_amt_res.df_model) <span class="op">+</span> <span class="dv">1</span>)</span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>X_second_all <span class="op">=</span> sm.add_constant(df[second_vars])</span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>df[<span class="st">"pred_amt_positive"</span>] <span class="op">=</span> np.exp(log_amt_res.predict(X_second_all) <span class="op">+</span> <span class="fl">0.5</span> <span class="op">*</span> sigma_hat<span class="op">**</span><span class="dv">2</span>)</span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a><span class="co"># 非条件期望 = 借款概率 × 条件于借款时的贷款金额期望</span></span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a>df[<span class="st">"pred_amt_uncond"</span>] <span class="op">=</span> df[<span class="st">"pred_prob_borrow"</span>] <span class="op">*</span> df[<span class="st">"pred_amt_positive"</span>]</span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a>df[[<span class="st">"loan_amt"</span>, <span class="st">"pred_prob_borrow"</span>, <span class="st">"pred_amt_positive"</span>, <span class="st">"pred_amt_uncond"</span>]].describe().<span class="bu">round</span>(<span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="7">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">loan_amt</th>
+<th data-quarto-table-cell-role="th">pred_prob_borrow</th>
+<th data-quarto-table-cell-role="th">pred_amt_positive</th>
+<th data-quarto-table-cell-role="th">pred_amt_uncond</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">count</td>
+<td>3000.000</td>
+<td>3000.000</td>
+<td>3000.000</td>
+<td>3000.000</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">mean</td>
+<td>10.456</td>
+<td>0.497</td>
+<td>16.144</td>
+<td>10.520</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">std</td>
+<td>17.298</td>
+<td>0.274</td>
+<td>11.687</td>
+<td>12.234</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">min</td>
+<td>0.000</td>
+<td>0.001</td>
+<td>1.776</td>
+<td>0.002</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">25%</td>
+<td>0.000</td>
+<td>0.266</td>
+<td>8.210</td>
+<td>2.205</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">50%</td>
+<td>0.000</td>
+<td>0.494</td>
+<td>13.051</td>
+<td>6.313</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">75%</td>
+<td>14.947</td>
+<td>0.729</td>
+<td>20.493</td>
+<td>14.268</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">max</td>
+<td>191.694</td>
+<td>0.999</td>
+<td>103.259</td>
+<td>103.139</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<div id="06b9998b" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-04-28T10:28:47.998672Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-04-28T10:28:47.998447Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-04-28T10:28:48.275372Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-04-28T10:28:48.273911Z&quot;}" data-execution_count="8">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ============================================================</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="co"># 图形：企业规模与 Two-part 非条件预测</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="co"># ============================================================</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>size_grid <span class="op">=</span> np.linspace(df[<span class="st">"size"</span>].quantile(<span class="fl">0.03</span>), df[<span class="st">"size"</span>].quantile(<span class="fl">0.97</span>), <span class="dv">100</span>)</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>base <span class="op">=</span> df[first_vars].mean()</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>grid_first <span class="op">=</span> pd.DataFrame({</span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">"const"</span>: <span class="fl">1.0</span>,</span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>    <span class="st">"size"</span>: size_grid,</span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>    <span class="st">"cash"</span>: base[<span class="st">"cash"</span>],</span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>    <span class="st">"lev"</span>: base[<span class="st">"lev"</span>],</span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a>    <span class="st">"profit"</span>: base[<span class="st">"profit"</span>],</span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a>    <span class="st">"collateral"</span>: base[<span class="st">"collateral"</span>],</span>
+<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a>    <span class="st">"bankbranch"</span>: base[<span class="st">"bankbranch"</span>],</span>
+<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a>    <span class="st">"policy_window"</span>: base[<span class="st">"policy_window"</span>],</span>
+<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a>grid_second <span class="op">=</span> grid_first.drop(columns<span class="op">=</span>[<span class="st">"policy_window"</span>])</span>
+<span id="cb13-20"><a href="#cb13-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-21"><a href="#cb13-21" aria-hidden="true" tabindex="-1"></a>pred_prob <span class="op">=</span> probit_res.predict(grid_first)</span>
+<span id="cb13-22"><a href="#cb13-22" aria-hidden="true" tabindex="-1"></a>pred_positive_amt <span class="op">=</span> np.exp(log_amt_res.predict(grid_second) <span class="op">+</span> <span class="fl">0.5</span> <span class="op">*</span> sigma_hat<span class="op">**</span><span class="dv">2</span>)</span>
+<span id="cb13-23"><a href="#cb13-23" aria-hidden="true" tabindex="-1"></a>pred_uncond_amt <span class="op">=</span> pred_prob <span class="op">*</span> pred_positive_amt</span>
+<span id="cb13-24"><a href="#cb13-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-25"><a href="#cb13-25" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">7</span>, <span class="fl">4.6</span>))</span>
+<span id="cb13-26"><a href="#cb13-26" aria-hidden="true" tabindex="-1"></a>ax.plot(size_grid, pred_prob, label<span class="op">=</span><span class="st">"借款概率"</span>)</span>
+<span id="cb13-27"><a href="#cb13-27" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">"size"</span>)</span>
+<span id="cb13-28"><a href="#cb13-28" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="st">"P(borrow=1)"</span>)</span>
+<span id="cb13-29"><a href="#cb13-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-30"><a href="#cb13-30" aria-hidden="true" tabindex="-1"></a>ax2 <span class="op">=</span> ax.twinx()</span>
+<span id="cb13-31"><a href="#cb13-31" aria-hidden="true" tabindex="-1"></a>ax2.plot(size_grid, pred_uncond_amt, linestyle<span class="op">=</span><span class="st">"--"</span>, label<span class="op">=</span><span class="st">"非条件期望贷款金额"</span>)</span>
+<span id="cb13-32"><a href="#cb13-32" aria-hidden="true" tabindex="-1"></a>ax2.set_ylabel(<span class="st">"E(loan_amt | x)"</span>)</span>
+<span id="cb13-33"><a href="#cb13-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-34"><a href="#cb13-34" aria-hidden="true" tabindex="-1"></a>lines <span class="op">=</span> ax.get_lines() <span class="op">+</span> ax2.get_lines()</span>
+<span id="cb13-35"><a href="#cb13-35" aria-hidden="true" tabindex="-1"></a>labels <span class="op">=</span> [line.get_label() <span class="cf">for</span> line <span class="kw">in</span> lines]</span>
+<span id="cb13-36"><a href="#cb13-36" aria-hidden="true" tabindex="-1"></a>ax.legend(lines, labels, loc<span class="op">=</span><span class="st">"upper left"</span>)</span>
+<span id="cb13-37"><a href="#cb13-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-38"><a href="#cb13-38" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">"Two-part 模型的预测：概率部分与金额部分"</span>)</span>
+<span id="cb13-39"><a href="#cb13-39" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb13-40"><a href="#cb13-40" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="05_truncated_twopart_lec_files/figure-html/cell-9-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Stata 对应命令：手动估计 Two-part model
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<div class="sourceCode" id="cb14"><pre class="sourceCode stata code-with-copy"><code class="sourceCode stata"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>*------------------------------------------------------------</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>* 读取模拟数据</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>*------------------------------------------------------------</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>import delimited <span class="st">"./data/limitdep_alt_sim.csv"</span>, <span class="kw">clear</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>*------------------------------------------------------------</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>* 第一部分：是否取得银行贷款</span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>*------------------------------------------------------------</span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a><span class="kw">probit</span> borrow <span class="kw">size</span> cash lev profit collateral bankbranch policy_window, <span class="co">///</span></span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>    <span class="kw">vce</span>(<span class="kw">robust</span>)</span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>margins, <span class="kw">dydx</span>(<span class="kw">size</span> cash lev profit collateral bankbranch policy_window)</span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a><span class="kw">predict</span> phat_borrow, pr</span>
+<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a>*------------------------------------------------------------</span>
+<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a>* 第二部分：正值贷款金额</span>
+<span id="cb14-18"><a href="#cb14-18" aria-hidden="true" tabindex="-1"></a>*------------------------------------------------------------</span>
+<span id="cb14-19"><a href="#cb14-19" aria-hidden="true" tabindex="-1"></a><span class="kw">regress</span> ln_loan_amt <span class="kw">size</span> cash lev profit collateral bankbranch <span class="co">///</span></span>
+<span id="cb14-20"><a href="#cb14-20" aria-hidden="true" tabindex="-1"></a>    <span class="kw">if</span> borrow == 1, <span class="kw">vce</span>(<span class="kw">robust</span>)</span>
+<span id="cb14-21"><a href="#cb14-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-22"><a href="#cb14-22" aria-hidden="true" tabindex="-1"></a><span class="kw">predict</span> xb_ln_amt <span class="kw">if</span> <span class="fu">e</span>(<span class="kw">sample</span>), <span class="kw">xb</span></span>
+<span id="cb14-23"><a href="#cb14-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-24"><a href="#cb14-24" aria-hidden="true" tabindex="-1"></a>*------------------------------------------------------------</span>
+<span id="cb14-25"><a href="#cb14-25" aria-hidden="true" tabindex="-1"></a>* 若要在金额尺度上预测，需要根据 lognormal 结构做额外处理。</span>
+<span id="cb14-26"><a href="#cb14-26" aria-hidden="true" tabindex="-1"></a>* 实证论文中通常会同时报告第一部分和第二部分结果，</span>
+<span id="cb14-27"><a href="#cb14-27" aria-hidden="true" tabindex="-1"></a>* 并根据研究问题进一步计算非条件预测。</span>
+<span id="cb14-28"><a href="#cb14-28" aria-hidden="true" tabindex="-1"></a>*------------------------------------------------------------</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Stata 扩展命令：<code>twopm</code>
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><code>twopm</code> 是 Stata 中常用的 two-part model 用户命令，适合把第一部分和第二部分放在一个框架下估计。若本地尚未安装，可以先执行：</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode stata code-with-copy"><code class="sourceCode stata"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="kw">ssc</span> install twopm, <span class="kw">replace</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>示例命令如下：</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode stata code-with-copy"><code class="sourceCode stata"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>twopm loan_amt <span class="kw">size</span> cash lev profit collateral bankbranch, <span class="co">///</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>    firstpart(<span class="kw">probit</span>) <span class="co">///</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>    secondpart(<span class="kw">glm</span>, <span class="kw">family</span>(<span class="kw">gamma</span>) <span class="kw">link</span>(<span class="fu">log</span>)) <span class="co">///</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>    <span class="kw">vce</span>(<span class="kw">robust</span>)</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>margins, <span class="kw">dydx</span>(<span class="kw">size</span> cash lev profit collateral bankbranch)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><code>twopm</code> 的优点是语法紧凑，便于计算整体边际效应。若希望充分理解两部分模型的含义，仍建议先手动估计第一部分和第二部分。</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+提示词：生成 Two-part model 的 Python 代码
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>我正在分析一个 Two-part model。因变量是 <code>因变量名</code>，其中 0 表示没有发生该行为，正值表示发生后的强度。第一部分使用 Probit 解释 <code>因变量名 &gt; 0</code>，解释变量包括 <code>第一部分变量列表</code>；第二部分在正值样本中估计 <code>log(因变量名)</code>，解释变量包括 <code>第二部分变量列表</code>。请帮我生成 Python 代码，完成描述性统计、第一部分 Probit、第二部分 OLS、结果表整理、非条件预测和边际效应图。代码需要包含中文注释，并假定数据已经保存在 pandas DataFrame <code>df</code> 中。</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+提示词：生成 Two-part model 的 Stata 代码
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>我正在使用 Stata 估计 Two-part model。因变量是 <code>因变量名</code>，0 表示没有发生该行为，正值表示发生后的强度。第一部分使用 Probit，第二部分在正值样本中估计 <code>log(因变量名)</code>。请帮我生成手动两部分估计代码，并补充 <code>twopm</code> 的写法。代码需要使用 <code>///</code> 换行，并添加中文注释。</p>
+</div>
+</div>
+</section>
+<section id="hurdle-model-与-zero-inflated-count-model" class="level2" data-number="39.6">
+<h2 data-number="39.6" class="anchored" data-anchor-id="hurdle-model-与-zero-inflated-count-model"><span class="header-section-number">39.6</span> Hurdle model 与 zero-inflated count model</h2>
+<p>Two-part model 常用于连续正值变量。若结果变量是计数变量，例如企业专利数量、绿色专利数量、并购次数、违规处罚次数、分析师跟踪数量，则大量 0 的问题通常需要使用计数模型。</p>
+<p>Hurdle model 的基本思想与 Two-part model 类似：</p>
+<ul>
+<li>第一部分：是否跨过 0 这个门槛；</li>
+<li>第二部分：在正值样本中，计数结果如何分布。</li>
+</ul>
+<p>Zero-inflated model 则假设 0 来自两个来源：一部分是结构性 0，另一部分是计数过程自然产生的 0。</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+概念辨析：Hurdle 和 zero-inflated 的差别
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Hurdle model 把 0 与正值严格分开，正值部分通常使用零截断计数分布。Zero-inflated model 允许 0 同时来自结构性 0 和普通计数过程。因此，二者都能处理“很多 0”，但背后的 DGP 不同。</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Stata 对应命令：计数结果中的大量 0
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<div class="sourceCode" id="cb17"><pre class="sourceCode stata code-with-copy"><code class="sourceCode stata"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>*------------------------------------------------------------</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>* Poisson 基准模型</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>*------------------------------------------------------------</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a><span class="kw">poisson</span> green_patents <span class="kw">size</span> cash lev profit, <span class="co">///</span></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>    <span class="kw">vce</span>(<span class="kw">robust</span>)</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>*------------------------------------------------------------</span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>* 零膨胀 Poisson：inflate() 中放入解释结构性 0 的变量</span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>*------------------------------------------------------------</span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a><span class="kw">zip</span> green_patents <span class="kw">size</span> cash lev profit, <span class="co">///</span></span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a>    inflate(<span class="kw">size</span> cash collateral bankbranch) <span class="co">///</span></span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a>    <span class="kw">vce</span>(<span class="kw">robust</span>)</span>
+<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a>*------------------------------------------------------------</span>
+<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a>* 零膨胀负二项：适合过度离散更明显的计数数据</span>
+<span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a>*------------------------------------------------------------</span>
+<span id="cb17-17"><a href="#cb17-17" aria-hidden="true" tabindex="-1"></a><span class="kw">zinb</span> green_patents <span class="kw">size</span> cash lev profit, <span class="co">///</span></span>
+<span id="cb17-18"><a href="#cb17-18" aria-hidden="true" tabindex="-1"></a>    inflate(<span class="kw">size</span> cash collateral bankbranch) <span class="co">///</span></span>
+<span id="cb17-19"><a href="#cb17-19" aria-hidden="true" tabindex="-1"></a>    <span class="kw">vce</span>(<span class="kw">robust</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</section>
+<section id="fractional-response-model比例因变量的自然边界" class="level2" data-number="39.7">
+<h2 data-number="39.7" class="anchored" data-anchor-id="fractional-response-model比例因变量的自然边界"><span class="header-section-number">39.7</span> Fractional response model：比例因变量的自然边界</h2>
+<p>很多金融变量天然位于 <span class="math inline">\([0,1]\)</span> 区间，例如：</p>
+<ul>
+<li>现金持有率；</li>
+<li>资产负债率；</li>
+<li>机构投资者持股比例；</li>
+<li>股权质押比例；</li>
+<li>绿色贷款占比；</li>
+<li>出口收入占比；</li>
+<li>ESG 披露得分标准化后的比例。</li>
+</ul>
+<p>若因变量是比例变量，即使存在大量 0 或 1，也不必然适合 Tobit。Tobit 的逻辑是潜在连续变量被删失；fractional response model 则直接建模比例变量的条件均值：</p>
+<p><span class="math display">\[
+E(y_i\mid x_i)=G(x_i'\beta)
+\]</span></p>
+<p>其中 <span class="math inline">\(G(\cdot)\)</span> 通常取 logit 函数：</p>
+<p><span class="math display">\[
+G(x_i'\beta)
+=
+\frac{\exp(x_i'\beta)}{1+\exp(x_i'\beta)}
+\]</span></p>
+<p>这样可以保证预测值始终位于 <span class="math inline">\([0,1]\)</span> 区间内。</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="./figs/limit_dep_alt_fig05_fractional_response.png" class="img-fluid figure-img"></p>
+<figcaption>比例因变量与 fractional response</figcaption>
+</figure>
+</div>
+<div id="f5734fe0" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-04-28T10:28:48.278539Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-04-28T10:28:48.278256Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-04-28T10:28:48.295271Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-04-28T10:28:48.294040Z&quot;}" data-execution_count="9">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ============================================================</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Fractional response model：使用 GLM Binomial 拟合比例变量</span></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="co"># ============================================================</span></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>frac_vars <span class="op">=</span> [<span class="st">"size"</span>, <span class="st">"cash"</span>, <span class="st">"lev"</span>, <span class="st">"profit"</span>, <span class="st">"bankbranch"</span>]</span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>X_frac <span class="op">=</span> sm.add_constant(df[frac_vars])</span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a><span class="co"># statsmodels 的 GLM Binomial 可用于 Papke-Wooldridge fractional logit 的条件均值估计</span></span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>frac_model <span class="op">=</span> sm.GLM(</span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>    df[<span class="st">"green_share"</span>],</span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a>    X_frac,</span>
+<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a>    family<span class="op">=</span>sm.families.Binomial()</span>
+<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a>frac_res <span class="op">=</span> frac_model.fit(cov_type<span class="op">=</span><span class="st">"HC1"</span>)</span>
+<span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(frac_res.summary())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                 Generalized Linear Model Regression Results                  
+==============================================================================
+Dep. Variable:            green_share   No. Observations:                 3000
+Model:                            GLM   Df Residuals:                     2994
+Model Family:                Binomial   Df Model:                            5
+Link Function:                  Logit   Scale:                          1.0000
+Method:                          IRLS   Log-Likelihood:                -1279.0
+Date:                Tue, 28 Apr 2026   Deviance:                       559.81
+Time:                        10:28:48   Pearson chi2:                     506.
+No. Iterations:                     4   Pseudo R-squ. (CS):            0.04841
+Covariance Type:                  HC1                                         
+==============================================================================
+                 coef    std err          z      P&gt;|z|      [0.025      0.975]
+------------------------------------------------------------------------------
+const         -0.8579      0.048    -17.961      0.000      -0.952      -0.764
+size           0.2985      0.017     17.401      0.000       0.265       0.332
+cash           0.4820      0.100      4.798      0.000       0.285       0.679
+lev           -0.4370      0.091     -4.782      0.000      -0.616      -0.258
+profit         0.3866      0.031     12.649      0.000       0.327       0.446
+bankbranch     0.3191      0.016     19.624      0.000       0.287       0.351
+==============================================================================</code></pre>
+</div>
+</div>
+<div id="af71d144" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-04-28T10:28:48.297939Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-04-28T10:28:48.297679Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-04-28T10:28:48.309401Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-04-28T10:28:48.308369Z&quot;}" data-execution_count="10">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ============================================================</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Fractional response model：平均边际效应</span></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="co"># ============================================================</span></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a><span class="co"># 对 logit 均值函数而言，边际效应为 G(xb) * [1 - G(xb)] * beta_j</span></span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>mu_hat <span class="op">=</span> frac_res.predict(X_frac)</span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>scale <span class="op">=</span> mu_hat <span class="op">*</span> (<span class="dv">1</span> <span class="op">-</span> mu_hat)</span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>ame_frac <span class="op">=</span> pd.DataFrame({</span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a>    <span class="st">"变量"</span>: frac_vars,</span>
+<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a>    <span class="st">"系数"</span>: frac_res.params[frac_vars].values,</span>
+<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a>    <span class="st">"平均边际效应"</span>: [np.mean(scale <span class="op">*</span> frac_res.params[var]) <span class="cf">for</span> var <span class="kw">in</span> frac_vars]</span>
+<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb20-14"><a href="#cb20-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-15"><a href="#cb20-15" aria-hidden="true" tabindex="-1"></a>ame_frac.<span class="bu">round</span>(<span class="dv">4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="10">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">变量</th>
+<th data-quarto-table-cell-role="th">系数</th>
+<th data-quarto-table-cell-role="th">平均边际效应</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>size</td>
+<td>0.2985</td>
+<td>0.0600</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1</td>
+<td>cash</td>
+<td>0.4820</td>
+<td>0.0970</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2</td>
+<td>lev</td>
+<td>-0.4370</td>
+<td>-0.0879</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">3</td>
+<td>profit</td>
+<td>0.3866</td>
+<td>0.0778</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">4</td>
+<td>bankbranch</td>
+<td>0.3191</td>
+<td>0.0642</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Stata 对应命令：<code>fracreg logit</code>
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<div class="sourceCode" id="cb21"><pre class="sourceCode stata code-with-copy"><code class="sourceCode stata"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>*------------------------------------------------------------</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>* Fractional logit：比例因变量位于 [0, 1]</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>*------------------------------------------------------------</span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>fracreg <span class="kw">logit</span> green_share <span class="kw">size</span> cash lev profit bankbranch, <span class="co">///</span></span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>    <span class="kw">vce</span>(<span class="kw">robust</span>)</span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>* 平均边际效应</span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>margins, <span class="kw">dydx</span>(<span class="kw">size</span> cash lev profit bankbranch)</span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a>* 条件预测值</span>
+<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a><span class="kw">predict</span> green_share_hat, mu</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+避坑指南：比例变量不必然使用 Tobit
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>如果 0 和 1 是比例变量的自然边界，而不是潜在变量被删失后的记录值，fractional response model 往往比 Tobit 更贴合研究问题。此时，模型的目标是估计 <span class="math inline">\(E(y_i\mid x_i)\)</span>，而不是恢复某个未观测的潜在连续变量。</p>
+</div>
+</div>
+</section>
+<section id="模型选择指南" class="level2" data-number="39.8">
+<h2 data-number="39.8" class="anchored" data-anchor-id="模型选择指南"><span class="header-section-number">39.8</span> 模型选择指南</h2>
+<p>可以按照以下顺序判断模型。</p>
+<ol type="1">
+<li><strong>Step 1</strong>: 判断结果变量类型。它是连续型、比例型，还是计数型？</li>
+<li><strong>Step 2</strong>: 判断 0 或边界值的经济含义。它是真实选择，还是删失后的边界记录？</li>
+<li><strong>Step 3</strong>: 判断样本是否完整进入数据。边界外样本是否仍然存在？</li>
+<li><strong>Step 4</strong>: 判断是否参与和参与后的强度是否由同一机制决定。</li>
+<li><strong>Step 5</strong>: 判断结果变量是否只在被选择样本中可观测。</li>
+</ol>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>数据特征</th>
+<th>观测机制</th>
+<th>更合适的模型</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>潜在连续变量被压到边界</td>
+<td>删失</td>
+<td>Tobit</td>
+</tr>
+<tr class="even">
+<td>边界外样本根本看不到</td>
+<td>截断</td>
+<td>Truncated regression</td>
+</tr>
+<tr class="odd">
+<td>0 是真实选择，正值大小另由一套机制决定</td>
+<td>两阶段决策</td>
+<td>Two-part model</td>
+</tr>
+<tr class="even">
+<td>计数变量有大量 0</td>
+<td>门槛或结构性 0</td>
+<td>Hurdle / zero-inflated count model</td>
+</tr>
+<tr class="odd">
+<td>比例变量位于 <span class="math inline">\([0,1]\)</span></td>
+<td>条件均值受限</td>
+<td>Fractional response</td>
+</tr>
+<tr class="even">
+<td>结果变量只在被选择样本中可观测</td>
+<td>样本选择</td>
+<td>Heckman selection</td>
+</tr>
+</tbody>
+</table>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+与下一章的衔接
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>本章的贷款金额案例中，未借款企业的贷款金额可以合理记为 0，因此 Two-part model 是自然选择。下一章研究贷款利率时，未借款企业没有贷款利率，结果变量并不是 0，而是不可观测。这时，问题转化为样本选择偏误，需要使用 Heckman selection model。</p>
+</div>
+</div>
+</section>
+<section id="附录python-中的截断回归简易实现" class="level2" data-number="39.9">
+<h2 data-number="39.9" class="anchored" data-anchor-id="附录python-中的截断回归简易实现"><span class="header-section-number">39.9</span> 附录：Python 中的截断回归简易实现</h2>
+<p>Python 中没有像 Stata <code>truncreg</code> 那样统一、常用的基础命令。为便于理解截断回归的估计逻辑，下面给出一个左截断正态回归的简易 MLE 函数。正式论文中若使用截断回归，建议优先用 Stata 的 <code>truncreg</code> 做结果核对。</p>
+<p>设左截断点为 <span class="math inline">\(c\)</span>，只观察到 <span class="math inline">\(y_i&gt;c\)</span> 的样本。对数似然为：</p>
+<p><span class="math display">\[
+\ell(\beta,\sigma)
+=
+\sum_i
+\left[
+-\log\sigma
++
+\log\phi\left(\frac{y_i-x_i'\beta}{\sigma}\right)
+-
+\log\left\{
+1-\Phi\left(\frac{c-x_i'\beta}{\sigma}\right)
+\right\}
+\right]
+\]</span></p>
+<div id="db577f64" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-04-28T10:28:48.311708Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-04-28T10:28:48.311416Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-04-28T10:28:48.370578Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-04-28T10:28:48.369524Z&quot;}" data-execution_count="11">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ============================================================</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="co"># 左截断正态回归：简易 MLE 实现</span></span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a><span class="co"># ============================================================</span></span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> fit_left_truncated_normal(y, X, left):</span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>    <span class="co">'''</span></span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a><span class="co">    使用极大似然估计左截断正态回归。</span></span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a><span class="co">    参数</span></span>
+<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a><span class="co">    ----</span></span>
+<span id="cb22-11"><a href="#cb22-11" aria-hidden="true" tabindex="-1"></a><span class="co">    y : array-like</span></span>
+<span id="cb22-12"><a href="#cb22-12" aria-hidden="true" tabindex="-1"></a><span class="co">        已观测到的结果变量，要求 y &gt; left。</span></span>
+<span id="cb22-13"><a href="#cb22-13" aria-hidden="true" tabindex="-1"></a><span class="co">    X : array-like</span></span>
+<span id="cb22-14"><a href="#cb22-14" aria-hidden="true" tabindex="-1"></a><span class="co">        解释变量矩阵，需要自行包含常数项。</span></span>
+<span id="cb22-15"><a href="#cb22-15" aria-hidden="true" tabindex="-1"></a><span class="co">    left : float</span></span>
+<span id="cb22-16"><a href="#cb22-16" aria-hidden="true" tabindex="-1"></a><span class="co">        左截断点。</span></span>
+<span id="cb22-17"><a href="#cb22-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-18"><a href="#cb22-18" aria-hidden="true" tabindex="-1"></a><span class="co">    返回</span></span>
+<span id="cb22-19"><a href="#cb22-19" aria-hidden="true" tabindex="-1"></a><span class="co">    ----</span></span>
+<span id="cb22-20"><a href="#cb22-20" aria-hidden="true" tabindex="-1"></a><span class="co">    pandas.DataFrame</span></span>
+<span id="cb22-21"><a href="#cb22-21" aria-hidden="true" tabindex="-1"></a><span class="co">        系数估计表。</span></span>
+<span id="cb22-22"><a href="#cb22-22" aria-hidden="true" tabindex="-1"></a><span class="co">    scipy.optimize.OptimizeResult</span></span>
+<span id="cb22-23"><a href="#cb22-23" aria-hidden="true" tabindex="-1"></a><span class="co">        优化结果对象。</span></span>
+<span id="cb22-24"><a href="#cb22-24" aria-hidden="true" tabindex="-1"></a><span class="co">    '''</span></span>
+<span id="cb22-25"><a href="#cb22-25" aria-hidden="true" tabindex="-1"></a>    y <span class="op">=</span> np.asarray(y)</span>
+<span id="cb22-26"><a href="#cb22-26" aria-hidden="true" tabindex="-1"></a>    X <span class="op">=</span> np.asarray(X)</span>
+<span id="cb22-27"><a href="#cb22-27" aria-hidden="true" tabindex="-1"></a>    n, k <span class="op">=</span> X.shape</span>
+<span id="cb22-28"><a href="#cb22-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-29"><a href="#cb22-29" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 初始值：先用 OLS 作为 beta 初值，用 OLS 残差标准差作为 sigma 初值</span></span>
+<span id="cb22-30"><a href="#cb22-30" aria-hidden="true" tabindex="-1"></a>    ols_start <span class="op">=</span> sm.OLS(y, X).fit()</span>
+<span id="cb22-31"><a href="#cb22-31" aria-hidden="true" tabindex="-1"></a>    beta0 <span class="op">=</span> ols_start.params</span>
+<span id="cb22-32"><a href="#cb22-32" aria-hidden="true" tabindex="-1"></a>    log_sigma0 <span class="op">=</span> np.log(np.std(ols_start.resid))</span>
+<span id="cb22-33"><a href="#cb22-33" aria-hidden="true" tabindex="-1"></a>    start <span class="op">=</span> np.r_[beta0, log_sigma0]</span>
+<span id="cb22-34"><a href="#cb22-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-35"><a href="#cb22-35" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> neg_loglike(params):</span>
+<span id="cb22-36"><a href="#cb22-36" aria-hidden="true" tabindex="-1"></a>        beta <span class="op">=</span> params[:k]</span>
+<span id="cb22-37"><a href="#cb22-37" aria-hidden="true" tabindex="-1"></a>        sigma <span class="op">=</span> np.exp(params[k])</span>
+<span id="cb22-38"><a href="#cb22-38" aria-hidden="true" tabindex="-1"></a>        xb <span class="op">=</span> X <span class="op">@</span> beta</span>
+<span id="cb22-39"><a href="#cb22-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-40"><a href="#cb22-40" aria-hidden="true" tabindex="-1"></a>        z <span class="op">=</span> (y <span class="op">-</span> xb) <span class="op">/</span> sigma</span>
+<span id="cb22-41"><a href="#cb22-41" aria-hidden="true" tabindex="-1"></a>        z_left <span class="op">=</span> (left <span class="op">-</span> xb) <span class="op">/</span> sigma</span>
+<span id="cb22-42"><a href="#cb22-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-43"><a href="#cb22-43" aria-hidden="true" tabindex="-1"></a>        <span class="co"># 使用 logsf 提高数值稳定性：log(1 - Phi(z_left))</span></span>
+<span id="cb22-44"><a href="#cb22-44" aria-hidden="true" tabindex="-1"></a>        ll_i <span class="op">=</span> (</span>
+<span id="cb22-45"><a href="#cb22-45" aria-hidden="true" tabindex="-1"></a>            <span class="op">-</span>np.log(sigma)</span>
+<span id="cb22-46"><a href="#cb22-46" aria-hidden="true" tabindex="-1"></a>            <span class="op">+</span> norm.logpdf(z)</span>
+<span id="cb22-47"><a href="#cb22-47" aria-hidden="true" tabindex="-1"></a>            <span class="op">-</span> norm.logsf(z_left)</span>
+<span id="cb22-48"><a href="#cb22-48" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb22-49"><a href="#cb22-49" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="op">-</span>np.<span class="bu">sum</span>(ll_i)</span>
+<span id="cb22-50"><a href="#cb22-50" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-51"><a href="#cb22-51" aria-hidden="true" tabindex="-1"></a>    res <span class="op">=</span> minimize(neg_loglike, start, method<span class="op">=</span><span class="st">"BFGS"</span>)</span>
+<span id="cb22-52"><a href="#cb22-52" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-53"><a href="#cb22-53" aria-hidden="true" tabindex="-1"></a>    params <span class="op">=</span> res.x</span>
+<span id="cb22-54"><a href="#cb22-54" aria-hidden="true" tabindex="-1"></a>    beta_hat <span class="op">=</span> params[:k]</span>
+<span id="cb22-55"><a href="#cb22-55" aria-hidden="true" tabindex="-1"></a>    sigma_hat <span class="op">=</span> np.exp(params[k])</span>
+<span id="cb22-56"><a href="#cb22-56" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-57"><a href="#cb22-57" aria-hidden="true" tabindex="-1"></a>    <span class="co"># BFGS 的 hess_inv 可作为近似方差矩阵；这里仅作教学演示</span></span>
+<span id="cb22-58"><a href="#cb22-58" aria-hidden="true" tabindex="-1"></a>    vcov <span class="op">=</span> np.asarray(res.hess_inv)</span>
+<span id="cb22-59"><a href="#cb22-59" aria-hidden="true" tabindex="-1"></a>    se <span class="op">=</span> np.sqrt(np.diag(vcov))[:k]</span>
+<span id="cb22-60"><a href="#cb22-60" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-61"><a href="#cb22-61" aria-hidden="true" tabindex="-1"></a>    out <span class="op">=</span> pd.DataFrame({</span>
+<span id="cb22-62"><a href="#cb22-62" aria-hidden="true" tabindex="-1"></a>        <span class="st">"变量"</span>: [<span class="st">"const"</span>] <span class="op">+</span> [<span class="st">"size"</span>, <span class="st">"lev"</span>, <span class="st">"collateral"</span>],</span>
+<span id="cb22-63"><a href="#cb22-63" aria-hidden="true" tabindex="-1"></a>        <span class="st">"估计值"</span>: beta_hat,</span>
+<span id="cb22-64"><a href="#cb22-64" aria-hidden="true" tabindex="-1"></a>        <span class="st">"标准误"</span>: se,</span>
+<span id="cb22-65"><a href="#cb22-65" aria-hidden="true" tabindex="-1"></a>        <span class="st">"z值"</span>: beta_hat <span class="op">/</span> se</span>
+<span id="cb22-66"><a href="#cb22-66" aria-hidden="true" tabindex="-1"></a>    })</span>
+<span id="cb22-67"><a href="#cb22-67" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-68"><a href="#cb22-68" aria-hidden="true" tabindex="-1"></a>    sigma_row <span class="op">=</span> pd.DataFrame({</span>
+<span id="cb22-69"><a href="#cb22-69" aria-hidden="true" tabindex="-1"></a>        <span class="st">"变量"</span>: [<span class="st">"sigma"</span>],</span>
+<span id="cb22-70"><a href="#cb22-70" aria-hidden="true" tabindex="-1"></a>        <span class="st">"估计值"</span>: [sigma_hat],</span>
+<span id="cb22-71"><a href="#cb22-71" aria-hidden="true" tabindex="-1"></a>        <span class="st">"标准误"</span>: [np.nan],</span>
+<span id="cb22-72"><a href="#cb22-72" aria-hidden="true" tabindex="-1"></a>        <span class="st">"z值"</span>: [np.nan]</span>
+<span id="cb22-73"><a href="#cb22-73" aria-hidden="true" tabindex="-1"></a>    })</span>
+<span id="cb22-74"><a href="#cb22-74" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-75"><a href="#cb22-75" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> pd.concat([out, sigma_row], ignore_index<span class="op">=</span><span class="va">True</span>), res</span>
+<span id="cb22-76"><a href="#cb22-76" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-77"><a href="#cb22-77" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-78"><a href="#cb22-78" aria-hidden="true" tabindex="-1"></a><span class="co"># 只使用被报告的合同样本</span></span>
+<span id="cb22-79"><a href="#cb22-79" aria-hidden="true" tabindex="-1"></a>df_trunc <span class="op">=</span> df.loc[df[<span class="st">"reported"</span>] <span class="op">==</span> <span class="dv">1</span>].copy()</span>
+<span id="cb22-80"><a href="#cb22-80" aria-hidden="true" tabindex="-1"></a>y_trunc <span class="op">=</span> df_trunc[<span class="st">"contract_observed"</span>]</span>
+<span id="cb22-81"><a href="#cb22-81" aria-hidden="true" tabindex="-1"></a>X_trunc <span class="op">=</span> sm.add_constant(df_trunc[[<span class="st">"size"</span>, <span class="st">"lev"</span>, <span class="st">"collateral"</span>]])</span>
+<span id="cb22-82"><a href="#cb22-82" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-83"><a href="#cb22-83" aria-hidden="true" tabindex="-1"></a>trunc_table, trunc_res <span class="op">=</span> fit_left_truncated_normal(y_trunc, X_trunc, left<span class="op">=</span><span class="fl">1.25</span>)</span>
+<span id="cb22-84"><a href="#cb22-84" aria-hidden="true" tabindex="-1"></a>trunc_table.<span class="bu">round</span>(<span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="11">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">变量</th>
+<th data-quarto-table-cell-role="th">估计值</th>
+<th data-quarto-table-cell-role="th">标准误</th>
+<th data-quarto-table-cell-role="th">z值</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>const</td>
+<td>1.604</td>
+<td>0.288</td>
+<td>5.565</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1</td>
+<td>size</td>
+<td>0.441</td>
+<td>0.797</td>
+<td>0.553</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2</td>
+<td>lev</td>
+<td>-0.584</td>
+<td>0.286</td>
+<td>-2.043</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">3</td>
+<td>collateral</td>
+<td>0.132</td>
+<td>1.151</td>
+<td>0.115</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">4</td>
+<td>sigma</td>
+<td>0.893</td>
+<td>NaN</td>
+<td>NaN</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+</section>
+<section id="小结" class="level2" data-number="39.10">
+<h2 data-number="39.10" class="anchored" data-anchor-id="小结"><span class="header-section-number">39.10</span> 小结</h2>
+<p>本章的核心信息可以概括为三点。</p>
+<p>第一，Tobit 不是受限因变量的默认答案。看到大量 0，首先要判断 0 是删失结果，还是真实经济选择。</p>
+<p>第二，Two-part model 非常适合“是否发生”和“发生多少”由不同机制决定的金融问题。企业是否获得贷款，与获得贷款后的贷款金额，通常就具有这种结构。</p>
+<p>第三，比例变量和计数变量有各自更自然的模型。比例变量适合 fractional response model；计数变量有大量 0 时，可以考虑 Hurdle 或 zero-inflated count model。</p>
+<p>这些模型的共同点是：先讨论数据生成机制，再选择计量模型。模型不是由因变量表面形态决定的，而是由观测机制和研究问题决定的。</p>
+</section>
+<section id="参考文献" class="level2" data-number="39.11">
+<h2 data-number="39.11" class="anchored" data-anchor-id="参考文献"><span class="header-section-number">39.11</span> 参考文献</h2>
+<ul>
+<li><p>Cragg, J. G. (1971). Some statistical models for limited dependent variables with application to the demand for durable goods. Econometrica, 39(5), 829–844. <a href="https://doi.org/10.2307/1909582">Link</a>, <a href="http://sci-hub.ren/10.2307/1909582">PDF</a>, <a href="https://scholar.google.com/scholar?q=Some+statistical+models+for+limited+dependent+variables+with+application+to+the+demand+for+durable+goods">Google</a>.</p></li>
+<li><p>Duan, N., Manning, W. G., Morris, C. N., &amp; Newhouse, J. P. (1983). A comparison of alternative models for the demand for medical care. Journal of Business &amp; Economic Statistics, 1(2), 115–126. <a href="https://doi.org/10.1080/07350015.1983.10509330">Link</a>, <a href="http://sci-hub.ren/10.1080/07350015.1983.10509330">PDF</a>, <a href="https://scholar.google.com/scholar?q=A+comparison+of+alternative+models+for+the+demand+for+medical+care">Google</a>.</p></li>
+<li><p>Mullahy, J. (1986). Specification and testing of some modified count data models. Journal of Econometrics, 33(3), 341–365. <a href="https://doi.org/10.1016/0304-4076(86)90002-3">Link</a>, <a href="http://sci-hub.ren/10.1016/0304-4076(86)90002-3">PDF</a>, <a href="https://scholar.google.com/scholar?q=Specification+and+testing+of+some+modified+count+data+models">Google</a>.</p></li>
+<li><p>Papke, L. E., &amp; Wooldridge, J. M. (1996). Econometric methods for fractional response variables with an application to 401(k) plan participation rates. Journal of Applied Econometrics, 11(6), 619–632. <a href="https://doi.org/10.1002/(SICI)1099-1255(199611)11:6%3C619::AID-JAE418%3E3.0.CO;2-1">Link</a>, <a href="http://sci-hub.ren/10.1002/(SICI)1099-1255(199611)11:6%3C619::AID-JAE418%3E3.0.CO;2-1">PDF</a>, <a href="https://scholar.google.com/scholar?q=Econometric+methods+for+fractional+response+variables+with+an+application+to+401(k)+plan+participation+rates">Google</a>.</p></li>
+<li><p>Belotti, F., Deb, P., Manning, W. G., &amp; Norton, E. C. (2015). twopm: Two-part models. The Stata Journal, 15(1), 3–20. <a href="https://doi.org/10.1177/1536867X1501500102">Link</a>, <a href="http://sci-hub.ren/10.1177/1536867X1501500102">PDF</a>, <a href="https://scholar.google.com/scholar?q=twopm+Two-part+models">Google</a>.</p></li>
+</ul>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const disableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'prefetch';
+    }
+  }
+  const enableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'stylesheet';
+    }
+  }
+  const manageTransitions = (selector, allowTransitions) => {
+    const els = window.document.querySelectorAll(selector);
+    for (let i=0; i < els.length; i++) {
+      const el = els[i];
+      if (allowTransitions) {
+        el.classList.remove('notransition');
+      } else {
+        el.classList.add('notransition');
+      }
+    }
+  }
+  const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+    const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+    const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+    let newTheme = '';
+    if(darkModeDefault) {
+      newTheme = isAlternate ? baseTheme : alternateTheme;
+    } else {
+      newTheme = isAlternate ? alternateTheme : baseTheme;
+    }
+    const changeGiscusTheme = () => {
+      // From: https://github.com/giscus/giscus/issues/336
+      const sendMessage = (message) => {
+        const iframe = document.querySelector('iframe.giscus-frame');
+        if (!iframe) return;
+        iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+      }
+      sendMessage({
+        setConfig: {
+          theme: newTheme
+        }
+      });
+    }
+    const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+    if (isGiscussLoaded) {
+      changeGiscusTheme();
+    }
+  }
+  const toggleColorMode = (alternate) => {
+    // Switch the stylesheets
+    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+    manageTransitions('#quarto-margin-sidebar .nav-link', false);
+    if (alternate) {
+      enableStylesheet(alternateStylesheets);
+      for (const sheetNode of alternateStylesheets) {
+        if (sheetNode.id === "quarto-bootstrap") {
+          toggleBodyColorMode(sheetNode);
+        }
+      }
+    } else {
+      disableStylesheet(alternateStylesheets);
+      toggleBodyColorPrimary();
+    }
+    manageTransitions('#quarto-margin-sidebar .nav-link', true);
+    // Switch the toggles
+    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+    for (let i=0; i < toggles.length; i++) {
+      const toggle = toggles[i];
+      if (toggle) {
+        if (alternate) {
+          toggle.classList.add("alternate");     
+        } else {
+          toggle.classList.remove("alternate");
+        }
+      }
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455)
+    if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+      manageTransitions("body", false);
+      window.scrollTo(0, 1);
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        manageTransitions("body", true);
+      }, 40);  
+    }
+  }
+  const isFileUrl = () => { 
+    return window.location.protocol === 'file:';
+  }
+  const hasAlternateSentinel = () => {  
+    let styleSentinel = getColorSchemeSentinel();
+    if (styleSentinel !== null) {
+      return styleSentinel === "alternate";
+    } else {
+      return false;
+    }
+  }
+  const setStyleSentinel = (alternate) => {
+    const value = alternate ? "alternate" : "default";
+    if (!isFileUrl()) {
+      window.localStorage.setItem("quarto-color-scheme", value);
+    } else {
+      localAlternateSentinel = value;
+    }
+  }
+  const getColorSchemeSentinel = () => {
+    if (!isFileUrl()) {
+      const storageValue = window.localStorage.getItem("quarto-color-scheme");
+      return storageValue != null ? storageValue : localAlternateSentinel;
+    } else {
+      return localAlternateSentinel;
+    }
+  }
+  const darkModeDefault = false;
+  let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+  // Dark / light mode switch
+  window.quartoToggleColorScheme = () => {
+    // Read the current dark / light value 
+    let toAlternate = !hasAlternateSentinel();
+    toggleColorMode(toAlternate);
+    setStyleSentinel(toAlternate);
+    toggleGiscusIfUsed(toAlternate, darkModeDefault);
+  };
+  // Ensure there is a toggle, if there isn't float one in the top right
+  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+    const a = window.document.createElement('a');
+    a.classList.add('top-right');
+    a.classList.add('quarto-color-scheme-toggle');
+    a.href = "";
+    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+    const i = window.document.createElement("i");
+    i.classList.add('bi');
+    a.appendChild(i);
+    window.document.body.appendChild(a);
+  }
+  // Switch to dark mode if need be
+  if (hasAlternateSentinel()) {
+    toggleColorMode(true);
+  } else {
+    toggleColorMode(false);
+  }
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp("https:\/\/lianxhcn\.github\.io\/dsfin\/");
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+          // target, if specified
+          link.setAttribute("target", "_blank");
+          if (link.getAttribute("rel") === null) {
+            link.setAttribute("rel", "noopener");
+          }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../../Lecture/limit_dep_tobit/04_tobit_model_codes.html" class="pagination-link" aria-label="附：Codes .{unnumbered}">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">38</span>&nbsp; <span class="chapter-title">附：Codes .{unnumbered}</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../../Lecture/limit_dep_trunc_twopart/05_truncated_twopart_codes.html" class="pagination-link" aria-label="附：Codes .{unnumbered}">
+        <span class="nav-page-text"><span class="chapter-number">40</span>&nbsp; <span class="chapter-title">附：Codes .{unnumbered}</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+      &nbsp;
+    </div>   
+    <div class="nav-footer-center">
+<p><a href="https://www.lianxh.cn">lianxh.cn</a></p>
+</div>
+    <div class="nav-footer-right">
+<p>Support: <a href="https://lianxhcn.github.io/quarto_book/">Quarto</a></p>
+</div>
+  </div>
+</footer>
+
+
+
+
+</body></html>

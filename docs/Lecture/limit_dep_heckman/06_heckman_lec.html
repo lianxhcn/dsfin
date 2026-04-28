@@ -1,0 +1,2463 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.6.39">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>41&nbsp; Heckman 选择模型：样本选择偏误与两阶段估计 – 金融数据分析与建模</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script><script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../Lecture/limit_dep_heckman/06_heckman_codes.html" rel="next">
+<link href="../../Lecture/limit_dep_trunc_twopart/05_truncated_twopart_codes.html" rel="prev">
+<link href="../../images/book-logo.png" rel="icon" type="image/png">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-e8fb9d25728d58bfeac61b497e4a6629.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark-57a92833092fd6dc0d7710b6bdfff9c5.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-7ef202e96c563d31d9e5226e4d6cabf9.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark-490ba4e843cb1303a232ed0c676384f2.min.css" rel="prefetch" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
+
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../Lecture/limit_dep_intro/01_overview_lec.html"><strong>受限因变量</strong></a></li><li class="breadcrumb-item"><a href="../../Lecture/limit_dep_heckman/06_heckman_lec.html"><span class="chapter-number">41</span>&nbsp; <span class="chapter-title">Heckman 选择模型：样本选择偏误与两阶段估计</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header sidebar-header-stacked">
+      <a href="https://lianxhcn.github.io/dsfin/" class="sidebar-logo-link">
+      <img src="../../images/book-logo.png" alt="" class="sidebar-logo py-0 d-lg-inline d-none">
+      </a>
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../../">DS Finance</a> 
+        <div class="sidebar-tools-main tools-wide">
+    <a href="https://github.com/lianxhcn/dsfin" title="" class="quarto-navigation-tool px-1" aria-label=""><i class="bi bi-github"></i></a>
+    <a href="https://www.lianxh.cn" title="" class="quarto-navigation-tool px-1" aria-label=""><i class="bi bi-house-fill"></i></a>
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">封面</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/00_intro.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">📚课程资料</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/00_setup.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">📌课件使用指南</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/01_homework.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">🚀作业</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text"><strong>环境配置</strong></span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/00-setup/01_00_coding_with_AI.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">借助 AI 写代码</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/00-setup/01_01_install_anaconda.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Python：安装和环境配置</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/00-setup/01_02_jupyter_notebook.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Jupyter Notebook 的使用</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/00-setup/01_03_install_FAQs.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Python 安装常见问题</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/00-setup/01_04_markdown.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Markdown</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/00-setup/01_06_conda_env.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">虚拟环境管理</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
+ <span class="menu-text"><strong>数据分析</strong></span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/data_get_data/lecture_get_data.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">金融数据获取</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/data_get_data/data_02_get_data_GMD.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">获取数据：GMD</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/data_get_data/data_03_TS_SZ_index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">上证指数的时序特征</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/data_store_structure/lecture_data_management_organization.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">数据管理与组织</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/data_manage/lecture_data_management.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">数据管理：格式、存储与工作流</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/data_clean/lecture_data_clean.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">数据清洗</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true">
+ <span class="menu-text"><strong>可视化</strong></span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/data_visual/graph_01_intro.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Python 可视化：简介</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/data_visual/graph_dis_box_violin.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">箱型图和小提琴图</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/data_visual/graph_dis_histogram.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">直方图</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/data_visual/graph_dis_kdensity.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">核密度函数图</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/data_visual/lec_distribution.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">数据分布：原理与可视化</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/data_visual/lec_distribution_codes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">数据分布：原理与可视化 — 配套代码</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/data_visual/lec_visualization.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">数据可视化：一些基本原则</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true">
+ <span class="menu-text"><strong>数据爬取</strong></span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/crawing/craw_01_introduction.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">网络爬虫简介</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/crawing/craw_02_sec01_lingnan_prompt.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">实例-提示词模式：爬取岭南学院教师名录</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/crawing/craw_02_sec02_lingnan_dialog.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">实例-对话模式：爬取岭南学院教师名录</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true">
+ <span class="menu-text"><strong>线性回归分析</strong></span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/reg_ols/ols_visual_3D.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">二元线性回归的 3D 图示</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="true">
+ <span class="menu-text"><strong>面板模型：固定效应</strong></span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/panel_fe/panel_HDFE.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">HDFE：多维固定效应</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/panel_fe/panel_IntFE.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">交互固定效应模型</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="true">
+ <span class="menu-text"><strong>面板变系数模型</strong></span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/panel_xtplfc/01_Panel_threshold_01_theory.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">静态面板门槛模型：理论与方法</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/panel_xtplfc/02_Panel_threshold_02_codes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">静态面板门槛模型：Stata 实操</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/panel_xtplfc/04_xtplfc的直观解读及xthreg实现.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">变系数模型</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/panel_xtplfc/05_解读xtplfc的原理_样条基函数.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">样条基函数与变系数模型：Stata 实操</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/panel_xtplfc/Du_2021_EE_中文精要.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">30</span>&nbsp; <span class="chapter-title">非线性调节效应怎么做？部分线性函数型面板数据模型</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" role="navigation" aria-expanded="true">
+ <span class="menu-text"><strong>受限因变量</strong></span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-8" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/limit_dep_intro/01_overview_lec.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">31</span>&nbsp; <span class="chapter-title">离散变量和受限因变量：导论</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/limit_dep_intro/01_overview_codes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">32</span>&nbsp; <span class="chapter-title">附：codes</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/limit_dep_logit/02_a_binary_lec.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">33</span>&nbsp; <span class="chapter-title">二元选择模型</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/limit_dep_logit/02_b_binary_codes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">34</span>&nbsp; <span class="chapter-title">附：Codes</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/limit_dep_logit/02_c_binary_case.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">35</span>&nbsp; <span class="chapter-title">案例：上市公司债务违约分析</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/reg_logit/probability_models.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">36</span>&nbsp; <span class="chapter-title">从回归模型到概率模型</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/limit_dep_tobit/04_tobit_model_lec.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">37</span>&nbsp; <span class="chapter-title">Tobit 模型：受限因变量、潜变量与边际效应</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/limit_dep_tobit/04_tobit_model_codes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">38</span>&nbsp; <span class="chapter-title">附：Codes .{unnumbered}</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/limit_dep_trunc_twopart/05_truncated_twopart_lec.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">39</span>&nbsp; <span class="chapter-title">Tobit 之后：截断、两部模型与比例因变量</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/limit_dep_trunc_twopart/05_truncated_twopart_codes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">40</span>&nbsp; <span class="chapter-title">附：Codes .{unnumbered}</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/limit_dep_heckman/06_heckman_lec.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">41</span>&nbsp; <span class="chapter-title">Heckman 选择模型：样本选择偏误与两阶段估计</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/limit_dep_heckman/06_heckman_codes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">42</span>&nbsp; <span class="chapter-title">附：Codes .{unnumbered}</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-9" role="navigation" aria-expanded="true">
+ <span class="menu-text"><strong>估计方法</strong></span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-9" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-9" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/method_MLE/MLE_lec.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">43</span>&nbsp; <span class="chapter-title">最大似然估计 (MLE)</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/method_MLE/MLE_codes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">44</span>&nbsp; <span class="chapter-title">MLE_codes：图形与数据生成</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/method_MLE/MLE_case.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">45</span>&nbsp; <span class="chapter-title">MLE 应用案例</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-10" role="navigation" aria-expanded="true">
+ <span class="menu-text"><strong>文本分析</strong></span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-10" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-10" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/text_analysis/lecture_text_01_ailn.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">46</span>&nbsp; <span class="chapter-title">金融文本分析（上）——从文本到结构化数据</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/text_analysis/lecture_text_02_ailn.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">47</span>&nbsp; <span class="chapter-title">金融文本分析（下）——情感分析与文本建模</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/text_analysis/lecture_text_analysis_01_claude.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">48</span>&nbsp; <span class="chapter-title">文本数据处理基础</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/text_analysis/lecture_text_analysis_02_claude.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">49</span>&nbsp; <span class="chapter-title">文本分析：情感分析与主题建模</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-11" role="navigation" aria-expanded="true">
+ <span class="menu-text"><strong>附录：Python 提示词</strong></span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-11" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-11" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../appendix_python/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">概览</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../appendix_python/a1_setup.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">A1. 环境配置</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../appendix_python/a2_project.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">A2. 项目规划与版本控制</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../appendix_python/a3_concepts.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">A3. 提示词核心词汇</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../appendix_python/a4_data.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">A4. 数据获取与清洗</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../appendix_python/a5_visualization.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">A5. 数据可视化</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../appendix_python/a6_modeling.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">A6. 统计建模</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../appendix_python/a7_results.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">A7. 结果呈现与表格美化</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../appendix_python/a8_workflow.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">A8. 上下文管理与调试</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#引言从银行贷款利率样本说起" id="toc-引言从银行贷款利率样本说起" class="nav-link active" data-scroll-target="#引言从银行贷款利率样本说起"><span class="header-section-number">41.1</span> 引言：从银行贷款利率样本说起</a></li>
+  <li><a href="#从政策背景和筛选机制理解样本选择" id="toc-从政策背景和筛选机制理解样本选择" class="nav-link" data-scroll-target="#从政策背景和筛选机制理解样本选择"><span class="header-section-number">41.2</span> 从政策背景和筛选机制理解样本选择</a></li>
+  <li><a href="#从因果推断角度理解-heckman-模型" id="toc-从因果推断角度理解-heckman-模型" class="nav-link" data-scroll-target="#从因果推断角度理解-heckman-模型"><span class="header-section-number">41.3</span> 从因果推断角度理解 Heckman 模型</a></li>
+  <li><a href="#heckman-选择模型的基本设定" id="toc-heckman-选择模型的基本设定" class="nav-link" data-scroll-target="#heckman-选择模型的基本设定"><span class="header-section-number">41.4</span> Heckman 选择模型的基本设定</a></li>
+  <li><a href="#贷款利率案例中的方程设定" id="toc-贷款利率案例中的方程设定" class="nav-link" data-scroll-target="#贷款利率案例中的方程设定"><span class="header-section-number">41.5</span> 贷款利率案例中的方程设定</a></li>
+  <li><a href="#inverse-mills-ratio-的来源与含义" id="toc-inverse-mills-ratio-的来源与含义" class="nav-link" data-scroll-target="#inverse-mills-ratio-的来源与含义"><span class="header-section-number">41.6</span> inverse Mills ratio 的来源与含义</a></li>
+  <li><a href="#stata-实现两阶段估计与极大似然估计" id="toc-stata-实现两阶段估计与极大似然估计" class="nav-link" data-scroll-target="#stata-实现两阶段估计与极大似然估计"><span class="header-section-number">41.7</span> Stata 实现：两阶段估计与极大似然估计</a></li>
+  <li><a href="#python-中的直接估计路径" id="toc-python-中的直接估计路径" class="nav-link" data-scroll-target="#python-中的直接估计路径"><span class="header-section-number">41.8</span> Python 中的直接估计路径</a></li>
+  <li><a href="#stata-扩展命令与模型地图" id="toc-stata-扩展命令与模型地图" class="nav-link" data-scroll-target="#stata-扩展命令与模型地图"><span class="header-section-number">41.9</span> Stata 扩展命令与模型地图</a></li>
+  <li><a href="#模型解释如何写成实证分析语言" id="toc-模型解释如何写成实证分析语言" class="nav-link" data-scroll-target="#模型解释如何写成实证分析语言"><span class="header-section-number">41.10</span> 模型解释：如何写成实证分析语言</a></li>
+  <li><a href="#heckmantobittruncated-regression-和-two-part-model-的区别" id="toc-heckmantobittruncated-regression-和-two-part-model-的区别" class="nav-link" data-scroll-target="#heckmantobittruncated-regression-和-two-part-model-的区别"><span class="header-section-number">41.11</span> Heckman、Tobit、Truncated regression 和 Two-part model 的区别</a></li>
+  <li><a href="#附录两阶段估计的推导要点" id="toc-附录两阶段估计的推导要点" class="nav-link" data-scroll-target="#附录两阶段估计的推导要点"><span class="header-section-number">41.12</span> 附录：两阶段估计的推导要点</a></li>
+  <li><a href="#参考文献" id="toc-参考文献" class="nav-link" data-scroll-target="#参考文献"><span class="header-section-number">41.13</span> 参考文献</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../Lecture/limit_dep_intro/01_overview_lec.html"><strong>受限因变量</strong></a></li><li class="breadcrumb-item"><a href="../../Lecture/limit_dep_heckman/06_heckman_lec.html"><span class="chapter-number">41</span>&nbsp; <span class="chapter-title">Heckman 选择模型：样本选择偏误与两阶段估计</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">41</span>&nbsp; <span class="chapter-title">Heckman 选择模型：样本选择偏误与两阶段估计</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<blockquote class="blockquote">
+<p>本讲义用于《金融数据分析与建模》课程。配套文件 <code>06_heckman_codes.ipynb</code> 用于生成 <code>./figs/</code> 中的配图和 <code>./data/heckman_loan_sim.csv</code>。本章主案例是企业银行贷款利率与贷款可得性。</p>
+</blockquote>
+<p>Heckman 选择模型处理的核心问题是：结果变量并不是对所有样本都可观测，而是只在样本通过某个选择机制后才被观测。此时，直接在可观测子样本上估计结果方程，通常会把选择机制带来的非随机性遗漏掉，从而产生样本选择偏误。</p>
+<section id="引言从银行贷款利率样本说起" class="level2" data-number="41.1">
+<h2 data-number="41.1" class="anchored" data-anchor-id="引言从银行贷款利率样本说起"><span class="header-section-number">41.1</span> 引言：从银行贷款利率样本说起</h2>
+<p>考虑一个公司金融研究问题：企业特征如何影响银行贷款利率？</p>
+<p>这类问题看起来可以直接估计如下回归：</p>
+<p><span class="math display">\[
+rate_i = x_i'\beta + u_i
+\]</span></p>
+<p>其中，<span class="math inline">\(rate_i\)</span> 是企业 <span class="math inline">\(i\)</span> 的银行贷款利率，<span class="math inline">\(x_i\)</span> 包括企业规模、杠杆率、盈利能力、现金持有、抵押品等变量。问题在于，<span class="math inline">\(rate_i\)</span> 不是对所有企业都可观测。只有企业获得银行贷款，或者在数据中披露了贷款合同或利息支出信息，研究者才可能观察到贷款利率。</p>
+<p>因此，手头样本通常经历了一个选择过程：</p>
+<ol type="1">
+<li>银行先决定是否发放贷款，企业才进入贷款利率样本；</li>
+<li>随后，在获得贷款企业中，银行与企业再形成具体贷款利率。</li>
+</ol>
+<p>第一个过程对应 selection equation，第二个过程对应 outcome equation。</p>
+<p>若获得贷款不是随机事件，那么只在获得贷款企业中做 OLS，本质上是在一个经过筛选的样本中估计融资成本决定因素。这个筛选机制可能与企业未观测风险、银企关系、银行信息优势等因素有关。若这些因素同时影响贷款利率，OLS 的误差项便不再满足条件均值为 0。</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="./figs/limit_dep_heckman_fig01_selection_mechanism.png" class="img-fluid figure-img"></p>
+<figcaption>选择机制与结果观测</figcaption>
+</figure>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+概念辨析：Heckman 与 Tobit 的观测机制不同
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Tobit 模型中，未超过阈值的结果通常仍以边界值形式进入数据，例如 <span class="math inline">\(y_i=0\)</span>。Heckman 选择模型中，未被选择样本的结果变量并不是 0，而是根本不可观测。例如，没有获得贷款的企业并没有可观测贷款利率。</p>
+</div>
+</div>
+</section>
+<section id="从政策背景和筛选机制理解样本选择" class="level2" data-number="41.2">
+<h2 data-number="41.2" class="anchored" data-anchor-id="从政策背景和筛选机制理解样本选择"><span class="header-section-number">41.2</span> 从政策背景和筛选机制理解样本选择</h2>
+<p>银行贷款不是一个简单的市场交易结果，而是一个带有信息筛选、风险评估和制度约束的审批过程。尤其在中小企业融资场景中，银行通常需要先判断企业是否满足基本授信条件，再决定贷款额度、期限、担保方式和利率。</p>
+<p>在实际研究中，贷款利率样本可能来自以下几类筛选机制：</p>
+<ul>
+<li>企业是否向银行提出融资申请；</li>
+<li>银行是否愿意进入授信审查流程；</li>
+<li>企业是否拥有足够抵押品或担保；</li>
+<li>企业所在地区是否有足够银行网点或政银企对接窗口；</li>
+<li>企业是否属于当地重点支持行业、园区或信用服务平台覆盖对象；</li>
+<li>企业是否披露了贷款合同、利息支出或有息负债明细。</li>
+</ul>
+<p>这些背景信息直接影响 selection 方程的设定。例如，本地银行网点密度、园区金融服务站、政银企对接平台、信用担保服务覆盖等变量，可能显著影响企业是否获得银行贷款。若这些变量主要影响“能否获得贷款”，但在控制企业风险和财务特征后不直接决定贷款合同利率，它们就可以作为选择方程中的排他性变量候选。</p>
+<p>金融研究中的 Heckman 模型不应只是机械地写成两个方程。更关键的是：先把样本如何产生说清楚，再由样本产生机制推导 selection 方程；再把结果变量如何形成说清楚，由价格决定机制推导 outcome 方程。</p>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+避坑指南：排他性变量不能事后硬凑
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>排他性变量应来自样本选择过程本身。若某个变量既影响企业是否获得贷款，又直接影响贷款利率，就不宜只放在选择方程中。例如，抵押品可能提高贷款可得性，也可能降低贷款风险溢价；在这种情况下，更稳妥的做法通常是把它同时放入选择方程和结果方程。</p>
+</div>
+</div>
+</section>
+<section id="从因果推断角度理解-heckman-模型" class="level2" data-number="41.3">
+<h2 data-number="41.3" class="anchored" data-anchor-id="从因果推断角度理解-heckman-模型"><span class="header-section-number">41.3</span> 从因果推断角度理解 Heckman 模型</h2>
+<p>Heckman 选择模型可以放在更一般的因果推断框架中理解。普通 OLS 试图识别：</p>
+<p><span class="math display">\[
+E(y_i\mid x_i)
+\]</span></p>
+<p>但在存在样本选择时，研究者实际看到的是：</p>
+<p><span class="math display">\[
+E(y_i\mid x_i, s_i=1)
+\]</span></p>
+<p>其中，<span class="math inline">\(s_i=1\)</span> 表示结果变量被观测到。如果进入样本本身与结果方程中的未观测因素相关，即：</p>
+<p><span class="math display">\[
+s_i \not\perp u_i \mid x_i
+\]</span></p>
+<p>那么，选择变量 <span class="math inline">\(s_i\)</span> 携带了未观测信息。此时，直接在 <span class="math inline">\(s_i=1\)</span> 的样本中估计 <span class="math inline">\(y_i\)</span> 对 <span class="math inline">\(x_i\)</span> 的回归，本质上存在遗漏变量偏误。</p>
+<p>在贷款利率案例中，<span class="math inline">\(u_i\)</span> 可以理解为研究者无法完全观察到、但银行在审批和定价中可能观察到的企业风险。如果银行更容易向低风险企业发放贷款，那么进入贷款利率样本的企业并非随机抽样。只在获得贷款企业中估计贷款利率方程，便可能低估或扭曲企业特征对融资成本的影响。</p>
+<p>Heckman 两步法的思想可以概括为：</p>
+<ul>
+<li>第一步，显式建模样本进入机制；</li>
+<li>第二步，把选择机制中可推导出的非随机成分带回结果方程；</li>
+<li>若修正项显著，说明进入结果样本的过程与结果方程误差项存在系统关联。</li>
+</ul>
+</section>
+<section id="heckman-选择模型的基本设定" class="level2" data-number="41.4">
+<h2 data-number="41.4" class="anchored" data-anchor-id="heckman-选择模型的基本设定"><span class="header-section-number">41.4</span> Heckman 选择模型的基本设定</h2>
+<p>设潜在结果方程为：</p>
+<p><span class="math display">\[
+y_i^* = x_i'\beta + u_i
+\]</span></p>
+<p>设选择方程为：</p>
+<p><span class="math display">\[
+s_i^* = z_i'\gamma + v_i
+\]</span></p>
+<p>其中，<span class="math inline">\(s_i^*\)</span> 是潜在选择倾向，<span class="math inline">\(s_i\)</span> 是实际选择结果：</p>
+<p><span class="math display">\[
+s_i=
+\begin{cases}
+1, &amp; s_i^*&gt;0 \\
+0, &amp; s_i^*\leq 0
+\end{cases}
+\]</span></p>
+<p>结果变量的观测规则为：</p>
+<p><span class="math display">\[
+y_i =
+\begin{cases}
+y_i^*, &amp; s_i=1 \\
+\text{missing}, &amp; s_i=0
+\end{cases}
+\]</span></p>
+<p>标准 Heckman 模型进一步假设：</p>
+<p><span class="math display">\[
+\begin{pmatrix}
+u_i\\
+v_i
+\end{pmatrix}
+\sim
+N
+\left[
+\begin{pmatrix}
+0\\
+0
+\end{pmatrix},
+\begin{pmatrix}
+\sigma_u^2 &amp; \rho\sigma_u\\
+\rho\sigma_u &amp; 1
+\end{pmatrix}
+\right]
+\]</span></p>
+<p>这里，选择方程误差项 <span class="math inline">\(v_i\)</span> 的方差被标准化为 1，因为 Probit 模型只能识别相对尺度。若 <span class="math inline">\(\rho\neq 0\)</span>，说明选择方程中的未观测因素与结果方程中的未观测因素相关，样本选择偏误就会出现。</p>
+</section>
+<section id="贷款利率案例中的方程设定" class="level2" data-number="41.5">
+<h2 data-number="41.5" class="anchored" data-anchor-id="贷款利率案例中的方程设定"><span class="header-section-number">41.5</span> 贷款利率案例中的方程设定</h2>
+<p>本章案例把贷款利率视为 outcome，把是否获得贷款视为 selection。</p>
+<p>结果方程为：</p>
+<p><span class="math display">\[
+rate_i^*
+=
+\beta_0
++
+\beta_1 size_i
++
+\beta_2 cash_i
++
+\beta_3 lev_i
++
+\beta_4 profit_i
++
+\beta_5 collateral_i
++
+u_i
+\]</span></p>
+<p>选择方程为：</p>
+<p><span class="math display">\[
+\begin{aligned}
+loan_i^*
+&amp;=
+\gamma_0
++
+\gamma_1 size_i
++
+\gamma_2 cash_i
++
+\gamma_3 lev_i
++
+\gamma_4 profit_i \\
+&amp;\quad
++
+\gamma_5 collateral_i
++
+\gamma_6 bank\_access_i
++
+\gamma_7 credit\_window_i
++
+v_i
+\end{aligned}
+\]</span></p>
+<p>观测规则为：</p>
+<p><span class="math display">\[
+rate_i =
+\begin{cases}
+rate_i^*, &amp; loan_i=1 \\
+\text{missing}, &amp; loan_i=0
+\end{cases}
+\]</span></p>
+<p>变量含义如下：</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>变量</th>
+<th>含义</th>
+<th>进入方程</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>rate</code></td>
+<td>银行贷款利率，仅对获得贷款企业可观测</td>
+<td>结果变量</td>
+</tr>
+<tr class="even">
+<td><code>loan</code></td>
+<td>是否获得银行贷款</td>
+<td>选择变量</td>
+</tr>
+<tr class="odd">
+<td><code>size</code></td>
+<td>企业规模</td>
+<td>两个方程</td>
+</tr>
+<tr class="even">
+<td><code>cash</code></td>
+<td>现金持有</td>
+<td>两个方程</td>
+</tr>
+<tr class="odd">
+<td><code>lev</code></td>
+<td>杠杆率</td>
+<td>两个方程</td>
+</tr>
+<tr class="even">
+<td><code>profit</code></td>
+<td>盈利能力</td>
+<td>两个方程</td>
+</tr>
+<tr class="odd">
+<td><code>collateral</code></td>
+<td>抵押品充足程度</td>
+<td>两个方程</td>
+</tr>
+<tr class="even">
+<td><code>bank_access</code></td>
+<td>本地银行服务可得性</td>
+<td>选择方程</td>
+</tr>
+<tr class="odd">
+<td><code>credit_window</code></td>
+<td>是否处于政银企对接窗口覆盖范围</td>
+<td>选择方程</td>
+</tr>
+</tbody>
+</table>
+<p>这里把 <code>bank_access</code> 和 <code>credit_window</code> 作为排他性变量候选。它们的经济含义是降低银企匹配成本、提高企业进入授信流程和获得贷款的概率；在控制企业风险、抵押品和财务特征后，它们不应直接决定单笔贷款合同利率。这个假设需要结合制度背景、数据口径和稳健性检验进行论证。</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="./figs/limit_dep_heckman_fig06_exclusion_logic.png" class="img-fluid figure-img"></p>
+<figcaption>排他性变量的设定逻辑</figcaption>
+</figure>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+经典文献中的方程设定思路
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Heckman (1979) 把样本选择偏误表述为 specification error。核心并不是“样本变少了”，而是被观测样本的误差项条件均值不再为 0。Mroz (1987) 的劳动供给研究则提供了经典应用：工资只对就业女性可观测，因此选择方程解释是否就业，结果方程解释工资水平。</p>
+<p>这两个例子对应同一设定思想：先定义结果变量何时可观测，再为这个“可观测性”建立选择方程；然后在可观测样本中建立结果方程。变量选择应服务于这个观测机制，而不是从同一组控制变量中机械拆分。</p>
+</div>
+</div>
+<div id="b10c7be1" class="cell" data-execution_count="8">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ============================================================</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="co"># 导入包与读取模拟数据</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co"># ============================================================</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> statsmodels.api <span class="im">as</span> sm</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.stats <span class="im">import</span> norm</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> statsmodels.iolib.summary2 <span class="im">import</span> summary_col</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>pd.set_option(<span class="st">"display.max_columns"</span>, <span class="dv">100</span>)</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>pd.set_option(<span class="st">"display.width"</span>, <span class="dv">120</span>)</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="co"># 需要先运行 06_heckman_codes.ipynb，生成该数据文件</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_csv(<span class="st">"./data/heckman_loan_sim.csv"</span>)</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df.shape)</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>df.head().<span class="bu">round</span>(<span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>(3000, 15)</code></pre>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="8">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">size</th>
+<th data-quarto-table-cell-role="th">cash</th>
+<th data-quarto-table-cell-role="th">lev</th>
+<th data-quarto-table-cell-role="th">profit</th>
+<th data-quarto-table-cell-role="th">collateral</th>
+<th data-quarto-table-cell-role="th">bank_access</th>
+<th data-quarto-table-cell-role="th">credit_window</th>
+<th data-quarto-table-cell-role="th">loan_latent</th>
+<th data-quarto-table-cell-role="th">loan</th>
+<th data-quarto-table-cell-role="th">rate_latent</th>
+<th data-quarto-table-cell-role="th">rate</th>
+<th data-quarto-table-cell-role="th">firm_size_log</th>
+<th data-quarto-table-cell-role="th">leverage_ratio</th>
+<th data-quarto-table-cell-role="th">cash_ratio</th>
+<th data-quarto-table-cell-role="th">profitability</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>-1.63</td>
+<td>1.31</td>
+<td>0.31</td>
+<td>3.25</td>
+<td>-0.35</td>
+<td>-0.32</td>
+<td>1</td>
+<td>0.38</td>
+<td>1</td>
+<td>5.60</td>
+<td>5.60</td>
+<td>20.53</td>
+<td>0.49</td>
+<td>0.30</td>
+<td>0.15</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1</td>
+<td>0.25</td>
+<td>0.71</td>
+<td>-1.19</td>
+<td>-1.42</td>
+<td>0.90</td>
+<td>1.63</td>
+<td>0</td>
+<td>1.50</td>
+<td>1</td>
+<td>6.06</td>
+<td>6.06</td>
+<td>22.22</td>
+<td>0.31</td>
+<td>0.26</td>
+<td>0.01</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2</td>
+<td>-1.06</td>
+<td>-0.15</td>
+<td>-0.16</td>
+<td>-0.53</td>
+<td>-0.51</td>
+<td>1.37</td>
+<td>0</td>
+<td>-0.23</td>
+<td>0</td>
+<td>6.85</td>
+<td>NaN</td>
+<td>21.04</td>
+<td>0.43</td>
+<td>0.19</td>
+<td>0.03</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">3</td>
+<td>0.36</td>
+<td>-2.22</td>
+<td>0.96</td>
+<td>1.03</td>
+<td>-1.16</td>
+<td>-1.74</td>
+<td>1</td>
+<td>-2.82</td>
+<td>0</td>
+<td>7.05</td>
+<td>NaN</td>
+<td>22.33</td>
+<td>0.57</td>
+<td>0.02</td>
+<td>0.08</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">4</td>
+<td>-0.33</td>
+<td>0.63</td>
+<td>-0.29</td>
+<td>-0.07</td>
+<td>-0.58</td>
+<td>-0.89</td>
+<td>0</td>
+<td>-0.42</td>
+<td>0</td>
+<td>6.39</td>
+<td>NaN</td>
+<td>21.70</td>
+<td>0.41</td>
+<td>0.25</td>
+<td>0.05</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<div id="240dab73" class="cell" data-execution_count="9">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ============================================================</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co"># 描述性统计：样本选择与贷款利率可观测性</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co"># ============================================================</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>summary <span class="op">=</span> pd.DataFrame({</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">"统计量"</span>: [<span class="st">"总样本量"</span>, <span class="st">"获得贷款样本量"</span>, <span class="st">"获得贷款比例"</span>, <span class="st">"贷款利率均值"</span>, <span class="st">"贷款利率中位数"</span>, <span class="st">"贷款利率标准差"</span>],</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">"数值"</span>: [</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>        <span class="bu">len</span>(df),</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>        <span class="bu">int</span>(df[<span class="st">"loan"</span>].<span class="bu">sum</span>()),</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>        df[<span class="st">"loan"</span>].mean(),</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>        df[<span class="st">"rate"</span>].mean(),</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>        df[<span class="st">"rate"</span>].median(),</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>        df[<span class="st">"rate"</span>].std()</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>    ]</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>}).<span class="bu">round</span>(<span class="dv">3</span>)</span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>summary</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="9">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">统计量</th>
+<th data-quarto-table-cell-role="th">数值</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>总样本量</td>
+<td>3000.000</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1</td>
+<td>获得贷款样本量</td>
+<td>1563.000</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2</td>
+<td>获得贷款比例</td>
+<td>0.521</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">3</td>
+<td>贷款利率均值</td>
+<td>5.544</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">4</td>
+<td>贷款利率中位数</td>
+<td>5.575</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">5</td>
+<td>贷款利率标准差</td>
+<td>0.962</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<div id="c3c92fb5" class="cell" data-execution_count="3">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ============================================================</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="co"># 获得贷款企业与未获得贷款企业的均值对比</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="co"># ============================================================</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>compare_vars <span class="op">=</span> [<span class="st">"size"</span>, <span class="st">"cash"</span>, <span class="st">"lev"</span>, <span class="st">"profit"</span>, <span class="st">"collateral"</span>, <span class="st">"bank_access"</span>, <span class="st">"credit_window"</span>]</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>compare_table <span class="op">=</span> df.groupby(<span class="st">"loan"</span>)[compare_vars].agg([<span class="st">"mean"</span>, <span class="st">"std"</span>]).T</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>compare_table.columns <span class="op">=</span> [<span class="st">"未获得贷款"</span>, <span class="st">"获得贷款"</span>]</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>compare_table.<span class="bu">round</span>(<span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="3">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">未获得贷款</th>
+<th data-quarto-table-cell-role="th">获得贷款</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td rowspan="2" data-quarto-table-cell-role="th" data-valign="top">size</td>
+<td data-quarto-table-cell-role="th">mean</td>
+<td>-0.371</td>
+<td>0.341</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">std</td>
+<td>0.934</td>
+<td>0.936</td>
+</tr>
+<tr class="odd">
+<td rowspan="2" data-quarto-table-cell-role="th" data-valign="top">cash</td>
+<td data-quarto-table-cell-role="th">mean</td>
+<td>-0.090</td>
+<td>0.083</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">std</td>
+<td>0.988</td>
+<td>1.004</td>
+</tr>
+<tr class="odd">
+<td rowspan="2" data-quarto-table-cell-role="th" data-valign="top">lev</td>
+<td data-quarto-table-cell-role="th">mean</td>
+<td>0.302</td>
+<td>-0.277</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">std</td>
+<td>0.951</td>
+<td>0.964</td>
+</tr>
+<tr class="odd">
+<td rowspan="2" data-quarto-table-cell-role="th" data-valign="top">profit</td>
+<td data-quarto-table-cell-role="th">mean</td>
+<td>-0.170</td>
+<td>0.156</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">std</td>
+<td>0.988</td>
+<td>0.985</td>
+</tr>
+<tr class="odd">
+<td rowspan="2" data-quarto-table-cell-role="th" data-valign="top">collateral</td>
+<td data-quarto-table-cell-role="th">mean</td>
+<td>-0.454</td>
+<td>0.417</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">std</td>
+<td>0.905</td>
+<td>0.896</td>
+</tr>
+<tr class="odd">
+<td rowspan="2" data-quarto-table-cell-role="th" data-valign="top">bank_access</td>
+<td data-quarto-table-cell-role="th">mean</td>
+<td>-0.331</td>
+<td>0.304</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">std</td>
+<td>0.954</td>
+<td>0.944</td>
+</tr>
+<tr class="odd">
+<td rowspan="2" data-quarto-table-cell-role="th" data-valign="top">credit_window</td>
+<td data-quarto-table-cell-role="th">mean</td>
+<td>0.525</td>
+<td>0.592</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">std</td>
+<td>0.500</td>
+<td>0.492</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="./figs/limit_dep_heckman_fig02_selected_vs_unselected.png" class="img-fluid figure-img"></p>
+<figcaption>获得贷款企业与未获得贷款企业的特征差异</figcaption>
+</figure>
+</div>
+<p>上图展示了典型的样本选择结构：获得贷款企业与未获得贷款企业在企业规模、抵押品、银行服务可得性等变量上存在系统差异。若这些差异背后还包含未观测风险，那么只在获得贷款企业中估计贷款利率方程就可能产生选择偏误。</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="./figs/limit_dep_heckman_fig03_latent_observed_rate.png" class="img-fluid figure-img"></p>
+<figcaption>潜在贷款利率与观测贷款利率</figcaption>
+</figure>
+</div>
+</section>
+<section id="inverse-mills-ratio-的来源与含义" class="level2" data-number="41.6">
+<h2 data-number="41.6" class="anchored" data-anchor-id="inverse-mills-ratio-的来源与含义"><span class="header-section-number">41.6</span> inverse Mills ratio 的来源与含义</h2>
+<p>在获得贷款样本中观察到：</p>
+<p><span class="math display">\[
+y_i = x_i'\beta + u_i,
+\quad s_i=1
+\]</span></p>
+<p>但 <span class="math inline">\(s_i=1\)</span> 等价于：</p>
+<p><span class="math display">\[
+s_i^*=z_i'\gamma+v_i&gt;0
+\]</span></p>
+<p>即：</p>
+<p><span class="math display">\[
+v_i&gt;-z_i'\gamma
+\]</span></p>
+<p>因此，在被选择样本中：</p>
+<p><span class="math display">\[
+E(y_i\mid x_i,z_i,s_i=1)
+=
+x_i'\beta+E(u_i\mid v_i&gt;-z_i'\gamma)
+\]</span></p>
+<p>在联合正态假设下，可以得到：</p>
+<p><span class="math display">\[
+E(u_i\mid v_i&gt;-z_i'\gamma)
+=
+\rho\sigma_u\lambda(z_i'\gamma)
+\]</span></p>
+<p>其中：</p>
+<p><span class="math display">\[
+\lambda(z_i'\gamma)=\frac{\phi(z_i'\gamma)}{\Phi(z_i'\gamma)}
+\]</span></p>
+<p>于是：</p>
+<p><span class="math display">\[
+E(y_i\mid x_i,z_i,s_i=1)
+=
+x_i'\beta
++
+\rho\sigma_u\lambda(z_i'\gamma)
+\]</span></p>
+<p>令 <span class="math inline">\(\theta=\rho\sigma_u\)</span>，第二阶段回归可写为：</p>
+<p><span class="math display">\[
+y_i
+=
+x_i'\beta
++
+\theta\lambda_i
++
+\varepsilon_i,
+\quad s_i=1
+\]</span></p>
+<p><span class="math inline">\(\lambda_i\)</span> 就是 inverse Mills ratio。它不是普通控制变量，而是由选择方程推导出来的选择修正项。其经济含义是：在给定可观测变量后，一个观测值进入可观测样本的非随机程度。</p>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+避坑指南：IMR 的显著性不等于排除变量有效
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>IMR 显著通常说明选择过程与结果方程误差项存在相关性，但它不能自动证明排他性变量有效。排他性变量是否合理，需要依赖制度背景、经济机制、变量定义和稳健性分析。</p>
+</div>
+</div>
+<div id="beaf12f0" class="cell" data-execution_count="4">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ============================================================</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="co"># 手动实现 Heckman 两阶段估计</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co"># ============================================================</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="co"># 第一阶段：Probit 选择方程</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>select_vars <span class="op">=</span> [<span class="st">"size"</span>, <span class="st">"cash"</span>, <span class="st">"lev"</span>, <span class="st">"profit"</span>, <span class="st">"collateral"</span>, <span class="st">"bank_access"</span>, <span class="st">"credit_window"</span>]</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>Z <span class="op">=</span> sm.add_constant(df[select_vars])</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>probit_mod <span class="op">=</span> sm.Probit(df[<span class="st">"loan"</span>], Z)</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>probit_res <span class="op">=</span> probit_mod.fit(disp<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a><span class="co"># 计算 inverse Mills ratio</span></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a><span class="co"># 对于 selection event loan = 1，常用 lambda = phi(z gamma) / Phi(z gamma)</span></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>xb_select <span class="op">=</span> probit_res.predict(linear<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>df[<span class="st">"imr"</span>] <span class="op">=</span> norm.pdf(xb_select) <span class="op">/</span> np.clip(norm.cdf(xb_select), <span class="fl">1e-8</span>, <span class="dv">1</span>)</span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a><span class="co"># 第二阶段：在获得贷款样本中估计贷款利率方程</span></span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>outcome_vars <span class="op">=</span> [<span class="st">"size"</span>, <span class="st">"cash"</span>, <span class="st">"lev"</span>, <span class="st">"profit"</span>, <span class="st">"collateral"</span>]</span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>df_selected <span class="op">=</span> df.loc[df[<span class="st">"loan"</span>] <span class="op">==</span> <span class="dv">1</span>].copy()</span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>X_ols <span class="op">=</span> sm.add_constant(df_selected[outcome_vars])</span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>ols_selected <span class="op">=</span> sm.OLS(df_selected[<span class="st">"rate"</span>], X_ols).fit(cov_type<span class="op">=</span><span class="st">"HC1"</span>)</span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>X_heck <span class="op">=</span> sm.add_constant(df_selected[outcome_vars <span class="op">+</span> [<span class="st">"imr"</span>]])</span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a>heckman_2step <span class="op">=</span> sm.OLS(df_selected[<span class="st">"rate"</span>], X_heck).fit(cov_type<span class="op">=</span><span class="st">"HC1"</span>)</span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"第一阶段 Probit："</span>)</span>
+<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(probit_res.summary())</span>
+<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">第二阶段 OLS + IMR："</span>)</span>
+<span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(heckman_2step.summary())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>第一阶段 Probit：
+                          Probit Regression Results                           
+==============================================================================
+Dep. Variable:                   loan   No. Observations:                 3000
+Model:                         Probit   Df Residuals:                     2992
+Method:                           MLE   Df Model:                            7
+Date:                Tue, 28 Apr 2026   Pseudo R-squ.:                  0.3675
+Time:                        17:57:00   Log-Likelihood:                -1313.5
+converged:                       True   LL-Null:                       -2076.8
+Covariance Type:            nonrobust   LLR p-value:                     0.000
+=================================================================================
+                    coef    std err          z      P&gt;|z|      [0.025      0.975]
+---------------------------------------------------------------------------------
+const            -0.1804      0.043     -4.167      0.000      -0.265      -0.096
+size              0.4795      0.035     13.856      0.000       0.412       0.547
+cash              0.1496      0.029      5.242      0.000       0.094       0.206
+lev              -0.3914      0.032    -12.079      0.000      -0.455      -0.328
+profit            0.3699      0.030     12.524      0.000       0.312       0.428
+collateral        0.5056      0.036     14.078      0.000       0.435       0.576
+bank_access       0.6685      0.034     19.916      0.000       0.603       0.734
+credit_window     0.4896      0.060      8.127      0.000       0.371       0.608
+=================================================================================
+
+第二阶段 OLS + IMR：
+                            OLS Regression Results                            
+==============================================================================
+Dep. Variable:                   rate   R-squared:                       0.497
+Model:                            OLS   Adj. R-squared:                  0.495
+Method:                 Least Squares   F-statistic:                     275.7
+Date:                Tue, 28 Apr 2026   Prob (F-statistic):          1.73e-240
+Time:                        17:57:00   Log-Likelihood:                -1620.1
+No. Observations:                1563   AIC:                             3254.
+Df Residuals:                    1556   BIC:                             3292.
+Df Model:                           6                                         
+Covariance Type:                  HC1                                         
+==============================================================================
+                 coef    std err          z      P&gt;|z|      [0.025      0.975]
+------------------------------------------------------------------------------
+const          6.1908      0.046    133.910      0.000       6.100       6.281
+size          -0.3478      0.022    -16.125      0.000      -0.390      -0.306
+cash          -0.1113      0.017     -6.432      0.000      -0.145      -0.077
+lev            0.5461      0.020     27.106      0.000       0.507       0.586
+profit        -0.4111      0.019    -21.610      0.000      -0.448      -0.374
+collateral    -0.2556      0.024    -10.822      0.000      -0.302      -0.209
+imr           -0.4165      0.061     -6.853      0.000      -0.536      -0.297
+==============================================================================
+Omnibus:                        5.583   Durbin-Watson:                   2.050
+Prob(Omnibus):                  0.061   Jarque-Bera (JB):                5.783
+Skew:                          -0.103   Prob(JB):                       0.0555
+Kurtosis:                       3.215   Cond. No.                         6.24
+==============================================================================
+
+Notes:
+[1] Standard Errors are heteroscedasticity robust (HC1)</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>c:\Users\Administrator\.conda\envs\dml050\Lib\site-packages\statsmodels\discrete\discrete_model.py:530: FutureWarning: linear keyword is deprecated, use which="linear"
+  warnings.warn(msg, FutureWarning)</code></pre>
+</div>
+</div>
+<p>上面的 Python 两步法有两个作用。第一，它把 Heckman 两阶段估计的逻辑展开为可见步骤：先估计选择方程，再计算 IMR，最后把 IMR 加入结果方程。第二，它为理解 Stata 的 <code>heckman, twostep</code> 提供了一个透明版本。</p>
+<p>需要注意，手动第二阶段的常规 robust 标准误并不等同于严格的 Heckman 两阶段修正标准误。正式研究中，可以用 Stata 的 <code>heckman, twostep</code> 或 <code>heckman, mle</code> 作为主要结果。</p>
+<div id="2849ef2f" class="cell" data-execution_count="5">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ============================================================</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="co"># 回归结果表：类似 esttab 的简洁输出</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="co"># ============================================================</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>reg_table <span class="op">=</span> summary_col(</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>    [ols_selected, heckman_2step],</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>    model_names<span class="op">=</span>[<span class="st">"OLS selected"</span>, <span class="st">"Heckman two-step"</span>],</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>    stars<span class="op">=</span><span class="va">True</span>,</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>    float_format<span class="op">=</span><span class="st">"</span><span class="sc">%0.3f</span><span class="st">"</span>,</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>    info_dict<span class="op">=</span>{</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>        <span class="st">"N"</span>: <span class="kw">lambda</span> x: <span class="ss">f"</span><span class="sc">{</span><span class="bu">int</span>(x.nobs)<span class="sc">}</span><span class="ss">"</span>,</span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>        <span class="st">"R2"</span>: <span class="kw">lambda</span> x: <span class="ss">f"</span><span class="sc">{</span>x<span class="sc">.</span>rsquared<span class="sc">:.3f}</span><span class="ss">"</span> <span class="cf">if</span> <span class="bu">hasattr</span>(x, <span class="st">"rsquared"</span>) <span class="cf">else</span> <span class="st">""</span></span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(reg_table)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+============================================
+               OLS selected Heckman two-step
+--------------------------------------------
+const          5.914***     6.191***        
+               (0.020)      (0.046)         
+size           -0.279***    -0.348***       
+               (0.019)      (0.022)         
+cash           -0.090***    -0.111***       
+               (0.017)      (0.017)         
+lev            0.488***     0.546***        
+               (0.019)      (0.020)         
+profit         -0.361***    -0.411***       
+               (0.018)      (0.019)         
+collateral     -0.181***    -0.256***       
+               (0.021)      (0.024)         
+imr                         -0.417***       
+                            (0.061)         
+R-squared      0.482        0.497           
+R-squared Adj. 0.480        0.495           
+N              1563         1563            
+R2             0.482        0.497           
+============================================
+Standard errors in parentheses.
+* p&lt;.1, ** p&lt;.05, ***p&lt;.01</code></pre>
+</div>
+</div>
+<div id="0d295705" class="cell" data-execution_count="6">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ============================================================</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="co"># 第一阶段 Probit 的平均边际效应</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="co"># ============================================================</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>mfx <span class="op">=</span> probit_res.get_margeff(at<span class="op">=</span><span class="st">"overall"</span>)</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(mfx.summary())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>       Probit Marginal Effects       
+=====================================
+Dep. Variable:                   loan
+Method:                          dydx
+At:                           overall
+=================================================================================
+                   dy/dx    std err          z      P&gt;|z|      [0.025      0.975]
+---------------------------------------------------------------------------------
+size              0.1177      0.008     15.361      0.000       0.103       0.133
+cash              0.0367      0.007      5.308      0.000       0.023       0.050
+lev              -0.0961      0.007    -12.991      0.000      -0.111      -0.082
+profit            0.0908      0.007     13.577      0.000       0.078       0.104
+collateral        0.1241      0.008     15.657      0.000       0.109       0.140
+bank_access       0.1641      0.007     25.099      0.000       0.151       0.177
+credit_window     0.1202      0.014      8.381      0.000       0.092       0.148
+=================================================================================</code></pre>
+</div>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="./figs/limit_dep_heckman_fig04_imr_rate.png" class="img-fluid figure-img"></p>
+<figcaption>Inverse Mills ratio 与贷款利率</figcaption>
+</figure>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="./figs/limit_dep_heckman_fig05_ols_heckman_compare.png" class="img-fluid figure-img"></p>
+<figcaption>OLS 与 Heckman 两步法的系数对比</figcaption>
+</figure>
+</div>
+</section>
+<section id="stata-实现两阶段估计与极大似然估计" class="level2" data-number="41.7">
+<h2 data-number="41.7" class="anchored" data-anchor-id="stata-实现两阶段估计与极大似然估计"><span class="header-section-number">41.7</span> Stata 实现：两阶段估计与极大似然估计</h2>
+<p>以下代码可在 Stata 或 nbstata 中执行。若当前工作路径下已有 <code>./data/heckman_loan_sim.csv</code>，可直接读取与 Python 相同的模拟数据。</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode stata code-with-copy"><code class="sourceCode stata"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>*------------------------------------------------------------</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>* 读取模拟数据</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>*------------------------------------------------------------</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="kw">clear</span> <span class="ot">all</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="kw">set</span> <span class="kw">more</span> <span class="kw">off</span></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>import delimited <span class="st">"./data/heckman_loan_sim.csv"</span>, <span class="kw">clear</span></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a><span class="kw">describe</span></span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a><span class="kw">summarize</span> rate loan <span class="kw">size</span> cash lev profit collateral bank_access credit_window</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode stata code-with-copy"><code class="sourceCode stata"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>*------------------------------------------------------------</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>* 基准 OLS：只在获得贷款企业中估计贷款利率方程</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>*------------------------------------------------------------</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="kw">reg</span> rate <span class="kw">size</span> cash lev profit collateral <span class="kw">if</span> loan == 1, <span class="kw">vce</span>(<span class="kw">robust</span>)</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a><span class="kw">estimates</span> <span class="kw">store</span> OLS_selected</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode stata code-with-copy"><code class="sourceCode stata"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>*------------------------------------------------------------</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>* 手动两步法：第一阶段 Probit + 第二阶段加入 IMR</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>*------------------------------------------------------------</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="kw">probit</span> loan <span class="kw">size</span> cash lev profit collateral bank_access credit_window</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a><span class="kw">predict</span> xb_select, <span class="kw">xb</span></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a><span class="kw">gen</span> imr_manual = <span class="fu">normalden</span>(xb_select) / <span class="fu">normal</span>(xb_select)</span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a><span class="kw">reg</span> rate <span class="kw">size</span> cash lev profit collateral imr_manual <span class="kw">if</span> loan == 1, <span class="co">///</span></span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>    <span class="kw">vce</span>(<span class="kw">robust</span>)</span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a><span class="kw">estimates</span> <span class="kw">store</span> Manual_2step</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode stata code-with-copy"><code class="sourceCode stata"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>*------------------------------------------------------------</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>* Stata 官方 Heckman 两阶段估计</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>*------------------------------------------------------------</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="kw">heckman</span> rate <span class="kw">size</span> cash lev profit collateral, <span class="co">///</span></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>    select(loan = <span class="kw">size</span> cash lev profit collateral bank_access credit_window) <span class="co">///</span></span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>    twostep first mills(imr_official)</span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a><span class="kw">estimates</span> <span class="kw">store</span> Heckman_2step</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode stata code-with-copy"><code class="sourceCode stata"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>*------------------------------------------------------------</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>* Stata 官方 Heckman 极大似然估计</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>*------------------------------------------------------------</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a><span class="kw">heckman</span> rate <span class="kw">size</span> cash lev profit collateral, <span class="co">///</span></span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>    select(loan = <span class="kw">size</span> cash lev profit collateral bank_access credit_window) <span class="co">///</span></span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>    <span class="kw">mle</span> first <span class="kw">vce</span>(<span class="kw">robust</span>)</span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a><span class="kw">estimates</span> <span class="kw">store</span> Heckman_ML</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb17"><pre class="sourceCode stata code-with-copy"><code class="sourceCode stata"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>*------------------------------------------------------------</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>* 使用 esttab 输出结果表</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>*------------------------------------------------------------</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a><span class="kw">capture</span> which esttab</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a><span class="kw">if</span> <span class="dt">_rc</span>{</span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>    <span class="kw">ssc</span> install estout, <span class="kw">replace</span></span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>esttab OLS_selected Manual_2step Heckman_2step Heckman_ML, <span class="co">///</span></span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a>    b(%9.3f) se(%9.3f) <span class="co">///</span></span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a>    <span class="kw">star</span>(* 0.10 ** 0.05 *** 0.01) <span class="co">///</span></span>
+<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a>    <span class="kw">stats</span>(<span class="kw">N</span>, labels(<span class="st">"Observations"</span>)) <span class="co">///</span></span>
+<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a>    <span class="kw">compress</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Stata 的 <code>heckman</code> 同时支持两阶段估计和极大似然估计。<code>twostep</code> 指定 Heckman 两阶段估计，<code>mle</code> 指定极大似然估计。<code>mills(newvar)</code> 可保存 inverse Mills ratio；Stata 文档中也将 <code>mills()</code> 和 <code>nshazard()</code> 作为同义选项，用于生成 Heckman 所称的 inverse Mills ratio。</p>
+</section>
+<section id="python-中的直接估计路径" class="level2" data-number="41.8">
+<h2 data-number="41.8" class="anchored" data-anchor-id="python-中的直接估计路径"><span class="header-section-number">41.8</span> Python 中的直接估计路径</h2>
+<p>Python 中可以估计 Heckman / Heckit 模型，但生态不如 Stata 的 <code>heckman</code> 稳定统一。实际使用时，可以按以下顺序选择工具：</p>
+<ul>
+<li>若需要课堂演示和透明步骤，使用 <code>statsmodels</code> 的 Probit + OLS 手动两步法；</li>
+<li>若希望调用专门的 Heckit 实现，可尝试 <code>py4etrics</code>；</li>
+<li>若论文结果需要严谨核对，可同时使用 Stata <code>heckman</code> 复核；</li>
+<li>若模型结构更复杂，例如多方程、内生切换或非正态设定，可考虑 Stata 的扩展命令或贝叶斯建模。</li>
+</ul>
+<p><code>py4etrics</code> 项目说明中明确包括 Truncated Regression、Tobit Model 和 Heckit Model，安装命令为 <code>pip install py4etrics</code>。不过，第三方包的 API 可能随版本变化，使用时应以当前版本文档为准。</p>
+<div id="09e03fc0" class="cell" data-execution_count="7">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ============================================================</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="co"># 可选：检查 py4etrics 是否已经安装</span></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="co"># ============================================================</span></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a><span class="cf">try</span>:</span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>    <span class="im">import</span> py4etrics</span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"py4etrics 已安装，可以根据当前版本文档调用 Heckit 模型。"</span>)</span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"py4etrics 模块信息:"</span>, py4etrics)</span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a><span class="cf">except</span> <span class="pp">ImportError</span>:</span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"尚未安装 py4etrics。可在本地环境中运行：pip install py4etrics"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>尚未安装 py4etrics。可在本地环境中运行：pip install py4etrics</code></pre>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+提示词：用 Python 生成 Heckman 两阶段估计代码
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>我正在分析一个 Heckman 选择模型。结果变量是 <code>结果变量名</code>，只有在 <code>选择变量名=1</code> 时才可观测。结果方程解释变量包括 <code>结果方程变量列表</code>，选择方程解释变量包括 <code>选择方程变量列表</code>，其中 <code>排他性变量名</code> 只进入选择方程。请帮我生成 Python 代码，完成 Probit 第一阶段、inverse Mills ratio 计算、第二阶段 OLS 回归、结果表整理和基本解释。代码需要包含中文注释，并假定数据保存在 pandas DataFrame <code>df</code> 中。</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+提示词：用 Stata 生成 Heckman 估计代码
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>我正在使用 Stata 估计 Heckman 选择模型。结果变量是 <code>结果变量名</code>，选择变量是 <code>选择变量名</code>，结果方程解释变量包括 <code>结果方程变量列表</code>，选择方程解释变量包括 <code>选择方程变量列表</code>。其中 <code>排他性变量名</code> 只进入选择方程。请帮我生成 <code>heckman</code> 的两阶段估计和极大似然估计代码，并使用 <code>esttab</code> 输出回归表。代码需要使用 <code>///</code> 换行，并添加中文注释。</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+提示词：检查排他性变量是否有说服力
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>我正在为 Heckman 选择模型设计排他性变量。研究问题是 <code>研究问题</code>，结果变量是 <code>结果变量</code>，选择变量是 <code>选择变量</code>，候选排他性变量是 <code>变量名</code>。请从经济机制、制度背景、可能的直接效应、需要加入的控制变量和稳健性检验五个角度，评估这个变量是否适合作为选择方程中的排他性变量。</p>
+</div>
+</div>
+</section>
+<section id="stata-扩展命令与模型地图" class="level2" data-number="41.9">
+<h2 data-number="41.9" class="anchored" data-anchor-id="stata-扩展命令与模型地图"><span class="header-section-number">41.9</span> Stata 扩展命令与模型地图</h2>
+<p>Heckman selection model 是一个基础框架。实际研究中，结果变量类型和选择机制可能更复杂，可以考虑以下命令或模型：</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>场景</th>
+<th>Stata 命令</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>连续结果变量存在样本选择</td>
+<td><code>heckman</code></td>
+<td>标准 Heckman selection model</td>
+</tr>
+<tr class="even">
+<td>二元结果变量存在样本选择</td>
+<td><code>heckprobit</code></td>
+<td>outcome 为 Probit，带选择机制</td>
+</tr>
+<tr class="odd">
+<td>有序结果变量存在样本选择</td>
+<td><code>heckoprobit</code></td>
+<td>outcome 为 ordered probit，带选择机制</td>
+</tr>
+<tr class="even">
+<td>计数结果变量存在样本选择</td>
+<td><code>heckpoisson</code></td>
+<td>outcome 为 Poisson，带选择机制</td>
+</tr>
+<tr class="odd">
+<td>内生切换回归</td>
+<td><code>movestay</code></td>
+<td>不同 regime 下结果方程不同</td>
+</tr>
+<tr class="even">
+<td>多方程混合模型</td>
+<td><code>cmp</code></td>
+<td>用户扩展命令，适合更复杂的递归多方程结构</td>
+</tr>
+</tbody>
+</table>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+避坑指南：扩展命令不能替代模型设定
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>扩展命令可以处理更复杂的因变量类型和方程结构，但不能自动解决识别问题。选择方程和结果方程的经济含义、排他性变量的合理性、样本产生过程的解释，仍然是模型可信度的核心。</p>
+</div>
+</div>
+</section>
+<section id="模型解释如何写成实证分析语言" class="level2" data-number="41.10">
+<h2 data-number="41.10" class="anchored" data-anchor-id="模型解释如何写成实证分析语言"><span class="header-section-number">41.10</span> 模型解释：如何写成实证分析语言</h2>
+<p>在贷款利率案例中，结果可以按如下逻辑解释。</p>
+<p>首先，第一阶段 Probit 结果说明哪些因素影响企业进入贷款利率样本。若 <code>bank_access</code> 和 <code>credit_window</code> 显著为正，说明本地银行服务可得性和政银企对接窗口会提高企业获得银行贷款的概率。这一步不是附属回归，而是在刻画样本如何产生。</p>
+<p>其次，第二阶段的结果方程解释贷款利率水平。若 <code>lev</code> 的系数为正，说明杠杆率较高的企业面临更高融资成本；若 <code>profit</code> 的系数为负，说明盈利能力较强的企业获得更低贷款利率。</p>
+<p>再次，IMR 的系数反映选择修正项的重要性。若 IMR 系数显著，说明获得贷款样本不是随机样本，选择过程中的未观测因素与贷款利率方程中的未观测因素相关。若 IMR 系数不显著，则样本选择偏误的证据较弱，但这并不自动证明不存在选择问题。</p>
+<p>最后，应将 OLS 与 Heckman 结果并列报告。若核心系数在两类模型中差异较大，说明选择修正对结论有实质影响；若差异较小，则可以把 Heckman 作为稳健性分析的一部分。</p>
+</section>
+<section id="heckmantobittruncated-regression-和-two-part-model-的区别" class="level2" data-number="41.11">
+<h2 data-number="41.11" class="anchored" data-anchor-id="heckmantobittruncated-regression-和-two-part-model-的区别"><span class="header-section-number">41.11</span> Heckman、Tobit、Truncated regression 和 Two-part model 的区别</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>模型</th>
+<th>观测机制</th>
+<th>典型问题</th>
+<th>关键设定</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Tobit</td>
+<td>潜在结果被删失，边界值仍可观测</td>
+<td>研发投入大量为 0</td>
+<td>一个潜在结果方程</td>
+</tr>
+<tr class="even">
+<td>Truncated regression</td>
+<td>某些样本根本不进入数据</td>
+<td>只观察高收入样本</td>
+<td>截断后的结果方程</td>
+</tr>
+<tr class="odd">
+<td>Two-part model</td>
+<td>是否参与和正值强度分开</td>
+<td>是否捐赠与捐赠金额</td>
+<td>参与方程 + 正值方程</td>
+</tr>
+<tr class="even">
+<td>Heckman selection</td>
+<td>结果变量只在被选择样本中可观测</td>
+<td>只有获得贷款企业有贷款利率</td>
+<td>选择方程 + 结果方程</td>
+</tr>
+</tbody>
+</table>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+避坑指南：Heckman 不是 Tobit 的替代品
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>如果未选择样本的结果变量被记录为 0，问题可能更接近 Tobit 或 Two-part model；如果未选择样本的结果变量根本不可观测，问题才更接近 Heckman selection model。关键不是数据中有没有 0，而是结果变量的观测机制。</p>
+</div>
+</div>
+</section>
+<section id="附录两阶段估计的推导要点" class="level2" data-number="41.12">
+<h2 data-number="41.12" class="anchored" data-anchor-id="附录两阶段估计的推导要点"><span class="header-section-number">41.12</span> 附录：两阶段估计的推导要点</h2>
+<p>第一阶段估计选择概率：</p>
+<p><span class="math display">\[
+P(s_i=1\mid z_i)=\Phi(z_i'\gamma)
+\]</span></p>
+<p>得到 <span class="math inline">\(\hat\gamma\)</span> 后，计算：</p>
+<p><span class="math display">\[
+\hat\lambda_i
+=
+\frac{\phi(z_i'\hat\gamma)}{\Phi(z_i'\hat\gamma)}
+\]</span></p>
+<p>第二阶段在 <span class="math inline">\(s_i=1\)</span> 的样本中估计：</p>
+<p><span class="math display">\[
+y_i
+=
+x_i'\beta
++
+\theta\hat\lambda_i
++
+\varepsilon_i
+\]</span></p>
+<p>若 <span class="math inline">\(\theta=\rho\sigma_u\)</span> 显著不为 0，说明选择方程误差项与结果方程误差项相关。若 <span class="math inline">\(\theta=0\)</span>，则选择修正项不再发挥作用，被选择样本中的 OLS 与 Heckman 修正结果通常会更接近。</p>
+<p>文献中 inverse Mills ratio 有时写成 <span class="math inline">\(\phi(a)/\Phi(a)\)</span>，有时写成 <span class="math inline">\(\phi(a)/(1-\Phi(a))\)</span>。差异主要来自选择事件的方向写法不同。例如，有的作者把选择事件写成 <span class="math inline">\(v_i&gt;-z_i'\gamma\)</span>，有的写成非选择事件。实际使用时，应保持选择事件、公式写法和软件定义一致。</p>
+</section>
+<section id="参考文献" class="level2" data-number="41.13">
+<h2 data-number="41.13" class="anchored" data-anchor-id="参考文献"><span class="header-section-number">41.13</span> 参考文献</h2>
+<ul>
+<li><p>Heckman, J. J. (1979). Sample selection bias as a specification error. Econometrica, 47(1), 153–161. <a href="https://doi.org/10.2307/1912352">Link</a>, <a href="http://sci-hub.ren/10.2307/1912352">PDF</a>, <a href="https://scholar.google.com/scholar?q=Sample+selection+bias+as+a+specification+error">Google</a>.</p></li>
+<li><p>Mroz, T. A. (1987). The sensitivity of an empirical model of married women’s hours of work to economic and statistical assumptions. Econometrica, 55(4), 765–799. <a href="https://doi.org/10.2307/1911029">Link</a>, <a href="http://sci-hub.ren/10.2307/1911029">PDF</a>, <a href="https://scholar.google.com/scholar?q=The+sensitivity+of+an+empirical+model+of+married+women%27s+hours+of+work+to+economic+and+statistical+assumptions">Google</a>.</p></li>
+<li><p>Stiglitz, J. E., &amp; Weiss, A. (1981). Credit rationing in markets with imperfect information. American Economic Review, 71(3), 393–410. <a href="https://www.jstor.org/stable/1802787">Link</a>, <a href="https://academiccommons.columbia.edu/doi/10.7916/D8V12FT1">PDF</a>, <a href="https://scholar.google.com/scholar?q=Credit+rationing+in+markets+with+imperfect+information">Google</a>.</p></li>
+<li><p>Petersen, M. A., &amp; Rajan, R. G. (1994). The benefits of lending relationships: Evidence from small business data. The Journal of Finance, 49(1), 3–37. <a href="https://doi.org/10.1111/j.1540-6261.1994.tb04418.x">Link</a>, <a href="http://sci-hub.ren/10.1111/j.1540-6261.1994.tb04418.x">PDF</a>, <a href="https://scholar.google.com/scholar?q=The+benefits+of+lending+relationships+evidence+from+small+business+data">Google</a>.</p></li>
+<li><p>Vella, F. (1998). Estimating models with sample selection bias: A survey. Journal of Human Resources, 33(1), 127–169. <a href="https://doi.org/10.2307/146317">Link</a>, <a href="http://sci-hub.ren/10.2307/146317">PDF</a>, <a href="https://scholar.google.com/scholar?q=Estimating+models+with+sample+selection+bias+A+survey">Google</a>.</p></li>
+</ul>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const disableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'prefetch';
+    }
+  }
+  const enableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'stylesheet';
+    }
+  }
+  const manageTransitions = (selector, allowTransitions) => {
+    const els = window.document.querySelectorAll(selector);
+    for (let i=0; i < els.length; i++) {
+      const el = els[i];
+      if (allowTransitions) {
+        el.classList.remove('notransition');
+      } else {
+        el.classList.add('notransition');
+      }
+    }
+  }
+  const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+    const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+    const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+    let newTheme = '';
+    if(darkModeDefault) {
+      newTheme = isAlternate ? baseTheme : alternateTheme;
+    } else {
+      newTheme = isAlternate ? alternateTheme : baseTheme;
+    }
+    const changeGiscusTheme = () => {
+      // From: https://github.com/giscus/giscus/issues/336
+      const sendMessage = (message) => {
+        const iframe = document.querySelector('iframe.giscus-frame');
+        if (!iframe) return;
+        iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+      }
+      sendMessage({
+        setConfig: {
+          theme: newTheme
+        }
+      });
+    }
+    const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+    if (isGiscussLoaded) {
+      changeGiscusTheme();
+    }
+  }
+  const toggleColorMode = (alternate) => {
+    // Switch the stylesheets
+    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+    manageTransitions('#quarto-margin-sidebar .nav-link', false);
+    if (alternate) {
+      enableStylesheet(alternateStylesheets);
+      for (const sheetNode of alternateStylesheets) {
+        if (sheetNode.id === "quarto-bootstrap") {
+          toggleBodyColorMode(sheetNode);
+        }
+      }
+    } else {
+      disableStylesheet(alternateStylesheets);
+      toggleBodyColorPrimary();
+    }
+    manageTransitions('#quarto-margin-sidebar .nav-link', true);
+    // Switch the toggles
+    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+    for (let i=0; i < toggles.length; i++) {
+      const toggle = toggles[i];
+      if (toggle) {
+        if (alternate) {
+          toggle.classList.add("alternate");     
+        } else {
+          toggle.classList.remove("alternate");
+        }
+      }
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455)
+    if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+      manageTransitions("body", false);
+      window.scrollTo(0, 1);
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        manageTransitions("body", true);
+      }, 40);  
+    }
+  }
+  const isFileUrl = () => { 
+    return window.location.protocol === 'file:';
+  }
+  const hasAlternateSentinel = () => {  
+    let styleSentinel = getColorSchemeSentinel();
+    if (styleSentinel !== null) {
+      return styleSentinel === "alternate";
+    } else {
+      return false;
+    }
+  }
+  const setStyleSentinel = (alternate) => {
+    const value = alternate ? "alternate" : "default";
+    if (!isFileUrl()) {
+      window.localStorage.setItem("quarto-color-scheme", value);
+    } else {
+      localAlternateSentinel = value;
+    }
+  }
+  const getColorSchemeSentinel = () => {
+    if (!isFileUrl()) {
+      const storageValue = window.localStorage.getItem("quarto-color-scheme");
+      return storageValue != null ? storageValue : localAlternateSentinel;
+    } else {
+      return localAlternateSentinel;
+    }
+  }
+  const darkModeDefault = false;
+  let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+  // Dark / light mode switch
+  window.quartoToggleColorScheme = () => {
+    // Read the current dark / light value 
+    let toAlternate = !hasAlternateSentinel();
+    toggleColorMode(toAlternate);
+    setStyleSentinel(toAlternate);
+    toggleGiscusIfUsed(toAlternate, darkModeDefault);
+  };
+  // Ensure there is a toggle, if there isn't float one in the top right
+  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+    const a = window.document.createElement('a');
+    a.classList.add('top-right');
+    a.classList.add('quarto-color-scheme-toggle');
+    a.href = "";
+    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+    const i = window.document.createElement("i");
+    i.classList.add('bi');
+    a.appendChild(i);
+    window.document.body.appendChild(a);
+  }
+  // Switch to dark mode if need be
+  if (hasAlternateSentinel()) {
+    toggleColorMode(true);
+  } else {
+    toggleColorMode(false);
+  }
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp("https:\/\/lianxhcn\.github\.io\/dsfin\/");
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+          // target, if specified
+          link.setAttribute("target", "_blank");
+          if (link.getAttribute("rel") === null) {
+            link.setAttribute("rel", "noopener");
+          }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../../Lecture/limit_dep_trunc_twopart/05_truncated_twopart_codes.html" class="pagination-link" aria-label="附：Codes .{unnumbered}">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">40</span>&nbsp; <span class="chapter-title">附：Codes .{unnumbered}</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../../Lecture/limit_dep_heckman/06_heckman_codes.html" class="pagination-link" aria-label="附：Codes .{unnumbered}">
+        <span class="nav-page-text"><span class="chapter-number">42</span>&nbsp; <span class="chapter-title">附：Codes .{unnumbered}</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+      &nbsp;
+    </div>   
+    <div class="nav-footer-center">
+<p><a href="https://www.lianxh.cn">lianxh.cn</a></p>
+</div>
+    <div class="nav-footer-right">
+<p>Support: <a href="https://lianxhcn.github.io/quarto_book/">Quarto</a></p>
+</div>
+  </div>
+</footer>
+
+
+
+
+</body></html>
