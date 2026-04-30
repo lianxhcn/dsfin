@@ -102,10 +102,10 @@ book:
         - Lecture/limit_dep_logit/02_b_binary_codes.ipynb
         - Lecture/limit_dep_logit/02_c_binary_case.ipynb
         - Lecture/reg_logit/probability_models.qmd
-        - Lecture/limit_dep_tobit/04_tobit_model_lec.ipynb
-        - Lecture/limit_dep_tobit/04_tobit_model_codes.ipynb
-        - Lecture/limit_dep_trunc_twopart/05_truncated_twopart_lec.ipynb
-        - Lecture/limit_dep_trunc_twopart/05_truncated_twopart_codes.ipynb
+        - Lecture/limit_dep_tobit/04_tobit_model_lec_v7_.ipynb
+        - Lecture/limit_dep_tobit/04_tobit_model_codes_v7.ipynb
+        - Lecture/limit_dep_trunc_twopart/05_truncated_twopart_lec_v4.ipynb
+        - Lecture/limit_dep_trunc_twopart/05_truncated_twopart_codes_v4.ipynb
         - Lecture/limit_dep_heckman/06_heckman_lec.ipynb
         - Lecture/limit_dep_heckman/06_heckman_codes.ipynb
         # - Lecture/limit_dep_tobit-plan/limit_dep_models_lec.qmd
@@ -118,7 +118,13 @@ book:
         - Lecture/method_MLE/MLE_lec.qmd
         - Lecture/method_MLE/MLE_codes.ipynb
         - Lecture/method_MLE/MLE_case.ipynb
-
+  
+    - part: "**机器学习**"
+      chapters:
+        - Lecture/ml_tree/ml_tree_lec.ipynb
+        - Lecture/ml_tree/ml_tree_codes.ipynb
+        - Lecture/ml_SVM/ml_SVM_lec.ipynb
+        - Lecture/ml_SVM/ml_SVM_codes.ipynb
 
     - part: "**文本分析**"
       chapters:

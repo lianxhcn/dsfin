@@ -1,0 +1,2362 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.6.39">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>46&nbsp; 树模型与集成方法 – 金融数据分析与建模</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../Lecture/ml_tree/ml_tree_codes.html" rel="next">
+<link href="../../Lecture/method_MLE/MLE_case.html" rel="prev">
+<link href="../../images/book-logo.png" rel="icon" type="image/png">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-e8fb9d25728d58bfeac61b497e4a6629.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark-57a92833092fd6dc0d7710b6bdfff9c5.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-7ef202e96c563d31d9e5226e4d6cabf9.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark-490ba4e843cb1303a232ed0c676384f2.min.css" rel="prefetch" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../Lecture/ml_tree/ml_tree_lec.html"><strong>机器学习</strong></a></li><li class="breadcrumb-item"><a href="../../Lecture/ml_tree/ml_tree_lec.html"><span class="chapter-number">46</span>&nbsp; <span class="chapter-title">树模型与集成方法</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header sidebar-header-stacked">
+      <a href="https://lianxhcn.github.io/dsfin/" class="sidebar-logo-link">
+      <img src="../../images/book-logo.png" alt="" class="sidebar-logo py-0 d-lg-inline d-none">
+      </a>
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../../">DS Finance</a> 
+        <div class="sidebar-tools-main tools-wide">
+    <a href="https://github.com/lianxhcn/dsfin" title="" class="quarto-navigation-tool px-1" aria-label=""><i class="bi bi-github"></i></a>
+    <a href="https://www.lianxh.cn" title="" class="quarto-navigation-tool px-1" aria-label=""><i class="bi bi-house-fill"></i></a>
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">封面</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/00_intro.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">📚课程资料</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/00_setup.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">📌课件使用指南</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/01_homework.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">🚀作业</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text"><strong>环境配置</strong></span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/00-setup/01_00_coding_with_AI.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">借助 AI 写代码</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/00-setup/01_01_install_anaconda.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Python：安装和环境配置</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/00-setup/01_02_jupyter_notebook.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Jupyter Notebook 的使用</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/00-setup/01_03_install_FAQs.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Python 安装常见问题</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/00-setup/01_04_markdown.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Markdown</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/00-setup/01_06_conda_env.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">虚拟环境管理</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
+ <span class="menu-text"><strong>数据分析</strong></span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/data_get_data/lecture_get_data.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">金融数据获取</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/data_get_data/data_02_get_data_GMD.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">获取数据：GMD</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/data_get_data/data_03_TS_SZ_index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">上证指数的时序特征</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/data_store_structure/lecture_data_management_organization.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">数据管理与组织</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/data_manage/lecture_data_management.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">数据管理：格式、存储与工作流</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/data_clean/lecture_data_clean.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">数据清洗</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true">
+ <span class="menu-text"><strong>可视化</strong></span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/data_visual/graph_01_intro.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Python 可视化：简介</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/data_visual/graph_dis_box_violin.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">箱型图和小提琴图</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/data_visual/graph_dis_histogram.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">直方图</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/data_visual/graph_dis_kdensity.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">核密度函数图</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/data_visual/lec_distribution.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">数据分布：原理与可视化</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/data_visual/lec_distribution_codes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">数据分布：原理与可视化 — 配套代码</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/data_visual/lec_visualization.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">数据可视化：一些基本原则</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true">
+ <span class="menu-text"><strong>数据爬取</strong></span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/crawing/craw_01_introduction.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">网络爬虫简介</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/crawing/craw_02_sec01_lingnan_prompt.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">实例-提示词模式：爬取岭南学院教师名录</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/crawing/craw_02_sec02_lingnan_dialog.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">实例-对话模式：爬取岭南学院教师名录</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true">
+ <span class="menu-text"><strong>线性回归分析</strong></span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/reg_ols/ols_visual_3D.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">二元线性回归的 3D 图示</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="true">
+ <span class="menu-text"><strong>面板模型：固定效应</strong></span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/panel_fe/panel_HDFE.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">HDFE：多维固定效应</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/panel_fe/panel_IntFE.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">交互固定效应模型</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="true">
+ <span class="menu-text"><strong>面板变系数模型</strong></span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/panel_xtplfc/01_Panel_threshold_01_theory.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">静态面板门槛模型：理论与方法</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/panel_xtplfc/02_Panel_threshold_02_codes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">静态面板门槛模型：Stata 实操</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/panel_xtplfc/04_xtplfc的直观解读及xthreg实现.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">变系数模型</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/panel_xtplfc/05_解读xtplfc的原理_样条基函数.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">样条基函数与变系数模型：Stata 实操</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/panel_xtplfc/Du_2021_EE_中文精要.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">30</span>&nbsp; <span class="chapter-title">非线性调节效应怎么做？部分线性函数型面板数据模型</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" role="navigation" aria-expanded="true">
+ <span class="menu-text"><strong>受限因变量</strong></span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-8" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/limit_dep_intro/01_overview_lec.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">31</span>&nbsp; <span class="chapter-title">离散变量和受限因变量：导论</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/limit_dep_intro/01_overview_codes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">32</span>&nbsp; <span class="chapter-title">附：codes</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/limit_dep_logit/02_a_binary_lec.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">33</span>&nbsp; <span class="chapter-title">二元选择模型</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/limit_dep_logit/02_b_binary_codes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">34</span>&nbsp; <span class="chapter-title">附：Codes</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/limit_dep_logit/02_c_binary_case.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">35</span>&nbsp; <span class="chapter-title">案例：上市公司债务违约分析</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/reg_logit/probability_models.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">36</span>&nbsp; <span class="chapter-title">从回归模型到概率模型</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/limit_dep_tobit/04_tobit_model_lec_v7_.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">37</span>&nbsp; <span class="chapter-title">Tobit 模型：潜在净借款需求、边界归并与边际效应</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/limit_dep_tobit/04_tobit_model_codes_v7.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">38</span>&nbsp; <span class="chapter-title">附：Codes</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/limit_dep_trunc_twopart/05_truncated_twopart_lec_v4.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">39</span>&nbsp; <span class="chapter-title">真实零值与自然边界：Two-part、Hurdle、Zero-inflated 与 Fractional response</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/limit_dep_trunc_twopart/05_truncated_twopart_codes_v4.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">40</span>&nbsp; <span class="chapter-title">附：Codes</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/limit_dep_heckman/06_heckman_lec.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">41</span>&nbsp; <span class="chapter-title">Heckman 选择模型</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/limit_dep_heckman/06_heckman_codes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">42</span>&nbsp; <span class="chapter-title">06 Heckman 选择模型：代码与配图</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-9" role="navigation" aria-expanded="true">
+ <span class="menu-text"><strong>估计方法</strong></span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-9" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-9" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/method_MLE/MLE_lec.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">43</span>&nbsp; <span class="chapter-title">最大似然估计 (MLE)</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/method_MLE/MLE_codes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">44</span>&nbsp; <span class="chapter-title">MLE_codes：图形与数据生成</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/method_MLE/MLE_case.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">45</span>&nbsp; <span class="chapter-title">MLE 应用案例</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-10" role="navigation" aria-expanded="true">
+ <span class="menu-text"><strong>机器学习</strong></span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-10" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-10" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/ml_tree/ml_tree_lec.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">46</span>&nbsp; <span class="chapter-title">树模型与集成方法</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/ml_tree/ml_tree_codes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">47</span>&nbsp; <span class="chapter-title">ml_tree_codes</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/ml_SVM/ml_SVM_lec.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">48</span>&nbsp; <span class="chapter-title">支持向量机</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/ml_SVM/ml_SVM_codes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">49</span>&nbsp; <span class="chapter-title">codes for SVM</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-11" role="navigation" aria-expanded="true">
+ <span class="menu-text"><strong>文本分析</strong></span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-11" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-11" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/text_analysis/lecture_text_01_ailn.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">50</span>&nbsp; <span class="chapter-title">金融文本分析（上）——从文本到结构化数据</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/text_analysis/lecture_text_02_ailn.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">51</span>&nbsp; <span class="chapter-title">金融文本分析（下）——情感分析与文本建模</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/text_analysis/lecture_text_analysis_01_claude.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">52</span>&nbsp; <span class="chapter-title">文本数据处理基础</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/text_analysis/lecture_text_analysis_02_claude.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">53</span>&nbsp; <span class="chapter-title">文本分析：情感分析与主题建模</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-12" role="navigation" aria-expanded="true">
+ <span class="menu-text"><strong>附录：Python 提示词</strong></span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-12" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-12" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../appendix_python/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">概览</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../appendix_python/a1_setup.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">A1. 环境配置</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../appendix_python/a2_project.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">A2. 项目规划与版本控制</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../appendix_python/a3_concepts.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">A3. 提示词核心词汇</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../appendix_python/a4_data.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">A4. 数据获取与清洗</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../appendix_python/a5_visualization.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">A5. 数据可视化</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../appendix_python/a6_modeling.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">A6. 统计建模</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../appendix_python/a7_results.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">A7. 结果呈现与表格美化</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../appendix_python/a8_workflow.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">A8. 上下文管理与调试</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#第一部分-从分组均值到决策树建立直觉" id="toc-第一部分-从分组均值到决策树建立直觉" class="nav-link active" data-scroll-target="#第一部分-从分组均值到决策树建立直觉"><span class="header-section-number">46.1</span> 第一部分　从分组均值到决策树：建立直觉</a>
+  <ul class="collapse">
+  <li><a href="#一个朴素的问题分组预测" id="toc-一个朴素的问题分组预测" class="nav-link" data-scroll-target="#一个朴素的问题分组预测"><span class="header-section-number">46.1.1</span> 1.1　一个朴素的问题：分组预测</a></li>
+  <li><a href="#虚拟变量回归你已经在建模了" id="toc-虚拟变量回归你已经在建模了" class="nav-link" data-scroll-target="#虚拟变量回归你已经在建模了"><span class="header-section-number">46.1.2</span> 1.2　虚拟变量回归：你已经在建模了</a></li>
+  <li><a href="#用树的语言重新描述" id="toc-用树的语言重新描述" class="nav-link" data-scroll-target="#用树的语言重新描述"><span class="header-section-number">46.1.3</span> 1.3　用树的语言重新描述</a></li>
+  <li><a href="#为什么不直接用线性回归" id="toc-为什么不直接用线性回归" class="nav-link" data-scroll-target="#为什么不直接用线性回归"><span class="header-section-number">46.1.4</span> 1.4　为什么不直接用线性回归？</a></li>
+  </ul></li>
+  <li><a href="#第二部分-回归树" id="toc-第二部分-回归树" class="nav-link" data-scroll-target="#第二部分-回归树"><span class="header-section-number">46.2</span> 第二部分　回归树</a>
+  <ul class="collapse">
+  <li><a href="#从一刀到多刀递归分割" id="toc-从一刀到多刀递归分割" class="nav-link" data-scroll-target="#从一刀到多刀递归分割"><span class="header-section-number">46.2.1</span> 2.1　从一刀到多刀：递归分割</a></li>
+  <li><a href="#递归二叉分裂" id="toc-递归二叉分裂" class="nav-link" data-scroll-target="#递归二叉分裂"><span class="header-section-number">46.2.2</span> 2.2　递归二叉分裂</a></li>
+  <li><a href="#过拟合与剪枝" id="toc-过拟合与剪枝" class="nav-link" data-scroll-target="#过拟合与剪枝"><span class="header-section-number">46.2.3</span> 2.3　过拟合与剪枝</a></li>
+  <li><a href="#如何解读一棵回归树" id="toc-如何解读一棵回归树" class="nav-link" data-scroll-target="#如何解读一棵回归树"><span class="header-section-number">46.2.4</span> 2.4　如何解读一棵回归树</a></li>
+  </ul></li>
+  <li><a href="#第三部分-分类树" id="toc-第三部分-分类树" class="nav-link" data-scroll-target="#第三部分-分类树"><span class="header-section-number">46.3</span> 第三部分　分类树</a>
+  <ul class="collapse">
+  <li><a href="#从预测数值到预测类别" id="toc-从预测数值到预测类别" class="nav-link" data-scroll-target="#从预测数值到预测类别"><span class="header-section-number">46.3.1</span> 3.1　从预测数值到预测类别</a></li>
+  <li><a href="#分类树的构建与解读" id="toc-分类树的构建与解读" class="nav-link" data-scroll-target="#分类树的构建与解读"><span class="header-section-number">46.3.2</span> 3.2　分类树的构建与解读</a></li>
+  <li><a href="#树与线性模型如何选择" id="toc-树与线性模型如何选择" class="nav-link" data-scroll-target="#树与线性模型如何选择"><span class="header-section-number">46.3.3</span> 3.3　树与线性模型：如何选择？</a></li>
+  <li><a href="#单棵决策树的优缺点" id="toc-单棵决策树的优缺点" class="nav-link" data-scroll-target="#单棵决策树的优缺点"><span class="header-section-number">46.3.4</span> 3.4　单棵决策树的优缺点</a></li>
+  </ul></li>
+  <li><a href="#第四部分-集成方法让树更强" id="toc-第四部分-集成方法让树更强" class="nav-link" data-scroll-target="#第四部分-集成方法让树更强"><span class="header-section-number">46.4</span> 第四部分　集成方法：让树更强</a>
+  <ul class="collapse">
+  <li><a href="#bagging并行投票降低方差" id="toc-bagging并行投票降低方差" class="nav-link" data-scroll-target="#bagging并行投票降低方差"><span class="header-section-number">46.4.1</span> 4.1　Bagging：并行投票降低方差</a></li>
+  <li><a href="#oob-误差无需交叉验证的测试误差估计" id="toc-oob-误差无需交叉验证的测试误差估计" class="nav-link" data-scroll-target="#oob-误差无需交叉验证的测试误差估计"><span class="header-section-number">46.4.2</span> 4.2　OOB 误差：无需交叉验证的测试误差估计</a></li>
+  <li><a href="#变量重要性" id="toc-变量重要性" class="nav-link" data-scroll-target="#变量重要性"><span class="header-section-number">46.4.3</span> 4.3　变量重要性</a></li>
+  <li><a href="#随机森林让树之间更不一样" id="toc-随机森林让树之间更不一样" class="nav-link" data-scroll-target="#随机森林让树之间更不一样"><span class="header-section-number">46.4.4</span> 4.4　随机森林：让树之间更不一样</a></li>
+  <li><a href="#boosting顺序纠错慢学习" id="toc-boosting顺序纠错慢学习" class="nav-link" data-scroll-target="#boosting顺序纠错慢学习"><span class="header-section-number">46.4.5</span> 4.5　Boosting：顺序纠错，慢学习</a></li>
+  <li><a href="#四种方法的横向对比" id="toc-四种方法的横向对比" class="nav-link" data-scroll-target="#四种方法的横向对比"><span class="header-section-number">46.4.6</span> 4.6　四种方法的横向对比</a></li>
+  </ul></li>
+  <li><a href="#第五部分-python-实践" id="toc-第五部分-python-实践" class="nav-link" data-scroll-target="#第五部分-python-实践"><span class="header-section-number">46.5</span> 第五部分　Python 实践</a>
+  <ul class="collapse">
+  <li><a href="#数据准备" id="toc-数据准备" class="nav-link" data-scroll-target="#数据准备"><span class="header-section-number">46.5.1</span> 5.1　数据准备</a></li>
+  <li><a href="#分类树拟合可视化与剪枝" id="toc-分类树拟合可视化与剪枝" class="nav-link" data-scroll-target="#分类树拟合可视化与剪枝"><span class="header-section-number">46.5.2</span> 5.2　分类树：拟合、可视化与剪枝</a></li>
+  <li><a href="#bagging-与随机森林" id="toc-bagging-与随机森林" class="nav-link" data-scroll-target="#bagging-与随机森林"><span class="header-section-number">46.5.3</span> 5.3　Bagging 与随机森林</a></li>
+  <li><a href="#boosting" id="toc-boosting" class="nav-link" data-scroll-target="#boosting"><span class="header-section-number">46.5.4</span> 5.4　Boosting</a></li>
+  </ul></li>
+  <li><a href="#小结" id="toc-小结" class="nav-link" data-scroll-target="#小结"><span class="header-section-number">46.6</span> 小结</a></li>
+  <li><a href="#附录-a-虚拟变量回归与分组均值的等价性" id="toc-附录-a-虚拟变量回归与分组均值的等价性" class="nav-link" data-scroll-target="#附录-a-虚拟变量回归与分组均值的等价性"><span class="header-section-number">46.7</span> 附录 A　虚拟变量回归与分组均值的等价性</a></li>
+  <li><a href="#附录-b-递归二叉分裂算法的伪代码" id="toc-附录-b-递归二叉分裂算法的伪代码" class="nav-link" data-scroll-target="#附录-b-递归二叉分裂算法的伪代码"><span class="header-section-number">46.8</span> 附录 B　递归二叉分裂算法的伪代码</a></li>
+  <li><a href="#附录-c-贝叶斯加法回归树bart简介" id="toc-附录-c-贝叶斯加法回归树bart简介" class="nav-link" data-scroll-target="#附录-c-贝叶斯加法回归树bart简介"><span class="header-section-number">46.9</span> 附录 C　贝叶斯加法回归树（BART）简介</a></li>
+  <li><a href="#参考文献" id="toc-参考文献" class="nav-link" data-scroll-target="#参考文献"><span class="header-section-number">46.10</span> 参考文献</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../Lecture/ml_tree/ml_tree_lec.html"><strong>机器学习</strong></a></li><li class="breadcrumb-item"><a href="../../Lecture/ml_tree/ml_tree_lec.html"><span class="chapter-number">46</span>&nbsp; <span class="chapter-title">树模型与集成方法</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">46</span>&nbsp; <span class="chapter-title">树模型与集成方法</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>本章介绍<strong>基于树的方法</strong>（Tree-Based Methods），这是一类在金融建模中被广泛使用的机器学习工具。与回归模型相比，树模型的特别之处在于它能够自动发现变量之间的非线性关系和交互效应，并且可以同时处理连续变量与分类变量。</p>
+<hr>
+<p><strong>本章使用的数据集</strong></p>
+<p>全章使用同一个数据集：<code>Default</code>，来自 ISLP 包。该数据集模拟 10,000 名信用卡持卡人的违约情况，包含以下变量：</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>变量</th>
+<th>类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>default</code></td>
+<td>二值分类（Yes/No）</td>
+<td>是否违约，本章的主要预测目标</td>
+</tr>
+<tr class="even">
+<td><code>student</code></td>
+<td>二值分类（Yes/No）</td>
+<td>是否为在校学生</td>
+</tr>
+<tr class="odd">
+<td><code>balance</code></td>
+<td>连续变量（美元）</td>
+<td>信用卡月均余额</td>
+</tr>
+<tr class="even">
+<td><code>income</code></td>
+<td>连续变量（美元）</td>
+<td>年收入</td>
+</tr>
+</tbody>
+</table>
+<p>这个数据集结构干净，变量类型齐全（连续变量、二值分类变量、目标分类变量），且背景与信贷风险直接相关，适合从头到尾贯穿本章所有方法。</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="./figs/ml_tree_fig01_data_overview.png" class="img-fluid figure-img" style="width:92.0%"></p>
+<figcaption>数据集概览</figcaption>
+</figure>
+</div>
+<p><strong>图 1</strong> 展示了 <code>Default</code> 数据集中两个连续变量的分布。从左图可以看到，违约用户（橙色）的信用卡余额明显高于未违约用户（蓝色）；右图则显示两组用户的年收入分布高度重叠，说明收入对违约的区分能力相对较弱。这两个特征将在后面的树模型分析中得到定量验证。</p>
+<hr>
+<section id="第一部分-从分组均值到决策树建立直觉" class="level2" data-number="46.1">
+<h2 data-number="46.1" class="anchored" data-anchor-id="第一部分-从分组均值到决策树建立直觉"><span class="header-section-number">46.1</span> 第一部分　从分组均值到决策树：建立直觉</h2>
+<section id="一个朴素的问题分组预测" class="level3" data-number="46.1.1">
+<h3 data-number="46.1.1" class="anchored" data-anchor-id="一个朴素的问题分组预测"><span class="header-section-number">46.1.1</span> 1.1　一个朴素的问题：分组预测</h3>
+<p>在学习任何新方法之前，我们先问一个最简单的问题：<strong>用学生身份（<code>student</code>）来预测信用卡余额（<code>balance</code>），应该怎么做？</strong></p>
+<p>最直接的答案是：把样本按 <code>student</code> 分成两组，分别计算各组的 <code>balance</code> 均值，然后用组均值作为该组所有人的预测值。</p>
+<p><span class="math display">\[
+\hat{y}_i =
+\begin{cases}
+\bar{y}_{\text{非学生}} &amp; \text{若 } \texttt{student}_i = \text{No} \\
+\bar{y}_{\text{学生}}   &amp; \text{若 } \texttt{student}_i = \text{Yes}
+\end{cases}
+\]</span></p>
+<p>在 <code>Default</code> 数据中，计算结果如下：</p>
+<p><span class="math display">\[
+\bar{y}_{\text{非学生}} \approx 803 \text{ 美元}, \qquad
+\bar{y}_{\text{学生}}   \approx 988 \text{ 美元}
+\]</span></p>
+<p>这说明学生群体的信用卡余额平均比非学生高约 185 美元。</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="./figs/ml_tree_fig02_groupmean_bar.png" class="img-fluid figure-img" style="width:92.0%"></p>
+<figcaption>分组均值与虚拟变量回归</figcaption>
+</figure>
+</div>
+<p><strong>图 2（左）</strong> 用条形图和散点抖动展示了两组的 <code>balance</code> 分布与均值。<strong>图 2（右）</strong> 则揭示了一个重要事实：上述分组均值与运行一次虚拟变量 OLS 回归得到的拟合值<strong>完全相同</strong>。</p>
+</section>
+<section id="虚拟变量回归你已经在建模了" class="level3" data-number="46.1.2">
+<h3 data-number="46.1.2" class="anchored" data-anchor-id="虚拟变量回归你已经在建模了"><span class="header-section-number">46.1.2</span> 1.2　虚拟变量回归：你已经在建模了</h3>
+<p>设虚拟变量 <span class="math inline">\(D_i = \mathbf{1}[\texttt{student}_i = \text{Yes}]\)</span>，运行 OLS 回归</p>
+<p><span class="math display">\[
+\texttt{balance}_i = \alpha + \beta \cdot D_i + u_i
+\]</span></p>
+<p>估计结果为</p>
+<p><span class="math display">\[
+\hat{\alpha} \approx 803, \qquad \hat{\beta} \approx 185
+\]</span></p>
+<p>对应的拟合值为</p>
+<p><span class="math display">\[
+\hat{y}_i =
+\begin{cases}
+803  &amp; D_i = 0 \text{（非学生）} \\
+988  &amp; D_i = 1 \text{（学生）}
+\end{cases}
+\]</span></p>
+<p><strong>这与我们直接计算的分组均值完全一致。</strong></p>
+<p>在 Stata 中，这个操作对应：</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode stata code-with-copy"><code class="sourceCode stata"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">reg</span> balance student_bin</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>margins, <span class="fu">at</span>(student_bin=(0 1))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><code>margins</code> 输出的预测值就是各组的条件均值 <span class="math inline">\(E[\texttt{balance} \mid \texttt{student}]\)</span>。</p>
+<p>这个等价性并不是巧合，而是 OLS 的基本性质：<strong>当预测变量只有一个二值虚拟变量时，OLS 拟合值等于各组的样本均值</strong>。（等价性的代数证明见附录 A。）</p>
+</section>
+<section id="用树的语言重新描述" class="level3" data-number="46.1.3">
+<h3 data-number="46.1.3" class="anchored" data-anchor-id="用树的语言重新描述"><span class="header-section-number">46.1.3</span> 1.3　用树的语言重新描述</h3>
+<p>现在，我们把上面的操作用一种新的语言重新描述。</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="./figs/ml_tree_fig03_tree_equiv.png" class="img-fluid figure-img" style="width:92.0%"></p>
+<figcaption>分组均值等价树结构</figcaption>
+</figure>
+</div>
+<p><strong>图 3（右）</strong> 画出了一棵最简单的决策树：</p>
+<ul>
+<li><strong>根节点</strong>（root node）：提出一个问题，这个人是学生吗（<code>student = Yes</code>）？</li>
+<li><strong>分支</strong>（branch）：根据回答分为两条路径，No 走左边，Yes 走右边</li>
+<li><strong>叶节点</strong>（leaf node，也称终节点）：每条路径的终点，给出预测值——803 或 988</li>
+</ul>
+<p>这棵树的叶节点预测值，恰好就是对应分组的 <code>balance</code> 均值。</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+核心认识
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>你刚才做的分组均值计算，本质上就是一棵拥有两个叶节点的决策树。决策树只是提供了一种更系统、更灵活的方式来做这件事——它可以处理多个变量，自动寻找最优的分割边界，以及进行多层嵌套的分割。</p>
+</div>
+</div>
+</section>
+<section id="为什么不直接用线性回归" class="level3" data-number="46.1.4">
+<h3 data-number="46.1.4" class="anchored" data-anchor-id="为什么不直接用线性回归"><span class="header-section-number">46.1.4</span> 1.4　为什么不直接用线性回归？</h3>
+<p>既然分组均值可以用虚拟变量回归实现，为什么还需要树？</p>
+<p>原因在于：<strong>线性回归假设每个变量对结果的影响是独立的、线性叠加的</strong>，而真实世界中的关系往往更复杂。</p>
+<p>考虑一个金融场景：用 <code>balance</code>（信用卡余额）和 <code>student</code>（是否学生）预测违约概率。如果违约风险的规律是：</p>
+<ul>
+<li>学生群体中：余额高于某个阈值才显著影响违约（因为学生收入不稳定，高余额意味着更大压力）</li>
+<li>非学生群体中：余额对违约的影响在较低余额时已经开始显现</li>
+</ul>
+<p>这种分组的非线性效应，线性回归很难准确捕捉，而决策树天然能够处理：它先按 <code>student</code> 分割，在每个子组内再按 <code>balance</code> 的最优阈值继续分割，从而为不同群体找到不同的决策边界。</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="./figs/ml_tree_fig02_linear_tree_boundary.svg" class="img-fluid figure-img" style="width:80.0%"></p>
+<figcaption>RSS 随切分点变化</figcaption>
+</figure>
+</div>
+<p><strong>图：线性分类边界与决策树分类边界的比较。</strong></p>
+<p>图中黄色和绿色区域表示两个类别。上排展示的是一个真实分类边界为线性的情形：左图中，线性模型可以直接用一条直线刻画真实边界；右图中，决策树只能通过平行于坐标轴的水平切分和垂直切分来逼近该边界，因此形成阶梯状的分类结构。</p>
+<p>下排展示的是一个真实分类边界为非线性的情形。左图中，线性模型只能给出一条直线，难以刻画右下方矩形区域对应的类别结构；右图中，决策树通过两个轴平行切分即可较好地表示该非线性边界。这说明，决策树并不依赖线性函数形式，而是通过递归划分特征空间来形成分类规则。其优势在于能够捕捉局部、非线性和交互型的分类模式；但在真实边界接近线性时，简单线性模型反而可能更简洁、更平滑，也更容易解释。</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+条件期望与分组预测
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>设 <span class="math inline">\(D\)</span> 为二值变量。对 <span class="math inline">\(Y\)</span> 的最优预测（在均方误差意义下）是条件期望 <span class="math inline">\(E[Y \mid D]\)</span>。</p>
+<p>当 <span class="math inline">\(D = 0\)</span> 时，最优预测是 <span class="math inline">\(E[Y \mid D = 0]\)</span>；当 <span class="math inline">\(D = 1\)</span> 时，最优预测是 <span class="math inline">\(E[Y \mid D = 1]\)</span>。</p>
+<p>在实践中，总体条件期望 <span class="math inline">\(E[Y \mid D]\)</span> 不可知，我们用样本条件均值 <span class="math inline">\(\bar{Y}_{D=0}\)</span> 和 <span class="math inline">\(\bar{Y}_{D=1}\)</span> 来估计它。这正是分组均值预测的理论基础，也是决策树叶节点预测值的统计含义。</p>
+</div>
+</div>
+<hr>
+</section>
+</section>
+<section id="第二部分-回归树" class="level2" data-number="46.2">
+<h2 data-number="46.2" class="anchored" data-anchor-id="第二部分-回归树"><span class="header-section-number">46.2</span> 第二部分　回归树</h2>
+<section id="从一刀到多刀递归分割" class="level3" data-number="46.2.1">
+<h3 data-number="46.2.1" class="anchored" data-anchor-id="从一刀到多刀递归分割"><span class="header-section-number">46.2.1</span> 2.1　从一刀到多刀：递归分割</h3>
+<p>上一部分的例子只使用了一个二值变量，做了一次分割。真实的决策树可以使用多个变量，做多次分割，形成更精细的区域划分。</p>
+<p><strong>建立回归树的两个步骤：</strong></p>
+<ol type="1">
+<li>将特征空间（所有自变量的可能取值范围）划分为 <span class="math inline">\(J\)</span> 个不重叠的矩形区域 <span class="math inline">\(R_1, R_2, \ldots, R_J\)</span></li>
+<li>对落入区域 <span class="math inline">\(R_j\)</span> 的每个观测值，用该区域内所有训练样本的响应变量均值作为预测值： <span class="math display">\[
+\hat{y}_i = \bar{y}_{R_j} = \frac{1}{|R_j|} \sum_{i \in R_j} y_i
+\]</span></li>
+</ol>
+<p><strong>问题的关键在于第一步</strong>：如何找到合适的区域划分方案？</p>
+<p>原则上，我们希望找到使训练集 RSS（残差平方和）最小的划分方式：</p>
+<p><span class="math display">\[
+\text{RSS} = \sum_{j=1}^{J} \sum_{i \in R_j} (y_i - \bar{y}_{R_j})^2 \tag{2.1}
+\]</span></p>
+<p>遗憾的是，对所有可能的矩形划分方案进行穷举是计算上不可行的。因此，我们采用一种近似的贪心算法：<strong>递归二叉分裂</strong>（Recursive Binary Splitting）。</p>
+</section>
+<section id="递归二叉分裂" class="level3" data-number="46.2.2">
+<h3 data-number="46.2.2" class="anchored" data-anchor-id="递归二叉分裂"><span class="header-section-number">46.2.2</span> 2.2　递归二叉分裂</h3>
+<p>递归二叉分裂有两个关键特征：</p>
+<ul>
+<li><strong>自顶向下</strong>（top-down）：从全部样本构成的单一区域开始，逐步向下分割</li>
+<li><strong>贪心</strong>（greedy）：每一步只寻找当前最优分割，不考虑未来的影响</li>
+</ul>
+<p><strong>第一次分割</strong>：遍历所有预测变量 <span class="math inline">\(X_1, X_2, \ldots, X_p\)</span> 及其所有可能的切分点 <span class="math inline">\(s\)</span>，选择使下式最小的变量 <span class="math inline">\(X_j\)</span> 和切分值 <span class="math inline">\(s\)</span>：</p>
+<p><span class="math display">\[
+\sum_{i: x_i \in R_1(j,s)} (y_i - \bar{y}_{R_1})^2
++
+\sum_{i: x_i \in R_2(j,s)} (y_i - \bar{y}_{R_2})^2 \tag{2.2}
+\]</span></p>
+<p>其中 <span class="math inline">\(R_1(j,s) = \{X \mid X_j &lt; s\}\)</span>，<span class="math inline">\(R_2(j,s) = \{X \mid X_j \geq s\}\)</span>。</p>
+<p>直觉上：对每一个预测变量，想象用一把刀将样本切成两半；公式 (2.2) 衡量切完之后两组的内部离散程度之和。我们选择使内部离散程度最小的那把切法。</p>
+<p><strong>后续分割</strong>：在已有的区域中，选择一个区域继续按上述方法切分，直到满足停止条件（例如，每个叶节点至少包含 5 个样本）。</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="./figs/ml_tree_fig05_rss_split.png" class="img-fluid figure-img" style="width:80.0%"></p>
+<figcaption>RSS 随切分点变化</figcaption>
+</figure>
+</div>
+<p><strong>图 5</strong> 以 <code>balance</code> 预测 <code>income</code> 为例，展示了不同切分点对应的 RSS 值。曲线的最低点就是最优切分点 <span class="math inline">\(s^*\)</span>，递归二叉分裂算法自动寻找并选择这个点。</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="./figs/ml_tree_fig04_reg_tree_partition.png" class="img-fluid figure-img" style="width:95.0%"></p>
+<figcaption>回归树分割区域与树结构</figcaption>
+</figure>
+</div>
+<p><strong>图 4</strong> 以 <code>balance</code> 和 <code>income</code> 预测 <code>default_bin</code>（违约概率）为例，展示了深度为 3 的回归树的效果。</p>
+<ul>
+<li><strong>左图</strong>：特征空间被分割成若干矩形区域，不同深浅的颜色对应不同的预测值（违约概率）</li>
+<li><strong>右图</strong>：对应的树结构，从根节点出发，依次用 <code>balance</code> 和 <code>income</code> 的阈值进行分割</li>
+</ul>
+<p>注意树模型的分割线始终是<strong>平行于坐标轴的直线</strong>，这是递归二叉分裂的几何含义。</p>
+</section>
+<section id="过拟合与剪枝" class="level3" data-number="46.2.3">
+<h3 data-number="46.2.3" class="anchored" data-anchor-id="过拟合与剪枝"><span class="header-section-number">46.2.3</span> 2.3　过拟合与剪枝</h3>
+<p>递归二叉分裂如果不加限制，会持续分割直到每个叶节点只包含极少数样本。这样的树在训练集上表现完美，但对新数据的预测效果很差——这就是<strong>过拟合</strong>（overfitting）。</p>
+<p>一个小树（叶节点少）可能偏差较大，但方差小；一个大树（叶节点多）方差大，但训练集偏差小。我们需要在二者之间找到平衡。</p>
+<p><strong>剪枝的策略</strong>：不是一开始就限制树的生长，而是先长出一棵大树 <span class="math inline">\(T_0\)</span>，再用<strong>代价复杂度剪枝</strong>（Cost Complexity Pruning，也叫弱链接剪枝）将其修剪为更小的子树。</p>
+<p>对于给定的调节参数 <span class="math inline">\(\alpha \geq 0\)</span>，我们寻找子树 <span class="math inline">\(T \subset T_0\)</span> 使下式最小：</p>
+<p><span class="math display">\[
+\sum_{m=1}^{|T|} \sum_{i: x_i \in R_m} (y_i - \bar{y}_{R_m})^2 + \alpha |T| \tag{2.3}
+\]</span></p>
+<p>其中 <span class="math inline">\(|T|\)</span> 是子树 <span class="math inline">\(T\)</span> 的叶节点数量。</p>
+<p>公式 (2.3) 的逻辑与 Lasso 类似：右侧第一项是训练集 RSS，第二项是对叶节点数量的惩罚。<span class="math inline">\(\alpha\)</span> 越大，对复杂树的惩罚越重，得到的子树越小。通过交叉验证选择最优的 <span class="math inline">\(\alpha\)</span>，即可得到泛化能力最好的剪枝树。</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+代价复杂度剪枝与 Lasso 的类比
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>公式 (2.3) 与 Lasso 的目标函数形式上高度相似：</p>
+<p><span class="math display">\[
+\underbrace{\text{训练集 RSS}}_{\text{拟合质量}} + \alpha \underbrace{|T|}_{\text{复杂度惩罚}}
+\]</span></p>
+<p>在 Lasso 中，惩罚项是回归系数的 <span class="math inline">\(L_1\)</span> 范数；在树的剪枝中，惩罚项是叶节点的数量。两者都通过调节参数 <span class="math inline">\(\alpha\)</span>（Lasso 中通常记为 <span class="math inline">\(\lambda\)</span>）来控制模型复杂度，都需要交叉验证来选择最优参数值。</p>
+</div>
+</div>
+<p><strong>建立回归树的完整算法</strong>如下：</p>
+<ol type="1">
+<li>用递归二叉分裂在训练数据上生长一棵大树 <span class="math inline">\(T_0\)</span>，停止条件为每个叶节点样本数少于某个阈值（如 5）</li>
+<li>对不同的 <span class="math inline">\(\alpha\)</span> 值，应用代价复杂度剪枝，得到一系列子树</li>
+<li>用 <span class="math inline">\(K\)</span> 折交叉验证选择最优 <span class="math inline">\(\alpha\)</span>：对每个 <span class="math inline">\(\alpha\)</span>，计算验证集上的平均 MSE</li>
+<li>返回对应最优 <span class="math inline">\(\alpha\)</span> 的剪枝树</li>
+</ol>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="./figs/ml_tree_fig06_pruning_cv.png" class="img-fluid figure-img" style="width:80.0%"></p>
+<figcaption>剪枝：训练/CV/测试误差</figcaption>
+</figure>
+</div>
+<p><strong>图 6</strong> 展示了随着叶节点数量增加，训练误差（黑色）单调下降，而交叉验证误差（绿色）和测试误差（橙色）则呈现先下降后上升的 U 形曲线。绿色虚线标出了 CV 误差最低点对应的最优树大小，这是我们选择最终模型的依据。</p>
+</section>
+<section id="如何解读一棵回归树" class="level3" data-number="46.2.4">
+<h3 data-number="46.2.4" class="anchored" data-anchor-id="如何解读一棵回归树"><span class="header-section-number">46.2.4</span> 2.4　如何解读一棵回归树</h3>
+<p>以图 4 右图的树结构为例，解读方法如下：</p>
+<ul>
+<li><strong>树的顶部（根节点）</strong> 是最重要的分割变量。在本例中为 <code>balance</code>，说明信用卡余额是预测违约概率最关键的特征</li>
+<li><strong>内部节点</strong>（internal node）：每个菱形框代表一个判断条件，例如 <code>balance ≤ 1729</code></li>
+<li><strong>叶节点</strong>（leaf node）：每个矩形框是最终的预测区域，给出该区域内的预测值（违约概率的均值）</li>
+<li><strong>如何使用</strong>：对一个新观测，从根节点开始，根据条件判断走向左分支（条件为真）或右分支（条件为假），直到到达叶节点，叶节点的值即为预测结果</li>
+</ul>
+<hr>
+</section>
+</section>
+<section id="第三部分-分类树" class="level2" data-number="46.3">
+<h2 data-number="46.3" class="anchored" data-anchor-id="第三部分-分类树"><span class="header-section-number">46.3</span> 第三部分　分类树</h2>
+<section id="从预测数值到预测类别" class="level3" data-number="46.3.1">
+<h3 data-number="46.3.1" class="anchored" data-anchor-id="从预测数值到预测类别"><span class="header-section-number">46.3.1</span> 3.1　从预测数值到预测类别</h3>
+<p>本章最重要的应用场景是<strong>分类问题</strong>：预测信用卡用户是否会违约（<code>default</code>：Yes 或 No）。</p>
+<p>分类树与回归树的结构完全相同——都是递归二叉分裂，都有根节点、内部节点和叶节点。区别在于：</p>
+<ul>
+<li><strong>叶节点的输出</strong>：回归树输出均值；分类树输出该叶节点中<strong>出现最多的类别</strong>（多数投票）</li>
+<li><strong>分裂准则</strong>：回归树最小化 RSS；分类树需要一种衡量<strong>节点纯度</strong>（node purity）的度量</li>
+</ul>
+<p>所谓节点纯度，是指一个节点里的样本是否主要属于同一类别。一个纯净的节点让我们对预测有信心；一个混杂的节点则意味着不确定性高。</p>
+<p>分类误差率看似是自然的纯度度量——</p>
+<p><span class="math display">\[
+E = 1 - \max_k(\hat{p}_{mk}) \tag{3.1}
+\]</span></p>
+<p>其中 <span class="math inline">\(\hat{p}_{mk}\)</span> 是第 <span class="math inline">\(m\)</span> 个节点中第 <span class="math inline">\(k\)</span> 类样本的比例。但实践中发现，分类误差率对节点纯度的变化<strong>不够敏感</strong>，建树时通常使用以下两种更好的度量。</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+【概念】什么是纯度？用抛硬币理解不确定性
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>想象一个节点里有 100 个样本。</p>
+<ul>
+<li><strong>情形 A</strong>：99 人未违约，1 人违约。这个节点非常纯净——我们几乎可以确定这里的样本都是未违约的。</li>
+<li><strong>情形 B</strong>：50 人未违约，50 人违约。这个节点极不纯净——预测哪一类都有 50% 的机会犯错，就像抛一枚公平硬币。</li>
+</ul>
+<p>我们希望每次分裂后，产生的两个子节点尽量接近情形 A，而不是情形 B。这就是最大化纯度增益的直觉含义。</p>
+<p>纯度的数学度量，需要一个函数 <span class="math inline">\(f(p)\)</span>，满足：当 <span class="math inline">\(p \to 0\)</span> 或 <span class="math inline">\(p \to 1\)</span> 时 <span class="math inline">\(f(p) \to 0\)</span>（节点纯净），当 <span class="math inline">\(p = 0.5\)</span> 时 <span class="math inline">\(f(p)\)</span> 取最大值（节点最混杂）。</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+【概念】熵的公式与数值含义
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>对于二分类问题（以 <span class="math inline">\(K=2\)</span> 为例），节点 <span class="math inline">\(m\)</span> 中违约比例为 <span class="math inline">\(p\)</span>，未违约比例为 <span class="math inline">\(1-p\)</span>。<strong>熵</strong>（Entropy）定义为：</p>
+<p><span class="math display">\[
+D = -p \log_2 p - (1-p) \log_2(1-p) \tag{3.2}
+\]</span></p>
+<p>（对 <span class="math inline">\(K\)</span> 个类别的一般形式为 <span class="math inline">\(D = -\sum_{k=1}^{K} \hat{p}_{mk} \log \hat{p}_{mk}\)</span>）</p>
+<p>理解以下三个数值：</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th style="text-align: center;">节点内违约比例 <span class="math inline">\(p\)</span></th>
+<th style="text-align: center;">熵值 <span class="math inline">\(D\)</span></th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">0 或 1</td>
+<td style="text-align: center;">0</td>
+<td>节点完全纯净，预测没有不确定性</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">0.5</td>
+<td style="text-align: center;">1（以 <span class="math inline">\(\log_2\)</span> 计）</td>
+<td>节点最混杂，预测完全不确定</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">0.9</td>
+<td style="text-align: center;">≈ 0.47</td>
+<td>节点较纯净，但仍有一定不确定性</td>
+</tr>
+</tbody>
+</table>
+<p><strong>直觉</strong>：<span class="math inline">\(p \log_2 p\)</span> 这一项的绝对值，衡量的是「知道某个样本属于某类」所能减少的不确定性。当 <span class="math inline">\(p = 0\)</span> 时，该类根本不存在，贡献为 0；当 <span class="math inline">\(p = 1\)</span> 时，所有样本都属于该类，知道这件事不能减少任何不确定性，贡献也为 0；中间状态的贡献最大，因此熵在 <span class="math inline">\(p = 0.5\)</span> 处取得最大值。</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+【概念】基尼指数：熵的近似替代
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>基尼指数</strong>（Gini Index）是另一种常用的节点纯度度量，定义为：</p>
+<p><span class="math display">\[
+G = \sum_{k=1}^{K} \hat{p}_{mk}(1 - \hat{p}_{mk}) \tag{3.3}
+\]</span></p>
+<p>对二分类：<span class="math inline">\(G = 2p(1-p)\)</span>，在 <span class="math inline">\(p=0.5\)</span> 时取最大值 0.5，在 <span class="math inline">\(p=0\)</span> 或 <span class="math inline">\(p=1\)</span> 时为 0。</p>
+<p>基尼指数与熵在数值上非常接近（图 8 将直观展示这一点），两者在实践中的表现也基本相同。<code>sklearn</code> 默认使用基尼指数，原因是它不涉及对数运算，计算稍快。</p>
+<p><strong>记忆口诀</strong>：基尼指数 = 随机抽两个样本，它们类别不同的概率；节点越纯，这个概率越低，基尼指数越小。</p>
+</div>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="./figs/ml_tree_fig08_entropy_gini.png" class="img-fluid figure-img" style="width:95.0%"></p>
+<figcaption>熵、基尼指数与分类误差率</figcaption>
+</figure>
+</div>
+<p><strong>图 8</strong> 展示了三种纯度度量随违约比例 <span class="math inline">\(p\)</span> 的变化：</p>
+<ul>
+<li>三种度量在 <span class="math inline">\(p=0\)</span> 和 <span class="math inline">\(p=1\)</span> 时均为 0（节点纯净），在 <span class="math inline">\(p=0.5\)</span> 时取最大值（节点最混杂）</li>
+<li>右图归一化后可以看到，熵的曲线比基尼指数略高（对中间状态的惩罚更重），而分类误差率是分段线性的，在两端变化迟钝</li>
+<li>这解释了为什么分类误差率不适合用作建树准则：它对纯度的细微变化不敏感，有时一次真正提高了纯度的分裂，分类误差率却不变化</li>
+</ul>
+</section>
+<section id="分类树的构建与解读" class="level3" data-number="46.3.2">
+<h3 data-number="46.3.2" class="anchored" data-anchor-id="分类树的构建与解读"><span class="header-section-number">46.3.2</span> 3.2　分类树的构建与解读</h3>
+<p>用 <code>balance</code>、<code>income</code> 和 <code>student</code> 三个变量预测 <code>default</code>，图 7 展示了深度为 3 的分类树的结果。</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="./figs/ml_tree_fig07_cls_tree_partition.png" class="img-fluid figure-img" style="width:95.0%"></p>
+<figcaption>分类树：特征空间分割与树结构</figcaption>
+</figure>
+</div>
+<p><strong>图 7（左）</strong>：<code>balance</code>-<code>income</code> 平面被分割成不同预测区域，蓝色区域预测为未违约，橙色区域预测为违约。可以看到，高余额区域几乎全部被预测为违约，与图 1 的描述统计结论一致。</p>
+<p><strong>图 7（右）</strong>：对应的树结构。树的根节点是 <code>balance</code> 的一个阈值——这与我们在回归树中的发现一致：<code>balance</code> 是最重要的预测变量。每个叶节点中标出了该区域内的多数类别（未违约或违约）以及样本分布情况。</p>
+</section>
+<section id="树与线性模型如何选择" class="level3" data-number="46.3.3">
+<h3 data-number="46.3.3" class="anchored" data-anchor-id="树与线性模型如何选择"><span class="header-section-number">46.3.3</span> 3.3　树与线性模型：如何选择？</h3>
+<p>分类树和 Logistic 回归（线性分类器）的核心差别可以用一句话概括：<strong>线性模型假设决策边界是线性的，树模型假设决策边界是平行于坐标轴的阶梯形</strong>。</p>
+<p><strong>什么时候树更好？</strong> - 变量之间存在复杂的非线性交互效应 - 数据中有多个类别变量，且各类别的效应差异大 - 可解释性要求高，需要向非技术受众解释模型逻辑</p>
+<p><strong>什么时候线性模型更好？</strong> - 因变量与自变量之间近似线性关系 - 样本量相对于变量数量不够大（树容易过拟合） - 需要估计边际效应的置信区间</p>
+<p>在实践中，两类方法往往并用：先用线性模型建立基准，再用树模型探索非线性结构，两者结果相互印证。</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="./figs/ml_tree_fig02_linear_tree_boundary.svg" class="img-fluid figure-img" style="width:80.0%"></p>
+<figcaption>线性分类边界与决策树分类边界的比较</figcaption>
+</figure>
+</div>
+</section>
+<section id="单棵决策树的优缺点" class="level3" data-number="46.3.4">
+<h3 data-number="46.3.4" class="anchored" data-anchor-id="单棵决策树的优缺点"><span class="header-section-number">46.3.4</span> 3.4　单棵决策树的优缺点</h3>
+<p><strong>优点</strong></p>
+<ul>
+<li>结果可以用树状图直观展示，容易向非技术人员解释</li>
+<li>天然处理连续变量和分类变量，无需创建哑变量或标准化</li>
+<li>能够自动捕捉非线性关系和变量交互效应</li>
+<li>对异常值和缺失值相对不敏感</li>
+</ul>
+<p><strong>缺点</strong></p>
+<ul>
+<li>预测精度通常低于更复杂的方法</li>
+<li>高度不稳定：训练数据的微小变动可能导致树结构大幅改变（高方差）</li>
+<li>对数值型变量的分割是离散的阶梯，可能遗漏连续变化的信号</li>
+</ul>
+<p>单棵决策树的高方差问题，正是下一部分要介绍的<strong>集成方法</strong>要解决的核心问题。</p>
+<hr>
+</section>
+</section>
+<section id="第四部分-集成方法让树更强" class="level2" data-number="46.4">
+<h2 data-number="46.4" class="anchored" data-anchor-id="第四部分-集成方法让树更强"><span class="header-section-number">46.4</span> 第四部分　集成方法：让树更强</h2>
+<p><strong>集成方法</strong>（Ensemble Methods）的核心思想是：将许多个较弱的预测模型组合起来，得到一个更强的预测模型。这里的弱学习器（weak learner）是指单独使用时预测精度一般的模型——决策树正是这样的弱学习器。</p>
+<p>我们将依次介绍四种集成方法：Bagging、随机森林、Boosting 和 BART。它们的共同出发点都是第三部分末尾提到的问题：单棵决策树方差太高，如何降低它？</p>
+<section id="bagging并行投票降低方差" class="level3" data-number="46.4.1">
+<h3 data-number="46.4.1" class="anchored" data-anchor-id="bagging并行投票降低方差"><span class="header-section-number">46.4.1</span> 4.1　Bagging：并行投票降低方差</h3>
+<p><strong>直觉</strong>：回忆统计学的一个基本事实——<span class="math inline">\(n\)</span> 个独立、同分布、方差为 <span class="math inline">\(\sigma^2\)</span> 的随机变量，其均值的方差是 <span class="math inline">\(\sigma^2/n\)</span>。<strong>平均多个预测结果，可以降低方差</strong>，而不增加偏差。</p>
+<p>问题是：我们只有一份训练数据，无法真正训练 <span class="math inline">\(B\)</span> 棵独立的树。</p>
+<p><strong>自助聚合（Bootstrap Aggregating，Bagging）</strong> 的解决方案是：用<strong>自助抽样</strong>（bootstrap）模拟多份训练数据。具体步骤为：</p>
+<ol type="1">
+<li>从原始训练集（共 <span class="math inline">\(n\)</span> 个样本）中<strong>有放回地</strong>随机抽取 <span class="math inline">\(n\)</span> 个样本，得到第 <span class="math inline">\(b\)</span> 个自助训练集</li>
+<li>在该自助训练集上训练一棵完整的（不剪枝的）决策树 <span class="math inline">\(\hat{f}^{*b}(x)\)</span></li>
+<li>重复步骤 1-2 共 <span class="math inline">\(B\)</span> 次，得到 <span class="math inline">\(B\)</span> 棵树</li>
+<li>将 <span class="math inline">\(B\)</span> 棵树的预测结果聚合：
+<ul>
+<li>回归：取均值 <span class="math inline">\(\hat{f}_{\text{bag}}(x) = \frac{1}{B} \sum_{b=1}^{B} \hat{f}^{*b}(x)\)</span></li>
+<li>分类：取<strong>多数投票</strong>（majority vote），即选择 <span class="math inline">\(B\)</span> 棵树中预测最多的类别</li>
+</ul></li>
+</ol>
+<p>Bagging 的每棵树都是深度充分的（高方差、低偏差），平均后方差大幅降低，而偏差基本不变。</p>
+</section>
+<section id="oob-误差无需交叉验证的测试误差估计" class="level3" data-number="46.4.2">
+<h3 data-number="46.4.2" class="anchored" data-anchor-id="oob-误差无需交叉验证的测试误差估计"><span class="header-section-number">46.4.2</span> 4.2　OOB 误差：无需交叉验证的测试误差估计</h3>
+<p>Bagging 有一个附赠的好处：可以<strong>不需要单独的测试集或交叉验证</strong>来估计泛化误差。</p>
+<p>在有放回抽样中，可以证明每份自助训练集平均只包含约 63.2% 的原始样本（约 <span class="math inline">\(1 - e^{-1}\)</span>），剩余约 36.8% 的样本没有被该棵树使用，称为<strong>袋外样本（Out-of-Bag，OOB）</strong>。</p>
+<p>对每个原始样本 <span class="math inline">\(i\)</span>，用所有<strong>未将其包含在训练集中</strong>的树来预测它，聚合这些预测得到该样本的 OOB 预测值。在全部 <span class="math inline">\(n\)</span> 个样本上计算 OOB 预测的误差，即得到 <strong>OOB 误差</strong>，它是测试误差的无偏估计。</p>
+<p>当 <span class="math inline">\(B\)</span> 足够大时，OOB 误差在数值上等价于留一交叉验证（LOOCV）误差，但计算成本低得多。</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="./figs/ml_tree_fig09_bagging_oob.png" class="img-fluid figure-img" style="width:82.0%"></p>
+<figcaption>Bagging：测试误差与OOB误差</figcaption>
+</figure>
+</div>
+<p><strong>图 9</strong> 展示了 Bagging 在 <code>Default</code> 数据集上的表现。随着树的数量增加，测试误差（实线）和 OOB 误差（虚线）迅速下降并趋于稳定，两条曲线的轨迹高度吻合，验证了 OOB 误差作为测试误差估计的有效性。灰色虚线是单棵决策树的测试误差基线——Bagging 明显优于单棵树。</p>
+<p>一个重要的结论：<strong>增大 <span class="math inline">\(B\)</span> 不会导致 Bagging 过拟合</strong>，只要计算资源允许，树的数量越多越好（误差趋于平稳后再增加也无妨）。</p>
+</section>
+<section id="变量重要性" class="level3" data-number="46.4.3">
+<h3 data-number="46.4.3" class="anchored" data-anchor-id="变量重要性"><span class="header-section-number">46.4.3</span> 4.3　变量重要性</h3>
+<p>Bagging 有一个代价：聚合了数百棵树之后，模型不再像单棵树那样可以直接用图形展示和解读。</p>
+<p>一种补偿方法是计算<strong>变量重要性</strong>（Variable Importance）：对每个预测变量，统计它在所有 <span class="math inline">\(B\)</span> 棵树中、所有分裂步骤上，导致 RSS（回归）或 Gini 指数（分类）下降的总量，取平均值。这个值越大，说明该变量对预测越重要。</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="./figs/ml_tree_fig11_var_importance.png" class="img-fluid figure-img" style="width:75.0%"></p>
+<figcaption>变量重要性</figcaption>
+</figure>
+</div>
+<p><strong>图 11</strong> 展示了随机森林在 <code>Default</code> 数据集上的变量重要性排名。<code>balance</code> 以压倒性优势排名第一，这与图 1 的描述统计和图 4-7 的树结构分析完全一致。<code>income</code> 居第二位，<code>student</code> 身份的重要性相对较低。</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+【金融应用】变量重要性与监管解释性要求
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>在金融风控建模中，监管机构（如银行业监管部门）通常要求模型具有可解释性——模型做出的决策必须能够向客户和监管者说明原因。变量重要性图提供了一种简洁的解释方式：哪些特征驱动了风险判断，各自贡献了多少。</p>
+<p>值得注意的是，变量重要性衡量的是<strong>预测贡献</strong>，而非<strong>因果关系</strong>。<code>balance</code> 重要，是因为高余额与违约高度相关，但这并不意味着降低余额就能降低违约风险（还需要考虑收入、还款能力等因素）。在向监管者解释时，应明确区分预测性解释和因果性解释。</p>
+</div>
+</div>
+</section>
+<section id="随机森林让树之间更不一样" class="level3" data-number="46.4.4">
+<h3 data-number="46.4.4" class="anchored" data-anchor-id="随机森林让树之间更不一样"><span class="header-section-number">46.4.4</span> 4.4　随机森林：让树之间更不一样</h3>
+<p>Bagging 有一个潜在问题。如果训练集中有一个非常强的预测变量（如本例中的 <code>balance</code>），那么几乎每棵自助树都会在根节点使用这个变量进行分割，导致所有树的结构高度相似，预测结果高度相关。</p>
+<p><strong>相关预测的平均，降低方差的效果有限</strong>。极端情形：<span class="math inline">\(B\)</span> 个相关系数为 <span class="math inline">\(\rho\)</span> 的预测，其均值的方差为 <span class="math display">\[
+\rho \sigma^2 + \frac{1-\rho}{B} \sigma^2
+\]</span> 当 <span class="math inline">\(\rho\)</span> 接近 1 时，无论 <span class="math inline">\(B\)</span> 多大，方差都难以降低到 <span class="math inline">\(\rho \sigma^2\)</span> 以下。</p>
+<p><strong>随机森林</strong>（Random Forests）通过一个简单的修改来<strong>去相关</strong>（decorrelate）各棵树：在每次分裂时，不是考虑全部 <span class="math inline">\(p\)</span> 个特征，而是从 <span class="math inline">\(p\)</span> 个特征中<strong>随机选取 <span class="math inline">\(m\)</span> 个</strong>作为候选分裂变量，分裂只能从这 <span class="math inline">\(m\)</span> 个中选择最优的。</p>
+<p><span class="math display">\[
+\text{随机森林参数：} \quad m \approx \sqrt{p} \quad (\text{分类}) \quad \text{或} \quad m \approx p/3 \quad (\text{回归})
+\]</span></p>
+<p>这样，即使存在一个很强的变量，它也只能在 <span class="math inline">\(m/p\)</span> 的分裂中被选中，其他变量有更多机会参与。各棵树之间的相关性降低，平均后方差减小更明显。</p>
+<p>当 <span class="math inline">\(m = p\)</span> 时，随机森林退化为 Bagging。</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="./figs/ml_tree_fig10_rf_vs_bag.png" class="img-fluid figure-img" style="width:82.0%"></p>
+<figcaption>随机森林 vs Bagging</figcaption>
+</figure>
+</div>
+<p><strong>图 10</strong> 对比了 Bagging 和随机森林在 <code>Default</code> 数据集上的测试误差。随机森林（<span class="math inline">\(m = \sqrt{p}\)</span>）的测试误差略低于 Bagging（<span class="math inline">\(m = p\)</span>），体现了去相关的效果。在特征数量 <span class="math inline">\(p\)</span> 更大、存在多个强相关特征时，两者之间的差距通常更为显著。</p>
+</section>
+<section id="boosting顺序纠错慢学习" class="level3" data-number="46.4.5">
+<h3 data-number="46.4.5" class="anchored" data-anchor-id="boosting顺序纠错慢学习"><span class="header-section-number">46.4.5</span> 4.5　Boosting：顺序纠错，慢学习</h3>
+<p>Bagging 和随机森林的各棵树是<strong>并行且独立</strong>生长的。Boosting 则完全不同：树是<strong>顺序生长</strong>的，每棵新树专门修正上一轮的错误。</p>
+<p><strong>Boosting 回归树的算法</strong>（Algorithm 4.1）：</p>
+<ol type="1">
+<li>初始化：令 <span class="math inline">\(\hat{f}(x) = 0\)</span>，对每个训练样本令残差 <span class="math inline">\(r_i = y_i\)</span></li>
+<li>对 <span class="math inline">\(b = 1, 2, \ldots, B\)</span>，重复：
+<ul>
+<li><ol type="a">
+<li>用 <span class="math inline">\(d\)</span> 个分裂（<span class="math inline">\(d+1\)</span> 个叶节点）的决策树 <span class="math inline">\(\hat{f}^b\)</span> 拟合当前残差 <span class="math inline">\((X, r)\)</span></li>
+</ol></li>
+<li><ol start="2" type="a">
+<li>用缩减版更新预测函数：<span class="math inline">\(\hat{f}(x) \leftarrow \hat{f}(x) + \lambda \hat{f}^b(x)\)</span></li>
+</ol></li>
+<li><ol start="3" type="a">
+<li>更新残差：<span class="math inline">\(r_i \leftarrow r_i - \lambda \hat{f}^b(x_i)\)</span></li>
+</ol></li>
+</ul></li>
+<li>输出：<span class="math inline">\(\hat{f}(x) = \sum_{b=1}^{B} \lambda \hat{f}^b(x)\)</span></li>
+</ol>
+<p><strong>三个调节参数：</strong></p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 18%">
+<col style="width: 31%">
+<col style="width: 31%">
+<col style="width: 18%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>参数</th>
+<th style="text-align: center;">符号</th>
+<th style="text-align: center;">典型取值</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>树的数量</td>
+<td style="text-align: center;"><span class="math inline">\(B\)</span></td>
+<td style="text-align: center;">100–5000</td>
+<td>过大会过拟合，需交叉验证</td>
+</tr>
+<tr class="even">
+<td>学习率（收缩参数）</td>
+<td style="text-align: center;"><span class="math inline">\(\lambda\)</span></td>
+<td style="text-align: center;">0.001–0.1</td>
+<td>控制每棵树的贡献大小，越小越慢</td>
+</tr>
+<tr class="odd">
+<td>树的深度</td>
+<td style="text-align: center;"><span class="math inline">\(d\)</span></td>
+<td style="text-align: center;">1–5</td>
+<td>控制交互效应的阶数，<span class="math inline">\(d=1\)</span> 为 stump</td>
+</tr>
+</tbody>
+</table>
+<p><strong>为什么慢学习策略有效？</strong> 每棵树只做小步改进（乘以 <span class="math inline">\(\lambda &lt; 1\)</span>），迫使模型在更多棵树上逐步逼近，而不是一步到位。这类似于梯度下降中使用小学习率：每一步不激进，但整体收敛更稳定，不容易跳过最优点。统计学习领域有一个广泛观察到的经验规律：学习慢的方法，往往泛化能力更强。</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+【概念】为什么慢学习策略有助于泛化？
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>设想你在黑暗中找一枚落地的硬币。</p>
+<ul>
+<li><strong>大步走</strong>：每次迈大步，很容易直接踩过硬币。</li>
+<li><strong>小步慢走</strong>：每次只移动一小步，当脚踩到硬币时，你能准确感知位置。</li>
+</ul>
+<p>Boosting 中的小学习率 <span class="math inline">\(\lambda\)</span> 起到同样的作用：每棵新树只做小幅修正，模型会在最优解附近精细搜索，而不是快速收敛到一个次优解后就停止改进。</p>
+<p>代价是：<span class="math inline">\(\lambda\)</span> 越小，需要更多的树（更大的 <span class="math inline">\(B\)</span>）才能达到相同的拟合质量。在实践中，通常先设 <span class="math inline">\(\lambda = 0.01\)</span> 或 <span class="math inline">\(0.001\)</span>，再通过交叉验证确定 <span class="math inline">\(B\)</span>。</p>
+</div>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="./figs/ml_tree_fig12_boost_shrinkage.png" class="img-fluid figure-img" style="width:95.0%"></p>
+<figcaption>Boosting：不同学习率的训练与测试误差</figcaption>
+</figure>
+</div>
+<p><strong>图 12</strong> 展示了不同学习率 <span class="math inline">\(\lambda\)</span> 下，Boosting 的训练误差（左）和测试误差（右）随树数量的变化。</p>
+<p>几个关键观察： - 学习率越大（如 <span class="math inline">\(\lambda = 0.3\)</span>），训练误差下降越快，但测试误差也越早开始上升（过拟合） - 学习率越小（如 <span class="math inline">\(\lambda = 0.001\)</span>），需要更多树才能收敛，但最终的测试误差更低、更稳定 - 与 Bagging 不同，<strong>Boosting 的 <span class="math inline">\(B\)</span> 过大会过拟合</strong>，需要仔细选择</p>
+<p>这一特性是 Boosting 与 Bagging/随机森林最重要的实践差异之一。</p>
+</section>
+<section id="四种方法的横向对比" class="level3" data-number="46.4.6">
+<h3 data-number="46.4.6" class="anchored" data-anchor-id="四种方法的横向对比"><span class="header-section-number">46.4.6</span> 4.6　四种方法的横向对比</h3>
+<p>下表从多个维度总结四种集成方法的特点：</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 13%">
+<col style="width: 13%">
+<col style="width: 13%">
+<col style="width: 22%">
+<col style="width: 22%">
+<col style="width: 13%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>方法</th>
+<th>树的生长方式</th>
+<th>数据采样</th>
+<th style="text-align: center;">主要降低</th>
+<th style="text-align: center;"><span class="math inline">\(B\)</span> 过大会过拟合？</th>
+<th>典型调参</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>单棵树</strong></td>
+<td>一次生长后剪枝</td>
+<td>全部数据</td>
+<td style="text-align: center;">偏差</td>
+<td style="text-align: center;">✗</td>
+<td>树深度 / <span class="math inline">\(\alpha\)</span></td>
+</tr>
+<tr class="even">
+<td><strong>Bagging</strong></td>
+<td>并行、独立</td>
+<td>自助抽样（有放回）</td>
+<td style="text-align: center;">方差</td>
+<td style="text-align: center;">✗</td>
+<td><span class="math inline">\(B\)</span></td>
+</tr>
+<tr class="odd">
+<td><strong>随机森林</strong></td>
+<td>并行、独立</td>
+<td>自助抽样 + 特征随机</td>
+<td style="text-align: center;">方差（更强）</td>
+<td style="text-align: center;">✗</td>
+<td><span class="math inline">\(B\)</span>, <span class="math inline">\(m\)</span></td>
+</tr>
+<tr class="even">
+<td><strong>Boosting</strong></td>
+<td>顺序、依赖前轮残差</td>
+<td>原始数据（不重采样）</td>
+<td style="text-align: center;">偏差 + 方差</td>
+<td style="text-align: center;">✓</td>
+<td><span class="math inline">\(B\)</span>, <span class="math inline">\(\lambda\)</span>, <span class="math inline">\(d\)</span></td>
+</tr>
+</tbody>
+</table>
+<p><strong>直觉总结</strong>： - Bagging 和随机森林通过广泛采样+平均降低<strong>方差</strong>，适合高方差的基模型 - Boosting 通过逐步修正残差降低<strong>偏差</strong>，同时也有一定的方差控制效果 - 随机森林在 Bagging 基础上增加了特征随机化，进一步去相关，通常是实践中的首选</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="./figs/ml_tree_fig13_method_compare.png" class="img-fluid figure-img" style="width:85.0%"></p>
+<figcaption>四种方法测试误差对比</figcaption>
+</figure>
+</div>
+<p><strong>图 13</strong> 直观展示了四种方法在 <code>Default</code> 数据集上的测试误差对比。集成方法（Bagging、随机森林、Boosting）的误差均显著低于单棵决策树，而三种集成方法之间的差距相对较小——说明集成方法本身比具体集成策略的选择更重要。</p>
+<p>需要指出，<code>Default</code> 数据集相对简单（<span class="math inline">\(p=3\)</span>，<span class="math inline">\(n=10000\)</span>），各方法的差异较小。在特征维度更高、样本结构更复杂的真实金融数据中，随机森林和 Boosting 相比 Bagging 的优势通常更加明显。</p>
+<hr>
+</section>
+</section>
+<section id="第五部分-python-实践" class="level2" data-number="46.5">
+<h2 data-number="46.5" class="anchored" data-anchor-id="第五部分-python-实践"><span class="header-section-number">46.5</span> 第五部分　Python 实践</h2>
+<p>本节用 Python 完整演示上述方法在 <code>Default</code> 数据集上的实现。所有图表由配套的 <code>ml_tree_codes.ipynb</code> 生成，本节只展示核心建模和结果输出代码。</p>
+<section id="数据准备" class="level3" data-number="46.5.1">
+<h3 data-number="46.5.1" class="anchored" data-anchor-id="数据准备"><span class="header-section-number">46.5.1</span> 5.1　数据准备</h3>
+<div id="0c8eca50" class="cell" data-execution_count="7">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># !pip install ISLP</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="0043" class="cell" data-execution_count="8">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> ISLP <span class="im">import</span> load_data</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> train_test_split</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="co"># 载入数据</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> load_data(<span class="st">"Default"</span>)</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>df.columns <span class="op">=</span> df.columns.<span class="bu">str</span>.lower()</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="co"># 将分类变量转为 0/1</span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>df[<span class="st">"default_bin"</span>] <span class="op">=</span> (df[<span class="st">"default"</span>] <span class="op">==</span> <span class="st">"Yes"</span>).astype(<span class="bu">int</span>)</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>df[<span class="st">"student_bin"</span>] <span class="op">=</span> (df[<span class="st">"student"</span>] <span class="op">==</span> <span class="st">"Yes"</span>).astype(<span class="bu">int</span>)</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a><span class="co"># 特征矩阵与目标变量</span></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> df[[<span class="st">"balance"</span>, <span class="st">"income"</span>, <span class="st">"student_bin"</span>]].values</span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> df[<span class="st">"default_bin"</span>].values</span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a><span class="co"># 训练/测试集划分（7:3）</span></span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>X_train, X_test, y_train, y_test <span class="op">=</span> train_test_split(</span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>    X, y, test_size<span class="op">=</span><span class="fl">0.3</span>, random_state<span class="op">=</span><span class="dv">0</span></span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"训练集: </span><span class="sc">{</span>X_train<span class="sc">.</span>shape[<span class="dv">0</span>]<span class="sc">}</span><span class="ss"> 条，测试集: </span><span class="sc">{</span>X_test<span class="sc">.</span>shape[<span class="dv">0</span>]<span class="sc">}</span><span class="ss"> 条"</span>)</span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"训练集违约率: </span><span class="sc">{</span>y_train<span class="sc">.</span>mean()<span class="sc">:.2%}</span><span class="ss">，测试集违约率: </span><span class="sc">{</span>y_test<span class="sc">.</span>mean()<span class="sc">:.2%}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>训练集: 7000 条，测试集: 3000 条
+训练集违约率: 3.14%，测试集违约率: 3.77%</code></pre>
+</div>
+</div>
+</section>
+<section id="分类树拟合可视化与剪枝" class="level3" data-number="46.5.2">
+<h3 data-number="46.5.2" class="anchored" data-anchor-id="分类树拟合可视化与剪枝"><span class="header-section-number">46.5.2</span> 5.2　分类树：拟合、可视化与剪枝</h3>
+<div id="a5db35f7" class="cell" data-execution_count="14">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.tree <span class="im">import</span> DecisionTreeClassifier <span class="im">as</span> DTC, plot_tree, export_text</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> KFold, GridSearchCV</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> accuracy_score</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="co"># --- 拟合深度为 3 的分类树（用于展示） ---</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>clf <span class="op">=</span> DTC(criterion<span class="op">=</span><span class="st">"entropy"</span>, max_depth<span class="op">=</span><span class="dv">3</span>, random_state<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>clf.fit(X_train, y_train)</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"训练集准确率:"</span>, accuracy_score(y_train, clf.predict(X_train)))</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"测试集准确率:"</span>, accuracy_score(y_test,  clf.predict(X_test)))</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a><span class="co"># 文本展示树结构</span></span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(export_text(clf, feature_names<span class="op">=</span>[<span class="st">"balance"</span>, <span class="st">"income"</span>, <span class="st">"student"</span>]))</span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a><span class="co"># 可视化树结构</span></span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">14</span>, <span class="dv">6</span>))</span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>plot_tree(clf, feature_names<span class="op">=</span>[<span class="st">"balance"</span>, <span class="st">"income"</span>, <span class="st">"student"</span>],</span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>          class_names<span class="op">=</span>[<span class="st">"未违约"</span>, <span class="st">"违约"</span>],</span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>          filled<span class="op">=</span><span class="va">True</span>, rounded<span class="op">=</span><span class="va">True</span>, ax<span class="op">=</span>ax)</span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>训练集准确率: 0.974
+测试集准确率: 0.9706666666666667
+|--- balance &lt;= 1474.92
+|   |--- balance &lt;= 959.09
+|   |   |--- class: 0
+|   |--- balance &gt;  959.09
+|   |   |--- balance &lt;= 1278.15
+|   |   |   |--- class: 0
+|   |   |--- balance &gt;  1278.15
+|   |   |   |--- class: 0
+|--- balance &gt;  1474.92
+|   |--- balance &lt;= 1800.00
+|   |   |--- balance &lt;= 1627.84
+|   |   |   |--- class: 0
+|   |   |--- balance &gt;  1627.84
+|   |   |   |--- class: 0
+|   |--- balance &gt;  1800.00
+|   |   |--- balance &lt;= 1950.70
+|   |   |   |--- class: 0
+|   |   |--- balance &gt;  1950.70
+|   |   |   |--- class: 1
+</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="ml_tree_lec_files/figure-html/cell-4-output-2.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<div id="55c516ca" class="cell" data-execution_count="15">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="co"># --- 代价复杂度剪枝 ---</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="co"># 第一步：生长不限深度的完整树</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>full_clf <span class="op">=</span> DTC(criterion<span class="op">=</span><span class="st">"entropy"</span>, random_state<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>full_clf.fit(X_train, y_train)</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="co"># 第二步：提取代价复杂度路径</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>ccp_path <span class="op">=</span> full_clf.cost_complexity_pruning_path(X_train, y_train)</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"候选 alpha 值数量: </span><span class="sc">{</span><span class="bu">len</span>(ccp_path.ccp_alphas)<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="co"># 第三步：用 5 折交叉验证选择最优 alpha</span></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>kf <span class="op">=</span> KFold(n_splits<span class="op">=</span><span class="dv">5</span>, shuffle<span class="op">=</span><span class="va">True</span>, random_state<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>grid <span class="op">=</span> GridSearchCV(</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>    DTC(criterion<span class="op">=</span><span class="st">"entropy"</span>, random_state<span class="op">=</span><span class="dv">0</span>),</span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>    {<span class="st">"ccp_alpha"</span>: ccp_path.ccp_alphas[:<span class="op">-</span><span class="dv">1</span>]},</span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>    cv<span class="op">=</span>kf, scoring<span class="op">=</span><span class="st">"accuracy"</span>, refit<span class="op">=</span><span class="va">True</span></span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>grid.fit(X_train, y_train)</span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>best_clf <span class="op">=</span> grid.best_estimator_</span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"最优 alpha: </span><span class="sc">{</span>grid<span class="sc">.</span>best_params_[<span class="st">'ccp_alpha'</span>]<span class="sc">:.6f}</span><span class="ss">"</span>)</span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"最优树的叶节点数: </span><span class="sc">{</span>best_clf<span class="sc">.</span>get_n_leaves()<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"剪枝后测试集准确率: </span><span class="sc">{</span>accuracy_score(y_test, best_clf.predict(X_test))<span class="sc">:.4f}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>候选 alpha 值数量: 86
+最优 alpha: 0.000826
+最优树的叶节点数: 8
+剪枝后测试集准确率: 0.9723</code></pre>
+</div>
+</div>
+</section>
+<section id="bagging-与随机森林" class="level3" data-number="46.5.3">
+<h3 data-number="46.5.3" class="anchored" data-anchor-id="bagging-与随机森林"><span class="header-section-number">46.5.3</span> 5.3　Bagging 与随机森林</h3>
+<div id="92f4fc4e" class="cell" data-execution_count="16">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.ensemble <span class="im">import</span> RandomForestClassifier <span class="im">as</span> RFC</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="co"># --- Bagging：max_features = p（使用全部特征）---</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>bagging <span class="op">=</span> RFC(</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>    n_estimators<span class="op">=</span><span class="dv">300</span>,</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>    max_features<span class="op">=</span>X_train.shape[<span class="dv">1</span>],  <span class="co"># m = p，即 Bagging</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>    oob_score<span class="op">=</span><span class="va">True</span>,</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>    random_state<span class="op">=</span><span class="dv">0</span></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>bagging.fit(X_train, y_train)</span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Bagging 测试误差: </span><span class="sc">{</span><span class="dv">1</span> <span class="op">-</span> accuracy_score(y_test, bagging.predict(X_test))<span class="sc">:.4f}</span><span class="ss">"</span>)</span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Bagging OOB  误差: </span><span class="sc">{</span><span class="dv">1</span> <span class="op">-</span> bagging<span class="sc">.</span>oob_score_<span class="sc">:.4f}</span><span class="ss">"</span>)</span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a><span class="co"># --- 随机森林：max_features = 'sqrt'（默认，m ≈ √p）---</span></span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>rf <span class="op">=</span> RFC(</span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a>    n_estimators<span class="op">=</span><span class="dv">300</span>,</span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a>    max_features<span class="op">=</span><span class="st">"sqrt"</span>,  <span class="co"># 随机森林标准设置</span></span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a>    oob_score<span class="op">=</span><span class="va">True</span>,</span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a>    random_state<span class="op">=</span><span class="dv">0</span></span>
+<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a>rf.fit(X_train, y_train)</span>
+<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"随机森林 测试误差: </span><span class="sc">{</span><span class="dv">1</span> <span class="op">-</span> accuracy_score(y_test, rf.predict(X_test))<span class="sc">:.4f}</span><span class="ss">"</span>)</span>
+<span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"随机森林 OOB  误差: </span><span class="sc">{</span><span class="dv">1</span> <span class="op">-</span> rf<span class="sc">.</span>oob_score_<span class="sc">:.4f}</span><span class="ss">"</span>)</span>
+<span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-26"><a href="#cb9-26" aria-hidden="true" tabindex="-1"></a><span class="co"># --- 变量重要性 ---</span></span>
+<span id="cb9-27"><a href="#cb9-27" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb9-28"><a href="#cb9-28" aria-hidden="true" tabindex="-1"></a>imp <span class="op">=</span> pd.Series(</span>
+<span id="cb9-29"><a href="#cb9-29" aria-hidden="true" tabindex="-1"></a>    rf.feature_importances_,</span>
+<span id="cb9-30"><a href="#cb9-30" aria-hidden="true" tabindex="-1"></a>    index<span class="op">=</span>[<span class="st">"balance"</span>, <span class="st">"income"</span>, <span class="st">"student"</span>]</span>
+<span id="cb9-31"><a href="#cb9-31" aria-hidden="true" tabindex="-1"></a>).sort_values(ascending<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb9-32"><a href="#cb9-32" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">变量重要性（Gini 下降量，已归一化）："</span>)</span>
+<span id="cb9-33"><a href="#cb9-33" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>((imp <span class="op">/</span> imp.<span class="bu">max</span>() <span class="op">*</span> <span class="dv">100</span>).<span class="bu">round</span>(<span class="dv">1</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Bagging 测试误差: 0.0307
+Bagging OOB  误差: 0.0321
+随机森林 测试误差: 0.0307
+随机森林 OOB  误差: 0.0311
+
+变量重要性（Gini 下降量，已归一化）：
+balance    100.0
+income      52.1
+student      0.9
+dtype: float64</code></pre>
+</div>
+</div>
+</section>
+<section id="boosting" class="level3" data-number="46.5.4">
+<h3 data-number="46.5.4" class="anchored" data-anchor-id="boosting"><span class="header-section-number">46.5.4</span> 5.4　Boosting</h3>
+<div id="cf82eb1d" class="cell" data-execution_count="17">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.ensemble <span class="im">import</span> GradientBoostingClassifier <span class="im">as</span> GBC</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="co"># --- Boosting：深度=1 的 stump，学习率=0.01 ---</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>boost <span class="op">=</span> GBC(</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>    n_estimators<span class="op">=</span><span class="dv">500</span>,</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>    learning_rate<span class="op">=</span><span class="fl">0.01</span>,   <span class="co"># 学习率 λ</span></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>    max_depth<span class="op">=</span><span class="dv">1</span>,          <span class="co"># 每棵树只有一个分裂（stump）</span></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>    random_state<span class="op">=</span><span class="dv">0</span></span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>boost.fit(X_train, y_train)</span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Boosting 测试误差: </span><span class="sc">{</span><span class="dv">1</span> <span class="op">-</span> accuracy_score(y_test, boost.predict(X_test))<span class="sc">:.4f}</span><span class="ss">"</span>)</span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a><span class="co"># --- 用 staged_predict 观察误差随迭代次数的变化 ---</span></span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>test_errors <span class="op">=</span> []</span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> y_pred <span class="kw">in</span> boost.staged_predict(X_test):</span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a>    test_errors.append(<span class="dv">1</span> <span class="op">-</span> accuracy_score(y_test, y_pred))</span>
+<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a><span class="co"># 找到测试误差最低时对应的树数量</span></span>
+<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a>best_n_trees <span class="op">=</span> np.argmin(test_errors) <span class="op">+</span> <span class="dv">1</span></span>
+<span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"测试误差最低时的树数量: </span><span class="sc">{</span>best_n_trees<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb11-22"><a href="#cb11-22" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"对应的最低测试误差: </span><span class="sc">{</span>test_errors[best_n_trees <span class="op">-</span> <span class="dv">1</span>]<span class="sc">:.4f}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Boosting 测试误差: 0.0293
+测试误差最低时的树数量: 143
+对应的最低测试误差: 0.0293</code></pre>
+</div>
+</div>
+<hr>
+</section>
+</section>
+<section id="小结" class="level2" data-number="46.6">
+<h2 data-number="46.6" class="anchored" data-anchor-id="小结"><span class="header-section-number">46.6</span> 小结</h2>
+<p>本章从最简单的分组均值出发，逐步建立了对决策树和集成方法的理解。核心知识链条为：</p>
+<p><span class="math display">\[
+\text{分组均值}
+\longrightarrow
+\text{虚拟变量回归}
+\longrightarrow
+\text{单棵决策树}
+\longrightarrow
+\underbrace{\text{Bagging} \to \text{随机森林} \to \text{Boosting}}_{\text{集成方法：降低方差/偏差，提升预测精度}}
+\]</span></p>
+<p><strong>关键结论</strong>：</p>
+<ol type="1">
+<li>决策树是分组均值预测的推广，通过递归二叉分裂自动寻找最优分组边界</li>
+<li>单棵树的高方差问题通过集成方法（Bagging、随机森林、Boosting）得到有效解决</li>
+<li>随机森林在 Bagging 基础上引入特征随机化，进一步去相关，是实践中最常用的方法之一</li>
+<li>Boosting 通过顺序学习和慢收缩逐步修正残差，是目前预测精度最高的集成方法之一，但需要仔细调参（尤其是 <span class="math inline">\(B\)</span> 和 <span class="math inline">\(\lambda\)</span>）</li>
+<li>无论哪种方法，<code>balance</code>（信用卡余额）都是预测违约最重要的特征——与描述统计的直觉完全一致</li>
+</ol>
+<hr>
+</section>
+<section id="附录-a-虚拟变量回归与分组均值的等价性" class="level2" data-number="46.7">
+<h2 data-number="46.7" class="anchored" data-anchor-id="附录-a-虚拟变量回归与分组均值的等价性"><span class="header-section-number">46.7</span> 附录 A　虚拟变量回归与分组均值的等价性</h2>
+<p>设 <span class="math inline">\(D_i \in \{0, 1\}\)</span> 为二值虚拟变量，<span class="math inline">\(n_0\)</span> 和 <span class="math inline">\(n_1\)</span> 分别为两组的样本量，<span class="math inline">\(n = n_0 + n_1\)</span>。</p>
+<p>OLS 最小化目标函数为 <span class="math display">\[
+Q(\alpha, \beta) = \sum_{i=1}^{n} (y_i - \alpha - \beta D_i)^2
+\]</span></p>
+<p>对 <span class="math inline">\(\alpha\)</span> 和 <span class="math inline">\(\beta\)</span> 分别求偏导并令其为零，得到正规方程组： <span class="math display">\[
+\frac{\partial Q}{\partial \alpha} = -2 \sum_i (y_i - \hat{\alpha} - \hat{\beta} D_i) = 0
+\implies \bar{y} = \hat{\alpha} + \hat{\beta} \bar{D}
+\]</span> <span class="math display">\[
+\frac{\partial Q}{\partial \beta} = -2 \sum_i D_i (y_i - \hat{\alpha} - \hat{\beta} D_i) = 0
+\implies \frac{1}{n_1}\sum_{D_i=1} y_i = \hat{\alpha} + \hat{\beta}
+\]</span></p>
+<p>由第二个方程：<span class="math inline">\(\hat{\alpha} + \hat{\beta} = \bar{y}_{D=1}\)</span>。</p>
+<p>代入第一个方程：<span class="math inline">\(\hat{\alpha} = \bar{y} - \hat{\beta} \bar{D} = \bar{y} - (\bar{y}_{D=1} - \hat{\alpha}) \cdot \frac{n_1}{n}\)</span>，解得 <span class="math inline">\(\hat{\alpha} = \bar{y}_{D=0}\)</span>。</p>
+<p>因此： - 对 <span class="math inline">\(D_i = 0\)</span> 的样本，OLS 拟合值为 <span class="math inline">\(\hat{\alpha} = \bar{y}_{D=0}\)</span> - 对 <span class="math inline">\(D_i = 1\)</span> 的样本，OLS 拟合值为 <span class="math inline">\(\hat{\alpha} + \hat{\beta} = \bar{y}_{D=1}\)</span></p>
+<p><strong>结论</strong>：OLS 拟合值恰好等于各组的样本均值，与决策树叶节点预测值完全一致。<span class="math inline">\(\square\)</span></p>
+</section>
+<section id="附录-b-递归二叉分裂算法的伪代码" class="level2" data-number="46.8">
+<h2 data-number="46.8" class="anchored" data-anchor-id="附录-b-递归二叉分裂算法的伪代码"><span class="header-section-number">46.8</span> 附录 B　递归二叉分裂算法的伪代码</h2>
+<pre><code>输入：训练集 {(x_i, y_i), i=1,...,n}，最小叶节点样本数 min_samples
+输出：决策树 T
+
+函数 grow_tree(数据 S):
+    如果 |S| &lt; min_samples，返回叶节点（预测值 = mean(y in S)）
+    
+    best_rss = ∞
+    best_j, best_s = None, None
+    
+    对每个特征 j = 1, ..., p:
+        对特征 j 的每个候选切分点 s:
+            S_left  = {(x_i, y_i) ∈ S | x_ij &lt; s}
+            S_right = {(x_i, y_i) ∈ S | x_ij ≥ s}
+            rss = RSS(S_left) + RSS(S_right)   # 公式 (2.2)
+            如果 rss &lt; best_rss:
+                best_rss = rss
+                best_j, best_s = j, s
+    
+    按 (best_j, best_s) 将 S 分为 S_left 和 S_right
+    返回内部节点 {特征: best_j, 阈值: best_s,
+                左子树: grow_tree(S_left),
+                右子树: grow_tree(S_right)}
+
+T = grow_tree(训练集)</code></pre>
+<p><strong>时间复杂度</strong>：对每个节点，遍历所有特征和切分点的复杂度为 <span class="math inline">\(O(np)\)</span>（<span class="math inline">\(n\)</span> 个候选切分点，<span class="math inline">\(p\)</span> 个特征）。树的深度最大为 <span class="math inline">\(O(\log n)\)</span>（均衡情形）到 <span class="math inline">\(O(n)\)</span>（退化情形），因此总复杂度约为 <span class="math inline">\(O(np \log n)\)</span>。</p>
+</section>
+<section id="附录-c-贝叶斯加法回归树bart简介" class="level2" data-number="46.9">
+<h2 data-number="46.9" class="anchored" data-anchor-id="附录-c-贝叶斯加法回归树bart简介"><span class="header-section-number">46.9</span> 附录 C　贝叶斯加法回归树（BART）简介</h2>
+<p>贝叶斯加法回归树（Bayesian Additive Regression Trees，BART）是一种将贝叶斯方法与树集成思想结合的方法，兼具 Bagging 的随机性和 Boosting 的顺序残差拟合特性。</p>
+<p><strong>基本思路</strong>：假设目标函数可以写成 <span class="math inline">\(K\)</span> 棵小树的加和：</p>
+<p><span class="math display">\[
+f(x) = \sum_{k=1}^{K} f_k(x)
+\]</span></p>
+<p>BART 通过 Markov Chain Monte Carlo（MCMC）方法在所有可能的树结构上进行贝叶斯采样，得到一系列预测模型的集合，最终取平均作为点预测，取分位数作为不确定性度量。</p>
+<p><strong>主要特点</strong>：</p>
+<ul>
+<li>开箱即用（out-of-box）性能强，调参需求少；典型设置：<span class="math inline">\(K=200\)</span>，<span class="math inline">\(B=1000\)</span>，丢弃前 <span class="math inline">\(L=100\)</span> 次烧入（burn-in）迭代</li>
+<li>自然提供预测的不确定性区间（后验分布的分位数），在风险管理等需要量化不确定性的场景中有优势</li>
+<li>与 Boosting 不同，BART 对每棵树的更新是随机扰动而非从头拟合残差，有助于避免局部最优</li>
+<li>计算成本高于随机森林和 Boosting，适合作为对比基准或在精度要求极高时使用</li>
+</ul>
+<p>Python 实现可通过 <code>ISLP.bart.BART</code> 调用。本课程将 BART 作为扩展内容，不作为考核重点。</p>
+</section>
+<section id="参考文献" class="level2" data-number="46.10">
+<h2 data-number="46.10" class="anchored" data-anchor-id="参考文献"><span class="header-section-number">46.10</span> 参考文献</h2>
+<ul>
+<li>James, G., Witten, D., Hastie, T., Tibshirani, R., &amp; Taylor, J. (2023). <em>An Introduction to Statistical Learning: with Applications in Python</em> (2nd ed.). Springer. Chapter 8. <a href="https://www.statlearning.com/">Link</a></li>
+<li>Breiman, L. (1996). Bagging predictors. <em>Machine Learning</em>, 24(2), 123–140. <a href="https://doi.org/10.1007/BF00058655">Link</a></li>
+<li>Breiman, L. (2001). Random forests. <em>Machine Learning</em>, 45(1), 5–32. <a href="https://doi.org/10.1023/A:1010933404324">Link</a></li>
+<li>Friedman, J. H. (2001). Greedy function approximation: A gradient boosting machine. <em>Annals of Statistics</em>, 29(5), 1189–1232. <a href="https://doi.org/10.1214/aos/1013203451">Link</a></li>
+<li>Chipman, H. A., George, E. I., &amp; McCulloch, R. E. (2010). BART: Bayesian additive regression trees. <em>Annals of Applied Statistics</em>, 4(1), 266–298. <a href="https://doi.org/10.1214/09-AOAS285">Link</a></li>
+</ul>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const disableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'prefetch';
+    }
+  }
+  const enableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'stylesheet';
+    }
+  }
+  const manageTransitions = (selector, allowTransitions) => {
+    const els = window.document.querySelectorAll(selector);
+    for (let i=0; i < els.length; i++) {
+      const el = els[i];
+      if (allowTransitions) {
+        el.classList.remove('notransition');
+      } else {
+        el.classList.add('notransition');
+      }
+    }
+  }
+  const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+    const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+    const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+    let newTheme = '';
+    if(darkModeDefault) {
+      newTheme = isAlternate ? baseTheme : alternateTheme;
+    } else {
+      newTheme = isAlternate ? alternateTheme : baseTheme;
+    }
+    const changeGiscusTheme = () => {
+      // From: https://github.com/giscus/giscus/issues/336
+      const sendMessage = (message) => {
+        const iframe = document.querySelector('iframe.giscus-frame');
+        if (!iframe) return;
+        iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+      }
+      sendMessage({
+        setConfig: {
+          theme: newTheme
+        }
+      });
+    }
+    const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+    if (isGiscussLoaded) {
+      changeGiscusTheme();
+    }
+  }
+  const toggleColorMode = (alternate) => {
+    // Switch the stylesheets
+    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+    manageTransitions('#quarto-margin-sidebar .nav-link', false);
+    if (alternate) {
+      enableStylesheet(alternateStylesheets);
+      for (const sheetNode of alternateStylesheets) {
+        if (sheetNode.id === "quarto-bootstrap") {
+          toggleBodyColorMode(sheetNode);
+        }
+      }
+    } else {
+      disableStylesheet(alternateStylesheets);
+      toggleBodyColorPrimary();
+    }
+    manageTransitions('#quarto-margin-sidebar .nav-link', true);
+    // Switch the toggles
+    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+    for (let i=0; i < toggles.length; i++) {
+      const toggle = toggles[i];
+      if (toggle) {
+        if (alternate) {
+          toggle.classList.add("alternate");     
+        } else {
+          toggle.classList.remove("alternate");
+        }
+      }
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455)
+    if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+      manageTransitions("body", false);
+      window.scrollTo(0, 1);
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        manageTransitions("body", true);
+      }, 40);  
+    }
+  }
+  const isFileUrl = () => { 
+    return window.location.protocol === 'file:';
+  }
+  const hasAlternateSentinel = () => {  
+    let styleSentinel = getColorSchemeSentinel();
+    if (styleSentinel !== null) {
+      return styleSentinel === "alternate";
+    } else {
+      return false;
+    }
+  }
+  const setStyleSentinel = (alternate) => {
+    const value = alternate ? "alternate" : "default";
+    if (!isFileUrl()) {
+      window.localStorage.setItem("quarto-color-scheme", value);
+    } else {
+      localAlternateSentinel = value;
+    }
+  }
+  const getColorSchemeSentinel = () => {
+    if (!isFileUrl()) {
+      const storageValue = window.localStorage.getItem("quarto-color-scheme");
+      return storageValue != null ? storageValue : localAlternateSentinel;
+    } else {
+      return localAlternateSentinel;
+    }
+  }
+  const darkModeDefault = false;
+  let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+  // Dark / light mode switch
+  window.quartoToggleColorScheme = () => {
+    // Read the current dark / light value 
+    let toAlternate = !hasAlternateSentinel();
+    toggleColorMode(toAlternate);
+    setStyleSentinel(toAlternate);
+    toggleGiscusIfUsed(toAlternate, darkModeDefault);
+  };
+  // Ensure there is a toggle, if there isn't float one in the top right
+  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+    const a = window.document.createElement('a');
+    a.classList.add('top-right');
+    a.classList.add('quarto-color-scheme-toggle');
+    a.href = "";
+    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+    const i = window.document.createElement("i");
+    i.classList.add('bi');
+    a.appendChild(i);
+    window.document.body.appendChild(a);
+  }
+  // Switch to dark mode if need be
+  if (hasAlternateSentinel()) {
+    toggleColorMode(true);
+  } else {
+    toggleColorMode(false);
+  }
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp("https:\/\/lianxhcn\.github\.io\/dsfin\/");
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+          // target, if specified
+          link.setAttribute("target", "_blank");
+          if (link.getAttribute("rel") === null) {
+            link.setAttribute("rel", "noopener");
+          }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../../Lecture/method_MLE/MLE_case.html" class="pagination-link" aria-label="MLE 应用案例">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">45</span>&nbsp; <span class="chapter-title">MLE 应用案例</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../../Lecture/ml_tree/ml_tree_codes.html" class="pagination-link" aria-label="ml_tree_codes">
+        <span class="nav-page-text"><span class="chapter-number">47</span>&nbsp; <span class="chapter-title">ml_tree_codes</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+      &nbsp;
+    </div>   
+    <div class="nav-footer-center">
+<p><a href="https://www.lianxh.cn">lianxh.cn</a></p>
+</div>
+    <div class="nav-footer-right">
+<p>Support: <a href="https://lianxhcn.github.io/quarto_book/">Quarto</a></p>
+</div>
+  </div>
+</footer>
+
+
+
+
+</body></html>

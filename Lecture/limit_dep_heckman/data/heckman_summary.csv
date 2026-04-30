@@ -1,0 +1,8 @@
+stat,value
+n,3000.0
+share_loan_positive,0.5876666666666667
+rho_true,-0.55
+probit_llf,-1361.2956850548294
+naive_beta_collateral,-0.8685439775443836
+heckman_beta_collateral,-1.0655579747443735
+imr_coef,-0.4736217180718618

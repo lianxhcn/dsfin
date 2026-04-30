@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>42&nbsp; 附：Codes .{unnumbered} – 金融数据分析与建模</title>
+<title>42&nbsp; 06 Heckman 选择模型：代码与配图 – 金融数据分析与建模</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -57,7 +57,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </style>
 
 
-<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script><script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
 <script src="../../site_libs/quarto-nav/headroom.min.js"></script>
 <script src="../../site_libs/clipboard/clipboard.min.js"></script>
 <script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
@@ -105,6 +105,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-label": "Search"
   }
 }</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
+
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
 
 
 <link rel="stylesheet" href="styles.css">
@@ -119,7 +122,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../Lecture/limit_dep_intro/01_overview_lec.html"><strong>受限因变量</strong></a></li><li class="breadcrumb-item"><a href="../../Lecture/limit_dep_heckman/06_heckman_codes.html"><span class="chapter-number">42</span>&nbsp; <span class="chapter-title">附：Codes .{unnumbered}</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../Lecture/limit_dep_intro/01_overview_lec.html"><strong>受限因变量</strong></a></li><li class="breadcrumb-item"><a href="../../Lecture/limit_dep_heckman/06_heckman_codes.html"><span class="chapter-number">42</span>&nbsp; <span class="chapter-title">06 Heckman 选择模型：代码与配图</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -480,38 +483,38 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../Lecture/limit_dep_tobit/04_tobit_model_lec.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">37</span>&nbsp; <span class="chapter-title">Tobit 模型：受限因变量、潜变量与边际效应</span></span></a>
+  <a href="../../Lecture/limit_dep_tobit/04_tobit_model_lec_v7_.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">37</span>&nbsp; <span class="chapter-title">Tobit 模型：潜在净借款需求、边界归并与边际效应</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../Lecture/limit_dep_tobit/04_tobit_model_codes.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">38</span>&nbsp; <span class="chapter-title">附：Codes .{unnumbered}</span></span></a>
+  <a href="../../Lecture/limit_dep_tobit/04_tobit_model_codes_v7.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">38</span>&nbsp; <span class="chapter-title">附：Codes</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../Lecture/limit_dep_trunc_twopart/05_truncated_twopart_lec.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">39</span>&nbsp; <span class="chapter-title">Tobit 之后：截断、两部模型与比例因变量</span></span></a>
+  <a href="../../Lecture/limit_dep_trunc_twopart/05_truncated_twopart_lec_v4.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">39</span>&nbsp; <span class="chapter-title">真实零值与自然边界：Two-part、Hurdle、Zero-inflated 与 Fractional response</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../Lecture/limit_dep_trunc_twopart/05_truncated_twopart_codes.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">40</span>&nbsp; <span class="chapter-title">附：Codes .{unnumbered}</span></span></a>
+  <a href="../../Lecture/limit_dep_trunc_twopart/05_truncated_twopart_codes_v4.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">40</span>&nbsp; <span class="chapter-title">附：Codes</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../Lecture/limit_dep_heckman/06_heckman_lec.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">41</span>&nbsp; <span class="chapter-title">Heckman 选择模型：样本选择偏误与两阶段估计</span></span></a>
+ <span class="menu-text"><span class="chapter-number">41</span>&nbsp; <span class="chapter-title">Heckman 选择模型</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../Lecture/limit_dep_heckman/06_heckman_codes.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">42</span>&nbsp; <span class="chapter-title">附：Codes .{unnumbered}</span></span></a>
+ <span class="menu-text"><span class="chapter-number">42</span>&nbsp; <span class="chapter-title">06 Heckman 选择模型：代码与配图</span></span></a>
   </div>
 </li>
       </ul>
@@ -548,7 +551,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-10" role="navigation" aria-expanded="true">
- <span class="menu-text"><strong>文本分析</strong></span></a>
+ <span class="menu-text"><strong>机器学习</strong></span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-10" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -556,26 +559,26 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <ul id="quarto-sidebar-section-10" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../Lecture/text_analysis/lecture_text_01_ailn.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">46</span>&nbsp; <span class="chapter-title">金融文本分析（上）——从文本到结构化数据</span></span></a>
+  <a href="../../Lecture/ml_tree/ml_tree_lec.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">46</span>&nbsp; <span class="chapter-title">树模型与集成方法</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../Lecture/text_analysis/lecture_text_02_ailn.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">47</span>&nbsp; <span class="chapter-title">金融文本分析（下）——情感分析与文本建模</span></span></a>
+  <a href="../../Lecture/ml_tree/ml_tree_codes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">47</span>&nbsp; <span class="chapter-title">ml_tree_codes</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../Lecture/text_analysis/lecture_text_analysis_01_claude.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">48</span>&nbsp; <span class="chapter-title">文本数据处理基础</span></span></a>
+  <a href="../../Lecture/ml_SVM/ml_SVM_lec.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">48</span>&nbsp; <span class="chapter-title">支持向量机</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../Lecture/text_analysis/lecture_text_analysis_02_claude.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">49</span>&nbsp; <span class="chapter-title">文本分析：情感分析与主题建模</span></span></a>
+  <a href="../../Lecture/ml_SVM/ml_SVM_codes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">49</span>&nbsp; <span class="chapter-title">codes for SVM</span></span></a>
   </div>
 </li>
       </ul>
@@ -583,12 +586,47 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-11" role="navigation" aria-expanded="true">
- <span class="menu-text"><strong>附录：Python 提示词</strong></span></a>
+ <span class="menu-text"><strong>文本分析</strong></span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-11" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
       <ul id="quarto-sidebar-section-11" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/text_analysis/lecture_text_01_ailn.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">50</span>&nbsp; <span class="chapter-title">金融文本分析（上）——从文本到结构化数据</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/text_analysis/lecture_text_02_ailn.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">51</span>&nbsp; <span class="chapter-title">金融文本分析（下）——情感分析与文本建模</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/text_analysis/lecture_text_analysis_01_claude.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">52</span>&nbsp; <span class="chapter-title">文本数据处理基础</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Lecture/text_analysis/lecture_text_analysis_02_claude.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">53</span>&nbsp; <span class="chapter-title">文本分析：情感分析与主题建模</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-12" role="navigation" aria-expanded="true">
+ <span class="menu-text"><strong>附录：Python 提示词</strong></span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-12" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-12" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../appendix_python/index.html" class="sidebar-item-text sidebar-link">
@@ -655,16 +693,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#运行完成检查" id="toc-运行完成检查" class="nav-link active" data-scroll-target="#运行完成检查"><span class="header-section-number">43</span> 运行完成检查</a></li>
+  <li><a href="#输出文件清单" id="toc-输出文件清单" class="nav-link active" data-scroll-target="#输出文件清单"><span class="header-section-number">42.1</span> 输出文件清单</a></li>
   </ul>
 </nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../Lecture/limit_dep_intro/01_overview_lec.html"><strong>受限因变量</strong></a></li><li class="breadcrumb-item"><a href="../../Lecture/limit_dep_heckman/06_heckman_codes.html"><span class="chapter-number">42</span>&nbsp; <span class="chapter-title">附：Codes .{unnumbered}</span></a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../Lecture/limit_dep_intro/01_overview_lec.html"><strong>受限因变量</strong></a></li><li class="breadcrumb-item"><a href="../../Lecture/limit_dep_heckman/06_heckman_codes.html"><span class="chapter-number">42</span>&nbsp; <span class="chapter-title">06 Heckman 选择模型：代码与配图</span></a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">42</span>&nbsp; <span class="chapter-title">附：Codes .{unnumbered}</span></h1>
+<h1 class="title"><span class="chapter-number">42</span>&nbsp; <span class="chapter-title">06 Heckman 选择模型：代码与配图</span></h1>
 </div>
 
 
@@ -681,403 +719,525 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<blockquote class="blockquote">
-<p>Heckman 选择模型配图与模拟数据生成</p>
-</blockquote>
-<p>本 Notebook 用于生成 <code>06_heckman_lec.ipynb</code> 调用的模拟数据和配图。运行后会在当前工作路径下生成：</p>
+<p>本 notebook 为 <code>06_heckman_lec_v4.ipynb</code> 生成模拟数据、估计结果和配图。核心目标是用企业信贷案例说明：</p>
 <ul>
-<li><code>./data/heckman_loan_sim.csv</code></li>
-<li><code>./figs/limit_dep_heckman_fig01_selection_mechanism.png</code></li>
-<li><code>./figs/limit_dep_heckman_fig02_selected_vs_unselected.png</code></li>
-<li><code>./figs/limit_dep_heckman_fig03_latent_observed_rate.png</code></li>
-<li><code>./figs/limit_dep_heckman_fig04_imr_rate.png</code></li>
-<li><code>./figs/limit_dep_heckman_fig05_ols_heckman_compare.png</code></li>
-<li><code>./figs/limit_dep_heckman_fig06_exclusion_logic.png</code></li>
+<li>贷款金额可以为 0；</li>
+<li>贷款利率只在贷款企业中可观测；</li>
+<li>只用贷款企业估计贷款利率方程可能产生选择性偏误；</li>
+<li>Heckman two-step 通过 IMR 修正选择性观测导致的误差项条件均值偏离。</li>
 </ul>
-<div id="b98b22fe" class="cell" data-execution_count="28">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ============================================================</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="co"># 全局设置</span></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co"># ============================================================</span></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> platform</span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> warnings</span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.patches <span class="im">as</span> mpatches</span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> matplotlib.patches <span class="im">import</span> FancyBboxPatch, FancyArrowPatch</span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> statsmodels.api <span class="im">as</span> sm</span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.stats <span class="im">import</span> norm</span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>warnings.filterwarnings(<span class="st">"ignore"</span>)</span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="co"># 创建输出文件夹</span></span>
-<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>os.makedirs(<span class="st">"./figs"</span>, exist_ok<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>os.makedirs(<span class="st">"./data"</span>, exist_ok<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a><span class="co"># 中文字体设置：Windows 优先使用 SimHei；其他系统尝试常见中文字体</span></span>
-<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> platform.system() <span class="op">==</span> <span class="st">"Windows"</span>:</span>
-<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>    FONT_FAMILY <span class="op">=</span> <span class="st">"SimHei"</span></span>
-<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a><span class="cf">else</span>:</span>
-<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>    <span class="im">import</span> matplotlib.font_manager <span class="im">as</span> fm</span>
-<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>    available <span class="op">=</span> {f.name <span class="cf">for</span> f <span class="kw">in</span> fm.fontManager.ttflist}</span>
-<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> candidate <span class="kw">in</span> [<span class="st">"Noto Sans CJK SC"</span>, <span class="st">"Microsoft YaHei"</span>, <span class="st">"SimHei"</span>, <span class="st">"Arial Unicode MS"</span>, <span class="st">"WenQuanYi Micro Hei"</span>, <span class="st">"DejaVu Sans"</span>]:</span>
-<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> candidate <span class="kw">in</span> available:</span>
-<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>            FONT_FAMILY <span class="op">=</span> candidate</span>
-<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>            <span class="cf">break</span></span>
-<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
-<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>        FONT_FAMILY <span class="op">=</span> <span class="st">"DejaVu Sans"</span></span>
-<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a>plt.rcParams[<span class="st">"font.sans-serif"</span>] <span class="op">=</span> [FONT_FAMILY, <span class="st">"DejaVu Sans"</span>, <span class="st">"Arial"</span>]</span>
-<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a>plt.rcParams[<span class="st">"axes.unicode_minus"</span>] <span class="op">=</span> <span class="va">False</span></span>
-<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a>plt.rcParams.update({</span>
-<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a>    <span class="st">"font.size"</span>: <span class="dv">12</span>,</span>
-<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a>    <span class="st">"axes.spines.top"</span>: <span class="va">False</span>,</span>
-<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a>    <span class="st">"axes.spines.right"</span>: <span class="va">False</span>,</span>
-<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a>    <span class="st">"axes.grid"</span>: <span class="va">True</span>,</span>
-<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a>    <span class="st">"grid.alpha"</span>: <span class="fl">0.22</span>,</span>
-<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a>    <span class="st">"figure.dpi"</span>: <span class="dv">150</span>,</span>
-<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a>    <span class="st">"savefig.dpi"</span>: <span class="dv">220</span>,</span>
-<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a>    <span class="st">"figure.facecolor"</span>: <span class="st">"white"</span></span>
-<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a>})</span>
-<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a>rng <span class="op">=</span> np.random.default_rng(<span class="dv">20260428</span>)</span>
-<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"当前使用字体: </span><span class="sc">{</span>FONT_FAMILY<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="1dfb9b1a" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-04-29T14:48:24.598780Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-04-29T14:48:24.598469Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-04-29T14:48:26.551082Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-04-29T14:48:26.549676Z&quot;}" data-execution_count="56">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> warnings</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.patches <span class="im">as</span> patches</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> matplotlib.patches <span class="im">import</span> FancyBboxPatch, FancyArrowPatch</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.stats <span class="im">import</span> norm</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> IPython.display <span class="im">import</span> display</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> statsmodels.api <span class="im">as</span> sm</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>warnings.filterwarnings(<span class="st">"ignore"</span>)</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="co"># 创建输出文件夹</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>os.makedirs(<span class="st">"./figs"</span>, exist_ok<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>os.makedirs(<span class="st">"./data"</span>, exist_ok<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="co"># ── 中文字体与全局绘图设置 ─────────────────────────────────────────</span></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Windows 本地运行时优先使用 SimHei；Linux / macOS 回退到常见 CJK 字体</span></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>plt.rcParams[<span class="st">"font.sans-serif"</span>] <span class="op">=</span> [</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>    <span class="st">"SimHei"</span>, <span class="st">"Microsoft YaHei"</span>, <span class="st">"Noto Sans CJK SC"</span>,</span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Noto Sans CJK JP"</span>, <span class="st">"Arial Unicode MS"</span>, <span class="st">"DejaVu Sans"</span></span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>]</span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>plt.rcParams[<span class="st">"axes.unicode_minus"</span>] <span class="op">=</span> <span class="va">False</span></span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>plt.rcParams.update({</span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>    <span class="st">"font.size"</span>: <span class="dv">11</span>,</span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>    <span class="st">"axes.spines.top"</span>: <span class="va">False</span>,</span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>    <span class="st">"axes.spines.right"</span>: <span class="va">False</span>,</span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>    <span class="st">"axes.grid"</span>: <span class="va">True</span>,</span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>    <span class="st">"grid.alpha"</span>: <span class="fl">0.22</span>,</span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>    <span class="st">"figure.dpi"</span>: <span class="dv">160</span>,</span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> save_fig(fig, name, show<span class="op">=</span><span class="va">True</span>):</span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 同时输出 png 和 svg；png 适合网页和公众号，svg 适合 Quarto HTML</span></span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a>    fig.savefig(<span class="ss">f"./figs/</span><span class="sc">{</span>name<span class="sc">}</span><span class="ss">.png"</span>, dpi<span class="op">=</span><span class="dv">300</span>, bbox_inches<span class="op">=</span><span class="st">"tight"</span>)</span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a>    fig.savefig(<span class="ss">f"./figs/</span><span class="sc">{</span>name<span class="sc">}</span><span class="ss">.svg"</span>, bbox_inches<span class="op">=</span><span class="st">"tight"</span>)</span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> show:</span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a>        display(fig)</span>
+<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a>    plt.close(fig)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="ddaf34b9" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-04-29T14:48:26.553733Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-04-29T14:48:26.553373Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-04-29T14:48:26.623382Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-04-29T14:48:26.622016Z&quot;}" data-execution_count="57">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> simulate_heckman_credit_data(n<span class="op">=</span><span class="dv">3000</span>, seed<span class="op">=</span><span class="dv">20260430</span>, rho<span class="op">=-</span><span class="fl">0.55</span>):</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 生成企业信贷场景下的 Heckman 选择模型模拟数据</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    rng <span class="op">=</span> np.random.default_rng(seed)</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 抵押能力：0-1 区间变量，数值越大表示可抵押资产比例越高</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    collateral <span class="op">=</span> rng.beta(<span class="fl">2.0</span>, <span class="fl">2.5</span>, size<span class="op">=</span>n)</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 银行可得性：可理解为银行网点密度、信贷服务便利度或银企关系便利程度</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>    bank_access <span class="op">=</span> rng.normal(<span class="dv">0</span>, <span class="dv">1</span>, size<span class="op">=</span>n)</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 企业风险：数值越大，风险越高</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>    risk <span class="op">=</span> rng.normal(<span class="dv">0</span>, <span class="dv">1</span>, size<span class="op">=</span>n)</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 生成相关误差项：v 影响选择方程，u 影响利率方程</span></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>    cov <span class="op">=</span> np.array([[<span class="fl">1.0</span>, rho], [rho, <span class="fl">1.0</span>]])</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>    vu <span class="op">=</span> rng.multivariate_normal(mean<span class="op">=</span>[<span class="dv">0</span>, <span class="dv">0</span>], cov<span class="op">=</span>cov, size<span class="op">=</span>n)</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>    v <span class="op">=</span> vu[:, <span class="dv">0</span>]</span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>    u <span class="op">=</span> vu[:, <span class="dv">1</span>] <span class="op">*</span> <span class="fl">0.85</span></span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 选择方程：是否获得贷款</span></span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>    select_index <span class="op">=</span> <span class="op">-</span><span class="fl">0.25</span> <span class="op">+</span> <span class="fl">1.35</span> <span class="op">*</span> collateral <span class="op">+</span> <span class="fl">0.85</span> <span class="op">*</span> bank_access <span class="op">-</span> <span class="fl">0.75</span> <span class="op">*</span> risk</span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>    loan_star <span class="op">=</span> select_index <span class="op">+</span> v</span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>    loan <span class="op">=</span> (loan_star <span class="op">&gt;</span> <span class="dv">0</span>).astype(<span class="bu">int</span>)</span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 结果方程：贷款利率，只在获得贷款时可观测</span></span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>    rate_latent <span class="op">=</span> <span class="fl">6.2</span> <span class="op">-</span> <span class="fl">1.15</span> <span class="op">*</span> collateral <span class="op">+</span> <span class="fl">1.25</span> <span class="op">*</span> risk <span class="op">+</span> u</span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>    loan_rate <span class="op">=</span> np.where(loan <span class="op">==</span> <span class="dv">1</span>, rate_latent, np.nan)</span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 为了和 04、05 章保持背景统一，也生成贷款金额</span></span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a>    loan_amt <span class="op">=</span> np.where(</span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a>        loan <span class="op">==</span> <span class="dv">1</span>,</span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a>        np.exp(<span class="fl">8.8</span> <span class="op">+</span> <span class="fl">0.6</span> <span class="op">*</span> collateral <span class="op">+</span> <span class="fl">0.45</span> <span class="op">*</span> np.maximum(select_index, <span class="op">-</span><span class="dv">1</span>) <span class="op">+</span> rng.normal(<span class="dv">0</span>, <span class="fl">0.35</span>, n)),</span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a>        <span class="dv">0</span></span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a>    df <span class="op">=</span> pd.DataFrame({</span>
+<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a>        <span class="st">"collateral"</span>: collateral,</span>
+<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a>        <span class="st">"bank_access"</span>: bank_access,</span>
+<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a>        <span class="st">"risk"</span>: risk,</span>
+<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a>        <span class="st">"select_index_true"</span>: select_index,</span>
+<span id="cb2-41"><a href="#cb2-41" aria-hidden="true" tabindex="-1"></a>        <span class="st">"loan_star"</span>: loan_star,</span>
+<span id="cb2-42"><a href="#cb2-42" aria-hidden="true" tabindex="-1"></a>        <span class="st">"loan"</span>: loan,</span>
+<span id="cb2-43"><a href="#cb2-43" aria-hidden="true" tabindex="-1"></a>        <span class="st">"loan_amt"</span>: loan_amt,</span>
+<span id="cb2-44"><a href="#cb2-44" aria-hidden="true" tabindex="-1"></a>        <span class="st">"rate_latent"</span>: rate_latent,</span>
+<span id="cb2-45"><a href="#cb2-45" aria-hidden="true" tabindex="-1"></a>        <span class="st">"loan_rate"</span>: loan_rate,</span>
+<span id="cb2-46"><a href="#cb2-46" aria-hidden="true" tabindex="-1"></a>        <span class="st">"u_rate"</span>: u,</span>
+<span id="cb2-47"><a href="#cb2-47" aria-hidden="true" tabindex="-1"></a>        <span class="st">"v_select"</span>: v,</span>
+<span id="cb2-48"><a href="#cb2-48" aria-hidden="true" tabindex="-1"></a>    })</span>
+<span id="cb2-49"><a href="#cb2-49" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-50"><a href="#cb2-50" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> df</span>
+<span id="cb2-51"><a href="#cb2-51" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-52"><a href="#cb2-52" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> simulate_heckman_credit_data()</span>
+<span id="cb2-53"><a href="#cb2-53" aria-hidden="true" tabindex="-1"></a>df.to_csv(<span class="st">"./data/heckman_credit_sim.csv"</span>, index<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb2-54"><a href="#cb2-54" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-55"><a href="#cb2-55" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"样本量:"</span>, <span class="bu">len</span>(df))</span>
+<span id="cb2-56"><a href="#cb2-56" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"获得贷款比例:"</span>, <span class="bu">round</span>(df[<span class="st">"loan"</span>].mean(), <span class="dv">3</span>))</span>
+<span id="cb2-57"><a href="#cb2-57" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"贷款利率可观测比例:"</span>, <span class="bu">round</span>(df[<span class="st">"loan_rate"</span>].notna().mean(), <span class="dv">3</span>))</span>
+<span id="cb2-58"><a href="#cb2-58" aria-hidden="true" tabindex="-1"></a>df.head().<span class="bu">round</span>(<span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>当前使用字体: SimHei</code></pre>
+<pre><code>样本量: 3000
+获得贷款比例: 0.588
+贷款利率可观测比例: 0.588</code></pre>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="57">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">collateral</th>
+<th data-quarto-table-cell-role="th">bank_access</th>
+<th data-quarto-table-cell-role="th">risk</th>
+<th data-quarto-table-cell-role="th">select_index_true</th>
+<th data-quarto-table-cell-role="th">loan_star</th>
+<th data-quarto-table-cell-role="th">loan</th>
+<th data-quarto-table-cell-role="th">loan_amt</th>
+<th data-quarto-table-cell-role="th">rate_latent</th>
+<th data-quarto-table-cell-role="th">loan_rate</th>
+<th data-quarto-table-cell-role="th">u_rate</th>
+<th data-quarto-table-cell-role="th">v_select</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>0.38</td>
+<td>-0.67</td>
+<td>1.08</td>
+<td>-1.12</td>
+<td>-1.19</td>
+<td>0</td>
+<td>0.00</td>
+<td>7.89</td>
+<td>NaN</td>
+<td>0.78</td>
+<td>-0.07</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1</td>
+<td>0.39</td>
+<td>-0.48</td>
+<td>0.34</td>
+<td>-0.38</td>
+<td>-0.49</td>
+<td>0</td>
+<td>0.00</td>
+<td>6.56</td>
+<td>NaN</td>
+<td>0.39</td>
+<td>-0.10</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2</td>
+<td>0.15</td>
+<td>1.09</td>
+<td>-0.84</td>
+<td>1.50</td>
+<td>2.12</td>
+<td>1</td>
+<td>12324.11</td>
+<td>5.16</td>
+<td>5.16</td>
+<td>0.18</td>
+<td>0.62</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">3</td>
+<td>0.19</td>
+<td>-0.02</td>
+<td>-1.79</td>
+<td>1.34</td>
+<td>2.27</td>
+<td>1</td>
+<td>11551.40</td>
+<td>2.97</td>
+<td>2.97</td>
+<td>-0.77</td>
+<td>0.93</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">4</td>
+<td>0.57</td>
+<td>-0.51</td>
+<td>-0.33</td>
+<td>0.34</td>
+<td>-0.95</td>
+<td>0</td>
+<td>0.00</td>
+<td>6.70</td>
+<td>NaN</td>
+<td>1.58</td>
+<td>-1.29</td>
+</tr>
+</tbody>
+</table>
+
 </div>
 </div>
-<div id="9bac2392" class="cell" data-execution_count="29">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ============================================================</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co"># 生成企业贷款利率与贷款可得性的模拟数据</span></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co"># ============================================================</span></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>n <span class="op">=</span> <span class="dv">3000</span></span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="co"># 企业基本特征：变量经过标准化，便于解释模拟参数</span></span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>size <span class="op">=</span> rng.normal(<span class="dv">0</span>, <span class="dv">1</span>, n)                      <span class="co"># 企业规模</span></span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>cash <span class="op">=</span> rng.normal(<span class="dv">0</span>, <span class="dv">1</span>, n)                      <span class="co"># 现金持有</span></span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>lev <span class="op">=</span> rng.normal(<span class="dv">0</span>, <span class="dv">1</span>, n)                       <span class="co"># 杠杆率</span></span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>profit <span class="op">=</span> rng.normal(<span class="dv">0</span>, <span class="dv">1</span>, n)                    <span class="co"># 盈利能力</span></span>
-<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>collateral <span class="op">=</span> <span class="fl">0.45</span> <span class="op">*</span> size <span class="op">-</span> <span class="fl">0.35</span> <span class="op">*</span> lev <span class="op">+</span> rng.normal(<span class="dv">0</span>, <span class="fl">0.85</span>, n)  <span class="co"># 抵押品充足程度</span></span>
-<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>bank_access <span class="op">=</span> rng.normal(<span class="dv">0</span>, <span class="dv">1</span>, n)               <span class="co"># 本地银行服务可得性</span></span>
-<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>credit_window <span class="op">=</span> rng.binomial(<span class="dv">1</span>, <span class="dv">1</span> <span class="op">/</span> (<span class="dv">1</span> <span class="op">+</span> np.exp(<span class="op">-</span><span class="fl">0.25</span> <span class="op">-</span> <span class="fl">0.25</span> <span class="op">*</span> size <span class="op">+</span> <span class="fl">0.55</span> <span class="op">*</span> bank_access)), n)</span>
-<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a><span class="co"># 标准化连续变量，便于不同变量尺度接近</span></span>
-<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>raw <span class="op">=</span> pd.DataFrame({</span>
-<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>    <span class="st">"size"</span>: size,</span>
-<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>    <span class="st">"cash"</span>: cash,</span>
-<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>    <span class="st">"lev"</span>: lev,</span>
-<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>    <span class="st">"profit"</span>: profit,</span>
-<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>    <span class="st">"collateral"</span>: collateral,</span>
-<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>    <span class="st">"bank_access"</span>: bank_access,</span>
-<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>    <span class="st">"credit_window"</span>: credit_window</span>
-<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a>})</span>
-<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> c <span class="kw">in</span> [<span class="st">"size"</span>, <span class="st">"cash"</span>, <span class="st">"lev"</span>, <span class="st">"profit"</span>, <span class="st">"collateral"</span>, <span class="st">"bank_access"</span>]:</span>
-<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a>    raw[c] <span class="op">=</span> (raw[c] <span class="op">-</span> raw[c].mean()) <span class="op">/</span> raw[c].std()</span>
-<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a><span class="co"># 构造相关误差项：v 影响贷款可得性，u 影响贷款利率</span></span>
-<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a><span class="co"># rho &lt; 0 表示更容易获得贷款的未观测因素，往往伴随更低的未观测信用风险和更低利率</span></span>
-<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a>rho <span class="op">=</span> <span class="op">-</span><span class="fl">0.55</span></span>
-<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a>sigma_u <span class="op">=</span> <span class="fl">0.75</span></span>
-<span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a>v <span class="op">=</span> rng.normal(<span class="dv">0</span>, <span class="dv">1</span>, n)</span>
-<span id="cb3-35"><a href="#cb3-35" aria-hidden="true" tabindex="-1"></a>eta <span class="op">=</span> rng.normal(<span class="dv">0</span>, <span class="dv">1</span>, n)</span>
-<span id="cb3-36"><a href="#cb3-36" aria-hidden="true" tabindex="-1"></a>u <span class="op">=</span> sigma_u <span class="op">*</span> (rho <span class="op">*</span> v <span class="op">+</span> np.sqrt(<span class="dv">1</span> <span class="op">-</span> rho<span class="op">**</span><span class="dv">2</span>) <span class="op">*</span> eta)</span>
-<span id="cb3-37"><a href="#cb3-37" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-38"><a href="#cb3-38" aria-hidden="true" tabindex="-1"></a><span class="co"># 选择方程：是否获得银行贷款</span></span>
-<span id="cb3-39"><a href="#cb3-39" aria-hidden="true" tabindex="-1"></a>loan_latent <span class="op">=</span> (</span>
-<span id="cb3-40"><a href="#cb3-40" aria-hidden="true" tabindex="-1"></a>    <span class="op">-</span><span class="fl">0.15</span></span>
-<span id="cb3-41"><a href="#cb3-41" aria-hidden="true" tabindex="-1"></a>    <span class="op">+</span> <span class="fl">0.50</span> <span class="op">*</span> raw[<span class="st">"size"</span>]</span>
-<span id="cb3-42"><a href="#cb3-42" aria-hidden="true" tabindex="-1"></a>    <span class="op">+</span> <span class="fl">0.18</span> <span class="op">*</span> raw[<span class="st">"cash"</span>]</span>
-<span id="cb3-43"><a href="#cb3-43" aria-hidden="true" tabindex="-1"></a>    <span class="op">-</span> <span class="fl">0.35</span> <span class="op">*</span> raw[<span class="st">"lev"</span>]</span>
-<span id="cb3-44"><a href="#cb3-44" aria-hidden="true" tabindex="-1"></a>    <span class="op">+</span> <span class="fl">0.30</span> <span class="op">*</span> raw[<span class="st">"profit"</span>]</span>
-<span id="cb3-45"><a href="#cb3-45" aria-hidden="true" tabindex="-1"></a>    <span class="op">+</span> <span class="fl">0.55</span> <span class="op">*</span> raw[<span class="st">"collateral"</span>]</span>
-<span id="cb3-46"><a href="#cb3-46" aria-hidden="true" tabindex="-1"></a>    <span class="op">+</span> <span class="fl">0.70</span> <span class="op">*</span> raw[<span class="st">"bank_access"</span>]</span>
-<span id="cb3-47"><a href="#cb3-47" aria-hidden="true" tabindex="-1"></a>    <span class="op">+</span> <span class="fl">0.45</span> <span class="op">*</span> raw[<span class="st">"credit_window"</span>]</span>
-<span id="cb3-48"><a href="#cb3-48" aria-hidden="true" tabindex="-1"></a>    <span class="op">+</span> v</span>
-<span id="cb3-49"><a href="#cb3-49" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb3-50"><a href="#cb3-50" aria-hidden="true" tabindex="-1"></a>loan <span class="op">=</span> (loan_latent <span class="op">&gt;</span> <span class="dv">0</span>).astype(<span class="bu">int</span>)</span>
-<span id="cb3-51"><a href="#cb3-51" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-52"><a href="#cb3-52" aria-hidden="true" tabindex="-1"></a><span class="co"># 结果方程：潜在贷款利率，单位为百分点</span></span>
-<span id="cb3-53"><a href="#cb3-53" aria-hidden="true" tabindex="-1"></a>rate_latent <span class="op">=</span> (</span>
-<span id="cb3-54"><a href="#cb3-54" aria-hidden="true" tabindex="-1"></a>    <span class="fl">6.20</span></span>
-<span id="cb3-55"><a href="#cb3-55" aria-hidden="true" tabindex="-1"></a>    <span class="op">-</span> <span class="fl">0.35</span> <span class="op">*</span> raw[<span class="st">"size"</span>]</span>
-<span id="cb3-56"><a href="#cb3-56" aria-hidden="true" tabindex="-1"></a>    <span class="op">-</span> <span class="fl">0.12</span> <span class="op">*</span> raw[<span class="st">"cash"</span>]</span>
-<span id="cb3-57"><a href="#cb3-57" aria-hidden="true" tabindex="-1"></a>    <span class="op">+</span> <span class="fl">0.55</span> <span class="op">*</span> raw[<span class="st">"lev"</span>]</span>
-<span id="cb3-58"><a href="#cb3-58" aria-hidden="true" tabindex="-1"></a>    <span class="op">-</span> <span class="fl">0.40</span> <span class="op">*</span> raw[<span class="st">"profit"</span>]</span>
-<span id="cb3-59"><a href="#cb3-59" aria-hidden="true" tabindex="-1"></a>    <span class="op">-</span> <span class="fl">0.25</span> <span class="op">*</span> raw[<span class="st">"collateral"</span>]</span>
-<span id="cb3-60"><a href="#cb3-60" aria-hidden="true" tabindex="-1"></a>    <span class="op">+</span> u</span>
-<span id="cb3-61"><a href="#cb3-61" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb3-62"><a href="#cb3-62" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-63"><a href="#cb3-63" aria-hidden="true" tabindex="-1"></a><span class="co"># 只有获得贷款的企业才观察到贷款利率</span></span>
-<span id="cb3-64"><a href="#cb3-64" aria-hidden="true" tabindex="-1"></a>rate <span class="op">=</span> np.where(loan <span class="op">==</span> <span class="dv">1</span>, rate_latent, np.nan)</span>
-<span id="cb3-65"><a href="#cb3-65" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-66"><a href="#cb3-66" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> raw.copy()</span>
-<span id="cb3-67"><a href="#cb3-67" aria-hidden="true" tabindex="-1"></a>df[<span class="st">"loan_latent"</span>] <span class="op">=</span> loan_latent</span>
-<span id="cb3-68"><a href="#cb3-68" aria-hidden="true" tabindex="-1"></a>df[<span class="st">"loan"</span>] <span class="op">=</span> loan</span>
-<span id="cb3-69"><a href="#cb3-69" aria-hidden="true" tabindex="-1"></a>df[<span class="st">"rate_latent"</span>] <span class="op">=</span> rate_latent</span>
-<span id="cb3-70"><a href="#cb3-70" aria-hidden="true" tabindex="-1"></a>df[<span class="st">"rate"</span>] <span class="op">=</span> rate</span>
-<span id="cb3-71"><a href="#cb3-71" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-72"><a href="#cb3-72" aria-hidden="true" tabindex="-1"></a><span class="co"># 增加若干原始尺度变量，便于讲义中展示更接近真实数据的直觉</span></span>
-<span id="cb3-73"><a href="#cb3-73" aria-hidden="true" tabindex="-1"></a><span class="co"># 这些变量不用于核心模型，只用于描述性展示</span></span>
-<span id="cb3-74"><a href="#cb3-74" aria-hidden="true" tabindex="-1"></a>df[<span class="st">"firm_size_log"</span>] <span class="op">=</span> <span class="dv">22</span> <span class="op">+</span> <span class="fl">0.9</span> <span class="op">*</span> df[<span class="st">"size"</span>]</span>
-<span id="cb3-75"><a href="#cb3-75" aria-hidden="true" tabindex="-1"></a>df[<span class="st">"leverage_ratio"</span>] <span class="op">=</span> np.clip(<span class="fl">0.45</span> <span class="op">+</span> <span class="fl">0.12</span> <span class="op">*</span> df[<span class="st">"lev"</span>], <span class="fl">0.05</span>, <span class="fl">0.95</span>)</span>
-<span id="cb3-76"><a href="#cb3-76" aria-hidden="true" tabindex="-1"></a>df[<span class="st">"cash_ratio"</span>] <span class="op">=</span> np.clip(<span class="fl">0.20</span> <span class="op">+</span> <span class="fl">0.08</span> <span class="op">*</span> df[<span class="st">"cash"</span>], <span class="fl">0.01</span>, <span class="fl">0.70</span>)</span>
-<span id="cb3-77"><a href="#cb3-77" aria-hidden="true" tabindex="-1"></a>df[<span class="st">"profitability"</span>] <span class="op">=</span> np.clip(<span class="fl">0.05</span> <span class="op">+</span> <span class="fl">0.03</span> <span class="op">*</span> df[<span class="st">"profit"</span>], <span class="op">-</span><span class="fl">0.10</span>, <span class="fl">0.25</span>)</span>
-<span id="cb3-78"><a href="#cb3-78" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-79"><a href="#cb3-79" aria-hidden="true" tabindex="-1"></a>df.to_csv(<span class="st">"./data/heckman_loan_sim.csv"</span>, index<span class="op">=</span><span class="va">False</span>)</span>
-<span id="cb3-80"><a href="#cb3-80" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-81"><a href="#cb3-81" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"模拟数据已保存: ./data/heckman_loan_sim.csv"</span>)</span>
-<span id="cb3-82"><a href="#cb3-82" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"样本量: </span><span class="sc">{</span><span class="bu">len</span>(df)<span class="sc">}</span><span class="ss">"</span>)</span>
-<span id="cb3-83"><a href="#cb3-83" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"获得贷款比例: </span><span class="sc">{</span>df[<span class="st">'loan'</span>]<span class="sc">.</span>mean()<span class="sc">:.3f}</span><span class="ss">"</span>)</span>
-<span id="cb3-84"><a href="#cb3-84" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"可观测贷款利率样本量: </span><span class="sc">{</span>df[<span class="st">'rate'</span>]<span class="sc">.</span>notna()<span class="sc">.</span><span class="bu">sum</span>()<span class="sc">}</span><span class="ss">"</span>)</span>
-<span id="cb3-85"><a href="#cb3-85" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"观测贷款利率均值: </span><span class="sc">{</span>df[<span class="st">'rate'</span>]<span class="sc">.</span>mean()<span class="sc">:.3f}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>模拟数据已保存: ./data/heckman_loan_sim.csv
-样本量: 3000
-获得贷款比例: 0.521
-可观测贷款利率样本量: 1563
-观测贷款利率均值: 5.544</code></pre>
+</div>
+<div id="73c0d5bc" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-04-29T14:48:26.626333Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-04-29T14:48:26.626114Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-04-29T14:48:26.660199Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-04-29T14:48:26.659245Z&quot;}" data-execution_count="58">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ── 估计 Heckman two-step ─────────────────────────────────────────</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="co"># 第一步：用所有样本估计选择方程 Probit</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>Z_vars <span class="op">=</span> [<span class="st">"collateral"</span>, <span class="st">"bank_access"</span>, <span class="st">"risk"</span>]</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>X_vars <span class="op">=</span> [<span class="st">"collateral"</span>, <span class="st">"risk"</span>]</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>Z <span class="op">=</span> sm.add_constant(df[Z_vars])</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>probit_mod <span class="op">=</span> sm.Probit(df[<span class="st">"loan"</span>], Z).fit(disp<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="co"># 计算选择指数、选择概率和 IMR</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>df[<span class="st">"xb_select_hat"</span>] <span class="op">=</span> probit_mod.predict(linear<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>df[<span class="st">"p_loan_hat"</span>] <span class="op">=</span> probit_mod.predict()</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>df[<span class="st">"imr_hat"</span>] <span class="op">=</span> norm.pdf(df[<span class="st">"xb_select_hat"</span>]) <span class="op">/</span> np.clip(norm.cdf(df[<span class="st">"xb_select_hat"</span>]), <span class="fl">1e-8</span>, <span class="dv">1</span>)</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a><span class="co"># 第二步：只在贷款企业中估计贷款利率方程</span></span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>obs <span class="op">=</span> df[df[<span class="st">"loan"</span>] <span class="op">==</span> <span class="dv">1</span>].copy()</span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a><span class="co"># 直接 OLS：忽略选择性观测</span></span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>X_naive <span class="op">=</span> sm.add_constant(obs[X_vars])</span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>ols_naive <span class="op">=</span> sm.OLS(obs[<span class="st">"loan_rate"</span>], X_naive).fit()</span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a><span class="co"># Heckman two-step：加入 IMR</span></span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>X_heck <span class="op">=</span> sm.add_constant(obs[X_vars <span class="op">+</span> [<span class="st">"imr_hat"</span>]])</span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>ols_heck <span class="op">=</span> sm.OLS(obs[<span class="st">"loan_rate"</span>], X_heck).fit()</span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a><span class="co"># 教学用参照：真实潜在利率在全样本中可见，实际研究中无法观察</span></span>
+<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a>X_full <span class="op">=</span> sm.add_constant(df[X_vars])</span>
+<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a>ols_full <span class="op">=</span> sm.OLS(df[<span class="st">"rate_latent"</span>], X_full).fit()</span>
+<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a>coef_table <span class="op">=</span> pd.DataFrame({</span>
+<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a>    <span class="st">"true_full_sample_OLS"</span>: ols_full.params,</span>
+<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a>    <span class="st">"naive_observed_OLS"</span>: ols_naive.params.reindex(ols_full.params.index),</span>
+<span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a>    <span class="st">"heckman_two_step"</span>: ols_heck.params.reindex(ols_full.params.index),</span>
+<span id="cb4-33"><a href="#cb4-33" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb4-34"><a href="#cb4-34" aria-hidden="true" tabindex="-1"></a>coef_table.loc[<span class="st">"imr_hat"</span>, <span class="st">"heckman_two_step"</span>] <span class="op">=</span> ols_heck.params[<span class="st">"imr_hat"</span>]</span>
+<span id="cb4-35"><a href="#cb4-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-36"><a href="#cb4-36" aria-hidden="true" tabindex="-1"></a>coef_table.to_csv(<span class="st">"./data/heckman_coef_table.csv"</span>)</span>
+<span id="cb4-37"><a href="#cb4-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-38"><a href="#cb4-38" aria-hidden="true" tabindex="-1"></a>probit_table <span class="op">=</span> pd.DataFrame({</span>
+<span id="cb4-39"><a href="#cb4-39" aria-hidden="true" tabindex="-1"></a>    <span class="st">"coef"</span>: probit_mod.params,</span>
+<span id="cb4-40"><a href="#cb4-40" aria-hidden="true" tabindex="-1"></a>    <span class="st">"se"</span>: probit_mod.bse,</span>
+<span id="cb4-41"><a href="#cb4-41" aria-hidden="true" tabindex="-1"></a>    <span class="st">"z"</span>: probit_mod.tvalues,</span>
+<span id="cb4-42"><a href="#cb4-42" aria-hidden="true" tabindex="-1"></a>    <span class="st">"pvalue"</span>: probit_mod.pvalues,</span>
+<span id="cb4-43"><a href="#cb4-43" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb4-44"><a href="#cb4-44" aria-hidden="true" tabindex="-1"></a>probit_table.to_csv(<span class="st">"./data/heckman_probit_selection_table.csv"</span>)</span>
+<span id="cb4-45"><a href="#cb4-45" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-46"><a href="#cb4-46" aria-hidden="true" tabindex="-1"></a>ols_naive_table <span class="op">=</span> pd.DataFrame({</span>
+<span id="cb4-47"><a href="#cb4-47" aria-hidden="true" tabindex="-1"></a>    <span class="st">"coef"</span>: ols_naive.params,</span>
+<span id="cb4-48"><a href="#cb4-48" aria-hidden="true" tabindex="-1"></a>    <span class="st">"se"</span>: ols_naive.bse,</span>
+<span id="cb4-49"><a href="#cb4-49" aria-hidden="true" tabindex="-1"></a>    <span class="st">"t"</span>: ols_naive.tvalues,</span>
+<span id="cb4-50"><a href="#cb4-50" aria-hidden="true" tabindex="-1"></a>    <span class="st">"pvalue"</span>: ols_naive.pvalues,</span>
+<span id="cb4-51"><a href="#cb4-51" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb4-52"><a href="#cb4-52" aria-hidden="true" tabindex="-1"></a>ols_naive_table.to_csv(<span class="st">"./data/heckman_naive_ols_table.csv"</span>)</span>
+<span id="cb4-53"><a href="#cb4-53" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-54"><a href="#cb4-54" aria-hidden="true" tabindex="-1"></a>ols_heck_table <span class="op">=</span> pd.DataFrame({</span>
+<span id="cb4-55"><a href="#cb4-55" aria-hidden="true" tabindex="-1"></a>    <span class="st">"coef"</span>: ols_heck.params,</span>
+<span id="cb4-56"><a href="#cb4-56" aria-hidden="true" tabindex="-1"></a>    <span class="st">"se_naive"</span>: ols_heck.bse,</span>
+<span id="cb4-57"><a href="#cb4-57" aria-hidden="true" tabindex="-1"></a>    <span class="st">"t_naive"</span>: ols_heck.tvalues,</span>
+<span id="cb4-58"><a href="#cb4-58" aria-hidden="true" tabindex="-1"></a>    <span class="st">"pvalue_naive"</span>: ols_heck.pvalues,</span>
+<span id="cb4-59"><a href="#cb4-59" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb4-60"><a href="#cb4-60" aria-hidden="true" tabindex="-1"></a>ols_heck_table.to_csv(<span class="st">"./data/heckman_twostep_table.csv"</span>)</span>
+<span id="cb4-61"><a href="#cb4-61" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-62"><a href="#cb4-62" aria-hidden="true" tabindex="-1"></a>summary <span class="op">=</span> pd.DataFrame({</span>
+<span id="cb4-63"><a href="#cb4-63" aria-hidden="true" tabindex="-1"></a>    <span class="st">"stat"</span>: [</span>
+<span id="cb4-64"><a href="#cb4-64" aria-hidden="true" tabindex="-1"></a>        <span class="st">"n"</span>, <span class="st">"share_loan_positive"</span>, <span class="st">"rho_true"</span>, <span class="st">"probit_llf"</span>,</span>
+<span id="cb4-65"><a href="#cb4-65" aria-hidden="true" tabindex="-1"></a>        <span class="st">"naive_beta_collateral"</span>, <span class="st">"heckman_beta_collateral"</span>, <span class="st">"imr_coef"</span></span>
+<span id="cb4-66"><a href="#cb4-66" aria-hidden="true" tabindex="-1"></a>    ],</span>
+<span id="cb4-67"><a href="#cb4-67" aria-hidden="true" tabindex="-1"></a>    <span class="st">"value"</span>: [</span>
+<span id="cb4-68"><a href="#cb4-68" aria-hidden="true" tabindex="-1"></a>        <span class="bu">len</span>(df), df[<span class="st">"loan"</span>].mean(), <span class="op">-</span><span class="fl">0.55</span>, probit_mod.llf,</span>
+<span id="cb4-69"><a href="#cb4-69" aria-hidden="true" tabindex="-1"></a>        ols_naive.params[<span class="st">"collateral"</span>],</span>
+<span id="cb4-70"><a href="#cb4-70" aria-hidden="true" tabindex="-1"></a>        ols_heck.params[<span class="st">"collateral"</span>],</span>
+<span id="cb4-71"><a href="#cb4-71" aria-hidden="true" tabindex="-1"></a>        ols_heck.params[<span class="st">"imr_hat"</span>],</span>
+<span id="cb4-72"><a href="#cb4-72" aria-hidden="true" tabindex="-1"></a>    ]</span>
+<span id="cb4-73"><a href="#cb4-73" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb4-74"><a href="#cb4-74" aria-hidden="true" tabindex="-1"></a>summary.to_csv(<span class="st">"./data/heckman_summary.csv"</span>, index<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb4-75"><a href="#cb4-75" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-76"><a href="#cb4-76" aria-hidden="true" tabindex="-1"></a>coef_table.<span class="bu">round</span>(<span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="58">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">true_full_sample_OLS</th>
+<th data-quarto-table-cell-role="th">naive_observed_OLS</th>
+<th data-quarto-table-cell-role="th">heckman_two_step</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">const</td>
+<td>6.141</td>
+<td>5.833</td>
+<td>6.169</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">collateral</td>
+<td>-1.052</td>
+<td>-0.869</td>
+<td>-1.066</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">risk</td>
+<td>1.227</td>
+<td>1.139</td>
+<td>1.249</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">imr_hat</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>-0.474</td>
+</tr>
+</tbody>
+</table>
+
 </div>
 </div>
-<div id="4d8e35d5" class="cell" data-execution_count="45">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ============================================================</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="co"># 图 1：选择机制与结果观测机制</span></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co"># ============================================================</span></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="fl">9.2</span>, <span class="fl">4.8</span>))</span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>ax.set_axis_off()</span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>boxes <span class="op">=</span> {</span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">"population"</span>: (<span class="fl">0.07</span>, <span class="fl">0.64</span>, <span class="fl">0.19</span>, <span class="fl">0.14</span>, <span class="st">"总体企业</span><span class="ch">\n</span><span class="st">含获得贷款与未获得贷款企业"</span>),</span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>    <span class="st">"selection"</span>: (<span class="fl">0.41</span>, <span class="fl">0.64</span>, <span class="fl">0.18</span>, <span class="fl">0.14</span>, <span class="st">"选择方程</span><span class="ch">\n</span><span class="st">是否获得银行贷款"</span>),</span>
-<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>    <span class="st">"selected"</span>: (<span class="fl">0.74</span>, <span class="fl">0.44</span>, <span class="fl">0.17</span>, <span class="fl">0.12</span>, <span class="st">"loan = 1</span><span class="ch">\n</span><span class="st">贷款利率可观测"</span>),</span>
-<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>    <span class="st">"unselected"</span>: (<span class="fl">0.74</span>, <span class="fl">0.76</span>, <span class="fl">0.17</span>, <span class="fl">0.12</span>, <span class="st">"loan = 0</span><span class="ch">\n</span><span class="st">贷款利率缺失"</span>),</span>
-<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>    <span class="st">"outcome"</span>: (<span class="fl">0.41</span>, <span class="fl">0.20</span>, <span class="fl">0.18</span>, <span class="fl">0.14</span>, <span class="st">"结果方程</span><span class="ch">\n</span><span class="st">贷款利率水平"</span>)</span>
-<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> key, (x, y, w, h, text) <span class="kw">in</span> boxes.items():</span>
-<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>    box <span class="op">=</span> FancyBboxPatch(</span>
-<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>        (x, y), w, h,</span>
-<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>        boxstyle<span class="op">=</span><span class="st">"round,pad=0.02,rounding_size=0.025"</span>,</span>
-<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>        linewidth<span class="op">=</span><span class="fl">1.2</span>,</span>
-<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>        edgecolor<span class="op">=</span><span class="st">"black"</span>,</span>
-<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>        facecolor<span class="op">=</span><span class="st">"white"</span></span>
-<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a>    ax.add_patch(box)</span>
-<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a>    ax.text(x <span class="op">+</span> w<span class="op">/</span><span class="dv">2</span>, y <span class="op">+</span> h<span class="op">/</span><span class="dv">2</span>, text, ha<span class="op">=</span><span class="st">"center"</span>, va<span class="op">=</span><span class="st">"center"</span>, fontsize<span class="op">=</span><span class="dv">11</span>)</span>
-<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a>arrows <span class="op">=</span> [</span>
-<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a>    ((<span class="fl">0.28</span>, <span class="fl">0.71</span>), (<span class="fl">0.39</span>, <span class="fl">0.71</span>)),</span>
-<span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a>    ((<span class="fl">0.62</span>, <span class="fl">0.71</span>), (<span class="fl">0.72</span>, <span class="fl">0.83</span>)),</span>
-<span id="cb5-30"><a href="#cb5-30" aria-hidden="true" tabindex="-1"></a>    ((<span class="fl">0.62</span>, <span class="fl">0.68</span>), (<span class="fl">0.72</span>, <span class="fl">0.51</span>)),</span>
-<span id="cb5-31"><a href="#cb5-31" aria-hidden="true" tabindex="-1"></a>    ((<span class="fl">0.718</span>, <span class="fl">0.45</span>), (<span class="fl">0.51</span>, <span class="fl">0.36</span>)),</span>
-<span id="cb5-32"><a href="#cb5-32" aria-hidden="true" tabindex="-1"></a>]</span>
-<span id="cb5-33"><a href="#cb5-33" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> start, end <span class="kw">in</span> arrows:</span>
-<span id="cb5-34"><a href="#cb5-34" aria-hidden="true" tabindex="-1"></a>    ax.add_patch(FancyArrowPatch(start, end, arrowstyle<span class="op">=</span><span class="st">"-&gt;"</span>, mutation_scale<span class="op">=</span><span class="dv">16</span>, linewidth<span class="op">=</span><span class="fl">1.2</span>))</span>
-<span id="cb5-35"><a href="#cb5-35" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-36"><a href="#cb5-36" aria-hidden="true" tabindex="-1"></a>ax.text(</span>
-<span id="cb5-37"><a href="#cb5-37" aria-hidden="true" tabindex="-1"></a>    <span class="fl">0.05</span>, <span class="fl">0.30</span>,</span>
-<span id="cb5-38"><a href="#cb5-38" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Heckman 的核心：</span><span class="ch">\n</span><span class="st">结果变量不是对所有样本都可观测。</span><span class="ch">\n</span><span class="st">只有进入 loan = 1 的样本，</span><span class="ch">\n</span><span class="st">才有贷款利率 rate。"</span>,</span>
-<span id="cb5-39"><a href="#cb5-39" aria-hidden="true" tabindex="-1"></a>    fontsize<span class="op">=</span><span class="dv">11</span>, ha<span class="op">=</span><span class="st">"left"</span>, va<span class="op">=</span><span class="st">"center"</span></span>
-<span id="cb5-40"><a href="#cb5-40" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb5-41"><a href="#cb5-41" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-42"><a href="#cb5-42" aria-hidden="true" tabindex="-1"></a>fig.tight_layout()</span>
-<span id="cb5-43"><a href="#cb5-43" aria-hidden="true" tabindex="-1"></a>fig.savefig(<span class="st">"./figs/limit_dep_heckman_fig01_selection_mechanism.png"</span>, bbox_inches<span class="op">=</span><span class="st">"tight"</span>)</span>
-<span id="cb5-44"><a href="#cb5-44" aria-hidden="true" tabindex="-1"></a>plt.show()</span>
-<span id="cb5-45"><a href="#cb5-45" aria-hidden="true" tabindex="-1"></a>plt.close(fig)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="56cc5c76" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-04-29T14:48:26.662600Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-04-29T14:48:26.662408Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-04-29T14:48:26.668163Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-04-29T14:48:26.666943Z&quot;}" data-execution_count="59">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> add_box(ax, xy, text, width<span class="op">=</span><span class="fl">2.8</span>, height<span class="op">=</span><span class="fl">0.72</span>, fc<span class="op">=</span><span class="st">"#F3F8FF"</span>, ec<span class="op">=</span><span class="st">"#4C78A8"</span>,</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>            fontsize<span class="op">=</span><span class="dv">12</span>, lw<span class="op">=</span><span class="fl">1.4</span>, dashed<span class="op">=</span><span class="va">False</span>):</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 在流程图中添加圆角方框</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    x, y <span class="op">=</span> xy</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    box <span class="op">=</span> FancyBboxPatch(</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>        (x <span class="op">-</span> width <span class="op">/</span> <span class="dv">2</span>, y <span class="op">-</span> height <span class="op">/</span> <span class="dv">2</span>), width, height,</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>        boxstyle<span class="op">=</span><span class="st">"round,pad=0.02,rounding_size=0.12"</span>,</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>        fc<span class="op">=</span>fc, ec<span class="op">=</span>ec, lw<span class="op">=</span>lw, linestyle<span class="op">=</span><span class="st">"--"</span> <span class="cf">if</span> dashed <span class="cf">else</span> <span class="st">"-"</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>    ax.add_patch(box)</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>    ax.text(</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>        x, y, text, ha<span class="op">=</span><span class="st">"center"</span>, va<span class="op">=</span><span class="st">"center"</span>,</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>        fontsize<span class="op">=</span>fontsize, color<span class="op">=</span><span class="st">"#111111"</span>, linespacing<span class="op">=</span><span class="fl">1.2</span></span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> box</span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> add_arrow(ax, start, end, color<span class="op">=</span><span class="st">"#333333"</span>, lw<span class="op">=</span><span class="fl">1.8</span>):</span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 在流程图中添加箭头</span></span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>    ax.add_patch(FancyArrowPatch(</span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>        start, end, arrowstyle<span class="op">=</span><span class="st">"-|&gt;"</span>, mutation_scale<span class="op">=</span><span class="dv">14</span>,</span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>        lw<span class="op">=</span>lw, color<span class="op">=</span>color, shrinkA<span class="op">=</span><span class="dv">5</span>, shrinkB<span class="op">=</span><span class="dv">5</span>,</span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>        connectionstyle<span class="op">=</span><span class="st">"arc3"</span></span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>    ))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="db349ce7" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-04-29T14:48:26.670771Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-04-29T14:48:26.670576Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-04-29T14:48:27.339232Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-04-29T14:48:27.337586Z&quot;}" data-execution_count="60">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 图 1：Heckman 选择模型的观测机制</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="fl">5.8</span>))</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>ax.set_xlim(<span class="dv">0</span>, <span class="dv">10</span>)</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>ax.set_ylim(<span class="dv">0</span>, <span class="dv">6</span>)</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>ax.axis(<span class="st">"off"</span>)</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="co"># 将横向、纵向间距压缩为原来的 80%</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>b_firm <span class="op">=</span> add_box(</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>    ax, (<span class="fl">2.44</span>, <span class="fl">5.0</span>), <span class="st">"企业信贷背景</span><span class="ch">\n</span><span class="st">Firm credit data"</span>,</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>    width<span class="op">=</span><span class="fl">2.15</span>, height<span class="op">=</span><span class="fl">0.72</span>, fc<span class="op">=</span><span class="st">"#EAF4FF"</span>, ec<span class="op">=</span><span class="st">"#4C78A8"</span>, fontsize<span class="op">=</span><span class="dv">11</span></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>b_select <span class="op">=</span> add_box(</span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>    ax, (<span class="fl">5.0</span>, <span class="fl">5.0</span>), <span class="st">"是否获得贷款？</span><span class="ch">\n</span><span class="st">$D_i=1$"</span>,</span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>    width<span class="op">=</span><span class="fl">1.95</span>, height<span class="op">=</span><span class="fl">0.72</span>, fc<span class="op">=</span><span class="st">"#FFF6DD"</span>, ec<span class="op">=</span><span class="st">"#D89C00"</span>, fontsize<span class="op">=</span><span class="dv">11</span></span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>b_amt <span class="op">=</span> add_box(</span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>    ax, (<span class="fl">7.56</span>, <span class="fl">5.0</span>), <span class="st">"贷款金额</span><span class="ch">\n</span><span class="st">$B_i=0$ 或 $B_i&gt;0$"</span>,</span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>    width<span class="op">=</span><span class="fl">2.25</span>, height<span class="op">=</span><span class="fl">0.72</span>, fc<span class="op">=</span><span class="st">"#E9F7EF"</span>, ec<span class="op">=</span><span class="st">"#2E8B57"</span>, fontsize<span class="op">=</span><span class="dv">11</span></span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>b_rate <span class="op">=</span> add_box(</span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>    ax, (<span class="fl">5.0</span>, <span class="fl">3.72</span>), <span class="st">"研究贷款利率</span><span class="ch">\n</span><span class="st">$R_i$"</span>,</span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a>    width<span class="op">=</span><span class="fl">1.75</span>, height<span class="op">=</span><span class="fl">0.72</span>, fc<span class="op">=</span><span class="st">"#F0F0FF"</span>, ec<span class="op">=</span><span class="st">"#6F63B6"</span>, fontsize<span class="op">=</span><span class="dv">11</span></span>
+<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a>b_noloan <span class="op">=</span> add_box(</span>
+<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a>    ax, (<span class="fl">3.0</span>, <span class="fl">2.60</span>), <span class="st">"未贷款企业</span><span class="ch">\n</span><span class="st">$R_i$ 不可观测"</span>,</span>
+<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a>    width<span class="op">=</span><span class="fl">1.95</span>, height<span class="op">=</span><span class="fl">0.76</span>, fc<span class="op">=</span><span class="st">"#FDEEEE"</span>, ec<span class="op">=</span><span class="st">"#C95C5C"</span>, fontsize<span class="op">=</span><span class="dv">11</span></span>
+<span id="cb6-27"><a href="#cb6-27" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb6-28"><a href="#cb6-28" aria-hidden="true" tabindex="-1"></a>b_loaned <span class="op">=</span> add_box(</span>
+<span id="cb6-29"><a href="#cb6-29" aria-hidden="true" tabindex="-1"></a>    ax, (<span class="fl">7.0</span>, <span class="fl">2.60</span>), <span class="st">"贷款企业</span><span class="ch">\n</span><span class="st">观测到 $R_i$"</span>,</span>
+<span id="cb6-30"><a href="#cb6-30" aria-hidden="true" tabindex="-1"></a>    width<span class="op">=</span><span class="fl">1.8</span>, height<span class="op">=</span><span class="fl">0.76</span>, fc<span class="op">=</span><span class="st">"#E9F7EF"</span>, ec<span class="op">=</span><span class="st">"#2E8B57"</span>, fontsize<span class="op">=</span><span class="dv">11</span></span>
+<span id="cb6-31"><a href="#cb6-31" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb6-32"><a href="#cb6-32" aria-hidden="true" tabindex="-1"></a>b_heck <span class="op">=</span> add_box(</span>
+<span id="cb6-33"><a href="#cb6-33" aria-hidden="true" tabindex="-1"></a>    ax, (<span class="fl">5.0</span>, <span class="fl">1.56</span>), <span class="st">"Heckman selection</span><span class="ch">\n</span><span class="st">修正选择性观测"</span>,</span>
+<span id="cb6-34"><a href="#cb6-34" aria-hidden="true" tabindex="-1"></a>    width<span class="op">=</span><span class="fl">2.55</span>, height<span class="op">=</span><span class="fl">0.76</span>, fc<span class="op">=</span><span class="st">"#EDF7F8"</span>, ec<span class="op">=</span><span class="st">"#1B8A8F"</span>, fontsize<span class="op">=</span><span class="dv">11</span></span>
+<span id="cb6-35"><a href="#cb6-35" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb6-36"><a href="#cb6-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-37"><a href="#cb6-37" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> anchor(box, xfrac, yfrac, dx<span class="op">=</span><span class="fl">0.0</span>, dy<span class="op">=</span><span class="fl">0.0</span>):</span>
+<span id="cb6-38"><a href="#cb6-38" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> (</span>
+<span id="cb6-39"><a href="#cb6-39" aria-hidden="true" tabindex="-1"></a>        box.get_x() <span class="op">+</span> box.get_width() <span class="op">*</span> xfrac <span class="op">+</span> dx,</span>
+<span id="cb6-40"><a href="#cb6-40" aria-hidden="true" tabindex="-1"></a>        box.get_y() <span class="op">+</span> box.get_height() <span class="op">*</span> yfrac <span class="op">+</span> dy</span>
+<span id="cb6-41"><a href="#cb6-41" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb6-42"><a href="#cb6-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-43"><a href="#cb6-43" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> add_arrow_tight(ax, start, end, color<span class="op">=</span><span class="st">"#333333"</span>, lw<span class="op">=</span><span class="fl">1.8</span>):</span>
+<span id="cb6-44"><a href="#cb6-44" aria-hidden="true" tabindex="-1"></a>    ax.add_patch(FancyArrowPatch(</span>
+<span id="cb6-45"><a href="#cb6-45" aria-hidden="true" tabindex="-1"></a>        start, end, arrowstyle<span class="op">=</span><span class="st">"-|&gt;"</span>, mutation_scale<span class="op">=</span><span class="dv">14</span>,</span>
+<span id="cb6-46"><a href="#cb6-46" aria-hidden="true" tabindex="-1"></a>        lw<span class="op">=</span>lw, color<span class="op">=</span>color, shrinkA<span class="op">=</span><span class="dv">0</span>, shrinkB<span class="op">=</span><span class="dv">0</span>,</span>
+<span id="cb6-47"><a href="#cb6-47" aria-hidden="true" tabindex="-1"></a>        connectionstyle<span class="op">=</span><span class="st">"arc3"</span></span>
+<span id="cb6-48"><a href="#cb6-48" aria-hidden="true" tabindex="-1"></a>    ))</span>
+<span id="cb6-49"><a href="#cb6-49" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-50"><a href="#cb6-50" aria-hidden="true" tabindex="-1"></a><span class="co"># 箭头尽量贴近方框边缘</span></span>
+<span id="cb6-51"><a href="#cb6-51" aria-hidden="true" tabindex="-1"></a>gap <span class="op">=</span> <span class="fl">0.015</span></span>
+<span id="cb6-52"><a href="#cb6-52" aria-hidden="true" tabindex="-1"></a>add_arrow_tight(ax, anchor(b_firm, <span class="fl">1.0</span>, <span class="fl">0.5</span>, dx<span class="op">=</span>gap), anchor(b_select, <span class="fl">0.0</span>, <span class="fl">0.5</span>, dx<span class="op">=-</span>gap))</span>
+<span id="cb6-53"><a href="#cb6-53" aria-hidden="true" tabindex="-1"></a>add_arrow_tight(ax, anchor(b_select, <span class="fl">1.0</span>, <span class="fl">0.5</span>, dx<span class="op">=</span>gap), anchor(b_amt, <span class="fl">0.0</span>, <span class="fl">0.5</span>, dx<span class="op">=-</span>gap))</span>
+<span id="cb6-54"><a href="#cb6-54" aria-hidden="true" tabindex="-1"></a>add_arrow_tight(ax, anchor(b_select, <span class="fl">0.5</span>, <span class="fl">0.0</span>, dy<span class="op">=-</span>gap), anchor(b_rate, <span class="fl">0.5</span>, <span class="fl">1.0</span>, dy<span class="op">=</span>gap))</span>
+<span id="cb6-55"><a href="#cb6-55" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-56"><a href="#cb6-56" aria-hidden="true" tabindex="-1"></a>add_arrow_tight(ax, anchor(b_rate, <span class="fl">0.20</span>, <span class="fl">0.0</span>, dx<span class="op">=-</span><span class="fl">0.02</span>, dy<span class="op">=-</span>gap), anchor(b_noloan, <span class="fl">0.80</span>, <span class="fl">1.0</span>, dx<span class="op">=</span><span class="fl">0.02</span>, dy<span class="op">=</span>gap))</span>
+<span id="cb6-57"><a href="#cb6-57" aria-hidden="true" tabindex="-1"></a>add_arrow_tight(ax, anchor(b_rate, <span class="fl">0.80</span>, <span class="fl">0.0</span>, dx<span class="op">=</span><span class="fl">0.02</span>, dy<span class="op">=-</span>gap), anchor(b_loaned, <span class="fl">0.20</span>, <span class="fl">1.0</span>, dx<span class="op">=-</span><span class="fl">0.02</span>, dy<span class="op">=</span>gap))</span>
+<span id="cb6-58"><a href="#cb6-58" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-59"><a href="#cb6-59" aria-hidden="true" tabindex="-1"></a>add_arrow_tight(ax, anchor(b_noloan, <span class="fl">0.72</span>, <span class="fl">0.0</span>, dx<span class="op">=</span><span class="fl">0.02</span>, dy<span class="op">=-</span>gap), anchor(b_heck, <span class="fl">0.18</span>, <span class="fl">1.0</span>, dx<span class="op">=-</span><span class="fl">0.02</span>, dy<span class="op">=</span>gap))</span>
+<span id="cb6-60"><a href="#cb6-60" aria-hidden="true" tabindex="-1"></a>add_arrow_tight(ax, anchor(b_loaned, <span class="fl">0.28</span>, <span class="fl">0.0</span>, dx<span class="op">=-</span><span class="fl">0.02</span>, dy<span class="op">=-</span>gap), anchor(b_heck, <span class="fl">0.82</span>, <span class="fl">1.0</span>, dx<span class="op">=</span><span class="fl">0.02</span>, dy<span class="op">=</span>gap))</span>
+<span id="cb6-61"><a href="#cb6-61" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-62"><a href="#cb6-62" aria-hidden="true" tabindex="-1"></a><span class="co"># ax.text(</span></span>
+<span id="cb6-63"><a href="#cb6-63" aria-hidden="true" tabindex="-1"></a><span class="co">#     0.2, 0.1,</span></span>
+<span id="cb6-64"><a href="#cb6-64" aria-hidden="true" tabindex="-1"></a><span class="co">#     "核心区别：贷款金额可以为 0；未贷款企业的贷款利率不是 0，而是 missing。",</span></span>
+<span id="cb6-65"><a href="#cb6-65" aria-hidden="true" tabindex="-1"></a><span class="co">#     fontsize=11, color="#333333"</span></span>
+<span id="cb6-66"><a href="#cb6-66" aria-hidden="true" tabindex="-1"></a><span class="co"># )</span></span>
+<span id="cb6-67"><a href="#cb6-67" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-68"><a href="#cb6-68" aria-hidden="true" tabindex="-1"></a>save_fig(fig, <span class="st">"limit_dep_heckman_fig01_selection_mechanism"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="06_heckman_codes_files/figure-html/cell-4-output-1.png" class="img-fluid figure-img"></p>
+<p><img src="06_heckman_codes_files/figure-html/cell-6-output-1.png" class="img-fluid figure-img"></p>
 </figure>
 </div>
 </div>
 </div>
-<div id="013914cb" class="cell" data-execution_count="46">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ============================================================</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="co"># 图 2：获得贷款企业与未获得贷款企业的特征差异</span></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="co"># ============================================================</span></span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>plot_vars <span class="op">=</span> [<span class="st">"size"</span>, <span class="st">"cash"</span>, <span class="st">"lev"</span>, <span class="st">"profit"</span>, <span class="st">"collateral"</span>, <span class="st">"bank_access"</span>]</span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>labels <span class="op">=</span> [<span class="st">"企业规模"</span>, <span class="st">"现金持有"</span>, <span class="st">"杠杆率"</span>, <span class="st">"盈利能力"</span>, <span class="st">"抵押品"</span>, <span class="st">"银行可得性"</span>]</span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>means <span class="op">=</span> df.groupby(<span class="st">"loan"</span>)[plot_vars].mean().T</span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>means.index <span class="op">=</span> labels</span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="fl">9.2</span>, <span class="fl">4.8</span>))</span>
-<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> np.arange(<span class="bu">len</span>(labels))</span>
-<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>width <span class="op">=</span> <span class="fl">0.34</span></span>
-<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>ax.bar(x <span class="op">-</span> width<span class="op">/</span><span class="dv">2</span>, means[<span class="dv">0</span>].values, width, label<span class="op">=</span><span class="st">"未获得贷款"</span>)</span>
-<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>ax.bar(x <span class="op">+</span> width<span class="op">/</span><span class="dv">2</span>, means[<span class="dv">1</span>].values, width, label<span class="op">=</span><span class="st">"获得贷款"</span>)</span>
-<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>ax.axhline(<span class="dv">0</span>, linewidth<span class="op">=</span><span class="dv">1</span>)</span>
-<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>ax.set_xticks(x)</span>
-<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>ax.set_xticklabels(labels, rotation<span class="op">=</span><span class="dv">0</span>)</span>
-<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="st">"标准化均值"</span>)</span>
-<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">"获得贷款企业与未获得贷款企业的特征差异"</span>)</span>
-<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>ax.legend(frameon<span class="op">=</span><span class="va">False</span>, loc<span class="op">=</span><span class="st">"upper left"</span>)</span>
-<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>fig.tight_layout()</span>
-<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a>fig.savefig(<span class="st">"./figs/limit_dep_heckman_fig02_selected_vs_unselected.png"</span>, bbox_inches<span class="op">=</span><span class="st">"tight"</span>)</span>
-<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a>fig.show()</span>
-<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a>plt.close(fig)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="a6e6a568" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-04-29T14:48:27.342359Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-04-29T14:48:27.342118Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-04-29T14:48:27.828647Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-04-29T14:48:27.827007Z&quot;}" data-execution_count="61">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 图 2：贷款金额中的 0 与贷款利率中的 missing</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">11</span>, <span class="fl">4.2</span>))</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>ax <span class="op">=</span> axes[<span class="dv">0</span>]</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>bins <span class="op">=</span> np.linspace(<span class="dv">0</span>, np.percentile(df[<span class="st">"loan_amt"</span>], <span class="dv">95</span>), <span class="dv">40</span>)</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>ax.hist(df[<span class="st">"loan_amt"</span>], bins<span class="op">=</span>bins, alpha<span class="op">=</span><span class="fl">0.85</span>)</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>ax.axvline(<span class="dv">0</span>, color<span class="op">=</span><span class="st">"k"</span>, lw<span class="op">=</span><span class="fl">1.2</span>)</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">"贷款金额：未贷款企业记为 0"</span>)</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">"loan_amt"</span>)</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="st">"样本数"</span>)</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>ax <span class="op">=</span> axes[<span class="dv">1</span>]</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>ax.hist(obs[<span class="st">"loan_rate"</span>], bins<span class="op">=</span><span class="dv">35</span>, alpha<span class="op">=</span><span class="fl">0.85</span>)</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">"贷款利率：只在贷款企业中可观测"</span>)</span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">"loan_rate"</span>)</span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="st">"样本数"</span>)</span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>fig.suptitle(<span class="st">"同一信贷背景下，0 与 missing 的含义不同"</span>, fontsize<span class="op">=</span><span class="dv">14</span>, y<span class="op">=</span><span class="fl">1.02</span>)</span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>save_fig(fig, <span class="st">"limit_dep_heckman_fig02_zero_vs_missing"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="06_heckman_codes_files/figure-html/cell-7-output-1.png" class="img-fluid figure-img"></p>
+</figure>
 </div>
-<div id="1aa3f492" class="cell" data-execution_count="32">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ============================================================</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="co"># 图 3：潜在贷款利率与观测贷款利率</span></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="co"># ============================================================</span></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="fl">8.8</span>, <span class="fl">4.8</span>))</span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>ax.hist(df[<span class="st">"rate_latent"</span>], bins<span class="op">=</span><span class="dv">35</span>, alpha<span class="op">=</span><span class="fl">0.45</span>, density<span class="op">=</span><span class="va">True</span>, label<span class="op">=</span><span class="st">"潜在贷款利率 rate* (所有企业)"</span>)</span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>ax.hist(df.loc[df[<span class="st">"loan"</span>] <span class="op">==</span> <span class="dv">1</span>, <span class="st">"rate"</span>], bins<span class="op">=</span><span class="dv">35</span>, alpha<span class="op">=</span><span class="fl">0.65</span>, density<span class="op">=</span><span class="va">True</span>, label<span class="op">=</span><span class="st">"观测贷款利率 rate (loan = 1)"</span>)</span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">"贷款利率 (百分点)"</span>)</span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="st">"密度"</span>)</span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">"潜在结果与可观测结果的分布差异"</span>)</span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>ax.legend(frameon<span class="op">=</span><span class="va">False</span>)</span>
-<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>fig.tight_layout()</span>
-<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>fig.savefig(<span class="st">"./figs/limit_dep_heckman_fig03_latent_observed_rate.png"</span>, bbox_inches<span class="op">=</span><span class="st">"tight"</span>)</span>
-<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>fig.show()</span>
-<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>plt.close(fig)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="1432de95" class="cell" data-execution_count="33">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ============================================================</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="co"># 图 4：Inverse Mills ratio 与贷款利率</span></span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="co"># ============================================================</span></span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>Z <span class="op">=</span> sm.add_constant(df[[<span class="st">"size"</span>, <span class="st">"cash"</span>, <span class="st">"lev"</span>, <span class="st">"profit"</span>, <span class="st">"collateral"</span>, <span class="st">"bank_access"</span>, <span class="st">"credit_window"</span>]])</span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>probit_res <span class="op">=</span> sm.Probit(df[<span class="st">"loan"</span>], Z).fit(disp<span class="op">=</span><span class="va">False</span>)</span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>xb <span class="op">=</span> probit_res.predict(linear<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>df[<span class="st">"imr"</span>] <span class="op">=</span> norm.pdf(xb) <span class="op">/</span> np.clip(norm.cdf(xb), <span class="fl">1e-8</span>, <span class="dv">1</span>)</span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>selected <span class="op">=</span> df[df[<span class="st">"loan"</span>] <span class="op">==</span> <span class="dv">1</span>].copy()</span>
-<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="fl">8.8</span>, <span class="fl">4.8</span>))</span>
-<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>ax.scatter(selected[<span class="st">"imr"</span>], selected[<span class="st">"rate"</span>], s<span class="op">=</span><span class="dv">15</span>, alpha<span class="op">=</span><span class="fl">0.35</span>)</span>
-<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>coef <span class="op">=</span> np.polyfit(selected[<span class="st">"imr"</span>], selected[<span class="st">"rate"</span>], deg<span class="op">=</span><span class="dv">1</span>)</span>
-<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>xline <span class="op">=</span> np.linspace(selected[<span class="st">"imr"</span>].<span class="bu">min</span>(), selected[<span class="st">"imr"</span>].<span class="bu">max</span>(), <span class="dv">100</span>)</span>
-<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>ax.plot(xline, coef[<span class="dv">0</span>] <span class="op">*</span> xline <span class="op">+</span> coef[<span class="dv">1</span>], linewidth<span class="op">=</span><span class="dv">2</span>)</span>
-<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">"Inverse Mills ratio"</span>)</span>
-<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="st">"贷款利率 (百分点)"</span>)</span>
-<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">"选择修正项与观测贷款利率"</span>)</span>
-<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a>fig.tight_layout()</span>
-<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a>fig.savefig(<span class="st">"./figs/limit_dep_heckman_fig04_imr_rate.png"</span>, bbox_inches<span class="op">=</span><span class="st">"tight"</span>)</span>
-<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a>fig.show()</span>
-<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a>plt.close(fig)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="d598babc" class="cell" data-execution_count="34">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ============================================================</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="co"># 图 5：OLS 与 Heckman 两步法的系数对比</span></span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="co"># ============================================================</span></span>
+<div id="aaabe117" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-04-29T14:48:27.832410Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-04-29T14:48:27.832119Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-04-29T14:48:28.206029Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-04-29T14:48:28.204358Z&quot;}" data-execution_count="62">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 图 3：选择性观测与样本构成</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="fl">5.0</span>))</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>sample <span class="op">=</span> df.sample(<span class="dv">1000</span>, random_state<span class="op">=</span><span class="dv">12</span>)</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>ax.scatter(</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>    sample[<span class="st">"risk"</span>], sample[<span class="st">"loan_rate"</span>].fillna(np.nan),</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>    s<span class="op">=</span><span class="dv">18</span>, alpha<span class="op">=</span><span class="fl">0.6</span>, label<span class="op">=</span><span class="st">"观测到贷款利率"</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>ax.scatter(</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>    sample.loc[sample[<span class="st">"loan"</span>] <span class="op">==</span> <span class="dv">0</span>, <span class="st">"risk"</span>],</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>    np.full((sample[<span class="st">"loan"</span>] <span class="op">==</span> <span class="dv">0</span>).<span class="bu">sum</span>(), <span class="fl">1.6</span>),</span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>    s<span class="op">=</span><span class="dv">12</span>, alpha<span class="op">=</span><span class="fl">0.35</span>, label<span class="op">=</span><span class="st">"未贷款：利率不可观测"</span></span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">"risk"</span>)</span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="st">"loan_rate 或 missing 标记"</span>)</span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">"只在贷款样本中观察贷款利率会改变样本构成"</span>)</span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>ax.legend(frameon<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>ax.text(<span class="op">-</span><span class="fl">0.5</span>, <span class="fl">1.75</span>, <span class="st">"未贷款企业不应被当成 rate=0"</span>, fontsize<span class="op">=</span><span class="dv">10</span>)</span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a>save_fig(fig, <span class="st">"limit_dep_heckman_fig03_selected_sample_bias"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="06_heckman_codes_files/figure-html/cell-8-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<div id="7c79ab0c" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-04-29T14:48:28.208901Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-04-29T14:48:28.208662Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-04-29T14:48:28.671194Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-04-29T14:48:28.669719Z&quot;}" data-execution_count="63">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 图 4：IMR 曲线</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>a <span class="op">=</span> np.linspace(<span class="op">-</span><span class="dv">3</span>, <span class="dv">3</span>, <span class="dv">300</span>)</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>lambda_pos <span class="op">=</span> norm.pdf(a) <span class="op">/</span> norm.cdf(a)</span>
 <span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>selected <span class="op">=</span> df[df[<span class="st">"loan"</span>] <span class="op">==</span> <span class="dv">1</span>].copy()</span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> selected[<span class="st">"rate"</span>]</span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>X_base <span class="op">=</span> sm.add_constant(selected[[<span class="st">"size"</span>, <span class="st">"cash"</span>, <span class="st">"lev"</span>, <span class="st">"profit"</span>, <span class="st">"collateral"</span>]])</span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>ols_res <span class="op">=</span> sm.OLS(y, X_base).fit(cov_type<span class="op">=</span><span class="st">"HC1"</span>)</span>
-<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>X_heck <span class="op">=</span> sm.add_constant(selected[[<span class="st">"size"</span>, <span class="st">"cash"</span>, <span class="st">"lev"</span>, <span class="st">"profit"</span>, <span class="st">"collateral"</span>, <span class="st">"imr"</span>]])</span>
-<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>heck2_res <span class="op">=</span> sm.OLS(y, X_heck).fit(cov_type<span class="op">=</span><span class="st">"HC1"</span>)</span>
-<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>coef_vars <span class="op">=</span> [<span class="st">"size"</span>, <span class="st">"cash"</span>, <span class="st">"lev"</span>, <span class="st">"profit"</span>, <span class="st">"collateral"</span>]</span>
-<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>coef_df <span class="op">=</span> pd.DataFrame({</span>
-<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>    <span class="st">"变量"</span>: coef_vars,</span>
-<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>    <span class="st">"OLS"</span>: [ols_res.params[v] <span class="cf">for</span> v <span class="kw">in</span> coef_vars],</span>
-<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Heckman two-step"</span>: [heck2_res.params[v] <span class="cf">for</span> v <span class="kw">in</span> coef_vars]</span>
-<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a>})</span>
-<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="fl">8.8</span>, <span class="fl">4.8</span>))</span>
-<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> np.arange(<span class="bu">len</span>(coef_vars))</span>
-<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a>width <span class="op">=</span> <span class="fl">0.34</span></span>
-<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a>ax.bar(x <span class="op">-</span> width<span class="op">/</span><span class="dv">2</span>, coef_df[<span class="st">"OLS"</span>], width, label<span class="op">=</span><span class="st">"OLS selected sample"</span>)</span>
-<span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a>ax.bar(x <span class="op">+</span> width<span class="op">/</span><span class="dv">2</span>, coef_df[<span class="st">"Heckman two-step"</span>], width, label<span class="op">=</span><span class="st">"Heckman two-step"</span>)</span>
-<span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a>ax.axhline(<span class="dv">0</span>, linewidth<span class="op">=</span><span class="dv">1</span>)</span>
-<span id="cb9-26"><a href="#cb9-26" aria-hidden="true" tabindex="-1"></a>ax.set_xticks(x)</span>
-<span id="cb9-27"><a href="#cb9-27" aria-hidden="true" tabindex="-1"></a>ax.set_xticklabels([<span class="st">"size"</span>, <span class="st">"cash"</span>, <span class="st">"lev"</span>, <span class="st">"profit"</span>, <span class="st">"collateral"</span>])</span>
-<span id="cb9-28"><a href="#cb9-28" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="st">"系数估计"</span>)</span>
-<span id="cb9-29"><a href="#cb9-29" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">"只用被选择样本的 OLS 与 Heckman 两步法对比"</span>)</span>
-<span id="cb9-30"><a href="#cb9-30" aria-hidden="true" tabindex="-1"></a>ax.legend(frameon<span class="op">=</span><span class="va">False</span>)</span>
-<span id="cb9-31"><a href="#cb9-31" aria-hidden="true" tabindex="-1"></a>fig.tight_layout()</span>
-<span id="cb9-32"><a href="#cb9-32" aria-hidden="true" tabindex="-1"></a>fig.savefig(<span class="st">"./figs/limit_dep_heckman_fig05_ols_heckman_compare.png"</span>, bbox_inches<span class="op">=</span><span class="st">"tight"</span>)</span>
-<span id="cb9-33"><a href="#cb9-33" aria-hidden="true" tabindex="-1"></a>fig.show()</span>
-<span id="cb9-34"><a href="#cb9-34" aria-hidden="true" tabindex="-1"></a>plt.close(fig)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div id="aa390dcc" class="cell" data-execution_count="35">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ============================================================</span></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="co"># 图 6：排他性变量的设定逻辑</span></span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="co"># ============================================================</span></span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="fl">9.4</span>, <span class="fl">5.4</span>))</span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>ax.set_axis_off()</span>
-<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>ax.set_xlim(<span class="dv">0</span>, <span class="dv">1</span>)</span>
-<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>ax.set_ylim(<span class="dv">0</span>, <span class="dv">1</span>)</span>
-<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>items <span class="op">=</span> {</span>
-<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>    <span class="st">"excl"</span>: (<span class="fl">0.39</span>, <span class="fl">0.79</span>, <span class="fl">0.22</span>, <span class="fl">0.13</span>, <span class="st">"排他性变量</span><span class="ch">\n</span><span class="st">bank_access / credit_window"</span>),</span>
-<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>    <span class="st">"select"</span>: (<span class="fl">0.14</span>, <span class="fl">0.49</span>, <span class="fl">0.24</span>, <span class="fl">0.14</span>, <span class="st">"选择方程</span><span class="ch">\n</span><span class="st">loan 是否进入样本"</span>),</span>
-<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>    <span class="st">"outcome"</span>: (<span class="fl">0.62</span>, <span class="fl">0.49</span>, <span class="fl">0.22</span>, <span class="fl">0.14</span>, <span class="st">"结果方程</span><span class="ch">\n</span><span class="st">rate 贷款利率"</span>),</span>
-<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>    <span class="st">"controls"</span>: (<span class="fl">0.33</span>, <span class="fl">0.18</span>, <span class="fl">0.34</span>, <span class="fl">0.14</span>, <span class="st">"共同控制变量</span><span class="ch">\n</span><span class="st">size, cash, lev, profit, collateral"</span>),</span>
-<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a>box_styles <span class="op">=</span> {</span>
-<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a>    <span class="st">"excl"</span>: {<span class="st">"facecolor"</span>: <span class="st">"#FDE7D9"</span>, <span class="st">"edgecolor"</span>: <span class="st">"#C96A28"</span>},</span>
-<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a>    <span class="st">"select"</span>: {<span class="st">"facecolor"</span>: <span class="st">"#E3F0FF"</span>, <span class="st">"edgecolor"</span>: <span class="st">"#4A78C2"</span>},</span>
-<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a>    <span class="st">"outcome"</span>: {<span class="st">"facecolor"</span>: <span class="st">"#E7F6E7"</span>, <span class="st">"edgecolor"</span>: <span class="st">"#4F8A4F"</span>},</span>
-<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a>    <span class="st">"controls"</span>: {<span class="st">"facecolor"</span>: <span class="st">"#F3E8FF"</span>, <span class="st">"edgecolor"</span>: <span class="st">"#7A5AA6"</span>},</span>
-<span id="cb10-22"><a href="#cb10-22" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb10-23"><a href="#cb10-23" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-24"><a href="#cb10-24" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> key, (x, y, w, h, text) <span class="kw">in</span> items.items():</span>
-<span id="cb10-25"><a href="#cb10-25" aria-hidden="true" tabindex="-1"></a>    style <span class="op">=</span> box_styles[key]</span>
-<span id="cb10-26"><a href="#cb10-26" aria-hidden="true" tabindex="-1"></a>    box <span class="op">=</span> FancyBboxPatch(</span>
-<span id="cb10-27"><a href="#cb10-27" aria-hidden="true" tabindex="-1"></a>        (x, y), w, h,</span>
-<span id="cb10-28"><a href="#cb10-28" aria-hidden="true" tabindex="-1"></a>        boxstyle<span class="op">=</span><span class="st">"round,pad=0.015,rounding_size=0.02"</span>,</span>
-<span id="cb10-29"><a href="#cb10-29" aria-hidden="true" tabindex="-1"></a>        linewidth<span class="op">=</span><span class="fl">1.3</span>,</span>
-<span id="cb10-30"><a href="#cb10-30" aria-hidden="true" tabindex="-1"></a>        edgecolor<span class="op">=</span>style[<span class="st">"edgecolor"</span>],</span>
-<span id="cb10-31"><a href="#cb10-31" aria-hidden="true" tabindex="-1"></a>        facecolor<span class="op">=</span>style[<span class="st">"facecolor"</span>]</span>
-<span id="cb10-32"><a href="#cb10-32" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb10-33"><a href="#cb10-33" aria-hidden="true" tabindex="-1"></a>    ax.add_patch(box)</span>
-<span id="cb10-34"><a href="#cb10-34" aria-hidden="true" tabindex="-1"></a>    ax.text(x <span class="op">+</span> w <span class="op">/</span> <span class="dv">2</span>, y <span class="op">+</span> h <span class="op">/</span> <span class="dv">2</span>, text, ha<span class="op">=</span><span class="st">"center"</span>, va<span class="op">=</span><span class="st">"center"</span>, fontsize<span class="op">=</span><span class="dv">11</span>)</span>
-<span id="cb10-35"><a href="#cb10-35" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-36"><a href="#cb10-36" aria-hidden="true" tabindex="-1"></a><span class="co"># 第一层 -&gt; 第二层</span></span>
-<span id="cb10-37"><a href="#cb10-37" aria-hidden="true" tabindex="-1"></a>ax.add_patch(FancyArrowPatch(</span>
-<span id="cb10-38"><a href="#cb10-38" aria-hidden="true" tabindex="-1"></a>    (<span class="fl">0.50</span>, <span class="fl">0.79</span>), (<span class="fl">0.26</span>, <span class="fl">0.63</span>),</span>
-<span id="cb10-39"><a href="#cb10-39" aria-hidden="true" tabindex="-1"></a>    arrowstyle<span class="op">=</span><span class="st">"-&gt;"</span>, mutation_scale<span class="op">=</span><span class="dv">16</span>, linewidth<span class="op">=</span><span class="fl">1.3</span>, color<span class="op">=</span><span class="st">"#444444"</span></span>
-<span id="cb10-40"><a href="#cb10-40" aria-hidden="true" tabindex="-1"></a>))</span>
-<span id="cb10-41"><a href="#cb10-41" aria-hidden="true" tabindex="-1"></a>ax.add_patch(FancyArrowPatch(</span>
-<span id="cb10-42"><a href="#cb10-42" aria-hidden="true" tabindex="-1"></a>    (<span class="fl">0.50</span>, <span class="fl">0.79</span>), (<span class="fl">0.73</span>, <span class="fl">0.63</span>),</span>
-<span id="cb10-43"><a href="#cb10-43" aria-hidden="true" tabindex="-1"></a>    arrowstyle<span class="op">=</span><span class="st">"-&gt;"</span>, mutation_scale<span class="op">=</span><span class="dv">16</span>, linewidth<span class="op">=</span><span class="fl">1.3</span>,</span>
-<span id="cb10-44"><a href="#cb10-44" aria-hidden="true" tabindex="-1"></a>    linestyle<span class="op">=</span><span class="st">"--"</span>, color<span class="op">=</span><span class="st">"#666666"</span></span>
-<span id="cb10-45"><a href="#cb10-45" aria-hidden="true" tabindex="-1"></a>))</span>
-<span id="cb10-46"><a href="#cb10-46" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-47"><a href="#cb10-47" aria-hidden="true" tabindex="-1"></a><span class="co"># 第三层 -&gt; 第二层</span></span>
-<span id="cb10-48"><a href="#cb10-48" aria-hidden="true" tabindex="-1"></a>ax.add_patch(FancyArrowPatch(</span>
-<span id="cb10-49"><a href="#cb10-49" aria-hidden="true" tabindex="-1"></a>    (<span class="fl">0.45</span>, <span class="fl">0.32</span>), (<span class="fl">0.26</span>, <span class="fl">0.49</span>),</span>
-<span id="cb10-50"><a href="#cb10-50" aria-hidden="true" tabindex="-1"></a>    arrowstyle<span class="op">=</span><span class="st">"-&gt;"</span>, mutation_scale<span class="op">=</span><span class="dv">16</span>, linewidth<span class="op">=</span><span class="fl">1.3</span>, color<span class="op">=</span><span class="st">"#444444"</span></span>
-<span id="cb10-51"><a href="#cb10-51" aria-hidden="true" tabindex="-1"></a>))</span>
-<span id="cb10-52"><a href="#cb10-52" aria-hidden="true" tabindex="-1"></a>ax.add_patch(FancyArrowPatch(</span>
-<span id="cb10-53"><a href="#cb10-53" aria-hidden="true" tabindex="-1"></a>    (<span class="fl">0.55</span>, <span class="fl">0.32</span>), (<span class="fl">0.73</span>, <span class="fl">0.49</span>),</span>
-<span id="cb10-54"><a href="#cb10-54" aria-hidden="true" tabindex="-1"></a>    arrowstyle<span class="op">=</span><span class="st">"-&gt;"</span>, mutation_scale<span class="op">=</span><span class="dv">16</span>, linewidth<span class="op">=</span><span class="fl">1.3</span>, color<span class="op">=</span><span class="st">"#444444"</span></span>
-<span id="cb10-55"><a href="#cb10-55" aria-hidden="true" tabindex="-1"></a>))</span>
-<span id="cb10-56"><a href="#cb10-56" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-57"><a href="#cb10-57" aria-hidden="true" tabindex="-1"></a>ax.text(</span>
-<span id="cb10-58"><a href="#cb10-58" aria-hidden="true" tabindex="-1"></a>    <span class="fl">0.08</span>, <span class="fl">0.72</span>,</span>
-<span id="cb10-59"><a href="#cb10-59" aria-hidden="true" tabindex="-1"></a>    <span class="st">"理想排他性：</span><span class="ch">\n</span><span class="st">排他性变量主要影响 selection。"</span>,</span>
-<span id="cb10-60"><a href="#cb10-60" aria-hidden="true" tabindex="-1"></a>    fontsize<span class="op">=</span><span class="fl">10.5</span>, ha<span class="op">=</span><span class="st">"left"</span>, va<span class="op">=</span><span class="st">"center"</span></span>
-<span id="cb10-61"><a href="#cb10-61" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb10-62"><a href="#cb10-62" aria-hidden="true" tabindex="-1"></a>ax.text(</span>
-<span id="cb10-63"><a href="#cb10-63" aria-hidden="true" tabindex="-1"></a>    <span class="fl">0.74</span>, <span class="fl">0.72</span>,</span>
-<span id="cb10-64"><a href="#cb10-64" aria-hidden="true" tabindex="-1"></a>    <span class="st">"虚线表示：</span><span class="ch">\n</span><span class="st">若直接影响 rate，</span><span class="ch">\n</span><span class="st">排他性假设会受质疑。"</span>,</span>
-<span id="cb10-65"><a href="#cb10-65" aria-hidden="true" tabindex="-1"></a>    fontsize<span class="op">=</span><span class="fl">10.5</span>, ha<span class="op">=</span><span class="st">"left"</span>, va<span class="op">=</span><span class="st">"center"</span></span>
-<span id="cb10-66"><a href="#cb10-66" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb10-67"><a href="#cb10-67" aria-hidden="true" tabindex="-1"></a>ax.text(</span>
-<span id="cb10-68"><a href="#cb10-68" aria-hidden="true" tabindex="-1"></a>    <span class="fl">0.50</span>, <span class="fl">0.08</span>,</span>
-<span id="cb10-69"><a href="#cb10-69" aria-hidden="true" tabindex="-1"></a>    <span class="st">"共同控制变量同时进入选择方程与结果方程。"</span>,</span>
-<span id="cb10-70"><a href="#cb10-70" aria-hidden="true" tabindex="-1"></a>    fontsize<span class="op">=</span><span class="fl">10.5</span>, ha<span class="op">=</span><span class="st">"center"</span>, va<span class="op">=</span><span class="st">"center"</span></span>
-<span id="cb10-71"><a href="#cb10-71" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb10-72"><a href="#cb10-72" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-73"><a href="#cb10-73" aria-hidden="true" tabindex="-1"></a>fig.tight_layout()</span>
-<span id="cb10-74"><a href="#cb10-74" aria-hidden="true" tabindex="-1"></a>fig.savefig(<span class="st">"./figs/limit_dep_heckman_fig06_exclusion_logic.png"</span>, bbox_inches<span class="op">=</span><span class="st">"tight"</span>)</span>
-<span id="cb10-75"><a href="#cb10-75" aria-hidden="true" tabindex="-1"></a>plt.show()</span>
-<span id="cb10-76"><a href="#cb10-76" aria-hidden="true" tabindex="-1"></a>plt.close(fig)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="fl">6.6</span>, <span class="fl">4.0</span>))</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>ax.plot(a, lambda_pos, lw<span class="op">=</span><span class="fl">2.2</span>)</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="vs">r"selection index $z_i'\gamma$"</span>)</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="vs">r"$\lambda(z_i'\gamma)=\phi(z_i'\gamma)/\Phi(z_i'\gamma)$"</span>)</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">"逆米尔斯比率：被选择样本中误差项的条件均值修正"</span>)</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>ax.annotate(</span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>    <span class="st">"越难被选择却被选中</span><span class="ch">\n</span><span class="st">未观测因素修正越大"</span>,</span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>    xy<span class="op">=</span>(<span class="op">-</span><span class="dv">2</span>, norm.pdf(<span class="op">-</span><span class="dv">2</span>) <span class="op">/</span> norm.cdf(<span class="op">-</span><span class="dv">2</span>)),</span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>    xytext<span class="op">=</span>(<span class="op">-</span><span class="dv">1</span>, <span class="fl">2.7</span>),</span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>    arrowprops<span class="op">=</span><span class="bu">dict</span>(arrowstyle<span class="op">=</span><span class="st">"-&gt;"</span>, lw<span class="op">=</span><span class="fl">1.2</span>),</span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>    fontsize<span class="op">=</span><span class="dv">10</span></span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a>ax.annotate(</span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a>    <span class="st">"选择概率较高</span><span class="ch">\n</span><span class="st">修正项较小"</span>,</span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a>    xy<span class="op">=</span>(<span class="fl">1.5</span>, norm.pdf(<span class="fl">1.5</span>) <span class="op">/</span> norm.cdf(<span class="fl">1.5</span>)),</span>
+<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a>    xytext<span class="op">=</span>(<span class="fl">1.7</span>, <span class="fl">0.9</span>),</span>
+<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a>    arrowprops<span class="op">=</span><span class="bu">dict</span>(arrowstyle<span class="op">=</span><span class="st">"-&gt;"</span>, lw<span class="op">=</span><span class="fl">1.2</span>),</span>
+<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a>    fontsize<span class="op">=</span><span class="dv">10</span></span>
+<span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-26"><a href="#cb9-26" aria-hidden="true" tabindex="-1"></a>save_fig(fig, <span class="st">"limit_dep_heckman_fig04_imr_curve"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -1086,9 +1246,97 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
-<section id="运行完成检查" class="level1" data-number="43">
-<h1 data-number="43"><span class="header-section-number">43</span> 运行完成检查</h1>
-<p>若上述代码顺利运行，当前路径下应出现 <code>./data/heckman_loan_sim.csv</code> 和 <code>./figs/</code> 中的六张图片。生成上述文件后，即可运行 <code>06_heckman_lec.ipynb</code>。</p>
+<div id="73af2b61" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-04-29T14:48:28.674255Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-04-29T14:48:28.674003Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-04-29T14:48:28.944874Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-04-29T14:48:28.943059Z&quot;}" data-execution_count="64">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 图 5：直接 OLS 与 Heckman two-step 的系数比较</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>coef_comp <span class="op">=</span> pd.DataFrame({</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"变量"</span>: [<span class="st">"collateral"</span>, <span class="st">"risk"</span>],</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">"真实全样本参照"</span>: [ols_full.params[<span class="st">"collateral"</span>], ols_full.params[<span class="st">"risk"</span>]],</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"只用观测样本 OLS"</span>: [ols_naive.params[<span class="st">"collateral"</span>], ols_naive.params[<span class="st">"risk"</span>]],</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Heckman two-step"</span>: [ols_heck.params[<span class="st">"collateral"</span>], ols_heck.params[<span class="st">"risk"</span>]],</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="fl">4.8</span>))</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> np.arange(<span class="bu">len</span>(coef_comp))</span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>w <span class="op">=</span> <span class="fl">0.24</span></span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>ax.bar(x <span class="op">-</span> w, coef_comp[<span class="st">"真实全样本参照"</span>], width<span class="op">=</span>w, label<span class="op">=</span><span class="st">"真实全样本参照"</span>)</span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>ax.bar(x, coef_comp[<span class="st">"只用观测样本 OLS"</span>], width<span class="op">=</span>w, label<span class="op">=</span><span class="st">"只用观测样本 OLS"</span>)</span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>ax.bar(x <span class="op">+</span> w, coef_comp[<span class="st">"Heckman two-step"</span>], width<span class="op">=</span>w, label<span class="op">=</span><span class="st">"Heckman two-step"</span>)</span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a>ax.axhline(<span class="dv">0</span>, color<span class="op">=</span><span class="st">"k"</span>, lw<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a>ax.set_xticks(x)</span>
+<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a>ax.set_xticklabels(coef_comp[<span class="st">"变量"</span>])</span>
+<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="st">"估计系数"</span>)</span>
+<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">"选择性观测会改变贷款利率方程的系数估计"</span>)</span>
+<span id="cb10-22"><a href="#cb10-22" aria-hidden="true" tabindex="-1"></a>ax.legend(frameon<span class="op">=</span><span class="va">False</span>, ncol<span class="op">=</span><span class="dv">3</span>, loc<span class="op">=</span><span class="st">"upper center"</span>, bbox_to_anchor<span class="op">=</span>(<span class="fl">0.5</span>, <span class="op">-</span><span class="fl">0.12</span>))</span>
+<span id="cb10-23"><a href="#cb10-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-24"><a href="#cb10-24" aria-hidden="true" tabindex="-1"></a>save_fig(fig, <span class="st">"limit_dep_heckman_fig05_coef_comparison"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="06_heckman_codes_files/figure-html/cell-10-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<div id="3982a766" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2026-04-29T14:48:28.948073Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-04-29T14:48:28.947833Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-04-29T14:48:29.368246Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-04-29T14:48:29.366409Z&quot;}" data-execution_count="65">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 图 6：排他性变量的机制解释</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="fl">4.8</span>))</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>ax.set_xlim(<span class="dv">0</span>, <span class="dv">10</span>)</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>ax.set_ylim(<span class="dv">0</span>, <span class="dv">5</span>)</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>ax.axis(<span class="st">"off"</span>)</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>add_box(ax, (<span class="fl">1.4</span>, <span class="fl">3.7</span>), <span class="st">"bank_access</span><span class="ch">\n</span><span class="st">银行可得性"</span>, width<span class="op">=</span><span class="fl">2.1</span>, fc<span class="op">=</span><span class="st">"#FFF6DD"</span>, ec<span class="op">=</span><span class="st">"#D89C00"</span>, fontsize<span class="op">=</span><span class="dv">11</span>)</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>add_box(ax, (<span class="fl">1.4</span>, <span class="fl">1.4</span>), <span class="st">"collateral, risk</span><span class="ch">\n</span><span class="st">抵押与风险"</span>, width<span class="op">=</span><span class="fl">2.1</span>, fc<span class="op">=</span><span class="st">"#EAF4FF"</span>, ec<span class="op">=</span><span class="st">"#4C78A8"</span>, fontsize<span class="op">=</span><span class="dv">11</span>)</span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>add_box(ax, (<span class="fl">4.7</span>, <span class="fl">2.6</span>), <span class="st">"是否获得贷款</span><span class="ch">\n</span><span class="st">$D_i$"</span>, width<span class="op">=</span><span class="fl">2.2</span>, fc<span class="op">=</span><span class="st">"#E9F7EF"</span>, ec<span class="op">=</span><span class="st">"#2E8B57"</span>, fontsize<span class="op">=</span><span class="dv">11</span>)</span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>add_box(ax, (<span class="fl">8.0</span>, <span class="fl">2.6</span>), <span class="st">"贷款利率</span><span class="ch">\n</span><span class="st">$R_i$"</span>, width<span class="op">=</span><span class="fl">2.2</span>, fc<span class="op">=</span><span class="st">"#F0F0FF"</span>, ec<span class="op">=</span><span class="st">"#6F63B6"</span>, fontsize<span class="op">=</span><span class="dv">11</span>)</span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>add_arrow(ax, (<span class="fl">2.5</span>, <span class="fl">3.55</span>), (<span class="fl">3.6</span>, <span class="fl">2.95</span>))</span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>add_arrow(ax, (<span class="fl">2.5</span>, <span class="fl">1.5</span>), (<span class="fl">3.6</span>, <span class="fl">2.3</span>))</span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>add_arrow(ax, (<span class="fl">5.8</span>, <span class="fl">2.6</span>), (<span class="fl">6.9</span>, <span class="fl">2.6</span>))</span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>add_arrow(ax, (<span class="fl">2.5</span>, <span class="fl">1.25</span>), (<span class="fl">6.9</span>, <span class="fl">2.25</span>))</span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a><span class="co"># 虚线表示潜在违反排他性限制的直接通道</span></span>
+<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a>ax.plot([<span class="fl">2.5</span>, <span class="fl">6.9</span>], [<span class="fl">3.7</span>, <span class="fl">3.0</span>], color<span class="op">=</span><span class="st">"#777"</span>, lw<span class="op">=</span><span class="fl">1.4</span>, ls<span class="op">=</span><span class="st">"--"</span>)</span>
+<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a>ax.text(</span>
+<span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a>    <span class="fl">4.7</span>, <span class="fl">4.5</span>,</span>
+<span id="cb11-22"><a href="#cb11-22" aria-hidden="true" tabindex="-1"></a>    <span class="st">"排他性限制：bank_access 主要影响是否进入信贷关系，</span><span class="ch">\n</span><span class="st">不应在控制抵押与风险后直接影响利率。"</span>,</span>
+<span id="cb11-23"><a href="#cb11-23" aria-hidden="true" tabindex="-1"></a>    ha<span class="op">=</span><span class="st">"center"</span>, fontsize<span class="op">=</span><span class="dv">11</span></span>
+<span id="cb11-24"><a href="#cb11-24" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb11-25"><a href="#cb11-25" aria-hidden="true" tabindex="-1"></a>ax.text(</span>
+<span id="cb11-26"><a href="#cb11-26" aria-hidden="true" tabindex="-1"></a>    <span class="fl">4.9</span>, <span class="fl">3.65</span>,</span>
+<span id="cb11-27"><a href="#cb11-27" aria-hidden="true" tabindex="-1"></a>    <span class="st">"虚线：需要根据制度背景进行论证"</span>,</span>
+<span id="cb11-28"><a href="#cb11-28" aria-hidden="true" tabindex="-1"></a>    ha<span class="op">=</span><span class="st">"center"</span>, fontsize<span class="op">=</span><span class="dv">10</span>, color<span class="op">=</span><span class="st">"#555"</span></span>
+<span id="cb11-29"><a href="#cb11-29" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb11-30"><a href="#cb11-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-31"><a href="#cb11-31" aria-hidden="true" tabindex="-1"></a>save_fig(fig, <span class="st">"limit_dep_heckman_fig06_exclusion_restriction"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="06_heckman_codes_files/figure-html/cell-11-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<section id="输出文件清单" class="level2" data-number="42.1">
+<h2 data-number="42.1" class="anchored" data-anchor-id="输出文件清单"><span class="header-section-number">42.1</span> 输出文件清单</h2>
+<p>本 notebook 会输出：</p>
+<ul>
+<li><code>./data/heckman_credit_sim.csv</code></li>
+<li><code>./data/heckman_coef_table.csv</code></li>
+<li><code>./data/heckman_probit_selection_table.csv</code></li>
+<li><code>./data/heckman_naive_ols_table.csv</code></li>
+<li><code>./data/heckman_twostep_table.csv</code></li>
+<li><code>./data/heckman_summary.csv</code></li>
+<li><code>./figs/limit_dep_heckman_fig01_selection_mechanism.png</code></li>
+<li><code>./figs/limit_dep_heckman_fig02_zero_vs_missing.png</code></li>
+<li><code>./figs/limit_dep_heckman_fig03_selected_sample_bias.png</code></li>
+<li><code>./figs/limit_dep_heckman_fig04_imr_curve.png</code></li>
+<li><code>./figs/limit_dep_heckman_fig05_coef_comparison.png</code></li>
+<li><code>./figs/limit_dep_heckman_fig06_exclusion_restriction.png</code></li>
+</ul>
+<p>每张图同时输出 <code>.png</code> 和 <code>.svg</code> 两种格式。</p>
 
 
 </section>
@@ -1662,8 +1910,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="../../Lecture/limit_dep_heckman/06_heckman_lec.html" class="pagination-link" aria-label="Heckman 选择模型：样本选择偏误与两阶段估计">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">41</span>&nbsp; <span class="chapter-title">Heckman 选择模型：样本选择偏误与两阶段估计</span></span>
+      <a href="../../Lecture/limit_dep_heckman/06_heckman_lec.html" class="pagination-link" aria-label="Heckman 选择模型">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">41</span>&nbsp; <span class="chapter-title">Heckman 选择模型</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
